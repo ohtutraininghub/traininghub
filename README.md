@@ -1,3 +1,5 @@
+# TrainingHub
+
 ## Getting Started
 
 ### Install
