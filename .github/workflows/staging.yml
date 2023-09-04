@@ -1,0 +1,37 @@
+name: Deployment pipeline to staging
+
+on:
+  push:
+    branches:
+      - staging
+  pull_request:
+    branches: [staging]
+    types: [opened, synchronize]
+
+jobs:
+  test:
+    runs-on: ubuntu-22.04
+    environment: testing
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: install npm
+        run: npm ci
+      - name: lint
+        run: npm run lint
+      - name: echo
+        run: echo "${{ secrets.WHAT_ENV_AM_I }}"
+      - name: echo2
+        run: echo "${{ vars.WHAT_ENV_AM_I }}"
+  deploy:
+    runs-on: ubuntu-22.04
+    environment: staging
+    needs: [test]
+    if: ${{ github.event_name == 'push' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: echo
+        run: echo "${{ secrets.WHAT_ENV_AM_I }}"
+      - name: echo2
+        run: echo "${{ vars.WHAT_ENV_AM_I }}"
