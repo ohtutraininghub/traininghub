@@ -1,17 +1,17 @@
-name: Deployment pipeline
+name: Deployment pipeline to production
 
 on:
   push:
     branches:
       - main
-      - staging
   pull_request:
-    branches: [main, staging]
+    branches: [main]
     types: [opened, synchronize]
 
 jobs:
   test:
     runs-on: ubuntu-22.04
+    environment: testing
     steps:
       - name: checkout
         uses: actions/checkout@v3
@@ -25,6 +25,7 @@ jobs:
         run: echo "${{ vars.WHAT_ENV_AM_I }}"
   deploy:
     runs-on: ubuntu-22.04
+    environment: production
     needs: [test]
     if: ${{ github.event_name == 'push' }}
     steps:
