@@ -20,7 +20,7 @@ jobs:
       - name: lint
         run: npm run lint
       - name: echo
-        run: echo "${{ secrets.WHAT_ENV_AM_I == 'staging' }}"
+        run: echo "${{ secrets.WHAT_ENV_AM_I }}"
       - name: echo2
         run: echo "${{ vars.WHAT_ENV_AM_I }}"
   deploy:
@@ -31,6 +31,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: echo
-        run: echo "${{ secrets.WHAT_ENV_AM_I == 'staging' }}"
+        run: echo "${{ secrets.WHAT_ENV_AM_I }}"
       - name: echo2
         run: echo "${{ vars.WHAT_ENV_AM_I }}"
