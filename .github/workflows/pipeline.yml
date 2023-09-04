@@ -1,0 +1,30 @@
+name: Deployment pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - staging
+  pull_request:
+    branches: [main, staging]
+    types: [opened, synchronize]
+
+jobs:
+  test:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: install npm
+        run: npm ci
+      - name: lint
+        run: npm run lint
+  deploy:
+    runs-on: ubuntu-22.04
+    needs: [test]
+    if: ${{ github.event_name == 'push' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: echo
+        run: echo "${{ secrets.WHAT_ENV_AM_I }}"
