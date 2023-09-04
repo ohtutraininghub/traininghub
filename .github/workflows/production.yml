@@ -1,17 +1,17 @@
-name: Deployment pipeline
+name: Deployment pipeline to production
 
 on:
   push:
     branches:
       - main
-      - staging
   pull_request:
-    branches: [main, staging]
+    branches: [main]
     types: [opened, synchronize]
 
 jobs:
   test:
     runs-on: ubuntu-22.04
+    environment: testing
     steps:
       - name: checkout
         uses: actions/checkout@v3
@@ -19,8 +19,13 @@ jobs:
         run: npm ci
       - name: lint
         run: npm run lint
+      - name: echo
+        run: echo "${{ secrets.WHAT_ENV_AM_I }}"
+      - name: echo2
+        run: echo "${{ vars.WHAT_ENV_AM_I }}"
   deploy:
     runs-on: ubuntu-22.04
+    environment: production
     needs: [test]
     if: ${{ github.event_name == 'push' }}
     steps:
@@ -28,3 +33,5 @@ jobs:
         uses: actions/checkout@v3
       - name: echo
         run: echo "${{ secrets.WHAT_ENV_AM_I }}"
+      - name: echo2
+        run: echo "${{ vars.WHAT_ENV_AM_I }}"
