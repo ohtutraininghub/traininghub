@@ -18,5 +18,5 @@
 
 ### Stop
 
-1. `docker-compose -f docker-compose.dev.yml down`
+1. `docker compose -f docker-compose.dev.yml down`
 2. CTRL + C in terminal
