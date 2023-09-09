@@ -5,6 +5,7 @@ An application for displaying available trainings for company's employees. Users
 ## Links
 
 [Product backlog](https://github.com/orgs/ohtutraininghub/projects/3/views/1) \
+[Deployed staging app](https://traininghub-staging-6e39b40e512f.herokuapp.com/) \
 [_Running application link here when deployed_]()
 
 ## Getting Started
