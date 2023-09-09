@@ -1,5 +1,12 @@
 # TrainingHub
- 
+
+An application for displaying available trainings for company's employees. Users can view and enroll to available trainings they are interested in.
+
+## Links
+
+[Product backlog](https://github.com/orgs/ohtutraininghub/projects/3/views/1) \
+[_Running application link here when deployed_]()
+
 ## Getting Started
 
 ### Install
