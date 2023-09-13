@@ -1,0 +1,9 @@
+# Secrets
+.env*
+
+# Node + npm
+node_modules
+.next
+
+# Random
+next-env.d.ts

@@ -1,18 +1,18 @@
-type ListComponentProps = {
-  data: ListData[]
-}
-
-type ListData = {
+interface ListData {
   header: string
   description: string
 }
 
-export function List({ data }: ListComponentProps) {
+interface ListProps {
+  data: ListData[]
+}
+
+export function List({ data }: ListProps) {
   return (
     <ul>
       {data.map((item, index) => (
         <>
-          <li key={index}>
+          <li key={`${item.header}-${index}`}>
             <h1>{item.header}</h1>
             <p>{item.description}</p>
           </li>
