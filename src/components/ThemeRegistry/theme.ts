@@ -2,9 +2,9 @@ import {
   PaletteColor,
   PaletteColorOptions,
   createTheme,
-} from "@mui/material/styles";
+} from '@mui/material/styles';
 
-declare module "@mui/material/styles" {
+declare module '@mui/material/styles' {
   // Types for new additional colors
   interface Palette {
     darkBlue: PaletteColor;
@@ -22,22 +22,22 @@ const theme = createTheme({
   // overrides the default MUI color palette: (https://mui.com/material-ui/customization/palette/)
   palette: {
     primary: {
-      main: "#ffd100", // yellow
+      main: '#ffd100', // yellow
     },
     secondary: {
-      main: "#e5e1dc", // grey
+      main: '#e5e1dc', // grey
     },
     info: {
-      main: "#007fa3", // light blue
+      main: '#007fa3', // light blue
     },
     darkBlue: {
-      main: "#003e51",
+      main: '#003e51',
     },
     black: {
-      main: "#1f1e1e",
+      main: '#1f1e1e',
     },
     white: {
-      main: "#ffffff",
+      main: '#ffffff',
     },
   },
 });

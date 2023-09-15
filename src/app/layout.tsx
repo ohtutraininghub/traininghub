@@ -1,22 +1,22 @@
-import type { Metadata } from 'next'
-import { ThemeRegistry } from '@/components/ThemeRegistry/ThemeRegistry'
-import { Inter } from 'next/font/google'
-import '@fontsource/roboto/300.css'
-import '@fontsource/roboto/400.css'
-import '@fontsource/roboto/500.css'
-import '@fontsource/roboto/700.css'
+import type { Metadata } from 'next';
+import { ThemeRegistry } from '@/components/ThemeRegistry/ThemeRegistry';
+import { Inter } from 'next/font/google';
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'TrainingHub',
   description: 'Application for training courses',
-}
+};
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <html>
@@ -24,5 +24,5 @@ export default function RootLayout({
         <body className={inter.className}>{children}</body>
       </ThemeRegistry>
     </html>
-  )
+  );
 }

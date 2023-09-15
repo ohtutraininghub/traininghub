@@ -1,10 +1,10 @@
 interface ListData {
-  header: string
-  description: string
+  header: string;
+  description: string;
 }
 
 interface ListProps {
-  data: ListData[]
+  data: ListData[];
 }
 
 export function List({ data }: ListProps) {
@@ -20,5 +20,5 @@ export function List({ data }: ListProps) {
         </>
       ))}
     </ul>
-  )
+  );
 }
