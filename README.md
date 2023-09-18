@@ -12,13 +12,18 @@ An application for displaying available trainings for company's employees. Users
 
 ### Install
 
-1. Install node & npm
+1. Install node & docker
 2. At project's root directory `npm install`
+3. Build database container with `docker compose up -d --build`
+4. Handle migrations `npx prisma migrate dev`
+5. Stop container `docker compose down`
 
 ### Start
 
-1. `npm run dev`
+1. Start the Next.js dev environment `npm run dev`
+2. Run the database container `docker compose up -d`
 
 ### Stop
 
 1. CTRL + C in terminal
+2. `docker compose down`

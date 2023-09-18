@@ -22,7 +22,7 @@ jobs:
       - name: lint
         run: npm run lint
       - name: prettier
-        run: npm run check
+        run: npm run test:format
       - name: test
         run: npm run test:ci
   deploy:
@@ -41,3 +41,5 @@ jobs:
           usedocker: true
         env:
           HUSKY: 0
+          NODE_ENV: production
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
