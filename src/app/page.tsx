@@ -3,12 +3,17 @@ import { GET as getProfiles } from './api/profile/route';
 import { Box, Typography } from '@mui/material';
 import DeviceHubIcon from '@mui/icons-material/DeviceHub';
 import { prisma } from '@/lib/prisma';
+import { SignOutButton } from '@/components/Buttons/Buttons';
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from '@/lib/auth';
 
 export default async function HomePage() {
   const data = await getProfiles();
   const dataAsJson = await data.json();
 
   const users = await prisma.user.findMany();
+
+  const session = await getServerSession(authOptions);
 
   return (
     <Box
@@ -22,6 +27,11 @@ export default async function HomePage() {
       <Typography variant="h1" color="primary">
         Hello TrainingHub
       </Typography>
+      <Typography
+        variant="body1">
+          Logged in as {session?.user?.name}.
+      </Typography>
+      <SignOutButton />
       <Box sx={{ display: 'flex', gap: 1 }}>
         <Typography color="primary.main">Primary color</Typography>
         <Typography color="secondary.main">Secondary color</Typography>
