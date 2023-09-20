@@ -4,22 +4,17 @@ An application for displaying available trainings for company's employees. Users
 
 ## Links
 
+### Developer
+
+- [Contributing](./docs/CONTRIBUTING.md)
+- [Definition Of Done](./docs/definition-of-done.md)
+- [Working hours](https://docs.google.com/spreadsheets/d/1M2OMBj00sbtw43GIW0e-fb5uT-ZDVjOd9kekBudSLag/)
+- [Project notes](https://drive.google.com/drive/folders/1lrgzH4jyzfOwHXpzYJWC8iNKkfszvz2j)
 - [Product backlog](https://github.com/orgs/ohtutraininghub/projects/3/views/1)
+- [Sprint backlog](https://github.com/orgs/ohtutraininghub/projects/3/views/4)
+
+### Other
+
 - [Deployed staging app](https://traininghub-staging-6e39b40e512f.herokuapp.com/)
 - [Deployed production app](https://traininghub-7db9b0b9243c.herokuapp.com/)
-
-## Getting Started
-
-### Install
-
-First time setup guide can be found [in the docs](./docs/installation.md).
-
-### Start
-
-1. Start the Next.js dev environment `npm run dev`
-2. Run the database container `docker compose up -d`
-
-### Stop
-
-1. CTRL + C in terminal
-2. `docker compose down`
+- [License](./LICENSE.md)
