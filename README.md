@@ -12,11 +12,7 @@ An application for displaying available trainings for company's employees. Users
 
 ### Install
 
-1. Install node & docker
-2. At project's root directory `npm install`
-3. Build database container with `docker compose up -d --build`
-4. Handle migrations `npx prisma migrate dev`
-5. Stop container `docker compose down`
+First time setup guide can be found [in the docs](./docs/installation.md).
 
 ### Start
 
