@@ -1,5 +1,4 @@
-import { Box, Typography } from '@mui/material';
-import Navbar from '@/components/Navbar';
+import { Typography } from '@mui/material';
 
 export default async function HomePage() {
   return (

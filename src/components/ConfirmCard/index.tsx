@@ -1,7 +1,7 @@
 'use client';
 
 import { Backdrop, Box, Button, Card, Typography } from '@mui/material';
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 
 interface Props {
   backdropOpen: boolean;

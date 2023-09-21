@@ -1,4 +1,4 @@
-import { Box, AppBar, Typography } from '@mui/material';
+import { AppBar, Typography } from '@mui/material';
 import Link from 'next/link';
 import { SignOutButton } from '../Buttons/Buttons';
 import { getServerSession } from 'next-auth/next';
