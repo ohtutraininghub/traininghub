@@ -25,7 +25,7 @@ model Course {
   startDate   DateTime
   endDate     DateTime?
   maxStudents Int
-  tags        Tags[]
+  tags        Tag[]
 }
 
 model Tag {
