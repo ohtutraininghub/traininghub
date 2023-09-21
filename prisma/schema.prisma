@@ -17,3 +17,19 @@ model User {
     emailVerified DateTime?
     image         String?
 }
+
+model Course {
+  id          String    @id @unique @default(cuid())
+  name        String
+  description String
+  startDate   DateTime
+  endDate     DateTime?
+  maxStudents Int
+  tags        Tags[]
+}
+
+model Tag {
+  id      String   @id @unique @default(cuid())
+  name    String   @unique
+  courses Course[]
+}
