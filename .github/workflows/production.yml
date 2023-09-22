@@ -47,3 +47,4 @@ jobs:
           HUSKY: 0
           NODE_ENV: production
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          HD_DATABASE_URL: ${{ secrets.DATABASE_URL }}
