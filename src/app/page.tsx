@@ -1,5 +1,6 @@
 import { List } from '@/components/List';
-import { GET as getProfiles } from './api/profile/route';
+import { GET as getProfiles } from '@/app/api/profile/route';
+import { GET as getUsers } from '@/app/api/users/route';
 import { Box, Typography } from '@mui/material';
 import DeviceHubIcon from '@mui/icons-material/DeviceHub';
 
@@ -7,7 +8,7 @@ export default async function HomePage() {
   const data = await getProfiles();
   const dataAsJson = await data.json();
 
-  const res = await fetch('api/users', { cache: 'no-store' });
+  const res = await getUsers();
   const users = await res.json();
 
   return (
