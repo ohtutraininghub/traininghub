@@ -8,10 +8,9 @@ COPY package*.json ./
 COPY prisma ./prisma/
 
 RUN npm ci
-RUN npx prisma migrate deploy
 
 COPY . .
 
 RUN npm run build
 
-CMD ["npm", "start"]
+CMD ["npm", "run", "start:migrate"]
