@@ -45,4 +45,4 @@ jobs:
         env:
           HUSKY: 0
           NODE_ENV: production
-          HD_DATABASE_URL: ${{ secrets.DATABASE_URL }}?schema=public
+          HD_DATABASE_URL: ${{ secrets.DATABASE_URL }}
