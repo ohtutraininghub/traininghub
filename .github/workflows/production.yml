@@ -43,7 +43,7 @@ jobs:
           docker_build_args: |
             HUSKY
             NODE_ENV
-            DATABASE_URL
+            DATABASE_URL?schema=public
         env:
           HUSKY: 0
           NODE_ENV: production
