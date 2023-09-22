@@ -5,8 +5,9 @@ WORKDIR /app
 COPY package*.json ./
 COPY prisma ./prisma/
 
+RUN echo asdd ${DATABASE_URL}
+
 RUN npm install
-RUN npx prisma generate
 
 COPY . .
 
