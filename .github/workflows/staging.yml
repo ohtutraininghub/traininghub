@@ -39,7 +39,10 @@ jobs:
           heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
           heroku_email: ${{ secrets.HEROKU_EMAIL }}
           usedocker: true
+          docker_build_args: |
+            HUSKY
+            NODE_ENV
         env:
           HUSKY: 0
-          HD_NODE_ENV: production
+          NODE_ENV: production
           HD_DATABASE_URL: ${{ secrets.DATABASE_URL }}

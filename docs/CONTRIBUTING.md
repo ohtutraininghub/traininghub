@@ -36,7 +36,7 @@ POSTGRES_PASSWORD="password"
 
 ### Start project locally
 
-1. Run the database container `docker compose up -d`
+1. Run the database container `docker compose up -d --build`
 2. Start the Next.js dev environment `npm run dev`
 
 ### Stop project locally
@@ -61,6 +61,10 @@ POSTGRES_PASSWORD="password"
 
 > **_Note_:**  All changes made to `staging` are merged to `main` branch before meeting the client
 
+### Reviewing pull request
+
+// todo
+
 ### Branching
 
 There are two main branches `main` and `staging`. Main branch is for production. Staging branch
@@ -73,3 +77,9 @@ graph TD;
     C -->|Deploy| D[Production];
     B -->|Deploy| E[Staging];
 ```
+
+### Good to know
+
+#### Prisma migrations in development
+
+// todo
