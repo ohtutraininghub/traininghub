@@ -42,7 +42,8 @@ jobs:
           docker_build_args: |
             HUSKY
             NODE_ENV
+            DATABASE_URL
         env:
           HUSKY: 0
           NODE_ENV: production
-          HD_DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
