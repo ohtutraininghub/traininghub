@@ -1,11 +1,14 @@
 import { List } from '@/components/List';
-import { GET } from './api/profile/route';
+import { GET as getProfiles } from './api/profile/route';
 import { Box, Typography } from '@mui/material';
 import DeviceHubIcon from '@mui/icons-material/DeviceHub';
+import { prisma } from '@/lib/prisma';
 
 export default async function HomePage() {
-  const data = await GET();
+  const data = await getProfiles();
   const dataAsJson = await data.json();
+
+  const users = await prisma.user.findMany();
 
   return (
     <Box
@@ -28,6 +31,12 @@ export default async function HomePage() {
         <Typography sx={{ backgroundColor: 'info.main' }} color="white.main">
           White
         </Typography>
+        {users.map((user) => (
+          <Box key={user.id}>
+            <p>{user.name}</p>
+            <p>{user.email}</p>
+          </Box>
+        ))}
       </Box>
       <DeviceHubIcon fontSize="small" />
       <List

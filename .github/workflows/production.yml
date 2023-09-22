@@ -22,7 +22,7 @@ jobs:
       - name: lint
         run: npm run lint
       - name: prettier
-        run: npm run check
+        run: npm run test:format
       - name: test
         run: npm run test:ci
   deploy:
@@ -39,5 +39,10 @@ jobs:
           heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
           heroku_email: ${{ secrets.HEROKU_EMAIL }}
           usedocker: true
+          docker_build_args: |
+            HUSKY
+            NODE_ENV
         env:
           HUSKY: 0
+          NODE_ENV: production
+          HD_DATABASE_URL: ${{ secrets.DATABASE_URL }}?schema=public
