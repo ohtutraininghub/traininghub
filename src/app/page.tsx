@@ -3,6 +3,7 @@ import { GET as getProfiles } from './api/profile/route';
 import { Box, Typography } from '@mui/material';
 import DeviceHubIcon from '@mui/icons-material/DeviceHub';
 import { prisma } from '@/lib/prisma';
+import CourseForm from '@/components/CourseForm/CourseForm';
 
 export default async function HomePage() {
   const data = await getProfiles();
@@ -45,6 +46,9 @@ export default async function HomePage() {
           { header: 'Random header', description: 'Random description' },
         ]}
       />
+
+      <h1>Add new Course</h1>
+      <CourseForm />
     </Box>
   );
 }
