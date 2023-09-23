@@ -44,4 +44,3 @@ jobs:
           usedocker: true
         env:
           HD_DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          HD_TEST_ENV: 'im test env value'

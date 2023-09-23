@@ -25,6 +25,8 @@ jobs:
         run: npm run test:format
       - name: test
         run: npm run test:ci
+      - name: build
+        run: npm run build
   deploy:
     runs-on: ubuntu-22.04
     environment: production
