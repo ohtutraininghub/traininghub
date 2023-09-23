@@ -1,13 +1,8 @@
-import { List } from '@/components/List';
-import { GET as getProfiles } from '@/app/api/profile/route';
 import { GET as getUsers } from '@/app/api/users/route';
 import { Box, Typography } from '@mui/material';
 import DeviceHubIcon from '@mui/icons-material/DeviceHub';
 
 export default async function HomePage() {
-  const data = await getProfiles();
-  const dataAsJson = await data.json();
-
   const res = await getUsers();
   const users = await res.json();
 
@@ -35,12 +30,6 @@ export default async function HomePage() {
         <p>{JSON.stringify(users)}</p>
       </Box>
       <DeviceHubIcon fontSize="small" />
-      <List
-        data={[
-          { header: 'List header', description: JSON.stringify(dataAsJson) },
-          { header: 'Random header', description: 'Random description' },
-        ]}
-      />
     </Box>
   );
 }

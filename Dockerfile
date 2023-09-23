@@ -2,6 +2,9 @@ FROM node:18-alpine
 
 ARG DATABASE_URL
 
+ENV HUSKY 0
+ENV NODE_ENV production
+
 WORKDIR /app
 
 COPY package*.json ./

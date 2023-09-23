@@ -33,19 +33,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Heroku-deploy
+      - name: Heroku deploy
         uses: akhileshns/heroku-deploy@v3.12.14
         with:
           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
           heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
           heroku_email: ${{ secrets.HEROKU_EMAIL }}
           usedocker: true
-          docker_build_args: |
-            HUSKY
-            NODE_ENV
-            DATABASE_URL
         env:
-          HUSKY: 0
-          NODE_ENV: production
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
           HD_DATABASE_URL: ${{ secrets.DATABASE_URL }}

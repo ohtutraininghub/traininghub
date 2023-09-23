@@ -1,24 +1,8 @@
-//import { prisma } from '@/lib/prisma';
-//
-//const generateRandomString = (length: number): string => {
-//  const characters =
-//    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-//  let result = '';
-//  const charactersLength = characters.length;
-//
-//  for (let i = 0; i < length; i++) {
-//    result += characters.charAt(Math.floor(Math.random() * charactersLength));
-//  }
-//
-//  return result;
-//};
+import { GET as deleteeee } from '@/app/api/profile/route';
 
 export default async function TempTestPage() {
-  //const user = await prisma.user.create({
-  //  data: {
-  //    name: generateRandomString(6),
-  //  },
-  //});
+  const user = await deleteeee();
+  const aaaaa = await user.json();
 
-  return <h1>whoosh</h1>;
+  return <h1>del {JSON.stringify(aaaaa)}</h1>;
 }
