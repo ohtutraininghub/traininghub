@@ -23,7 +23,7 @@ model Course {
   name        String
   description String
   startDate   DateTime
-  endDate     DateTime?
+  endDate     DateTime
   maxStudents Int
   tags        Tag[]
 }
