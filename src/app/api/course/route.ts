@@ -1,28 +1,41 @@
-import { prisma } from '@/lib/prisma';
-import { NextResponse } from 'next/server';
+import { PrismaClient } from '@prisma/client';
+import { NextResponse, NextRequest } from 'next/server';
 
+const prisma = new PrismaClient();
 
 export async function GET() {
   try {
     const courses = await prisma.course.findMany();
-    return NextResponse.json({
-      data: courses,
-    });
+    return NextResponse.json({ data: courses }, { status: 200 });
   } catch (error) {
-    return NextResponse.error();
+    return NextResponse.json(
+      { error: 'Internal Server Error' },
+      { status: 500 }
+    );
   }
 }
 
-export async function POST(request: { body: any; }) {
+export async function POST(request: NextRequest) {
+  const res = await request.json();
   try {
-    const { body } = request;
-    const newCourse = await prisma.course.create( {
-      data: body,
-    })
-    return NextResponse.json({
-      data: newCourse
-    })
+    const newCourse = await prisma.course.create({
+      data: res,
+    });
+    return NextResponse.json({ data: newCourse }, { status: 201 });
   } catch (error) {
-    return NextResponse.error();
+    return NextResponse.json(
+      { error: 'Internal Server Error' },
+      { status: 500 }
+    );
   }
+}
+
+export async function DELETE(request: NextRequest) {
+  try {
+  } catch (error) {}
+}
+
+export async function PUT(request: NextRequest) {
+  try {
+  } catch (error) {}
 }
