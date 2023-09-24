@@ -1,6 +1,7 @@
 'use client';
 
 import { Input, TextField, InputLabel, Button, Box } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { courseSchema } from '@/schemas';
@@ -8,6 +9,7 @@ import z from 'zod';
 import FormFieldError from '../FormFieldError/FormFieldError';
 
 export default function CourseForm() {
+  const { palette } = useTheme();
   type CourseShema = z.infer<typeof courseSchema>;
 
   const {
@@ -45,7 +47,7 @@ export default function CourseForm() {
         borderRadius: 2,
         maxWidth: '95%',
         width: '400px',
-        backgroundColor: 'secondary.main',
+        backgroundColor: palette.secondary.main,
       }}
     >
       <form
@@ -102,10 +104,10 @@ export default function CourseForm() {
             display: 'block',
             margin: 'auto',
             mt: 2,
-            color: 'secondary.main',
-            backgroundColor: 'darkBlue.main',
+            color: palette.secondary.main,
+            backgroundColor: palette.darkBlue.main,
             '&:hover': {
-              backgroundColor: 'info.main',
+              backgroundColor: palette.info.main,
             },
           }}
           type="submit"
