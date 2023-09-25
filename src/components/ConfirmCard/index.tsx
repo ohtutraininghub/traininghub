@@ -18,7 +18,7 @@ export function ConfirmCard({
 }: Props) {
   return (
     <Backdrop
-      sx={{ color: '#fff', zIndex: 1200 }}
+      sx={{ zIndex: 1200 }}
       open={backdropOpen}
       onClick={() => setBackdropOpen(false)}
     >

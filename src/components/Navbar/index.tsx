@@ -9,7 +9,6 @@ export default async function NavBar() {
 
   return (
     <AppBar
-      position="static"
       sx={{
         position: 'static',
         top: 0,
