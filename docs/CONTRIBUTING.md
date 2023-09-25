@@ -63,7 +63,8 @@ POSTGRES_PASSWORD="password"
 
 ### Reviewing pull request
 
-This helps to identify what to look for when reviewing pull request
+This helps to identify what to look for when reviewing pull request.
+Most importantly pull request should be linked to task or set of tasks.
 
 * Code quality
   * When reading code you should not have to ask yourself what does this do
@@ -76,7 +77,7 @@ This helps to identify what to look for when reviewing pull request
   * Should not use `any` type unless it has good reason
   * Imports should use module path aliases defined in `ts.config.json` section `paths`
     * E.g. `import { Button } from '../../../components/button'` --> `import { Button } from '@/components/button'`
-* Form valiation
+* Form validation
   * Form validation should use Zod library
   * Schema is only defined once and its used in frontend and backend (api folder)
 * UI
