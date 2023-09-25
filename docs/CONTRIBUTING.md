@@ -23,9 +23,37 @@ DATABASE_URL="postgresql://admin:password@localhost:5433/traininghub-db-dev?sche
 # Needed for psql Docker image
 POSTGRES_USER="admin"
 POSTGRES_PASSWORD="password"
+
+# Needed for NextAuth for local config
+# To create the NextAuth secret use OpenSSL with the following command:
+# openssl rand -base64 32
+NEXTAUTH_SECRET=""
+NEXTAUTH_URL="http://localhost:3000"
+
+
+# Google Client Id and Google Secret
+# A Google client Id and Google secret is required for authenticating with
+# Google credentials to work. Create your own Google client id and secret for your personal
+# development environment.
+GOOGLE_CLIENT_ID=""
+GOOGLE_CLIENT_SECRET=""
+
 ```
 
-### 3 Install 
+#### More information about Google Client Id
+
+Follow the instructions in [Google's documentation on setting up OAuth 2.0 credentials](https://support.google.com/cloud/answer/6158849?hl=en).
+
+You will need the following information:
+
+- Fill all the required information for consent screen
+- Choose User type as "External"
+- Add to Authorized JavaScript origins the following: "http://localhost:3000"
+- Add to Authorized redirect URIs the following: http://localhost:3000/api/auth/callback/google
+- Ensure the app publishing status is set to "Testing"
+- Add to "Test users" your own email. This way you can sign in using NextAuth.
+
+### 3 Install
 
 1. At project's root directory `npm install`
 2. Build and start database container with `docker compose up -d --build`
