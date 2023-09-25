@@ -51,16 +51,23 @@ export default function CourseForm() {
       }}
     >
       <form
+        id="courseForm"
         style={{ display: 'flex', flexDirection: 'column', gap: 10 }}
         onSubmit={handleSubmit(submitForm)}
       >
-        <InputLabel>Name</InputLabel>
-        <Input {...register('name')} error={!!errors.name} autoComplete="off" />
+        <InputLabel htmlFor="courseFormName">Name</InputLabel>
+        <Input
+          {...register('name')}
+          id="courseFormName"
+          error={!!errors.name}
+          autoComplete="off"
+        />
         <FormFieldError error={errors.name} />
 
-        <InputLabel>Description</InputLabel>
+        <InputLabel htmlFor="courseFormDescription">Description</InputLabel>
         <TextField
           {...register('description')}
+          id="courseFormDescription"
           multiline
           minRows={5}
           error={!!errors.description}
@@ -68,27 +75,30 @@ export default function CourseForm() {
         />
         <FormFieldError error={errors.description} />
 
-        <InputLabel>Start date</InputLabel>
+        <InputLabel htmlFor="courseFormStartDate">Start date</InputLabel>
         <Input
           {...register('startDate')}
+          id="courseFormStartDate"
           type="datetime-local"
           error={!!errors.startDate}
         />
         <FormFieldError error={errors.startDate} />
 
-        <InputLabel>End date</InputLabel>
+        <InputLabel htmlFor="courseFormEndDate">End date</InputLabel>
         <Input
           {...register('endDate')}
+          id="courseFormEndDate"
           type="datetime-local"
           error={!!errors.endDate}
         />
         <FormFieldError error={errors.endDate} />
 
-        <InputLabel htmlFor="maxStudents">Max students</InputLabel>
+        <InputLabel htmlFor="courseFormMaxStudents">Max students</InputLabel>
         <Input
           {...register('maxStudents', {
             setValueAs: (value) => Number(value),
           })}
+          id="courseFormMaxStudents"
           type="number"
           defaultValue={10}
           inputProps={{
