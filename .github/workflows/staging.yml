@@ -25,6 +25,8 @@ jobs:
         run: npm run test:format
       - name: test
         run: npm run test:ci
+      - name: build
+        run: npm run build
   deploy:
     runs-on: ubuntu-22.04
     environment: staging
@@ -33,13 +35,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - uses: akhileshns/heroku-deploy@v3.12.14
+      - name: Heroku deploy
+        uses: akhileshns/heroku-deploy@v3.12.14
         with:
           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
           heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
           heroku_email: ${{ secrets.HEROKU_EMAIL }}
           usedocker: true
         env:
-          HUSKY: 0
-          NODE_ENV: production
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          HD_DATABASE_URL: ${{ secrets.DATABASE_URL }}
