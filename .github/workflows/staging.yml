@@ -44,3 +44,8 @@ jobs:
           usedocker: true
         env:
           HD_DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          HD_NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL }}
+          HD_NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
+          HD_GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          HD_GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+
