@@ -14,7 +14,7 @@ export default async function HomePage() {
     >
       <Typography variant="h1" color="primary">
         Hello TrainingHub
-      </Typography>{' '}
+      </Typography>
       <Box sx={{ display: 'flex', gap: 1 }}>
         <Typography color="primary.main">Primary color</Typography>
         <Typography color="secondary.main">Secondary color</Typography>
