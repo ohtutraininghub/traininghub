@@ -12,7 +12,7 @@
     "test:format": "prettier . --check",
     "test": "jest --watch",
     "test:ci": "jest --ci",
-    "prepare": "husky install",
+    "prepare": "node -e \"try { require('husky').install() } catch (e) {if (e.code !== 'MODULE_NOT_FOUND') throw e}\"",
     "precommit": "lint-staged"
   },
   "lint-staged": {
