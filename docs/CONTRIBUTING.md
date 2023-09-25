@@ -114,7 +114,17 @@ graph TD;
 
 #### Prisma migrations in development
 
-1. After any changes to schema. Run `npx prisma migrate dev`, and follow the instructions.
-2. If the schema migration also requires data migrations, you'll have to edit the generated migration
+##### With schema migration
+
+1. Run `npx prisma migrate dev`, and follow the instructions
+2. Push the generated migration to git
+
+##### With schema and data migration
+
+You can also refer to [Prisma customizing migrations](https://www.prisma.io/docs/guides/migrate/developing-with-prisma-migrate/customizing-migrations)
+
+1. Run `npx prisma migrate dev --create-only`, and follow the instructions.
+2. Edit the generated migration
    * For example model `user` had `image` column which is moved to model `user_information` as `profile_image` column. In this case you would have to modify the `migration.sql` to insert `image` column data to `profile_image` column for correct user id.
-3. Push the generated migration to git
+3. Run `npx prisma migrate dev` to apply the changes and verify that the data migration worked
+4. Push the generated migration to git
