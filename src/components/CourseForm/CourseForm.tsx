@@ -59,6 +59,7 @@ export default function CourseForm() {
         <Input
           {...register('name')}
           id="courseFormName"
+          data-testid="courseFormName"
           error={!!errors.name}
           autoComplete="off"
         />
@@ -72,6 +73,9 @@ export default function CourseForm() {
           minRows={5}
           error={!!errors.description}
           autoComplete="off"
+          inputProps={{
+            'data-testid': 'courseFormDescription',
+          }}
         />
         <FormFieldError error={errors.description} />
 
@@ -81,6 +85,9 @@ export default function CourseForm() {
           id="courseFormStartDate"
           type="datetime-local"
           error={!!errors.startDate}
+          inputProps={{
+            'data-testid': 'courseFormStartDate',
+          }}
         />
         <FormFieldError error={errors.startDate} />
 
@@ -90,6 +97,9 @@ export default function CourseForm() {
           id="courseFormEndDate"
           type="datetime-local"
           error={!!errors.endDate}
+          inputProps={{
+            'data-testid': 'courseFormEndDate',
+          }}
         />
         <FormFieldError error={errors.endDate} />
 
@@ -101,14 +111,16 @@ export default function CourseForm() {
           id="courseFormMaxStudents"
           type="number"
           defaultValue={10}
+          error={!!errors.maxStudents}
           inputProps={{
             min: 1,
+            'data-testid': 'courseFormMaxStudents',
           }}
-          error={!!errors.maxStudents}
         />
         <FormFieldError error={errors.maxStudents} />
 
         <Button
+          type="submit"
           disabled={isSubmitting}
           sx={{
             display: 'block',
@@ -120,7 +132,7 @@ export default function CourseForm() {
               backgroundColor: palette.info.main,
             },
           }}
-          type="submit"
+          data-testid="courseFormSubmit"
         >
           Submit
         </Button>
