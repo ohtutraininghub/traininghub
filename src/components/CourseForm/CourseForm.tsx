@@ -19,6 +19,9 @@ export default function CourseForm() {
     reset,
   } = useForm<CourseShema>({
     resolver: zodResolver(courseSchema),
+    defaultValues: {
+      maxStudents: 10,
+    },
   });
 
   const submitForm = async (data: CourseShema) => {
@@ -110,7 +113,6 @@ export default function CourseForm() {
           })}
           id="courseFormMaxStudents"
           type="number"
-          defaultValue={10}
           error={!!errors.maxStudents}
           inputProps={{
             min: 1,
