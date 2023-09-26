@@ -17,4 +17,5 @@ An application for displaying available trainings for company's employees. Users
 
 - [Deployed staging app](https://traininghub-staging-6e39b40e512f.herokuapp.com/)
 - [Deployed production app](https://traininghub-7db9b0b9243c.herokuapp.com/)
+- [Note on production environment](./docs/note-on-production.md)
 - [License](./LICENSE.md)
