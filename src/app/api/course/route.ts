@@ -16,7 +16,14 @@ export async function GET() {
 }
 
 export async function POST(request: NextRequest) {
-  const res = await request.json();
+  let res = null;
+  //undefined for tests
+  if (request.json == undefined) {
+    res = request;
+    //else for CourseForm
+  } else {
+    res = await request.json();
+  }
   try {
     const newCourse = await prisma.course.create({
       data: res,
