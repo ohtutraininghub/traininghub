@@ -18,17 +18,17 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   let res = null;
-  //undefined for tests
+  //undefined for server
   if (request.json == undefined) {
     res = request;
-    //else for CourseForm
+    //else for client
   } else {
     res = await request.json();
   }
   try {
     const data = courseSchema.parse(res);
     await prisma.course.create({ data: data });
-    return NextResponse.json({ data: res }, { status: 201 });
+    return NextResponse.json({ data: data }, { status: 201 });
   } catch (error) {
     return NextResponse.json(
       { error: 'Internal Server Error' },
