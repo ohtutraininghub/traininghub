@@ -34,9 +34,10 @@ export default function CourseForm() {
       if (!response.ok) {
         throw response;
       }
-
       reset();
-    } catch (error) {
+      alert('Course successfully created!');
+    } catch (error: any) {
+      alert(error?.statusText ?? 'Internal server error');
       console.error(error);
     }
   };
