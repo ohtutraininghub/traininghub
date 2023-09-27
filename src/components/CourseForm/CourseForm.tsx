@@ -1,6 +1,7 @@
 'use client';
 
 import { Input, TextField, InputLabel, Button, Box } from '@mui/material';
+import { useRouter } from 'next/navigation';
 import { useTheme } from '@mui/material/styles';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -10,6 +11,8 @@ import FormFieldError from '../FormFieldError/FormFieldError';
 
 export default function CourseForm() {
   const { palette } = useTheme();
+  const router = useRouter();
+
   type CourseShema = z.infer<typeof courseSchema>;
 
   const {
@@ -36,6 +39,7 @@ export default function CourseForm() {
       }
       reset();
       alert('Course successfully created!');
+      router.refresh();
     } catch (error: any) {
       alert(error?.statusText ?? 'Internal server error');
       console.error(error);
