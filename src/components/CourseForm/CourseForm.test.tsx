@@ -5,6 +5,8 @@ import userEvent from '@testing-library/user-event';
 import { renderWithTheme } from '@/lib/test-utils';
 import CourseForm from './CourseForm';
 
+window.alert = jest.fn();
+
 const requiredErrors = [
   'Name is required',
   'Description is required',
