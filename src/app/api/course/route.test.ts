@@ -15,10 +15,20 @@ const newCourse = {
   maxStudents: 20,
 };
 
+const failedCourse = {
+  name: '0/5',
+  description: 'maxStudents as a string fails this test',
+  startDate: '3114 BC-08-11',
+  endDate: '2012 BC-12-21',
+  maxStudents: '112',
+};
+
 describe('API', () => {
   describe('GET', () => {
-    it('returns all the courses from the database', async () => {
+    it('returns an empty list from the database at the beginning of the tests', async () => {
       const response = await GET();
+      const data = await response.json();
+      expect(data.data.length).toBe(0);
       expect(response.status).toBe(200);
     });
   });
@@ -26,7 +36,13 @@ describe('API', () => {
   describe('POST', () => {
     it('adds new course in to the database', async () => {
       const response = await POST(newCourse);
+      const data = await response.json();
+      expect(data.data.name).toBe('Python');
       expect(response.status).toBe(201);
+    });
+    it('fails with incorrect inputs', async () => {
+      const response = await POST(failedCourse as any);
+      expect(response.status).toBe(500);
     });
   });
 

@@ -1,7 +1,16 @@
 import { PrismaClient } from '@prisma/client';
 import { NextResponse, NextRequest } from 'next/server';
+import { courseSchema } from '@/schemas';
 
 const prisma = new PrismaClient();
+
+interface Course {
+  name: string;
+  description: string;
+  startDate: string;
+  endDate: string;
+  maxStudents: number;
+}
 
 export async function GET() {
   try {
@@ -15,20 +24,11 @@ export async function GET() {
   }
 }
 
-export async function POST(request: NextRequest) {
-  let res = null;
-  //undefined for tests
-  if (request.json == undefined) {
-    res = request;
-    //else for CourseForm
-  } else {
-    res = await request.json();
-  }
+export async function POST(req: Course) {
   try {
-    const newCourse = await prisma.course.create({
-      data: res,
-    });
-    return NextResponse.json({ data: newCourse }, { status: 201 });
+    const data = courseSchema.parse(req);
+    await prisma.course.create({ data: data });
+    return NextResponse.json({ data: req }, { status: 201 });
   } catch (error) {
     return NextResponse.json(
       { error: 'Internal Server Error' },
@@ -37,12 +37,12 @@ export async function POST(request: NextRequest) {
   }
 }
 
-export async function DELETE(request: NextRequest) {
+export async function DELETE(req: Course) {
   try {
   } catch (error) {}
 }
 
-export async function PUT(request: NextRequest) {
+export async function PUT(req: Course) {
   try {
   } catch (error) {}
 }

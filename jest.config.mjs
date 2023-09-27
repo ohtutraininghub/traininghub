@@ -8,23 +8,16 @@ const createJestConfig = nextJest({
 // Add any custom config to be passed to Jest
 /** @type {import('jest').Config} */
 /** */
-/*
-const config = {
-
-  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
-  testEnvironment: 'jest-environment-jsdom', // 'jest-environment-node for API-tests and jest-environment-jsdom for client-side '
-};
-*/
 
 const clientTestConfig = {
-  displayName: 'Client-side',
+  displayName: 'Client-side: courseForm',
   testEnvironment: 'jest-environment-jsdom',
   testMatch: ['<rootDir>/src/components/CourseForm/*.test.tsx'],
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
 };
 
 const serverTestConfig = {
-  displayName: 'Server-side',
+  displayName: 'Server-side: api-route',
   testEnvironment: 'jest-environment-node',
   testMatch: ['<rootDir>/src/app/api/course/*.test.ts'],
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
@@ -35,10 +28,5 @@ const config = {
     await createJestConfig(clientTestConfig)(), 
     await createJestConfig(serverTestConfig)()],
 };
-
-/*
-// createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async
-export default createJestConfig(config);
-*/
 
 export default config;
