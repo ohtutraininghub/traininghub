@@ -7,6 +7,14 @@ import CourseForm from './CourseForm';
 
 window.alert = jest.fn();
 
+jest.mock('next/navigation', () => ({
+  useRouter() {
+    return {
+      refresh: jest.fn(),
+    };
+  },
+}));
+
 const requiredErrors = [
   'Name is required',
   'Description is required',
