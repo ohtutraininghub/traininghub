@@ -4,14 +4,6 @@ import { courseSchema } from '@/schemas';
 
 const prisma = new PrismaClient();
 
-interface Course {
-  name: string;
-  description: string;
-  startDate: string;
-  endDate: string;
-  maxStudents: number;
-}
-
 export async function GET() {
   try {
     const courses = await prisma.course.findMany();
@@ -24,11 +16,19 @@ export async function GET() {
   }
 }
 
-export async function POST(req: Course) {
+export async function POST(request: NextRequest) {
+  let res = null;
+  //undefined for tests
+  if (request.json == undefined) {
+    res = request;
+    //else for CourseForm
+  } else {
+    res = await request.json();
+  }
   try {
-    const data = courseSchema.parse(req);
+    const data = courseSchema.parse(res);
     await prisma.course.create({ data: data });
-    return NextResponse.json({ data: req }, { status: 201 });
+    return NextResponse.json({ data: res }, { status: 201 });
   } catch (error) {
     return NextResponse.json(
       { error: 'Internal Server Error' },
@@ -37,12 +37,12 @@ export async function POST(req: Course) {
   }
 }
 
-export async function DELETE(req: Course) {
+export async function DELETE(request: NextRequest) {
   try {
   } catch (error) {}
 }
 
-export async function PUT(req: Course) {
+export async function PUT(request: NextRequest) {
   try {
   } catch (error) {}
 }
