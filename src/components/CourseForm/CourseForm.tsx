@@ -25,7 +25,6 @@ export default function CourseForm() {
   });
 
   const submitForm = async (data: CourseShema) => {
-    console.log('Form submitted with values:', data);
     try {
       const response = await fetch('/api/course', {
         method: 'POST',
@@ -36,7 +35,6 @@ export default function CourseForm() {
         throw response;
       }
 
-      console.log('Response:', await response.json());
       reset();
     } catch (error) {
       console.error(error);
