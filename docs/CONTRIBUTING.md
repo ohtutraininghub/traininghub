@@ -55,7 +55,6 @@ You will need the following information:
 
 1. `npm run dev:install`
 
-> **_Note_:**  To access psql CLI in the container run `docker exec -it postgres psql -U admin traininghub-db-dev`  
 > **_Note_:**  Runs script located at `scripts/dev_install.sh`
 
 ### Start and stop project locally
@@ -63,7 +62,8 @@ You will need the following information:
 1. `npm run dev`
 2. To stop use CTRL + C in terminal
 
-> **_Note_:**  Runs script located at `scripts/dev_start.sh`
+> **_Note_:**  Runs script located at `scripts/dev_start.sh`  
+> **_Note_:**  To access database directly see [Prisma studio](#prisma)
 
 ## Contribution flow
 
