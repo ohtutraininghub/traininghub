@@ -1,3 +1,4 @@
+# For development testing purposes
 version: '3.8'
 
 services:
@@ -10,6 +11,15 @@ services:
       - ./.env
     volumes:
       - postgresdevdb:/var/lib/postgresql/data
-  
+  app:
+    depends_on:
+      - traininghub-psql
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    ports: 
+      - '127.0.0.1:3000:3000'
+    env_file: .env
+
 volumes:
   postgresdevdb:
