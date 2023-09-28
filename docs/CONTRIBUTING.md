@@ -140,14 +140,17 @@ graph TD;
 
 ### Good to know
 
-#### Prisma migrations in development
+#### Prisma
+Prisma studio is tool that can be used to visualize and add records to database. Use `npx prisma studio` to run it.
 
-##### With schema migration
+##### Migrations in development
+
+###### With schema migration
 
 1. Run `npx prisma migrate dev`, and follow the instructions
 2. Push the generated migration to git
 
-##### With schema and data migration
+###### With schema and data migration
 
 You can also refer to [Prisma customizing migrations](https://www.prisma.io/docs/guides/migrate/developing-with-prisma-migrate/customizing-migrations)
 
