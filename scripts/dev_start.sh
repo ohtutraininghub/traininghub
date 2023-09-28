@@ -1,11 +1,9 @@
-# Go back to root
-cd ..
+# Start and build if there is changes
+# Started as background task
+npm run dev:docker
 
 # When CTRL + C close database
-trap "docker compose down" SIGINT SIGTERM
+trap "docker compose down" INT TERM
 
-# Start and build database, and build if there is changes
-docker compose up -d --build
-
-# Start the project
-npm run dev
+# Start the project in terminal
+npm run dev:next

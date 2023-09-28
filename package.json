@@ -5,6 +5,8 @@
   "scripts": {
     "_DEV SCRIPTS": "===",
     "dev": "./scripts/dev_start.sh",
+    "dev:docker": "docker compose up -d --build",
+    "dev:next": "next dev",
     "dev:install": "./scripts/dev_install.sh",
     "_PRODUCTION SCRIPTS": "===",
     "build": "next build",

@@ -1,6 +1,3 @@
-# Go back to root
-cd ..
-
 # Install depencies
 npm install
 
