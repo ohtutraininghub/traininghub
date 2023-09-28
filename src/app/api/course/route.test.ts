@@ -37,7 +37,6 @@ describe('API', () => {
     it('adds new course in to the database', async () => {
       const response = await POST(newCourse as any);
       const data = await response.json();
-
       expect(data.data.name).toBe('Python');
       expect(response.status).toBe(201);
     });
