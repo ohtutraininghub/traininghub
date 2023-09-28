@@ -14,10 +14,10 @@ services:
   app:
     depends_on:
       - traininghub-psql
-    build: 
+    build:
       context: .
       dockerfile: Dockerfile
-    ports: 
+    ports:
       - '127.0.0.1:3000:3000'
     env_file: .env
 
