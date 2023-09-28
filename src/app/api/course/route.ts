@@ -17,15 +17,8 @@ export async function GET() {
 }
 
 export async function POST(request: NextRequest) {
-  let res = null;
-  //undefined for server
-  if (request.json == undefined) {
-    res = request;
-    //else for client
-  } else {
-    res = await request.json();
-  }
   try {
+    const res = await parseRequest(request);
     const data = courseSchema.parse(res);
     await prisma.course.create({ data: data });
     return NextResponse.json({ data: data }, { status: 201 });
@@ -45,4 +38,19 @@ export async function DELETE(request: NextRequest) {
 export async function PUT(request: NextRequest) {
   try {
   } catch (error) {}
+}
+
+/* A helper function to determine whether the request is from the server or the client:
+return the request.json() if the request is from the client and else return the given arguments directly */
+
+async function parseRequest(request: NextRequest) {
+  try {
+    return request.json();
+  } catch (error) {
+    if (error instanceof TypeError) {
+      return request;
+    } else {
+      throw error;
+    }
+  }
 }
