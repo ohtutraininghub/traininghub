@@ -1,30 +1,14 @@
-import { Box, Typography } from '@mui/material';
-import DeviceHubIcon from '@mui/icons-material/DeviceHub';
+import { Typography } from '@mui/material';
 
 export default async function HomePage() {
   return (
-    <Box
-      sx={{
+    <main
+      style={{
         display: 'flex',
-        flexDirection: 'column',
         justifyContent: 'center',
-        alignItems: 'center',
       }}
     >
-      <Typography variant="h1" color="primary">
-        Hello TrainingHub
-      </Typography>{' '}
-      <Box sx={{ display: 'flex', gap: 1 }}>
-        <Typography color="primary.main">Primary color</Typography>
-        <Typography color="secondary.main">Secondary color</Typography>
-        <Typography color="info.main">Info</Typography>
-        <Typography color="darkBlue.main">Dark blue</Typography>
-        <Typography color="black.main">Black</Typography>
-        <Typography sx={{ backgroundColor: 'info.main' }} color="white.main">
-          White
-        </Typography>
-      </Box>
-      <DeviceHubIcon fontSize="small" />
-    </Box>
+      <Typography>List of trainings here...</Typography>
+    </main>
   );
 }
