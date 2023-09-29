@@ -19,15 +19,13 @@ jobs:
       postgres:
         image: postgres
         env:
-          POSTGRES_USER: ${{ secrets.DB_USERNAME }}
-          POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          POSTGRES_DB: ${{ secrets.DB_DATABASE }}
+          POSTGRES_DB: ${{ secrets.DATABASE_URL }}
         options: >-
           --health-cmd pg_isready  --health-interval 10s  --health-timeout 5s
           --health-retries 5
         ports:
           - 172.17.0.1:5432:5432
-          
+
     steps:
       - name: checkout
         uses: actions/checkout@v3
