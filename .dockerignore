@@ -8,5 +8,20 @@ node_modules
 # Random
 next-env.d.ts
 
-# Ignore compose by default
-docker-compose.yml
+# Docker related
+docker-compose*.yml
+Dockerfile*
+
+# Ignore jest files
+jest.*
+
+#Git
+.gitignore
+.github
+
+#Other
+README.md
+LICENSE.md
+.db-data*
+docs
+public
