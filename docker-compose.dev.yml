@@ -19,7 +19,7 @@ services:
       dockerfile: Dockerfile
     ports:
       - '127.0.0.1:3000:3000'
-    env_file: .env
+    env_file: .env.dev # db url traininghub-psql:5432
 
 volumes:
   postgresdevdb:
