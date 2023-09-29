@@ -91,7 +91,39 @@ You will need the following information:
 
 ### Reviewing pull request
 
-// todo
+This helps to identify what to look for when reviewing pull request.
+Most importantly pull request should be linked to task or set of tasks.
+
+* Code quality
+  * When reading code you should not have to ask yourself what does this do
+  * No hard limit for file length, but when it goes over 250 it might be time to split its functionalities
+  * Code should be splitted to appropriate folders
+    * `app`: should not contain much logic, only usage of folders `components` and `lib`
+    * `components`: any UI components required by `app`
+    * `lib`: utilities, third party libs, etc.
+* TypeScript
+  * Should not use `any` type unless it has good reason
+  * Imports should use module path aliases defined in `ts.config.json` section `paths`
+    * E.g. `import { Button } from '../../../components/button'` --> `import { Button } from '@/components/button'`
+* Form validation
+  * Form validation should use Zod library
+  * Schema is only defined once and its used in frontend and backend (api folder)
+* UI
+  * The styling should follow same format as other parts of site
+  * No hardcoded colors, use theme
+  * UI should be responsive
+  * Errors should be handled, and the user informed of them (without sensitive data)
+* Tests
+  * Feature has meaningful tests which cover edgecases
+  * Components and utilities require Jest tests
+* Documentation
+  * Code itself should be documented (or refactored) if you have to ask yourself what does this do
+  * If changes to code affect anything in `docs` folder, they should be updated
+* Security
+  * Should trainer or user be able to access this, if not is it prevented?
+  * No sensitive information in git or logs
+* Performance
+  * Middleground between poorly optimized code and complex algorithms is usually good enough
 
 ### Branching
 
@@ -108,6 +140,22 @@ graph TD;
 
 ### Good to know
 
-#### Prisma migrations in development
+#### Prisma
+Prisma studio is tool that can be used to visualize and add records to database. Use `npx prisma studio` to run it.
 
-// todo
+##### Migrations in development
+
+###### With schema migration
+
+1. Run `npx prisma migrate dev`, and follow the instructions
+2. Push the generated migration to git
+
+###### With schema and data migration
+
+You can also refer to [Prisma customizing migrations](https://www.prisma.io/docs/guides/migrate/developing-with-prisma-migrate/customizing-migrations)
+
+1. Run `npx prisma migrate dev --create-only`, and follow the instructions.
+2. Edit the generated migration
+   * For example model `user` had `image` column which is moved to model `user_information` as `profile_image` column. In this case you would have to modify the `migration.sql` to insert `image` column data to `profile_image` column for correct user id.
+3. Run `npx prisma migrate dev` to apply the changes and verify that the data migration worked
+4. Push the generated migration to git
