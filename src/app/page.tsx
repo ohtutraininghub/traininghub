@@ -8,7 +8,6 @@ export default async function HomePage() {
     <Box
       sx={{
         display: 'flex',
-        flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
         pb: 20,
