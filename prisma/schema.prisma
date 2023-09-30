@@ -21,7 +21,7 @@ model User {
 }
 
 model Course {
-  id          String    @id @unique @default(cuid())
+  id          String    @id @default(cuid())
   name        String
   description String
   startDate   DateTime
@@ -31,7 +31,7 @@ model Course {
 }
 
 model Tag {
-  id      String   @id @unique @default(cuid())
+  id      String   @id @default(cuid())
   name    String   @unique
   courses Course[]   
 }
