@@ -10,9 +10,6 @@ services:
       - ./.env
     volumes:
       - postgresdevdb:/var/lib/postgresql/data
-    environment:
-    - POSTGRES_USER=postgres
-    - POSTGRES_PASSWORD=postgres
 
 volumes:
   postgresdevdb:
