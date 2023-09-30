@@ -19,7 +19,7 @@
     "*.{js,jsx,ts,tsx}": [
       "eslint --quiet --fix"
     ],
-    "*.{json,js,ts,jsx,tsx,html}": [
+    "*.{json,js,ts,jsx,tsx,html,prisma}": [
       "prettier --write --ignore-unknown"
     ]
   },
@@ -52,6 +52,7 @@
     "jest-environment-jsdom": "^29.7.0",
     "lint-staged": "^14.0.1",
     "prettier": "^3.0.3",
+    "prettier-plugin-prisma": "^5.0.0",
     "prisma": "^5.3.1"
   }
 }
