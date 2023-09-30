@@ -40,6 +40,8 @@ jobs:
         run: npm run lint
       - name: prettier
         run: npm run test:format
+      - name: migrate db
+        run: npx prisma db push
       - name: test
         run: npm run test:ci
       - name: build
