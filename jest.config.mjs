@@ -25,8 +25,9 @@ const serverTestConfig = {
 
 const config = {
   projects: [
-    await createJestConfig(clientTestConfig)(), 
-    await createJestConfig(serverTestConfig)()],
+    await createJestConfig(clientTestConfig)(),
+    await createJestConfig(serverTestConfig)(),
+  ],
 };
 
 export default config;
