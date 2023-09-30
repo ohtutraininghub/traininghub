@@ -29,6 +29,8 @@ jobs:
         ports:
           - 172.17.0.1:5432:5432
 
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
     steps:
       - name: checkout
         uses: actions/checkout@v3
@@ -42,8 +44,6 @@ jobs:
         run: npm run test:ci
       - name: build
         run: npm run build
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
   deploy:
     runs-on: ubuntu-22.04
