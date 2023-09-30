@@ -36,7 +36,7 @@ const CourseCard = ({ course }: Props) => {
         <Typography variant="h5" m={2}>
           {course.name}
         </Typography>
-        <Typography>{course.startDate.toLocaleString()}</Typography>
+        <Typography>{course.startDate.toDateString()}</Typography>
         <Typography>Signups: 0 / {course.maxStudents}</Typography>
 
         <Button
