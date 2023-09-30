@@ -19,7 +19,7 @@
     "*.{js,jsx,ts,tsx}": [
       "eslint --quiet --fix"
     ],
-    "*.{json,js,ts,jsx,tsx,html,prisma,md}": [
+    "*.{json,js,ts,jsx,tsx,html,prisma,md,yml,yaml}": [
       "prettier --write --ignore-unknown"
     ]
   },
