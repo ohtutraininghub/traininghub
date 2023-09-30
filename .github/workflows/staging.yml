@@ -17,6 +17,7 @@ jobs:
     environment: testing
     services:
       postgres:
+        container_name: postgres
         image: postgres
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
