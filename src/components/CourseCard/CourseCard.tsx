@@ -12,7 +12,11 @@ import { Course } from '@prisma/client';
 import { useState } from 'react';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-const CourseCard = ({ course }: { course: Course }) => {
+type Props = {
+  course: Course;
+};
+
+const CourseCard = ({ course }: Props) => {
   const theme = useTheme();
   const [expanded, setExpanded] = useState(false);
 
