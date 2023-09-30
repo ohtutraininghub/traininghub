@@ -6,7 +6,7 @@ type Props = {
 };
 
 const FormFieldError = ({ error }: Props) => {
-  if (!error) return <></>;
+  if (!error) return null;
   return (
     <FormHelperText sx={{ color: 'error.main' }}>
       {error.message}
