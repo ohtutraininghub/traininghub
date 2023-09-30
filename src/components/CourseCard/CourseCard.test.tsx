@@ -20,7 +20,7 @@ beforeEach(() => {
 describe('CourseCard tests', () => {
   it('Course data should be displayed correctly', async () => {
     expect(screen.getByText(course.name)).toBeVisible();
-    expect(screen.getByText(course.startDate.toLocaleString())).toBeVisible();
+    expect(screen.getByText(course.startDate.toDateString())).toBeVisible();
     expect(
       screen.getByText(`0 / ${course.maxStudents}`, { exact: false })
     ).toBeVisible();
