@@ -30,16 +30,6 @@ export async function POST(request: NextRequest) {
   }
 }
 
-export async function DELETE(request: NextRequest) {
-  try {
-  } catch (error) {}
-}
-
-export async function PUT(request: NextRequest) {
-  try {
-  } catch (error) {}
-}
-
 /* A helper function to determine whether the request is from the server or the client:
 return the request.json() if the request is from the client and else return the given arguments directly */
 

@@ -1,4 +1,4 @@
-import { GET, POST, DELETE, PUT } from './route';
+import { GET, POST } from './route';
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
@@ -45,8 +45,4 @@ describe('API', () => {
       expect(response.status).toBe(500);
     });
   });
-
-  describe('PUT', () => {});
-
-  describe('DEL', () => {});
 });
