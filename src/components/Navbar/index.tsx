@@ -17,7 +17,6 @@ export default async function NavBar() {
         justifyContent: 'space-between',
         alignItems: 'center',
         padding: { xs: '0 0.5em', sm: '0 1em' },
-        width: '100vw',
         marginBottom: '2em',
         textAlign: 'center',
       }}
