@@ -1,3 +1,5 @@
+import { Fragment } from 'react';
+
 interface ListData {
   header: string;
   description: string;
@@ -11,13 +13,13 @@ export function List({ data }: ListProps) {
   return (
     <ul>
       {data.map((item, index) => (
-        <>
-          <li key={`${item.header}-${index}`}>
+        <Fragment key={`${item.header}-${index}`}>
+          <li>
             <h1>{item.header}</h1>
             <p>{item.description}</p>
           </li>
           <br />
-        </>
+        </Fragment>
       ))}
     </ul>
   );
