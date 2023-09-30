@@ -10,16 +10,16 @@ const createJestConfig = nextJest({
 /** */
 
 const clientTestConfig = {
-  displayName: 'Client-side: courseForm',
+  displayName: 'Client-side',
   testEnvironment: 'jest-environment-jsdom',
-  testMatch: ['<rootDir>/src/components/CourseForm/*.test.tsx'],
+  testMatch: ['<rootDir>/src/components/**/*.test.tsx'],
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
 };
 
 const serverTestConfig = {
-  displayName: 'Server-side: api-route',
+  displayName: 'Server-side',
   testEnvironment: 'jest-environment-node',
-  testMatch: ['<rootDir>/src/app/api/course/*.test.ts'],
+  testMatch: ['<rootDir>/src/app/api/**/*.test.ts'],
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
 };
 
