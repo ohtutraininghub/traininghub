@@ -15,7 +15,9 @@ const CourseCard = ({ course }: { course: Course }) => {
         background: theme.palette.darkBlue.main,
         color: theme.palette.white.main,
         width: 340,
+        maxWidth: '100%',
         borderRadius: '15px',
+        margin: 'auto',
         textAlign: 'center',
       }}
     >

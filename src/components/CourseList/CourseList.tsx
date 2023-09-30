@@ -12,6 +12,8 @@ const CourseList = async () => {
         container
         spacing={2}
         maxWidth={1200}
+        width="100%"
+        sx={{ margin: 'auto' }}
         columns={{ xs: 1, sm: 2, md: 3 }}
       >
         {courses.map((course) => (

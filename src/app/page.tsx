@@ -12,6 +12,7 @@ export default async function HomePage() {
         justifyContent: 'center',
         alignItems: 'center',
         pb: 20,
+        px: 2,
       }}
     >
       <DeviceHubIcon fontSize="small" />
