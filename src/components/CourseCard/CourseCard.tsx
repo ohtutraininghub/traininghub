@@ -1,6 +1,13 @@
 'use client';
 
-import { Button, Card, CardContent, Collapse, useTheme } from '@mui/material';
+import {
+  Button,
+  Card,
+  CardContent,
+  Collapse,
+  Typography,
+  useTheme,
+} from '@mui/material';
 import { Course } from '@prisma/client';
 import { useState } from 'react';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -22,9 +29,11 @@ const CourseCard = ({ course }: { course: Course }) => {
       }}
     >
       <CardContent sx={{ overflowWrap: 'break-word' }}>
-        <h3>{course.name}</h3>
-        <p>{course.startDate.toLocaleString()}</p>
-        <p>Signups: 0 / {course.maxStudents}</p>
+        <Typography variant="h5" m={2}>
+          {course.name}
+        </Typography>
+        <Typography>{course.startDate.toLocaleString()}</Typography>
+        <Typography>Signups: 0 / {course.maxStudents}</Typography>
 
         <Button
           onClick={() => setExpanded(!expanded)}
@@ -40,9 +49,9 @@ const CourseCard = ({ course }: { course: Course }) => {
           />
         </Button>
         <Collapse in={expanded}>
-          <h3>Course description</h3>
+          <Typography variant="h6">Course description</Typography>
           <pre style={{ whiteSpace: 'pre-wrap' }}>
-            <p>{course.description}</p>
+            <Typography>{course.description}</Typography>
           </pre>
         </Collapse>
       </CardContent>
