@@ -55,7 +55,9 @@ const CourseCard = ({ course }: Props) => {
         <Collapse in={expanded}>
           <Typography variant="h6">Course description</Typography>
           <pre style={{ whiteSpace: 'pre-wrap' }}>
-            <Typography>{course.description}</Typography>
+            <Typography sx={{ px: 2, textAlign: 'start' }}>
+              {course.description}
+            </Typography>
           </pre>
         </Collapse>
       </CardContent>
