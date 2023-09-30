@@ -21,7 +21,7 @@ const CourseCard = ({ course }: { course: Course }) => {
         textAlign: 'center',
       }}
     >
-      <CardContent>
+      <CardContent sx={{ overflowWrap: 'break-word' }}>
         <h3>{course.name}</h3>
         <p>{course.startDate.toLocaleString()}</p>
         <p>Signups: 0 / {course.maxStudents}</p>
