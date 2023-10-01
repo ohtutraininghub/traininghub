@@ -12,7 +12,7 @@ const courseData = [
   {
     name: 'Jenkins Fundamentals',
     description:
-      'Learn how to automate building, testing and deploying your code using Jenkins, a popular open-source server for setting up continuous integration and continous delivery pipelines. During this two-day course you will get a lot of hands-on experience in Jenkins basics like setting up a Jenkins server, choosing and installing Jenkins plugins and building a Jenkins CI/CD pipeline.',
+      'Learn how to automate building, testing and deploying your code using Jenkins, a popular open-source server for setting up continuous integration and continuous delivery pipelines. During this two-day course you will get a lot of hands-on experience in Jenkins basics like setting up a Jenkins server, choosing and installing Jenkins plugins and building a Jenkins CI/CD pipeline.',
     startDate: '2023-12-04T09:30:00.000Z',
     endDate: '2023-12-05T16:30:00.000Z',
     maxStudents: 8,
