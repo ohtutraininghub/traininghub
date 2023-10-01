@@ -1,12 +1,14 @@
 import { Grid } from '@mui/material';
-import { prisma } from '@/lib/prisma';
 import CourseCard from '../CourseCard/CourseCard';
+import { Prisma } from '@prisma/client';
 
-const CourseList = async () => {
-  const courses = await prisma.course.findMany({
-    orderBy: [{ startDate: 'asc' }, { name: 'asc' }],
-  });
+type CoursePrismaType = Prisma.CourseGetPayload<Prisma.CourseDefaultArgs>;
 
+type CourseListProps = {
+  courses: CoursePrismaType[];
+};
+
+export default async function CourseList({ courses }: CourseListProps) {
   return (
     <>
       <h1>Courses</h1>
@@ -26,6 +28,4 @@ const CourseList = async () => {
       </Grid>
     </>
   );
-};
-
-export default CourseList;
+}
