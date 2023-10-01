@@ -20,6 +20,13 @@ const CourseCard = ({ course }: Props) => {
   const theme = useTheme();
   const [expanded, setExpanded] = useState(false);
 
+  const startDateString = course.startDate.toDateString();
+  const endDateString = course.endDate.toDateString();
+  const courseDate =
+    startDateString === endDateString
+      ? startDateString
+      : `${startDateString} – ${endDateString}`;
+
   return (
     <Card
       sx={{
@@ -36,7 +43,7 @@ const CourseCard = ({ course }: Props) => {
         <Typography variant="h5" m={2}>
           {course.name}
         </Typography>
-        <Typography>{course.startDate.toDateString()}</Typography>
+        <Typography>{courseDate}</Typography>
         <Typography>Signups: 0 / {course.maxStudents}</Typography>
 
         <Button
