@@ -9,5 +9,8 @@ until docker exec $DATABASE_CONTAINER pg_isready ; do sleep 1 ; done
 # When CTRL + C close database
 trap "docker compose down" INT TERM
 
+# Run database migrations
+npx prisma migrate dev
+
 # Start the project in terminal
 npm run dev:next
