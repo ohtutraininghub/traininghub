@@ -21,4 +21,4 @@ export const courseSchema = z
     }
   );
 
-export type CourseShemaType = z.infer<typeof courseSchema>;
+export type CourseSchemaType = z.infer<typeof courseSchema>;
