@@ -3,24 +3,24 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
     "build": "next build",
+    "dev": "next dev",
+    "format": "prettier . --write",
+    "lint": "next lint",
+    "precommit": "lint-staged",
+    "prepare": "node -e \"try { require('husky').install() } catch (e) {if (e.code !== 'MODULE_NOT_FOUND') throw e}\"",
     "start": "next start",
     "start:migrate": "prisma migrate deploy && npm run start",
-    "lint": "next lint",
-    "format": "prettier . --write",
-    "test:format": "prettier . --check",
     "test": "jest --watch",
     "test-all": "jest --all",
     "test:ci": "jest --ci",
-    "prepare": "node -e \"try { require('husky').install() } catch (e) {if (e.code !== 'MODULE_NOT_FOUND') throw e}\"",
-    "precommit": "lint-staged"
+    "test:format": "prettier . --check"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
       "eslint --quiet --fix"
     ],
-    "*.{json,js,ts,jsx,tsx,html}": [
+    "*.{json,js,ts,jsx,tsx,html,prisma,md,yml,yaml}": [
       "prettier --write --ignore-unknown"
     ]
   },
@@ -57,6 +57,7 @@
     "jest-environment-jsdom": "^29.7.0",
     "lint-staged": "^14.0.1",
     "prettier": "^3.0.3",
+    "prettier-plugin-prisma": "^5.0.0",
     "prisma": "^5.3.1",
     "whatwg-fetch": "^3.6.19"
   }
