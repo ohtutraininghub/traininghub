@@ -20,3 +20,5 @@ export const courseSchema = z
       path: ['endDate'],
     }
   );
+
+export type CourseShemaType = z.infer<typeof courseSchema>;

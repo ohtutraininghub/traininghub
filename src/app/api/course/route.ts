@@ -1,5 +1,5 @@
 import { NextResponse, NextRequest } from 'next/server';
-import { courseSchema } from '@/schemas';
+import { courseSchema } from '@/lib/zod/courses';
 import { prisma } from '@/lib/prisma';
 
 export async function GET() {

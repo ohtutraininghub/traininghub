@@ -5,29 +5,26 @@ import { useRouter } from 'next/navigation';
 import { useTheme } from '@mui/material/styles';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { courseSchema } from '@/schemas';
-import z from 'zod';
+import { courseSchema, CourseShemaType } from '@/lib/zod/courses';
 import FormFieldError from '../FormFieldError/FormFieldError';
 
 export default function CourseForm() {
   const { palette } = useTheme();
   const router = useRouter();
 
-  type CourseShema = z.infer<typeof courseSchema>;
-
   const {
     register,
     formState: { errors, isSubmitting },
     handleSubmit,
     reset,
-  } = useForm<CourseShema>({
+  } = useForm<CourseShemaType>({
     resolver: zodResolver(courseSchema),
     defaultValues: {
       maxStudents: 10,
     },
   });
 
-  const submitForm = async (data: CourseShema) => {
+  const submitForm = async (data: CourseShemaType) => {
     try {
       const response = await fetch('/api/course', {
         method: 'POST',
