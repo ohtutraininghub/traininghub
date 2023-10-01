@@ -92,7 +92,7 @@ You will need the following information:
    - Assign someone from project to review it, and wait for approval
 5. After pull request is approved, merge it and delete the merged branch
 
-> **_Note_:** All changes made to `staging` are merged to `main` branch before meeting the client
+> **_Note_:** All changes made to `staging` are merged to `main` branch after meeting the client
 
 ### Reviewing pull request
 
