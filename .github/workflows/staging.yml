@@ -14,6 +14,21 @@ env:
 jobs:
   test:
     runs-on: ubuntu-22.04
+    environment: testing
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_USER: ${{ secrets.DB_USERNAME }}
+          POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          POSTGRES_DB: ${{ secrets.DB_DATABASE }}
+        options: >-
+          --health-cmd pg_isready  --health-interval 10s  --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5433:5432
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
     steps:
       - name: checkout
         uses: actions/checkout@v3
@@ -22,7 +37,9 @@ jobs:
       - name: lint
         run: npm run lint:test
       - name: prettier
-        run: npm run format:test
+        run: npm run test:format
+      - name: migrate db
+        run: npx prisma migrate deploy
       - name: test
         run: npm run test:ci
       - name: build

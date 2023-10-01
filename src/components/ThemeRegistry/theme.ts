@@ -6,11 +6,13 @@ import {
 
 declare module '@mui/material/styles' {
   // Types for new additional colors
+  // eslint-disable-next-line no-unused-vars
   interface Palette {
     darkBlue: PaletteColor;
     black: PaletteColor;
     white: PaletteColor;
   }
+  // eslint-disable-next-line no-unused-vars
   interface PaletteOptions {
     darkBlue?: PaletteColorOptions;
     black?: PaletteColorOptions;

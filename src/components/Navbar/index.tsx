@@ -1,6 +1,6 @@
 import { AppBar, Typography } from '@mui/material';
 import Link from 'next/link';
-import { SignOutButton } from '../Buttons/Buttons';
+import { SignOutButton } from '@/components/Buttons/Buttons';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/lib/auth';
 
@@ -17,7 +17,6 @@ export default async function NavBar() {
         justifyContent: 'space-between',
         alignItems: 'center',
         padding: { xs: '0 0.5em', sm: '0 1em' },
-        width: '100vw',
         marginBottom: '2em',
         textAlign: 'center',
       }}
