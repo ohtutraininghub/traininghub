@@ -5,9 +5,13 @@ import { withAuth } from 'next-auth/middleware';
 export default withAuth(function middleware(request) {
   const { pathname } = request.nextUrl;
   if (
-    !pathname.startsWith('/_next') || // exclude Next.js internals
-    !pathname.startsWith('/api') || // exclude all API routes
-    !pathname.startsWith('/static') // exclude static files
+    !(
+      (
+        pathname.startsWith('/_next') || // exclude Next.js internals
+        pathname.startsWith('/api') || // exclude all API routes
+        pathname.startsWith('/static')
+      ) // exclude static files
+    )
   ) {
     const pathnameIsMissingLocale = checkForMissingLocale(pathname);
 
