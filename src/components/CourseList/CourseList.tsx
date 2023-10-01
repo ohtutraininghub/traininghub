@@ -3,7 +3,9 @@ import { prisma } from '@/lib/prisma';
 import CourseCard from '../CourseCard/CourseCard';
 
 const CourseList = async () => {
-  const courses = await prisma.course.findMany({});
+  const courses = await prisma.course.findMany({
+    orderBy: [{ startDate: 'asc' }, { name: 'asc' }],
+  });
 
   return (
     <>
