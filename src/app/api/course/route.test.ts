@@ -1,7 +1,5 @@
 import { GET, POST } from './route';
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { prisma } from '@/lib/prisma';
 
 beforeEach(async () => {
   await prisma.course.deleteMany({});
