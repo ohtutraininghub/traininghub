@@ -32,11 +32,10 @@ POSTGRES_PASSWORD="password"
 NEXTAUTH_SECRET=""
 NEXTAUTH_URL="http://localhost:3000"
 
-
 # Google Client Id and Google Secret
-# A Google client Id and Google secret is required for authenticating with
-# Google credentials to work. Create your own Google client id and secret for your personal
-# development environment.
+# A Google client id and Google secret is required for authenticating
+# with Google credentials to work. Create your own Google client id and secret
+# for your personal development environment.
 GOOGLE_CLIENT_ID=""
 GOOGLE_CLIENT_SECRET=""
 
@@ -60,6 +59,10 @@ You will need the following information:
 1. At project's root directory `npm install`
 2. Build and start database container with `docker compose up -d --build`
 3. Handle database migrations `npx prisma migrate dev`
+   > **_Note_:** When Prisma Migrate resets the development database, your database
+   > will automatically be seeded with some mock data for development purposes.
+   > Run `npx prisma migrate dev --skip-seed` if you want to skip the seeding.
+   > Later on you can manually trigger the seeding with `npx prisma db seed`.
 4. Stop container `docker compose down`
 
 > **_Note_:** To access psql CLI in the container run `docker exec -it postgres psql -U admin traininghub-db-dev`
