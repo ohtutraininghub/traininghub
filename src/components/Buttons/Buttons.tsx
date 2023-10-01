@@ -4,9 +4,12 @@ import Button from '@mui/material/Button';
 import { useState } from 'react';
 import { ConfirmCard } from '../ConfirmCard';
 import { signOut } from 'next-auth/react';
+import { getDictionary } from '@/lib/i18n/dictionaries';
+import { DictProps } from '@i18n/i18n';
 
-export function SignOutButton() {
+export async function SignOutButton({ lang }: DictProps) {
   const [backdropOpen, setBackdropOpen] = useState(false);
+  const dict = await getDictionary(lang);
   return (
     <>
       <Button
@@ -16,12 +19,13 @@ export function SignOutButton() {
           setBackdropOpen(true);
         }}
       >
-        Sign out
+        {dict.Navbar.signOutButton.signOut}
       </Button>
       <ConfirmCard
+        lang={lang}
         backdropOpen={backdropOpen}
         setBackdropOpen={setBackdropOpen}
-        confirmMessage={'Confirm sign out?'}
+        confirmMessage={dict.Navbar.signOutButton.signOutConfirmation}
         handleClick={() => signOut()}
       />
     </>

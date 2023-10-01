@@ -1,11 +1,13 @@
 import { AppBar, Typography } from '@mui/material';
 import Link from 'next/link';
 import { SignOutButton } from '@/components/Buttons/Buttons';
-import { getServerSession } from 'next-auth/next';
-import { authOptions } from '@/lib/auth';
+import { getServerAuthSession } from '@/lib/auth';
+import { getDictionary } from '@/lib/i18n/dictionaries';
+import { DictProps } from '@i18n/i18n';
 
-export default async function NavBar() {
-  const session = await getServerSession(authOptions);
+export default async function NavBar({ lang }: DictProps) {
+  const session = await getServerAuthSession();
+  const dict = await getDictionary(lang);
 
   return (
     <AppBar
@@ -25,12 +27,12 @@ export default async function NavBar() {
         href="/"
         style={{ fontWeight: 700, textDecoration: 'none', color: 'black' }}
       >
-        Training hub
+        {dict.AppTitle}
       </Link>
       <Typography variant="body2">
-        Logged in as {session?.user?.name}
+        {dict.Navbar.loggedUser.replace('{x}', session?.user?.name ?? '')}
       </Typography>
-      <SignOutButton />
+      <SignOutButton lang={lang} />
     </AppBar>
   );
 }

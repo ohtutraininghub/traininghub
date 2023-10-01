@@ -1,5 +1,21 @@
 {
-  "index": {
-    "trainingListTitle": "List trainings here..."
+  "AppTitle": "Training hub",
+  "HomePage": {
+    "trainingListTitle": "Add new Course"
+  },
+  "Navbar": {
+    "loggedUser": "Logged in as {x}",
+    "signOutButton": {
+      "signOut": "Sign out",
+      "signOutConfirmation": "Confirm sign out"
+    }
+  },
+  "ConfirmCard": {
+    "cancel": "Cancel",
+    "confirm": "Confirm"
+  },
+  "CourseList": {
+    "courses": "Courses",
+    "courseCard": {}
   }
 }

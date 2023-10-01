@@ -2,20 +2,25 @@
 
 import { Backdrop, Box, Button, Card, Typography } from '@mui/material';
 import { Dispatch, SetStateAction } from 'react';
+import { getDictionary } from '@/lib/i18n/dictionaries';
+import { DictProps } from '@i18n/i18n';
 
-interface Props {
+interface Props extends DictProps {
   backdropOpen: boolean;
   setBackdropOpen: Dispatch<SetStateAction<boolean>>;
   confirmMessage: string;
   handleClick: () => void;
 }
 
-export function ConfirmCard({
+export async function ConfirmCard({
   backdropOpen,
   setBackdropOpen,
   confirmMessage,
   handleClick,
+  lang,
 }: Props) {
+  const dict = await getDictionary(lang);
+
   return (
     <Backdrop
       sx={{ zIndex: 1200 }}
@@ -46,9 +51,11 @@ export function ConfirmCard({
           className="button-container"
           display="flex"
         >
-          <Button onClick={() => setBackdropOpen(false)}>Cancel</Button>
+          <Button onClick={() => setBackdropOpen(false)}>
+            {dict.ConfirmCard.cancel}
+          </Button>
           <Button variant="outlined" onClick={handleClick}>
-            Confirm
+            {dict.ConfirmCard.confirm}
           </Button>
         </Box>
       </Card>

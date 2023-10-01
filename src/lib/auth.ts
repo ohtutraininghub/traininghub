@@ -1,4 +1,4 @@
-import type { NextAuthOptions } from 'next-auth';
+import { getServerSession, type NextAuthOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import { prisma } from './prisma';
 import { PrismaAdapter } from '@auth/prisma-adapter';
@@ -15,4 +15,12 @@ export const authOptions: NextAuthOptions = {
     strategy: 'jwt',
     maxAge: 7 * 24 * 60 * 60,
   },
+};
+
+/**
+ * Wrapper for `getServerSession` so that you don't need to import the `authOptions` in every file.
+ * This method only works server side.
+ */
+export const getServerAuthSession = () => {
+  return getServerSession(authOptions);
 };

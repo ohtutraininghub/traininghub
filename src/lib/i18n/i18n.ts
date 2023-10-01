@@ -1,7 +1,11 @@
 import { NextRequest } from 'next/server';
-import { i18n } from './i18n-config';
+import { Locale, i18n } from './i18n-config';
 import { match as matchLocale } from '@formatjs/intl-localematcher';
 import Negotiator from 'negotiator';
+
+export interface DictProps {
+  lang: Locale;
+}
 
 // Check if there is any supported locale in the pathname
 export const checkForMissingLocale = (pathname: string) => {
