@@ -16,9 +16,9 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
-    const res = await parseRequest(request);
-    const data = courseSchema.parse(res);
-    await prisma.course.create({ data: data });
+    const data = await parseRequest(request);
+    const dataToSchema = courseSchema.parse(data);
+    await prisma.course.create({ data: dataToSchema });
     return NextResponse.json({ data: data }, { status: 201 });
   } catch (error) {
     return NextResponse.json(
@@ -31,9 +31,9 @@ export async function POST(request: NextRequest) {
 /* A helper function to determine whether the request is from the server or the client:
 return the request.json() if the request is from the client and else return the given arguments directly */
 
-async function parseRequest(request: NextRequest) {
+const parseRequest = async (request: NextRequest) => {
   try {
-    return request.json();
+    return await request.json();
   } catch (error) {
     if (error instanceof TypeError) {
       return request;
@@ -41,4 +41,4 @@ async function parseRequest(request: NextRequest) {
       throw error;
     }
   }
-}
+};

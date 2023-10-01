@@ -19,7 +19,7 @@ const CourseCard = ({ course }: Props) => {
   const courseDate =
     startDateString === endDateString
       ? startDateString
-      : `${startDateString} – ${endDateString}`;
+      : `${startDateString} - ${endDateString}`;
 
   return (
     <Card
