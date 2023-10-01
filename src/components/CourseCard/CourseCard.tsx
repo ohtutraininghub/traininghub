@@ -1,13 +1,7 @@
 'use client';
 
-import {
-  Button,
-  Card,
-  CardContent,
-  Collapse,
-  Typography,
-  useTheme,
-} from '@mui/material';
+import { Button, Card, CardContent, Collapse, Typography } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import { Course } from '@prisma/client';
 import { useState } from 'react';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
