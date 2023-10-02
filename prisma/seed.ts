@@ -45,10 +45,14 @@ const tagData = [
 ];
 
 async function main() {
+  await prisma.course.deleteMany();
+  await prisma.tag.deleteMany();
+
   await prisma.course.createMany({
     data: courseData,
     skipDuplicates: true,
   });
+
   await prisma.tag.createMany({
     data: tagData,
     skipDuplicates: true,
