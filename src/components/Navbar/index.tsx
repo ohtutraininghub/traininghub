@@ -30,6 +30,9 @@ export default async function NavBar() {
       <Typography variant="body2">
         Logged in as {session?.user?.name}
       </Typography>
+      <Link href="/profile" style={{}}>
+        Temp profile link
+      </Link>
       <SignOutButton />
     </AppBar>
   );
