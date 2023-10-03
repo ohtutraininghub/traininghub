@@ -1,4 +1,4 @@
-import CourseForm from '@/components/CourseForm/CourseForm';
+import NewCourseButton from '@/components/Buttons/NewCourseButton';
 import CourseList from '@/components/CourseList/CourseList';
 import { prisma } from '@/lib/prisma';
 
@@ -19,8 +19,8 @@ export default async function HomePage() {
         padding: '0px 16px 100px 16px',
       }}
     >
-      <h2>Add new Course</h2>
-      <CourseForm />
+      <h2>Actions -- placeholder</h2>
+      <NewCourseButton />
       <CourseList courses={courses} />
     </div>
   );
