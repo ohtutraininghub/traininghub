@@ -38,12 +38,11 @@ NEXTAUTH_URL="http://localhost:3000"
 # for your personal development environment.
 GOOGLE_CLIENT_ID=""
 GOOGLE_CLIENT_SECRET=""
-
 ```
 
 #### More information about Google Client Id
 
-Follow the instructions in [Google's documentation on setting up OAuth 2.0 credentials](https://support.google.com/cloud/answer/6158849?hl=en).
+Follow the instructions in [Google's documentation on setting up OAuth 2.0 credentials](https://support.google.com/cloud/answer/6158849).
 
 You will need the following information:
 
@@ -56,26 +55,16 @@ You will need the following information:
 
 ### 3 Install
 
-1. At project's root directory `npm install`
-2. Build and start database container with `docker compose up -d --build`
-3. Handle database migrations `npx prisma migrate dev`
-   > **_Note_:** When Prisma Migrate resets the development database, your database
-   > will automatically be seeded with some mock data for development purposes.
-   > Run `npx prisma migrate dev --skip-seed` if you want to skip the seeding.
-   > Later on you can manually trigger the seeding with `npx prisma db seed`.
-4. Stop container `docker compose down`
+1. `npm run dev:install`
 
-> **_Note_:** To access psql CLI in the container run `docker exec -it postgres psql -U admin traininghub-db-dev`
+> **_Note_:** Runs script located at `scripts/dev_install.sh`. Your database will be seeded with some mock course and tag records.
 
-### Start project locally
+### Start and stop project locally
 
-1. Run the database container `docker compose up -d --build`
-2. Start the Next.js dev environment `npm run dev`
+1. `npm run dev`
+2. To stop use CTRL + C in terminal
 
-### Stop project locally
-
-1. CTRL + C in terminal
-2. `docker compose down`
+> **_Note_:** Runs script located at `scripts/dev_start.sh` > **_Note_:** To access database directly see [Prisma studio](#prisma)
 
 ## Contribution flow
 

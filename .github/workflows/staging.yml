@@ -35,9 +35,9 @@ jobs:
       - name: install npm
         run: npm ci
       - name: lint
-        run: npm run lint
+        run: npm run lint:test
       - name: prettier
-        run: npm run test:format
+        run: npm run format:test
       - name: migrate db
         run: npx prisma migrate deploy
       - name: test
