@@ -8,6 +8,7 @@ const courseData = [
     startDate: '2023-10-02T09:30:00.000Z',
     endDate: '2023-10-02T16:30:00.000Z',
     maxStudents: 12,
+    tags: ['Git'],
   },
   {
     name: 'Jenkins Fundamentals',
@@ -16,6 +17,7 @@ const courseData = [
     startDate: '2023-12-04T09:30:00.000Z',
     endDate: '2023-12-05T16:30:00.000Z',
     maxStudents: 8,
+    tags: ['CI/CD', 'Jenkins'],
   },
   {
     name: 'Robot Framework Fundamentals',
@@ -24,6 +26,7 @@ const courseData = [
     startDate: '2023-11-20T09:30:00.000Z',
     endDate: '2023-11-22T16:30:00.000Z',
     maxStudents: 10,
+    tags: ['Testing', 'Python', 'Robot Framework'],
   },
   {
     name: 'Kubernetes Fundamentals',
@@ -32,31 +35,47 @@ const courseData = [
     startDate: '2024-01-08T09:30:00.000Z',
     endDate: '2024-01-08T16:30:00.000Z',
     maxStudents: 15,
+    tags: ['Kubernetes', 'Docker', 'CI/CD'],
   },
 ];
 
 const tagData = [
-  { name: 'Testing' },
-  { name: 'CI/CD' },
   { name: 'Agile methods' },
+  { name: 'CI/CD' },
   { name: 'Docker' },
-  { name: 'Kubernetes' },
   { name: 'Git' },
+  { name: 'Jenkins' },
+  { name: 'Kubernetes' },
+  { name: 'Python' },
+  { name: 'Robot Framework' },
+  { name: 'Testing' },
 ];
 
 async function main() {
-  await prisma.course.deleteMany();
   await prisma.tag.deleteMany();
-
-  await prisma.course.createMany({
-    data: courseData,
-    skipDuplicates: true,
-  });
+  await prisma.course.deleteMany();
 
   await prisma.tag.createMany({
     data: tagData,
     skipDuplicates: true,
   });
+
+  await Promise.all(
+    courseData.map(async (course) => {
+      await prisma.course.create({
+        data: {
+          name: course.name,
+          description: course.description,
+          startDate: course.startDate,
+          endDate: course.endDate,
+          maxStudents: course.maxStudents,
+          tags: {
+            connect: course.tags.map((tag) => ({ name: tag })),
+          },
+        },
+      });
+    })
+  );
 }
 
 main()
