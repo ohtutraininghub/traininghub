@@ -24,7 +24,7 @@ const requiredErrors = [
 ];
 
 beforeEach(() => {
-  renderWithTheme(<CourseForm />);
+  renderWithTheme(<CourseForm lang="en" />);
 });
 
 describe('Course Form Tests', () => {

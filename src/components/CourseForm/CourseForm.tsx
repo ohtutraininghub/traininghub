@@ -7,10 +7,15 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { courseSchema, CourseShemaType } from '@/lib/zod/courses';
 import FormFieldError from '../FormFieldError/FormFieldError';
+import { DictProps } from '@/lib/i18n/i18n';
+import { useDictionary } from '@/lib/i18n/hooks';
 
-export default function CourseForm() {
+interface Props extends DictProps {}
+
+export default function CourseForm({ lang }: Props) {
   const { palette } = useTheme();
   const router = useRouter();
+  const dict = useDictionary(lang);
 
   const {
     register,
@@ -58,7 +63,7 @@ export default function CourseForm() {
         style={{ display: 'flex', flexDirection: 'column', gap: 10 }}
         onSubmit={handleSubmit(submitForm)}
       >
-        <InputLabel htmlFor="courseFormName">Name</InputLabel>
+        <InputLabel htmlFor="courseFormName">{dict.CourseForm.name}</InputLabel>
         <Input
           {...register('name')}
           id="courseFormName"
@@ -68,7 +73,9 @@ export default function CourseForm() {
         />
         <FormFieldError error={errors.name} />
 
-        <InputLabel htmlFor="courseFormDescription">Description</InputLabel>
+        <InputLabel htmlFor="courseFormDescription">
+          {dict.CourseForm.description}
+        </InputLabel>
         <TextField
           {...register('description')}
           id="courseFormDescription"
@@ -82,7 +89,9 @@ export default function CourseForm() {
         />
         <FormFieldError error={errors.description} />
 
-        <InputLabel htmlFor="courseFormStartDate">Start date</InputLabel>
+        <InputLabel htmlFor="courseFormStartDate">
+          {dict.CourseForm.startDate}
+        </InputLabel>
         <Input
           {...register('startDate')}
           id="courseFormStartDate"
@@ -94,7 +103,9 @@ export default function CourseForm() {
         />
         <FormFieldError error={errors.startDate} />
 
-        <InputLabel htmlFor="courseFormEndDate">End date</InputLabel>
+        <InputLabel htmlFor="courseFormEndDate">
+          {dict.CourseForm.endDate}
+        </InputLabel>
         <Input
           {...register('endDate')}
           id="courseFormEndDate"
@@ -106,7 +117,9 @@ export default function CourseForm() {
         />
         <FormFieldError error={errors.endDate} />
 
-        <InputLabel htmlFor="courseFormMaxStudents">Max students</InputLabel>
+        <InputLabel htmlFor="courseFormMaxStudents">
+          {dict.CourseForm.maxStudents}
+        </InputLabel>
         <Input
           {...register('maxStudents', {
             setValueAs: (value) => Number(value),
@@ -136,7 +149,7 @@ export default function CourseForm() {
           }}
           data-testid="courseFormSubmit"
         >
-          Submit
+          {dict.CourseForm.submit}
         </Button>
       </form>
     </Box>

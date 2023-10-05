@@ -2,8 +2,8 @@
 
 import { Backdrop, Box, Button, Card, Typography } from '@mui/material';
 import { Dispatch, SetStateAction } from 'react';
-import { getDictionary } from '@/lib/i18n/dictionaries';
 import { DictProps } from '@i18n/i18n';
+import { useDictionary } from '@/lib/i18n/hooks';
 
 interface Props extends DictProps {
   backdropOpen: boolean;
@@ -12,14 +12,14 @@ interface Props extends DictProps {
   handleClick: () => void;
 }
 
-export async function ConfirmCard({
+export function ConfirmCard({
   backdropOpen,
   setBackdropOpen,
   confirmMessage,
   handleClick,
   lang,
 }: Props) {
-  const dict = await getDictionary(lang);
+  const dict = useDictionary(lang);
 
   return (
     <Backdrop

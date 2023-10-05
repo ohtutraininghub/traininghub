@@ -4,12 +4,17 @@ import Button from '@mui/material/Button';
 import { useState } from 'react';
 import { ConfirmCard } from '../ConfirmCard';
 import { signOut } from 'next-auth/react';
-import { getDictionary } from '@/lib/i18n/dictionaries';
-import { DictProps } from '@i18n/i18n';
+import { useDictionary } from '@/lib/i18n/hooks';
+import { Locale } from '@/lib/i18n/i18n-config';
 
-export async function SignOutButton({ lang }: DictProps) {
+interface Props {
+  lang: Locale;
+}
+
+export function SignOutButton({ lang }: Props) {
   const [backdropOpen, setBackdropOpen] = useState(false);
-  const dict = await getDictionary(lang);
+  const dict = useDictionary(lang);
+
   return (
     <>
       <Button

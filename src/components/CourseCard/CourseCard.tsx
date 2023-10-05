@@ -5,14 +5,17 @@ import { useTheme } from '@mui/material/styles';
 import { Course } from '@prisma/client';
 import { useState } from 'react';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { DictProps } from '@/lib/i18n/i18n';
+import { useDictionary } from '@/lib/i18n/hooks';
 
-type Props = {
+interface Props extends DictProps {
   course: Course;
-};
+}
 
-const CourseCard = ({ course }: Props) => {
+const CourseCard = ({ course, lang }: Props) => {
   const theme = useTheme();
   const [expanded, setExpanded] = useState(false);
+  const dict = useDictionary(lang);
 
   const startDateString = course.startDate.toDateString();
   const endDateString = course.endDate.toDateString();
@@ -38,7 +41,9 @@ const CourseCard = ({ course }: Props) => {
           {course.name}
         </Typography>
         <Typography>{courseDate}</Typography>
-        <Typography>Signups: 0 / {course.maxStudents}</Typography>
+        <Typography>
+          {dict.CourseCard.signups.replace('{x}', String(course.maxStudents))}
+        </Typography>
 
         <Button
           onClick={() => setExpanded(!expanded)}
@@ -46,7 +51,7 @@ const CourseCard = ({ course }: Props) => {
             color: theme.palette.info.main,
           }}
         >
-          <span>View details</span>
+          <span>{dict.CourseCard.details}</span>
           <ExpandMoreIcon
             style={{
               transform: expanded ? 'rotate(180deg)' : '',
@@ -54,7 +59,9 @@ const CourseCard = ({ course }: Props) => {
           />
         </Button>
         <Collapse in={expanded}>
-          <Typography variant="h6">Course description</Typography>
+          <Typography variant="h6">
+            {dict.CourseCard.courseDescription}
+          </Typography>
           <pre style={{ whiteSpace: 'pre-wrap' }}>
             <Typography sx={{ px: 2, textAlign: 'start' }}>
               {course.description}

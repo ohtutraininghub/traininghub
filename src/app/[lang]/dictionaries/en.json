@@ -17,5 +17,18 @@
   "CourseList": {
     "courses": "Courses",
     "courseCard": {}
+  },
+  "CourseCard": {
+    "signups": "Signups: 0 / {x}",
+    "details": "View details",
+    "courseDescription": "Course description"
+  },
+  "CourseForm": {
+    "name": "Name",
+    "description": "Description",
+    "startDate": "Start date",
+    "endDate": "End date",
+    "maxStudents": "Max students",
+    "submit": "Submit"
   }
 }
