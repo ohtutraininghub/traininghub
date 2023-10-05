@@ -1,7 +1,6 @@
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
-import Box from '@mui/material/Box/Box';
 import ProfileUserDetails from './ProfileUserDetails';
 import ProfileCourseList from './ProfileCourseList';
 
@@ -40,7 +39,7 @@ export default async function ProfilePage() {
   );
 
   return (
-    <Box>
+    <div>
       <ProfileUserDetails
         name={userData?.name ?? ''}
         email={userData?.email ?? ''}
@@ -55,6 +54,6 @@ export default async function ProfilePage() {
         headerText="Upcoming courses"
         courses={upcomingCourses}
       />
-    </Box>
+    </div>
   );
 }
