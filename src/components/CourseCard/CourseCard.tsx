@@ -3,18 +3,14 @@ import CardContent from '@mui/material/CardContent';
 import Card from '@mui/material/Card';
 import Link from 'next/link';
 import { Course } from '@prisma/client';
+import { getCourseDateString } from '@/lib/util';
 
 type Props = {
   course: Course;
 };
 
 const CourseCard = ({ course }: Props) => {
-  const startDateString = course.startDate.toDateString();
-  const endDateString = course.endDate.toDateString();
-  const courseDate =
-    startDateString === endDateString
-      ? startDateString
-      : `${startDateString} - ${endDateString}`;
+  const courseDate = getCourseDateString(course);
 
   return (
     <Link href={`/?courseId=${course.id}`} style={{ textDecoration: 'none' }}>
