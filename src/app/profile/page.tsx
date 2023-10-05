@@ -2,6 +2,8 @@ import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import Box from '@mui/material/Box/Box';
+import ProfileUserDetails from './ProfileUserDetails';
+import ProfileCourseList from './ProfileCourseList';
 
 export default async function ProfilePage() {
   const session = await getServerSession(authOptions);
@@ -17,11 +19,11 @@ export default async function ProfilePage() {
       //      },
     });
   }
+  if (!userData) return;
+
   const temporaryCourses = await prisma.course.findMany({
     orderBy: [{ startDate: 'asc' }, { name: 'asc' }],
   });
-
-  console.log(userData);
 
   const currentDate = new Date();
 
@@ -39,36 +41,20 @@ export default async function ProfilePage() {
 
   return (
     <Box>
-      {userData?.name} <br />
-      {userData?.email} <br />
-      {userData?.image} <br />
-      <h5>Past courses</h5>
-      <ul>
-        {endedCourses.map((course) => (
-          <li key={course.id}>
-            {course.name} - {course.startDate.toDateString()} -{' '}
-            {course.endDate.toDateString()}
-          </li>
-        ))}
-      </ul>
-      <h5>In progress courses</h5>
-      <ul>
-        {inProgressCourses.map((course) => (
-          <li key={course.id}>
-            {course.name} - {course.startDate.toDateString()} -{' '}
-            {course.endDate.toDateString()}
-          </li>
-        ))}
-      </ul>
-      <h5>Ended courses</h5>
-      <ul>
-        {upcomingCourses.map((course) => (
-          <li key={course.id}>
-            {course.name} - {course.startDate.toDateString()} -{' '}
-            {course.endDate.toDateString()}
-          </li>
-        ))}
-      </ul>
+      <ProfileUserDetails
+        name={userData?.name ?? ''}
+        email={userData?.email ?? ''}
+        image={userData?.image ?? ''}
+      />
+      <ProfileCourseList headerText="Ended courses" courses={endedCourses} />
+      <ProfileCourseList
+        headerText="Courses in progress"
+        courses={inProgressCourses}
+      />
+      <ProfileCourseList
+        headerText="Upcoming courses"
+        courses={upcomingCourses}
+      />
     </Box>
   );
 }
