@@ -17,14 +17,58 @@ export default async function ProfilePage() {
       //      },
     });
   }
+  const temporaryCourses = await prisma.course.findMany({
+    orderBy: [{ startDate: 'asc' }, { name: 'asc' }],
+  });
 
   console.log(userData);
+
+  const currentDate = new Date();
+
+  const endedCourses = temporaryCourses.filter(
+    (course) => course.endDate < currentDate
+  );
+
+  const inProgressCourses = temporaryCourses.filter(
+    (course) => course.startDate <= currentDate && course.endDate >= currentDate
+  );
+
+  const upcomingCourses = temporaryCourses.filter(
+    (course) => course.startDate > currentDate
+  );
 
   return (
     <Box>
       {userData?.name} <br />
       {userData?.email} <br />
       {userData?.image} <br />
+      <h5>Past courses</h5>
+      <ul>
+        {endedCourses.map((course) => (
+          <li key={course.id}>
+            {course.name} - {course.startDate.toDateString()} -{' '}
+            {course.endDate.toDateString()}
+          </li>
+        ))}
+      </ul>
+      <h5>In progress courses</h5>
+      <ul>
+        {inProgressCourses.map((course) => (
+          <li key={course.id}>
+            {course.name} - {course.startDate.toDateString()} -{' '}
+            {course.endDate.toDateString()}
+          </li>
+        ))}
+      </ul>
+      <h5>Ended courses</h5>
+      <ul>
+        {upcomingCourses.map((course) => (
+          <li key={course.id}>
+            {course.name} - {course.startDate.toDateString()} -{' '}
+            {course.endDate.toDateString()}
+          </li>
+        ))}
+      </ul>
     </Box>
   );
 }
