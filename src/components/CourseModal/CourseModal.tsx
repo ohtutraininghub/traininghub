@@ -74,13 +74,18 @@ export default function CourseModal({ course }: Props) {
         <Typography sx={{ my: 2, color: 'secondary.main', textAlign: 'start' }}>
           Description
         </Typography>
-        <Typography sx={{ overflow: 'auto', pr: 2 }}>
-          <pre
-            style={{ whiteSpace: 'pre-wrap', margin: 0, textAlign: 'start' }}
-          >
-            {course.description}
-          </pre>
-        </Typography>
+
+        <pre
+          style={{
+            whiteSpace: 'pre-wrap',
+            margin: 0,
+            textAlign: 'start',
+            paddingRight: '16px',
+            overflow: 'auto',
+          }}
+        >
+          <Typography>{course.description}</Typography>
+        </pre>
 
         <Box sx={{ mt: 'auto', pt: 3 }}>
           <Typography>Signups: 0 / {course.maxStudents}</Typography>
