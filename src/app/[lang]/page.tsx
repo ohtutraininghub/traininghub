@@ -17,7 +17,7 @@ export default async function HomePage({ lang }: DictProps) {
       }}
     >
       <Typography variant="h2">{dict.HomePage.trainingListTitle}</Typography>
-      <CourseForm />
+      <CourseForm lang={lang} />
       <CourseList />
     </main>
   );
