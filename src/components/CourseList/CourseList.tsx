@@ -1,16 +1,20 @@
 import { Grid } from '@mui/material';
-import CourseCard from '../CourseCard/CourseCard';
-import { Prisma } from '@prisma/client';
-
-type CoursePrismaType = Prisma.CourseGetPayload<Prisma.CourseDefaultArgs>;
+import { Course } from '@prisma/client';
+import CourseCard from '@/components/CourseCard/CourseCard';
+import CourseModal from '@/components/CourseModal/CourseModal';
 
 type CourseListProps = {
-  courses: CoursePrismaType[];
+  courses: Course[];
+  openedCourse: Course | undefined;
 };
 
-export default async function CourseList({ courses }: CourseListProps) {
+export default async function CourseList({
+  courses,
+  openedCourse,
+}: CourseListProps) {
   return (
     <>
+      <CourseModal course={openedCourse} />
       <h1>Courses</h1>
       <Grid
         container
