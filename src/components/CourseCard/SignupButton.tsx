@@ -5,6 +5,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { ConfirmCard } from '@/components/ConfirmCard';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 type Props = {
   courseId: string;
@@ -17,8 +18,8 @@ export default function SignupButton({
   currentStudents,
   maxStudents,
 }: Props) {
-  const [signups, setSignups] = useState(currentStudents);
   const [backdropOpen, setBackdropOpen] = useState(false);
+  const router = useRouter();
 
   const handleSignup = async () => {
     try {
@@ -30,8 +31,8 @@ export default function SignupButton({
       if (!response.ok) {
         throw response;
       }
-      setSignups(signups + 1);
       alert('Successfully signed up!');
+      router.refresh();
     } catch (error: any) {
       alert(error?.statusText ?? 'Internal server error');
       console.error(error);
@@ -41,7 +42,7 @@ export default function SignupButton({
   return (
     <Box sx={{ mt: 'auto', pt: 3 }}>
       <Typography>
-        Signups: {signups} / {maxStudents}
+        Signups: {currentStudents} / {maxStudents}
       </Typography>
       <Button
         onClick={() => {
