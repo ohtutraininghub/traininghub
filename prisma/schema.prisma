@@ -16,6 +16,7 @@ model User {
   email         String?   @unique
   emailVerified DateTime?
   image         String?
+  courses CourseUser[]
   accounts      Account[]
   sessions      Session[]
 }
@@ -27,13 +28,26 @@ model Course {
   startDate   DateTime
   endDate     DateTime
   maxStudents Int
+  students CourseUser[]
   tags        Tag[]
+}
+
+model CourseUser {
+  id String    @id @default(cuid())
+
+  userId String
+  user User @relation(fields: [userId], references: [id])
+
+  courseId String
+  course Course @relation(fields: [courseId], references: [id])
+
+  @@unique([userId, courseId])
 }
 
 model Tag {
   id      String   @id @default(cuid())
   name    String   @unique
-  courses Course[]   
+  courses Course[]
 }
 
 model Account {

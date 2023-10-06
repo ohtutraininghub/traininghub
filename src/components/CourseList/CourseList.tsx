@@ -1,11 +1,11 @@
 import { Grid } from '@mui/material';
-import { Course } from '@prisma/client';
-import CourseCard from '@/components/CourseCard/CourseCard';
+import { GetCoursesType, CourseWithStudentCount } from '@/lib/prisma/courses';
+import CourseCard from '@/components/CourseCard/';
 import CourseModal from '@/components/CourseModal/CourseModal';
 
 type CourseListProps = {
-  courses: Course[];
-  openedCourse: Course | undefined;
+  courses: GetCoursesType;
+  openedCourse: CourseWithStudentCount | undefined;
 };
 
 export default async function CourseList({

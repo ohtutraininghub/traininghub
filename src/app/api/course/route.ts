@@ -1,6 +1,6 @@
 import { NextResponse, NextRequest } from 'next/server';
 import { courseSchema } from '@/lib/zod/courses';
-import { prisma } from '@/lib/prisma';
+import { prisma } from '@/lib/prisma/prisma';
 
 export async function GET() {
   try {
