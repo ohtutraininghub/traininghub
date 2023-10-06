@@ -1,3 +1,5 @@
+'use client';
+
 import { Grid } from '@mui/material';
 import CourseCard from '../CourseCard/CourseCard';
 import { Prisma } from '@prisma/client';
@@ -8,7 +10,7 @@ type CourseListProps = {
   courses: CoursePrismaType[];
 };
 
-export default async function CourseList({ courses }: CourseListProps) {
+export default function CourseList({ courses }: CourseListProps) {
   return (
     <>
       <h1>Courses</h1>
