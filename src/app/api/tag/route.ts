@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { tagSchema } from '@/lib/zod/tags';
 import { prisma } from '@/lib/prisma';
+import { Prisma } from '@prisma/client';
 
 export async function POST(request: NextRequest) {
   try {
@@ -10,10 +11,16 @@ export async function POST(request: NextRequest) {
       data: newTag,
     });
     return NextResponse.json({ data: newTag }, { status: 201 });
-  } catch (error) {
-    return NextResponse.json(
-      { error: 'Failed to create tag' },
-      { status: 500 }
-    );
+  } catch (error: unknown) {
+    let errorMessage = 'Failed to create tag';
+    let statusCode = 500;
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === 'P2002'
+    ) {
+      errorMessage = 'Tag already exists';
+      statusCode = 422;
+    }
+    return NextResponse.json({ error: errorMessage }, { status: statusCode });
   }
 }
