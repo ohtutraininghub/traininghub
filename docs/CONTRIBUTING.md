@@ -57,7 +57,7 @@ You will need the following information:
 
 1. `npm run dev:install`
 
-> **_Note_:** Runs script located at `scripts/dev_install.sh`. Your database will be seeded with some mock course and tag records.
+> **_Note_:** Runs script located at `scripts/dev_install.sh`. Your database will be seeded with mock data.
 
 ### Start and stop project locally
 
