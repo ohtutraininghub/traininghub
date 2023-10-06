@@ -4,10 +4,18 @@ import { Divider, IconButton, InputBase, Paper } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 import { useTheme } from '@mui/material/styles';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
-import { Course } from '@prisma/client';
+import { Course, Prisma } from '@prisma/client';
 import CourseList from '../CourseList/CourseList';
 
-export default function CourseFilter() {
+type CoursePrismaType = Prisma.CourseGetPayload<Prisma.CourseDefaultArgs>;
+
+type CourseListProps = {
+  courses: CoursePrismaType[];
+};
+
+export default function CourseFilter({
+  courses: initialCourses,
+}: CourseListProps) {
   const { palette } = useTheme();
 
   const [searchTerm, setSearchTerm] = useState('');
@@ -16,10 +24,9 @@ export default function CourseFilter() {
 
   const fetchData = async () => {
     try {
-      const response = await fetch('/api/course');
-      const result = await response.json();
-      setCourses(result.data);
-      setFilteredCourses(result.data);
+      console.log(initialCourses);
+      setCourses(initialCourses);
+      setFilteredCourses(initialCourses);
     } catch (error) {
       console.error('Error fetching data:', error);
     }
@@ -27,13 +34,14 @@ export default function CourseFilter() {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [initialCourses]);
 
   const handleChange = async (event: ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
     const filteredCourses = courses.filter((course: { name: string }) =>
       course.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
+    console.log(filteredCourses);
     setFilteredCourses(filteredCourses);
   };
 

@@ -14,8 +14,8 @@ const CourseCard = ({ course }: Props) => {
   const theme = useTheme();
   const [expanded, setExpanded] = useState(false);
 
-  const startDateString = course.startDate; //course.startDate.toDateString();
-  const endDateString = course.endDate; //course.endDate.toDateString();
+  const startDateString = course.startDate.toDateString();
+  const endDateString = course.endDate.toDateString();
   const courseDate =
     startDateString === endDateString
       ? startDateString
