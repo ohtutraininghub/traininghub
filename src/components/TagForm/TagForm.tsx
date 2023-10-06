@@ -6,6 +6,7 @@ import { useTheme } from '@mui/material/styles';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
+import FormFieldError from '@/components/FormFieldError/FormFieldError';
 
 export default function TagForm() {
   const router = useRouter();
@@ -13,7 +14,7 @@ export default function TagForm() {
 
   const {
     register,
-    formState: { isSubmitting },
+    formState: { errors, isSubmitting },
     handleSubmit,
     reset,
   } = useForm<TagSchemaType>({
@@ -41,6 +42,7 @@ export default function TagForm() {
     <>
       <form onSubmit={handleSubmit(submitForm)}>
         <TextField label="Tag name" {...register('name')}></TextField>
+        <FormFieldError error={errors.name}></FormFieldError>
         <Button
           type="submit"
           disabled={isSubmitting}
