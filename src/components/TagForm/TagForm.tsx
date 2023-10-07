@@ -40,6 +40,7 @@ export default function TagForm() {
       } catch (e) {
         alert(error?.statusText ?? '');
       }
+      reset();
     }
   };
 
