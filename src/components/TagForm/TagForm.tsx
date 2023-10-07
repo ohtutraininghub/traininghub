@@ -1,16 +1,34 @@
 'use client';
 
 import { TagSchemaType, tagSchema } from '@/lib/zod/tags';
-import { TextField, Button } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
+import { TextField, Button, Alert, AlertColor, Box } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import FormFieldError from '@/components/FormFieldError/FormFieldError';
+import { useState } from 'react';
 
 export default function TagForm() {
   const router = useRouter();
-  const { palette } = useTheme();
+  const [notification, setNotification] = useState('');
+  const [severity, setSeverity] = useState<AlertColor | undefined>();
+
+  interface NotificationProps {
+    message: string;
+    severity: AlertColor | undefined;
+  }
+
+  const Notification = (props: NotificationProps) => {
+    return props.message ? (
+      <Alert severity={props.severity} onClose={hideNotification}>
+        {props.message}
+      </Alert>
+    ) : null;
+  };
+
+  const hideNotification = () => {
+    setNotification('');
+  };
 
   const {
     register,
@@ -36,9 +54,10 @@ export default function TagForm() {
     } catch (error: any) {
       try {
         const responseData = await error.json();
-        alert(responseData.error);
+        setNotification(responseData.error);
+        setSeverity('error');
       } catch (e) {
-        alert(error?.statusText ?? '');
+        console.log(error?.statusText ?? '');
       }
       reset();
     }
@@ -46,26 +65,28 @@ export default function TagForm() {
 
   return (
     <>
-      <form onSubmit={handleSubmit(submitForm)}>
-        <TextField label="Tag name" {...register('name')}></TextField>
-        <FormFieldError error={errors.name}></FormFieldError>
-        <Button
-          type="submit"
-          disabled={isSubmitting}
-          variant="contained"
-          sx={{
-            display: 'block',
-            mt: 1,
-            color: palette.white.main,
-            backgroundColor: palette.darkBlue.main,
-            '&:hover': {
-              backgroundColor: palette.info.main,
-            },
-          }}
-        >
-          Submit
-        </Button>
-      </form>
+      <Notification severity={severity} message={notification} />
+      <Box sx={{ mt: 1, mb: 4 }}>
+        <form onSubmit={handleSubmit(submitForm)}>
+          <TextField
+            label="Tag name"
+            {...register('name')}
+            onFocus={hideNotification}
+          ></TextField>
+          <FormFieldError error={errors.name}></FormFieldError>
+          <Button
+            type="submit"
+            disabled={isSubmitting}
+            variant="contained"
+            sx={{
+              display: 'block',
+              mt: 1,
+            }}
+          >
+            Submit
+          </Button>
+        </form>
+      </Box>
     </>
   );
 }
