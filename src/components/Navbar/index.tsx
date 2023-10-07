@@ -1,8 +1,8 @@
 import { AppBar, Typography } from '@mui/material';
 import Link from 'next/link';
-import { SignOutButton } from '@/components/Buttons/Buttons';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/lib/auth';
+import ProfileMenu from '@/components/ProfileMenu';
 
 export default async function NavBar() {
   const session = await getServerSession(authOptions);
@@ -30,10 +30,10 @@ export default async function NavBar() {
       <Typography variant="body2">
         Logged in as {session?.user?.name}
       </Typography>
-      <Link href="/profile" style={{}}>
-        Temp profile link
-      </Link>
-      <SignOutButton />
+      <ProfileMenu
+        name={session?.user?.name ?? ''}
+        image={session?.user?.image ?? ''}
+      />
     </AppBar>
   );
 }
