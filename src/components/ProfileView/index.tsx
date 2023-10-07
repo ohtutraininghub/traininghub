@@ -13,9 +13,10 @@ export interface ProfileViewProps {
   courses: Course[];
 }
 
-
-export default function ProfileView({ userDetails, courses }: ProfileViewProps) {
-  
+export default function ProfileView({
+  userDetails,
+  courses,
+}: ProfileViewProps) {
   const currentDate = new Date();
 
   const endedCourses = courses.filter(
@@ -23,29 +24,36 @@ export default function ProfileView({ userDetails, courses }: ProfileViewProps) 
   );
 
   const inProgressCourses = courses.filter(
-    (course: Course) => course.startDate <= currentDate && course.endDate >= currentDate
+    (course: Course) =>
+      course.startDate <= currentDate && course.endDate >= currentDate
   );
 
   const upcomingCourses = courses.filter(
     (course: Course) => course.startDate > currentDate
   );
-  
+
   return (
     <>
       <ProfileUserDetails
         name={userDetails.name}
         email={userDetails.email}
         image={userDetails.image}
-    />
+      />
       <ProfileCourseList
         headerText="Courses in progress"
         courses={inProgressCourses}
+        open={true}
       />
-      <ProfileCourseList headerText="Ended courses" courses={endedCourses} />
       <ProfileCourseList
         headerText="Upcoming courses"
         courses={upcomingCourses}
+        open={true}
+      />
+      <ProfileCourseList
+        headerText="Ended courses"
+        courses={endedCourses}
+        open={false}
       />
     </>
-  )
+  );
 }

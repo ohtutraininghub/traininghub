@@ -1,7 +1,6 @@
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
-import { Course } from '@prisma/client';
 import ProfileView from '@/components/ProfileView';
 
 export default async function ProfilePage() {
@@ -24,29 +23,15 @@ export default async function ProfilePage() {
     orderBy: [{ startDate: 'asc' }, { name: 'asc' }],
   });
 
-  const currentDate = new Date();
-
-  const endedCourses = temporaryCourses.filter(
-    (course: Course) => course.endDate < currentDate
-  );
-
-  const inProgressCourses = temporaryCourses.filter(
-    (course: Course) => course.startDate <= currentDate && course.endDate >= currentDate
-  );
-
-  const upcomingCourses = temporaryCourses.filter(
-    (course: Course) => course.startDate > currentDate
-  );
-
   return (
     <div>
       <ProfileView
-          userDetails={{
-            name: userData?.name ?? '',
-            email: userData?.email ?? '',
-            image: userData?.image ?? ''
-          }}
-          courses={temporaryCourses}
+        userDetails={{
+          name: userData?.name ?? '',
+          email: userData?.email ?? '',
+          image: userData?.image ?? '',
+        }}
+        courses={temporaryCourses}
       />
     </div>
   );
