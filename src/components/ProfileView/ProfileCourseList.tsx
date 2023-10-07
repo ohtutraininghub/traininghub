@@ -7,7 +7,7 @@ import ListItemText from '@mui/material/ListItemText/ListItemText';
 import Divider from '@mui/material/Divider/Divider';
 import { Course } from '@prisma/client';
 import { useTheme } from '@mui/material/styles';
-import { Box, Typography } from '@mui/material';
+import { Box, Tooltip, Typography } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import IconButton from '@mui/material/IconButton';
@@ -46,12 +46,18 @@ export default function ProfileCourseList({
         variant="subtitle2"
       >
         {`${headerText} (${courses.length})`}
-        <IconButton
-          sx={{ color: palette.white.main }}
-          onClick={handleToggleCollapse}
+        <Tooltip
+          title={isCollapsed ? 'Close' : 'Expand'}
+          arrow
+          placement="right"
         >
-          {isCollapsed ? <ExpandMoreIcon /> : <ExpandLessIcon />}
-        </IconButton>
+          <IconButton
+            sx={{ color: palette.white.main }}
+            onClick={handleToggleCollapse}
+          >
+            {isCollapsed ? <ExpandMoreIcon /> : <ExpandLessIcon />}
+          </IconButton>
+        </Tooltip>
       </Typography>
       {!isCollapsed ? null : (
         <>
