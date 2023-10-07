@@ -34,7 +34,12 @@ export default function TagForm() {
       reset();
       router.refresh();
     } catch (error: any) {
-      console.error(error);
+      try {
+        const responseData = await error.json();
+        alert(responseData.error);
+      } catch (e) {
+        alert(error?.statusText ?? '');
+      }
     }
   };
 

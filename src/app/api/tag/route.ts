@@ -12,13 +12,13 @@ export async function POST(request: NextRequest) {
     });
     return NextResponse.json({ data: newTag }, { status: 201 });
   } catch (error: unknown) {
-    let errorMessage = 'Failed to create tag';
+    let errorMessage = 'Failed to create tag. ';
     let statusCode = 500;
     if (
       error instanceof Prisma.PrismaClientKnownRequestError &&
       error.code === 'P2002'
     ) {
-      errorMessage = 'Tag already exists';
+      errorMessage += 'Tag already exists!';
       statusCode = 422;
     }
     return NextResponse.json({ error: errorMessage }, { status: statusCode });
