@@ -4,13 +4,13 @@ import { Avatar, Box, Paper, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import EmailIcon from '@mui/icons-material/Email';
 
-interface Props {
+export interface ProfileUserDetailProps {
   name: string;
   email: string;
   image: string;
 }
 
-export default function UserDetails({ name, email, image }: Props) {
+export default function ProfileUserDetails({ name, email, image }: ProfileUserDetailProps) {
   const { palette } = useTheme();
 
   const gradientBackground = `linear-gradient(-50deg, ${palette.darkBlue.main}, ${palette.info.main})`;

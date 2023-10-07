@@ -1,8 +1,8 @@
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
-import ProfileUserDetails from './ProfileUserDetails';
-import ProfileCourseList from './ProfileCourseList';
+import { Course } from '@prisma/client';
+import ProfileView from '@/components/ProfileView';
 
 export default async function ProfilePage() {
   const session = await getServerSession(authOptions);
@@ -27,32 +27,26 @@ export default async function ProfilePage() {
   const currentDate = new Date();
 
   const endedCourses = temporaryCourses.filter(
-    (course) => course.endDate < currentDate
+    (course: Course) => course.endDate < currentDate
   );
 
   const inProgressCourses = temporaryCourses.filter(
-    (course) => course.startDate <= currentDate && course.endDate >= currentDate
+    (course: Course) => course.startDate <= currentDate && course.endDate >= currentDate
   );
 
   const upcomingCourses = temporaryCourses.filter(
-    (course) => course.startDate > currentDate
+    (course: Course) => course.startDate > currentDate
   );
 
   return (
     <div>
-      <ProfileUserDetails
-        name={userData?.name ?? ''}
-        email={userData?.email ?? ''}
-        image={userData?.image ?? ''}
-      />
-      <ProfileCourseList headerText="Ended courses" courses={endedCourses} />
-      <ProfileCourseList
-        headerText="Courses in progress"
-        courses={inProgressCourses}
-      />
-      <ProfileCourseList
-        headerText="Upcoming courses"
-        courses={upcomingCourses}
+      <ProfileView
+          userDetails={{
+            name: userData?.name ?? '',
+            email: userData?.email ?? '',
+            image: userData?.image ?? ''
+          }}
+          courses={temporaryCourses}
       />
     </div>
   );
