@@ -1,3 +1,5 @@
+'use client';
+
 import ProfileUserDetails from '@/components/ProfileView/ProfileUserDetails';
 import ProfileCourseList from '@/components/ProfileView/ProfileCourseList';
 import { Course } from '@prisma/client';

@@ -55,7 +55,7 @@ export default function ProfileCourseList({
             sx={{ color: palette.white.main }}
             onClick={handleToggleCollapse}
           >
-            {isCollapsed ? <ExpandMoreIcon /> : <ExpandLessIcon />}
+            {isCollapsed ? <ExpandLessIcon /> : <ExpandMoreIcon />}
           </IconButton>
         </Tooltip>
       </Typography>

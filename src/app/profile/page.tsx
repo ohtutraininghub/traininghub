@@ -25,17 +25,15 @@ export default async function ProfilePage() {
   });
 
   return (
-    <div>
-      <Container maxWidth="md">
-        <ProfileView
-          userDetails={{
-            name: userData?.name ?? '',
-            email: userData?.email ?? '',
-            image: userData?.image ?? '',
-          }}
-          courses={temporaryCourses}
-        />
-      </Container>
-    </div>
+    <Container maxWidth="md">
+      <ProfileView
+        userDetails={{
+          name: userData?.name ?? '',
+          email: userData?.email ?? '',
+          image: userData?.image ?? '',
+        }}
+        courses={temporaryCourses}
+      />
+    </Container>
   );
 }
