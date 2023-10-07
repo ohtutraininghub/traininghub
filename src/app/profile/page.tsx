@@ -2,6 +2,7 @@ import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import ProfileView from '@/components/ProfileView';
+import Container from '@mui/material/Container/Container';
 
 export default async function ProfilePage() {
   const session = await getServerSession(authOptions);
@@ -25,14 +26,16 @@ export default async function ProfilePage() {
 
   return (
     <div>
-      <ProfileView
-        userDetails={{
-          name: userData?.name ?? '',
-          email: userData?.email ?? '',
-          image: userData?.image ?? '',
-        }}
-        courses={temporaryCourses}
-      />
+      <Container maxWidth="md">
+        <ProfileView
+          userDetails={{
+            name: userData?.name ?? '',
+            email: userData?.email ?? '',
+            image: userData?.image ?? '',
+          }}
+          courses={temporaryCourses}
+        />
+      </Container>
     </div>
   );
 }
