@@ -33,9 +33,9 @@ NEXTAUTH_SECRET=""
 NEXTAUTH_URL="http://localhost:3000"
 
 # Google Client Id and Google Secret
-# A Google client Id and Google secret is required for authenticating with
-# Google credentials to work. Create your own Google client id and secret for your personal
-# development environment.
+# A Google client id and Google secret is required for authenticating
+# with Google credentials to work. Create your own Google client id and secret
+# for your personal development environment.
 GOOGLE_CLIENT_ID=""
 GOOGLE_CLIENT_SECRET=""
 ```
@@ -57,7 +57,7 @@ You will need the following information:
 
 1. `npm run dev:install`
 
-> **_Note_:** Runs script located at `scripts/dev_install.sh`
+> **_Note_:** Runs script located at `scripts/dev_install.sh`. Your database will be reset and seeded with mock data.
 
 ### Start and stop project locally
 
