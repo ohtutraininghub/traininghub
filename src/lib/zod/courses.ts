@@ -22,6 +22,7 @@ export const courseSchema = z
       ),
     endDate: z.string().min(1, 'End date is required').pipe(z.coerce.date()),
     maxStudents: z.number().min(1, 'Max students is required'),
+    tags: z.array(z.string().min(1, 'Tag name cannot be empty')),
   })
   .strict()
   .refine(

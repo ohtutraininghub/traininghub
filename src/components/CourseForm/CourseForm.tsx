@@ -8,19 +8,28 @@ import {
   Box,
   Container,
   Typography,
+  Select,
+  MenuItem,
+  Chip,
 } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { useTheme } from '@mui/material/styles';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { courseSchema, CourseSchemaType } from '@/lib/zod/courses';
 import FormFieldError from '../FormFieldError/FormFieldError';
+import { Tag } from '@prisma/client';
 
-export default function CourseForm() {
+type CourseFormProps = {
+  tags: Tag[];
+};
+
+export default function CourseForm({ tags }: CourseFormProps) {
   const { palette } = useTheme();
   const router = useRouter();
 
   const {
+    control,
     register,
     formState: { errors, isSubmitting },
     handleSubmit,
@@ -92,6 +101,45 @@ export default function CourseForm() {
             }}
           />
           <FormFieldError error={errors.description} />
+
+          <Controller
+            name="tags"
+            control={control}
+            defaultValue={[]}
+            render={({ field }) => {
+              return (
+                <>
+                  <InputLabel htmlFor="tagSelection">Tags</InputLabel>
+                  <Select
+                    {...field}
+                    id="tagSelection"
+                    multiple
+                    renderValue={(field) => (
+                      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                        {field.map((tag, idx) => (
+                          <Chip
+                            key={idx}
+                            label={tag}
+                            variant="outlined"
+                            sx={{
+                              backgroundColor: palette.primary.main,
+                              borderColor: palette.black.main,
+                            }}
+                          />
+                        ))}
+                      </Box>
+                    )}
+                  >
+                    {tags.map((tag) => (
+                      <MenuItem key={tag.id} value={tag.name}>
+                        {tag.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </>
+              );
+            }}
+          />
 
           <InputLabel htmlFor="courseFormStartDate">Start date</InputLabel>
           <Input

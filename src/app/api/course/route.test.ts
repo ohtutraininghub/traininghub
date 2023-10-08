@@ -1,5 +1,5 @@
 import { GET, POST } from './route';
-import { prisma } from '@/lib/prisma';
+import { prisma } from '@/lib/prisma/prisma';
 
 beforeEach(async () => {
   await prisma.course.deleteMany({});
@@ -11,6 +11,7 @@ const newCourse = {
   startDate: '2100-09-27T00:00:00Z',
   endDate: '2100-09-28T00:00:00Z',
   maxStudents: 20,
+  tags: [],
 };
 
 const startAfterEndCourse = {

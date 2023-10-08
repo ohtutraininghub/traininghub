@@ -1,6 +1,6 @@
 import NewCourseButton from '@/components/Buttons/NewCourseButton';
 import CourseList from '@/components/CourseList/CourseList';
-import { prisma } from '@/lib/prisma';
+import { prisma } from '@/lib/prisma/prisma';
 
 export const dynamic = 'force-dynamic';
 

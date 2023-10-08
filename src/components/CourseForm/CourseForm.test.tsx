@@ -24,7 +24,7 @@ const requiredErrors = [
 ];
 
 beforeEach(() => {
-  renderWithTheme(<CourseForm />);
+  renderWithTheme(<CourseForm tags={[]} />);
 });
 
 describe('Course Form Tests', () => {
@@ -57,6 +57,7 @@ describe('Course Form Tests', () => {
       startDate: '2053-09-13T16:43',
       endDate: '2053-10-13T18:50',
       maxStudents: '55',
+      tags: [],
     };
 
     const name = screen.getByTestId('courseFormName');
