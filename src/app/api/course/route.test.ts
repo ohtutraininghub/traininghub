@@ -8,17 +8,33 @@ beforeEach(async () => {
 const newCourse = {
   name: 'Python',
   description: 'Python fundamentals',
-  startDate: '2023-09-27T00:00:00Z',
-  endDate: '2023-09-28T00:00:00Z',
+  startDate: '2100-09-27T00:00:00Z',
+  endDate: '2100-09-28T00:00:00Z',
   maxStudents: 20,
 };
 
-const failedCourse = {
+const startAfterEndCourse = {
+  name: 'Failure',
+  description: 'Course ends before it has started.',
+  startDate: '2100-09-27T00:00:00Z',
+  endDate: '2100-09-20T00:00:00Z',
+  maxStudents: 20,
+};
+
+const studentsAsStringCourse = {
   name: '0/5',
   description: 'maxStudents as a string fails this test',
-  startDate: '3114 BC-08-11',
-  endDate: '2012 BC-12-21',
+  startDate: '2100-09-27T00:00:00Z',
+  endDate: '2100-09-28T00:00:00Z',
   maxStudents: '112',
+};
+
+const startDateInThePastCourse = {
+  name: 'Failure',
+  description: 'Start date in 1900s fails the test',
+  startDate: '1900-09-27T00:00:00Z',
+  endDate: '2100-09-28T00:00:00Z',
+  maxStudents: 20,
 };
 
 describe('API', () => {
@@ -38,8 +54,16 @@ describe('API', () => {
       expect(data.data.name).toBe('Python');
       expect(response.status).toBe(201);
     });
-    it('fails with incorrect inputs', async () => {
-      const response = await POST(failedCourse as any);
+    it('fails with non-number student amount', async () => {
+      const response = await POST(studentsAsStringCourse as any);
+      expect(response.status).toBe(500);
+    });
+    it('fails if end date is prior to start date', async () => {
+      const response = await POST(startAfterEndCourse as any);
+      expect(response.status).toBe(500);
+    });
+    it('fails if start date is in the past', async () => {
+      const response = await POST(startDateInThePastCourse as any);
       expect(response.status).toBe(500);
     });
   });
