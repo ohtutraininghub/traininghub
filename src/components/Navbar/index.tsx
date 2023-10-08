@@ -1,4 +1,5 @@
-import { AppBar, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
+import AppBar from '@mui/material/AppBar';
 import Link from 'next/link';
 import { SignOutButton } from '@/components/Buttons/Buttons';
 import { getServerAuthSession } from '@/lib/auth';

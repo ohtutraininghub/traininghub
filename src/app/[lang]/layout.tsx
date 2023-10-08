@@ -5,8 +5,6 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
-import Navbar from '@/components/Navbar';
-import { Locale } from '@/lib/i18n/i18n-config';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -17,18 +15,13 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-  lang,
 }: {
   children: React.ReactNode;
-  lang: Locale;
 }) {
   return (
     <html>
       <ThemeRegistry options={{ key: 'mui' }}>
-        <body className={inter.className}>
-          <Navbar lang={lang} />
-          {children}
-        </body>
+        <body className={inter.className}>{children}</body>
       </ThemeRegistry>
     </html>
   );
