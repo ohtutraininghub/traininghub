@@ -37,6 +37,11 @@ const startDateInThePastCourse = {
   maxStudents: 20,
 };
 
+const getTableLength = async () => {
+  const allCourses = await prisma.course.findMany();
+  return allCourses.length;
+};
+
 describe('API', () => {
   describe('GET', () => {
     it('returns an empty list from the database at the beginning of the tests', async () => {
@@ -53,18 +58,22 @@ describe('API', () => {
       const data = await response.json();
       expect(data.data.name).toBe('Python');
       expect(response.status).toBe(201);
+      expect(await getTableLength()).toBe(1);
     });
     it('fails with non-number student amount', async () => {
       const response = await POST(studentsAsStringCourse as any);
       expect(response.status).toBe(500);
+      expect(await getTableLength()).toBe(0);
     });
     it('fails if end date is prior to start date', async () => {
       const response = await POST(startAfterEndCourse as any);
       expect(response.status).toBe(500);
+      expect(await getTableLength()).toBe(0);
     });
     it('fails if start date is in the past', async () => {
       const response = await POST(startDateInThePastCourse as any);
       expect(response.status).toBe(500);
+      expect(await getTableLength()).toBe(0);
     });
   });
 });
