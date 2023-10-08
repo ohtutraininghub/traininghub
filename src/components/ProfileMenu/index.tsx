@@ -16,6 +16,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { ConfirmCard } from '../ConfirmCard';
 import { signOut } from 'next-auth/react';
+import { useTheme } from '@mui/material/styles';
 
 export interface ProfileMenuProps {
   name: string;
@@ -26,6 +27,7 @@ export default function ProfileMenu({ name, image }: ProfileMenuProps) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const [backdropOpen, setBackdropOpen] = useState(false);
+  const { palette } = useTheme();
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -83,7 +85,10 @@ export default function ProfileMenu({ name, image }: ProfileMenuProps) {
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
         <Link href="/profile" style={{ textDecoration: 'none' }}>
-          <MenuItem data-testid="viewProfileMenuItem">
+          <MenuItem
+            data-testid="viewProfileMenuItem"
+            style={{ color: palette.black.main }}
+          >
             <ListItemIcon>
               <PersonIcon fontSize="small" />
             </ListItemIcon>
