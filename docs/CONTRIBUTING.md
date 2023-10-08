@@ -64,7 +64,8 @@ You will need the following information:
 1. `npm run dev`
 2. To stop use CTRL + C in terminal
 
-> **_Note_:** Runs script located at `scripts/dev_start.sh` > **_Note_:** To access database directly see [Prisma studio](#prisma)
+> **_Note_:** Runs script located at `scripts/dev_start.sh`  
+> **_Note_:** To access database directly see [Prisma studio](#prisma)
 
 ## Contribution flow
 
