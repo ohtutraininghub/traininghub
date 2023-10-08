@@ -9,13 +9,13 @@ import CourseList from '../CourseList/CourseList';
 
 type CoursePrismaType = Prisma.CourseGetPayload<Prisma.CourseDefaultArgs>;
 
-type CourseListProps = {
+type CourseFilterProps = {
   courses: CoursePrismaType[];
 };
 
 export default function CourseFilter({
   courses: initialCourses,
-}: CourseListProps) {
+}: CourseFilterProps) {
   const { palette } = useTheme();
 
   const [searchTerm, setSearchTerm] = useState('');
@@ -67,7 +67,7 @@ export default function CourseFilter({
         >
           <InputBase
             sx={{ ml: 5, flex: 1 }}
-            placeholder="Search by a tag or a name"
+            placeholder="Search by a course name"
             inputProps={{ 'aria-label': 'search' }}
             value={searchTerm}
             onChange={handleChange}
