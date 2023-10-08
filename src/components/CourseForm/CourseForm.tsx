@@ -7,13 +7,12 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { courseSchema, CourseSchemaType } from '@/lib/zod/courses';
 import FormFieldError from '../FormFieldError/FormFieldError';
-import { useMessages } from '../Providers/MessageProvider';
-import { MessageResponseType } from '@/lib/response/responseUtil';
+import { useMessage } from '../Providers/MessageProvider';
 
 export default function CourseForm() {
   const { palette } = useTheme();
   const router = useRouter();
-  const { notify } = useMessages();
+  const { notify } = useMessage();
 
   const {
     register,
@@ -32,8 +31,8 @@ export default function CourseForm() {
       method: 'POST',
       body: JSON.stringify(data),
     });
-    const jsonResponse: MessageResponseType = await response.json();
-    notify(jsonResponse);
+
+    notify(response);
 
     reset();
     router.refresh();
