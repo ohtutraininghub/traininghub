@@ -65,7 +65,7 @@ export default function CourseModal({ course }: Props) {
           ))}
         </Box>
 
-        <Typography sx={{ my: 2, color: 'secondary.main', textAlign: 'start' }}>
+        <Typography variant="h6" sx={{ my: 2, color: 'secondary.main' }}>
           Description
         </Typography>
 
