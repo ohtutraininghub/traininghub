@@ -5,11 +5,9 @@ import { useState } from 'react';
 import { ConfirmCard } from '../ConfirmCard';
 import { signOut } from 'next-auth/react';
 import { useDictionary } from '@/lib/i18n/hooks';
-import { Locale } from '@/lib/i18n/i18n-config';
+import { DictProps } from '@/lib/i18n/i18n';
 
-interface Props {
-  lang: Locale;
-}
+interface Props extends DictProps {}
 
 export function SignOutButton({ lang }: Props) {
   const [backdropOpen, setBackdropOpen] = useState(false);

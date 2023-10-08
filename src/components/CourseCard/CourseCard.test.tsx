@@ -14,7 +14,7 @@ const course: Course = {
 };
 
 beforeEach(() => {
-  renderWithTheme(<CourseCard course={course} />);
+  renderWithTheme(<CourseCard lang="en" course={course} />);
 });
 
 describe('CourseCard tests', () => {

@@ -1,10 +1,12 @@
 import { Grid } from '@mui/material';
 import { prisma } from '@/lib/prisma';
-import CourseCard from '../CourseCard/CourseCard';
+import CourseCard from '../../CourseCard/CourseCard';
 import { getDictionary } from '@/lib/i18n/dictionaries';
 import { DictProps } from '@/lib/i18n/i18n';
 
-const CourseList = async ({ lang }: DictProps) => {
+interface Props extends DictProps {}
+
+const CourseList = async ({ lang }: Props) => {
   const dict = await getDictionary(lang);
   const courses = await prisma.course.findMany({
     orderBy: [{ startDate: 'asc' }, { name: 'asc' }],
