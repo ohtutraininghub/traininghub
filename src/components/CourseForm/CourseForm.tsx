@@ -7,10 +7,13 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { courseSchema, CourseSchemaType } from '@/lib/zod/courses';
 import FormFieldError from '../FormFieldError/FormFieldError';
+import { useMessages } from '../Providers/MessageProvider';
+import { MessageResponseType } from '@/lib/response/responseUtil';
 
 export default function CourseForm() {
   const { palette } = useTheme();
   const router = useRouter();
+  const { notify } = useMessages();
 
   const {
     register,
@@ -25,22 +28,15 @@ export default function CourseForm() {
   });
 
   const submitForm = async (data: CourseSchemaType) => {
-    try {
-      const response = await fetch('/api/course', {
-        method: 'POST',
-        body: JSON.stringify(data),
-      });
+    const response = await fetch('/api/course', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+    const jsonResponse: MessageResponseType = await response.json();
+    notify(jsonResponse);
 
-      if (!response.ok) {
-        throw response;
-      }
-      reset();
-      alert('Course successfully created!');
-      router.refresh();
-    } catch (error: any) {
-      alert(error?.statusText ?? 'Internal server error');
-      console.error(error);
-    }
+    reset();
+    router.refresh();
   };
 
   return (

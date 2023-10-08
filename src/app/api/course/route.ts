@@ -1,30 +1,36 @@
 import { NextResponse, NextRequest } from 'next/server';
 import { courseSchema } from '@/lib/zod/courses';
 import { prisma } from '@/lib/prisma';
+import {
+  MessageType,
+  StatusCodeType,
+  messageResponse,
+} from '@/lib/response/responseUtil';
+import { handleCommonErrors } from '@/lib/response/errorUtil';
 
 export async function GET() {
-  try {
-    const courses = await prisma.course.findMany();
-    return NextResponse.json({ data: courses }, { status: 200 });
-  } catch (error) {
-    return NextResponse.json(
-      { error: 'Internal Server Error' },
-      { status: 500 }
-    );
-  }
+  const courses = await prisma.course.findMany();
+  return NextResponse.json({ data: courses }, { status: StatusCodeType.OK });
 }
 
 export async function POST(request: NextRequest) {
   try {
-    const data = await parseRequest(request);
-    const dataToSchema = courseSchema.parse(data);
-    await prisma.course.create({ data: dataToSchema });
-    return NextResponse.json({ data: data }, { status: 201 });
+    const dataJson = await parseRequest(request);
+    const dataJsonParse = courseSchema.parse(dataJson);
+    await prisma.course.create({
+      data: dataJsonParse,
+    });
+    return messageResponse({
+      message: 'Course succesfully created!',
+      messageType: MessageType.SUCCESS,
+      statusCode: StatusCodeType.CREATED,
+    });
   } catch (error) {
-    return NextResponse.json(
-      { error: 'Internal Server Error' },
-      { status: 500 }
-    );
+    const commonError = handleCommonErrors(error);
+    if (commonError) return commonError;
+
+    // If not known error throw it for error handler
+    throw error;
   }
 }
 
