@@ -19,14 +19,14 @@ This getting started sections helps you setup and start development environment.
 Add `.env` file with following content to the project's root
 
 ```
-# Required by Prisma
+# Required for Prisma
 DATABASE_URL="postgresql://admin:password@localhost:5433/traininghub-db-dev?schema=public"
 
-# Needed for psql Docker image
+# Required for psql Docker image
 POSTGRES_USER="admin"
 POSTGRES_PASSWORD="password"
 
-# Needed for NextAuth for local config
+# Required for NextAuth
 # To create the NextAuth secret use OpenSSL with the following command:
 # openssl rand -base64 32
 NEXTAUTH_SECRET=""
@@ -38,6 +38,11 @@ NEXTAUTH_URL="http://localhost:3000"
 # for your personal development environment.
 GOOGLE_CLIENT_ID=""
 GOOGLE_CLIENT_SECRET=""
+
+# Required for Sentry
+SENTRY_AUTH_TOKEN=""
+SENTRY_ORG=""
+SENTRY_PROJECT=""
 ```
 
 #### More information about Google Client Id
@@ -52,6 +57,10 @@ You will need the following information:
 - Add to Authorized redirect URIs the following: http://localhost:3000/api/auth/callback/google
 - Ensure the app publishing status is set to "Testing"
 - Add to "Test users" your own email. This way you can sign in using NextAuth.
+
+#### More information about Sentry
+
+// todo
 
 ### 3 Install
 
