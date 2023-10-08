@@ -12,6 +12,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import IconButton from '@mui/material/IconButton';
 import { useState } from 'react';
+import { formatDate } from '@/lib/timedateutils';
 
 export interface ProfileCourseListProps {
   headerText: string;
@@ -83,7 +84,8 @@ export default function ProfileCourseList({
                   <ListItem key={course.id}>
                     <ListItemText
                       primary={course.name}
-                      secondary={`${course.startDate.toDateString()} - ${course.endDate.toDateString()}`}
+                      secondary={`${formatDate({ date: course.startDate })}
+ - ${formatDate({ date: course.endDate })}`}
                     />
                   </ListItem>
                   {count < courses.length - 1 && <Divider />}

@@ -21,19 +21,6 @@ export default function ProfileView({
 }: ProfileViewProps) {
   const currentDate = new Date();
 
-  const endedCourses = courses.filter(
-    (course: Course) => course.endDate < currentDate
-  );
-
-  const inProgressCourses = courses.filter(
-    (course: Course) =>
-      course.startDate <= currentDate && course.endDate >= currentDate
-  );
-
-  const upcomingCourses = courses.filter(
-    (course: Course) => course.startDate > currentDate
-  );
-
   return (
     <>
       <ProfileUserDetails
@@ -43,17 +30,24 @@ export default function ProfileView({
       />
       <ProfileCourseList
         headerText="Courses in progress"
-        courses={inProgressCourses}
+        courses={courses.filter(
+          (course: Course) =>
+            course.startDate <= currentDate && course.endDate >= currentDate
+        )}
         open={true}
       />
       <ProfileCourseList
         headerText="Upcoming courses"
-        courses={upcomingCourses}
+        courses={courses.filter(
+          (course: Course) => course.startDate > currentDate
+        )}
         open={true}
       />
       <ProfileCourseList
         headerText="Ended courses"
-        courses={endedCourses}
+        courses={courses.filter(
+          (course: Course) => course.endDate < currentDate
+        )}
         open={false}
       />
     </>
