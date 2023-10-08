@@ -2,11 +2,11 @@ import Typography from '@mui/material/Typography';
 import CardContent from '@mui/material/CardContent';
 import Card from '@mui/material/Card';
 import Link from 'next/link';
-import { CourseWithStudentCount } from '@/lib/prisma/courses';
+import { CourseWithTagsAndStudentCount } from '@/lib/prisma/courses';
 import { getCourseDateString } from '@/lib/util';
 
 type Props = {
-  course: CourseWithStudentCount;
+  course: CourseWithTagsAndStudentCount;
 };
 
 const CourseCard = ({ course }: Props) => {

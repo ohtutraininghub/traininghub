@@ -1,4 +1,4 @@
-import { CourseWithStudentCount } from '@/lib/prisma/courses';
+import { CourseWithTagsAndStudentCount } from '@/lib/prisma/courses';
 import { CourseModalCloseButton } from '@/components/Buttons/Buttons';
 import { getCourseDateString } from '@/lib/util';
 import Modal from '@mui/material/Modal';
@@ -8,14 +8,8 @@ import Chip from '@mui/material/Chip';
 import Box from '@mui/material/Box';
 import SignupButton from './SignupButton';
 
-const placeholderTags = [
-  { name: 'Golang' },
-  { name: 'UX/UI' },
-  { name: 'System Design' },
-];
-
 type Props = {
-  course: CourseWithStudentCount | undefined;
+  course: CourseWithTagsAndStudentCount | undefined;
 };
 
 export default function CourseModal({ course }: Props) {
@@ -61,9 +55,9 @@ export default function CourseModal({ course }: Props) {
             justifyContent: 'center',
           }}
         >
-          {placeholderTags.map(({ name }) => (
+          {course.tags.map(({ id, name }) => (
             <Chip
-              key={name}
+              key={id}
               label={name}
               variant="outlined"
               sx={{ color: 'white.main' }}

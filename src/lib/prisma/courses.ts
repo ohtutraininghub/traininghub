@@ -1,13 +1,14 @@
 import { prisma } from './prisma';
 import { Prisma as prismaClient } from '@prisma/client';
 
-export type CourseWithStudentCount = prismaClient.CourseGetPayload<{
+export type CourseWithTagsAndStudentCount = prismaClient.CourseGetPayload<{
   include: {
     _count: {
       select: {
         students: true;
       };
     };
+    tags: true;
   };
 }>;
 
@@ -19,6 +20,7 @@ export const getCourses = async () => {
           students: true,
         },
       },
+      tags: true,
     },
     orderBy: [{ startDate: 'asc' }, { name: 'asc' }],
   });
