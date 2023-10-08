@@ -1,10 +1,10 @@
 import { Grid } from '@mui/material';
-import { GetCoursesType, CourseWithStudentCount } from '@/lib/prisma/courses';
+import { CourseWithStudentCount } from '@/lib/prisma/courses';
 import CourseCard from '@/components/CourseCard/';
 import CourseModal from '@/components/CourseModal/CourseModal';
 
 type CourseListProps = {
-  courses: GetCoursesType;
+  courses: CourseWithStudentCount[];
   openedCourse: CourseWithStudentCount | undefined;
 };
 
