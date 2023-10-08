@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import Card from '@mui/material/Card';
 import Chip from '@mui/material/Chip';
 import Box from '@mui/material/Box';
-import SignupButton from '../CourseCard/SignupButton';
+import SignupButton from './SignupButton';
 
 const placeholderTags = [
   { name: 'Golang' },

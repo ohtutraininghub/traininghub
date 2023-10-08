@@ -33,12 +33,34 @@ export async function POST(request: NextRequest) {
       throw Error('Course is already full');
     }
 
-    await prisma.courseUser.create({
-      data: {
-        userId: session.user.id,
-        courseId: courseId,
+    const userCourseIds = await prisma.user.findUnique({
+      where: { id: session.user.id },
+      include: {
+        courses: {
+          select: {
+            id: true,
+          },
+        },
       },
     });
+
+    if (userCourseIds?.courses.find((course) => course.id === courseId)) {
+      throw Error('User is already in course');
+    }
+
+    await prisma.course.update({
+      where: {
+        id: courseId,
+      },
+      data: {
+        students: {
+          connect: {
+            id: session.user.id,
+          },
+        },
+      },
+    });
+
     return NextResponse.json({ data: 'created' }, { status: 201 });
   } catch (error) {
     console.log(error);
