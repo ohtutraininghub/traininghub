@@ -1,10 +1,10 @@
 'use client';
 
 import React from 'react';
-import List from '@mui/material/List/List';
-import ListItem from '@mui/material/ListItem/ListItem';
-import ListItemText from '@mui/material/ListItemText/ListItemText';
-import Divider from '@mui/material/Divider/Divider';
+import { List } from '@mui/material';
+import { ListItem } from '@mui/material';
+import { ListItemText } from '@mui/material';
+import { Divider } from '@mui/material';
 import { Course } from '@prisma/client';
 import { useTheme } from '@mui/material/styles';
 import { Box, Tooltip, Typography } from '@mui/material';
@@ -44,6 +44,7 @@ export default function ProfileCourseList({
           paddingLeft: '10px',
         }}
         variant="subtitle2"
+        data-testid="listHeader"
       >
         {`${headerText} (${courses.length})`}
         <Tooltip
@@ -54,6 +55,7 @@ export default function ProfileCourseList({
           <IconButton
             sx={{ color: palette.white.main }}
             onClick={handleToggleCollapse}
+            data-testid="listControls"
           >
             {isCollapsed ? <ExpandLessIcon /> : <ExpandMoreIcon />}
           </IconButton>
