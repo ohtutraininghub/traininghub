@@ -2,11 +2,11 @@ import Typography from '@mui/material/Typography';
 import CardContent from '@mui/material/CardContent';
 import Card from '@mui/material/Card';
 import Link from 'next/link';
-import { Course } from '@prisma/client';
+import { CourseWithStudentCount } from '@/lib/prisma/courses';
 import { getCourseDateString } from '@/lib/util';
 
 type Props = {
-  course: Course;
+  course: CourseWithStudentCount;
 };
 
 const CourseCard = ({ course }: Props) => {
@@ -30,7 +30,9 @@ const CourseCard = ({ course }: Props) => {
             {course.name}
           </Typography>
           <Typography>{courseDate}</Typography>
-          <Typography>Signups: 0 / {course.maxStudents}</Typography>
+          <Typography>
+            Signups: {course._count.students} / {course.maxStudents}
+          </Typography>
         </CardContent>
       </Card>
     </Link>

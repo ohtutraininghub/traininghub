@@ -1,18 +1,15 @@
 import CourseForm from '@/components/CourseForm/CourseForm';
 import CourseList from '@/components/CourseList/CourseList';
-import { prisma } from '@/lib/prisma';
 import { notFound } from 'next/navigation';
+import { getCourses } from '@/lib/prisma/courses';
 
 export const dynamic = 'force-dynamic';
 
 type Props = {
   searchParams: { courseId?: string };
 };
-
 export default async function HomePage({ searchParams }: Props) {
-  const courses = await prisma.course.findMany({
-    orderBy: [{ startDate: 'asc' }, { name: 'asc' }],
-  });
+  const courses = await getCourses();
 
   const courseId = searchParams.courseId;
   const openedCourse = courses.find((course) => course.id === courseId);

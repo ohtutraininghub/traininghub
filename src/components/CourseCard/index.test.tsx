@@ -1,5 +1,5 @@
 import { renderWithTheme } from '@/lib/test-utils';
-import CourseCard from './CourseCard';
+import CourseCard from '.';
 import { Course } from '@prisma/client';
 import { screen } from '@testing-library/react';
 

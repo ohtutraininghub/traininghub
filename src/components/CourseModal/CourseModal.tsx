@@ -1,4 +1,4 @@
-import { Course } from '@prisma/client';
+import { CourseWithStudentCount } from '@/lib/prisma/courses';
 import { CourseModalCloseButton } from '@/components/Buttons/Buttons';
 import { getCourseDateString } from '@/lib/util';
 import Modal from '@mui/material/Modal';
@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import Card from '@mui/material/Card';
 import Chip from '@mui/material/Chip';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
+import SignupButton from './SignupButton';
 
 const placeholderTags = [
   { name: 'Golang' },
@@ -15,7 +15,7 @@ const placeholderTags = [
 ];
 
 type Props = {
-  course: Course | undefined;
+  course: CourseWithStudentCount | undefined;
 };
 
 export default function CourseModal({ course }: Props) {
@@ -87,10 +87,11 @@ export default function CourseModal({ course }: Props) {
           <Typography>{course.description}</Typography>
         </pre>
 
-        <Box sx={{ mt: 'auto', pt: 3 }}>
-          <Typography>Signups: 0 / {course.maxStudents}</Typography>
-          <Button>Signup</Button>
-        </Box>
+        <SignupButton
+          courseId={course.id}
+          currentStudents={course._count.students}
+          maxStudents={course.maxStudents}
+        />
       </Card>
     </Modal>
   );
