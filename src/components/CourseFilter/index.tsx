@@ -1,31 +1,35 @@
 'use client';
 
-import { Divider, IconButton, InputBase, Paper } from '@mui/material';
+import { Button, Divider, IconButton, InputBase, Paper } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 import { useTheme } from '@mui/material/styles';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
-import { Course, Prisma } from '@prisma/client';
+import { Course, Prisma, Tag } from '@prisma/client';
 import CourseList from '../CourseList/CourseList';
 
 type CoursePrismaType = Prisma.CourseGetPayload<Prisma.CourseDefaultArgs>;
+type TagPrismaType = Prisma.TagGetPayload<Prisma.TagDefaultArgs>;
 
 type CourseFilterProps = {
   courses: CoursePrismaType[];
+  tags: TagPrismaType[];
 };
 
 export default function CourseFilter({
   courses: initialCourses,
+  tags: initialTags,
 }: CourseFilterProps) {
   const { palette } = useTheme();
 
   const [searchTerm, setSearchTerm] = useState('');
   const [courses, setCourses] = useState<Course[]>([]);
   const [filteredCourses, setFilteredCourses] = useState<Course[]>([]);
+  const [tags, setTags] = useState<Tag[]>([]);
 
   const fetchData = async () => {
     try {
-      console.log(initialCourses);
       setCourses(initialCourses);
+      setTags(initialTags);
       setFilteredCourses(initialCourses);
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -38,10 +42,10 @@ export default function CourseFilter({
 
   const handleChange = async (event: ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
+
     const filteredCourses = courses.filter((course: { name: string }) =>
       course.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
-    console.log(filteredCourses);
     setFilteredCourses(filteredCourses);
   };
 
@@ -77,6 +81,24 @@ export default function CourseFilter({
             <ClearIcon />
           </IconButton>
         </Paper>
+      </div>
+      <h2>or by a tag</h2>
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+        {tags.map((tag) => (
+          <Button
+            key={tag.id}
+            sx={{
+              color: palette.secondary.main,
+              backgroundColor: palette.darkBlue.main,
+              '&:hover': {
+                backgroundColor: palette.info.main,
+              },
+              margin: '0.5rem',
+            }}
+          >
+            {tag.name}
+          </Button>
+        ))}
       </div>
       <CourseList courses={filteredCourses} />
     </>

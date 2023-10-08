@@ -9,6 +9,10 @@ export default async function HomePage() {
     orderBy: [{ startDate: 'asc' }, { name: 'asc' }],
   });
 
+  const tags = await prisma.tag.findMany({
+    orderBy: [{ name: 'asc' }],
+  });
+
   return (
     <div
       style={{
@@ -21,7 +25,7 @@ export default async function HomePage() {
     >
       <h2>Add new Course</h2>
       <CourseForm />
-      <CourseFilter courses={courses} />
+      <CourseFilter courses={courses} tags={tags} />
     </div>
   );
 }
