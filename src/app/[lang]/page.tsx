@@ -1,19 +1,23 @@
 import CourseForm from '@/components/CourseForm/CourseForm';
 import CourseList from '@/components/Buttons/CourseList/CourseList';
 import { Typography } from '@mui/material';
-import { DictProps } from '@i18n/i18n';
 import { getDictionary } from '@i18n/dictionaries';
 import { prisma } from '@/lib/prisma';
-import Navbar from '@/components/Navbar';
+import { Locale } from '@/lib/i18n/i18n-config';
 
-export default async function HomePage({ lang }: DictProps) {
+interface Props {
+  params: {
+    lang: Locale;
+  };
+}
+
+export default async function HomePage({ params: { lang } }: Props) {
   const courses = await prisma.course.findMany({
     orderBy: [{ startDate: 'asc' }, { name: 'asc' }],
   });
   const dict = await getDictionary(lang);
   return (
     <>
-      <Navbar lang={lang} />
       <main
         style={{
           display: 'flex',
