@@ -1,15 +1,19 @@
 import { renderWithTheme } from '@/lib/test-utils';
-import CourseCard from '.';
-import { Course } from '@prisma/client';
+import { CourseWithTagsAndStudentCount } from '@/lib/prisma/courses';
 import { screen } from '@testing-library/react';
+import CourseCard from '.';
 
-const course: Course = {
+const course: CourseWithTagsAndStudentCount = {
   id: '22',
   name: 'Test course',
   description: 'A Test course',
   startDate: new Date(),
   endDate: new Date(),
   maxStudents: 42,
+  _count: {
+    students: 0,
+  },
+  tags: [],
 };
 
 beforeEach(() => {
