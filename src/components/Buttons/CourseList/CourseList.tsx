@@ -1,16 +1,17 @@
 import { Grid } from '@mui/material';
-import { prisma } from '@/lib/prisma';
+import { Prisma } from '@prisma/client';
 import CourseCard from '../../CourseCard/CourseCard';
 import { getDictionary } from '@/lib/i18n/dictionaries';
 import { DictProps } from '@/lib/i18n/i18n';
 
-interface Props extends DictProps {}
+type CoursePrismaType = Prisma.CourseGetPayload<Prisma.CourseDefaultArgs>;
 
-const CourseList = async ({ lang }: Props) => {
+interface CourseListProps extends DictProps {
+  courses: CoursePrismaType[];
+}
+
+export default async function CourseList({ courses, lang }: CourseListProps) {
   const dict = await getDictionary(lang);
-  const courses = await prisma.course.findMany({
-    orderBy: [{ startDate: 'asc' }, { name: 'asc' }],
-  });
 
   return (
     <>
@@ -31,6 +32,4 @@ const CourseList = async ({ lang }: Props) => {
       </Grid>
     </>
   );
-};
-
-export default CourseList;
+}

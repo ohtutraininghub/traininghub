@@ -3,18 +3,27 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "_DEV SCRIPTS": "===",
+    "dev": "./scripts/dev_start.sh",
+    "dev:docker": "docker compose up -d --build",
+    "dev:next": "next dev",
+    "dev:install": "./scripts/dev_install.sh",
+    "_PRODUCTION SCRIPTS": "===",
     "build": "next build",
-    "dev": "next dev",
-    "format": "prettier . --write",
-    "lint": "next lint",
-    "precommit": "lint-staged",
-    "prepare": "node -e \"try { require('husky').install() } catch (e) {if (e.code !== 'MODULE_NOT_FOUND') throw e}\"",
     "start": "next start",
     "start:migrate": "prisma migrate deploy && npm run start",
+    "_TEST SCRIPTS": "===",
     "test": "jest --watch",
-    "test-all": "jest --all",
     "test:ci": "jest --ci",
-    "test:format": "prettier . --check"
+    "_LINT SCRIPTS": "===",
+    "lint:write": "next lint --fix",
+    "lint:test": "next lint",
+    "_FORMAT SCRIPTS": "===",
+    "format:write": "prettier . --write",
+    "format:test": "prettier . --check",
+    "_LIFECYCLE SCRIPTS": "===",
+    "prepare": "node -e \"try { require('husky').install() } catch (e) {if (e.code !== 'MODULE_NOT_FOUND') throw e}\"",
+    "precommit": "lint-staged"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
@@ -23,6 +32,9 @@
     "*.{json,js,ts,jsx,tsx,html,prisma,md,yml,yaml}": [
       "prettier --write --ignore-unknown"
     ]
+  },
+  "prisma": {
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^1.0.2",
@@ -62,6 +74,7 @@
     "lint-staged": "^14.0.1",
     "prettier": "^3.0.3",
     "prettier-plugin-prisma": "^5.0.0",
-    "prisma": "^5.3.1"
+    "prisma": "^5.3.1",
+    "ts-node": "^10.9.1"
   }
 }

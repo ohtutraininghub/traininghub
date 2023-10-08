@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useTheme } from '@mui/material/styles';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { courseSchema, CourseShemaType } from '@/lib/zod/courses';
+import { courseSchema, CourseSchemaType } from '@/lib/zod/courses';
 import FormFieldError from '../FormFieldError/FormFieldError';
 import { DictProps } from '@/lib/i18n/i18n';
 import { useDictionary } from '@/lib/i18n/hooks';
@@ -22,14 +22,14 @@ export default function CourseForm({ lang }: Props) {
     formState: { errors, isSubmitting },
     handleSubmit,
     reset,
-  } = useForm<CourseShemaType>({
+  } = useForm<CourseSchemaType>({
     resolver: zodResolver(courseSchema),
     defaultValues: {
       maxStudents: 10,
     },
   });
 
-  const submitForm = async (data: CourseShemaType) => {
+  const submitForm = async (data: CourseSchemaType) => {
     try {
       const response = await fetch('/api/course', {
         method: 'POST',

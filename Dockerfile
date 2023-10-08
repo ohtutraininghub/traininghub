@@ -3,7 +3,6 @@ FROM node:18-alpine as builder
 # Add required static envs for build
 ENV HUSKY 0
 ENV NEXT_TELEMETRY_DISABLED 1
-ENV NODE_ENV production
 
 WORKDIR /app
 
