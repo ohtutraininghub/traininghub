@@ -17,7 +17,7 @@ import { useState } from 'react';
 import { ConfirmCard } from '../ConfirmCard';
 import { signOut } from 'next-auth/react';
 
-interface ProfileMenuProps {
+export interface ProfileMenuProps {
   name: string;
   image: string;
 }
@@ -51,6 +51,7 @@ export default function ProfileMenu({ name, image }: ProfileMenuProps) {
       >
         <Tooltip title="User profile">
           <IconButton
+            data-testid="avatarIconButton"
             onClick={handleClick}
             size="small"
             sx={{ ml: 2 }}
@@ -74,6 +75,7 @@ export default function ProfileMenu({ name, image }: ProfileMenuProps) {
       <Menu
         anchorEl={anchorEl}
         id="account-menu"
+        data-testid="accountMenu"
         open={open}
         onClose={handleClose}
         onClick={handleClose}
@@ -81,7 +83,7 @@ export default function ProfileMenu({ name, image }: ProfileMenuProps) {
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
         <Link href="/profile" style={{ textDecoration: 'none' }}>
-          <MenuItem>
+          <MenuItem data-testid="viewProfileMenuItem">
             <ListItemIcon>
               <PersonIcon fontSize="small" />
             </ListItemIcon>
@@ -96,6 +98,7 @@ export default function ProfileMenu({ name, image }: ProfileMenuProps) {
         </MenuItem>
         <Divider />
         <MenuItem
+          data-testid="signOutMenuItem"
           onClick={() => {
             setBackdropOpen(true);
           }}
