@@ -7,14 +7,31 @@ export const courseSchema = z
     startDate: z
       .string()
       .min(1, 'Start date is required')
-      .pipe(z.coerce.date()),
+      .pipe(z.coerce.date())
+      .refine(
+        (start) => {
+          // avoid .refine trying to call .getTime on undefined when field is empty
+          if (!start) {
+            return true;
+          }
+          return start.getTime() > Date.now();
+        },
+        {
+          message: 'Start date cannot be in the past',
+        }
+      ),
     endDate: z.string().min(1, 'End date is required').pipe(z.coerce.date()),
     maxStudents: z.number().min(1, 'Max students is required'),
   })
   .strict()
   .refine(
-    ({ startDate, endDate }) =>
-      new Date(startDate).getTime() <= new Date(endDate).getTime(),
+    ({ startDate, endDate }) => {
+      // don't show this error if either of the date fields is still empty
+      if (!startDate || !endDate) {
+        return true;
+      }
+      return startDate.getTime() <= endDate.getTime();
+    },
     {
       message: 'The end date cannot be before the start date',
       path: ['endDate'],
