@@ -15,6 +15,14 @@ jest.mock('next/navigation', () => ({
   },
 }));
 
+jest.mock('../Providers/MessageProvider', () => ({
+  useMessage() {
+    return {
+      notify: jest.fn(),
+    };
+  },
+}));
+
 const requiredErrors = [
   'Name is required',
   'Description is required',
