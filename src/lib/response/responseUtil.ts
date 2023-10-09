@@ -9,7 +9,7 @@ export type MessageResponseType = {
   statusCode?: StatusCodeType;
 };
 
-type MessageWithDataResponseType = MessageResponseType & {
+export type MessageWithDataResponseType = MessageResponseType & {
   data: any;
 };
 

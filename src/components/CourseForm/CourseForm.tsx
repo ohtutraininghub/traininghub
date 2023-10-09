@@ -8,6 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { courseSchema, CourseSchemaType } from '@/lib/zod/courses';
 import FormFieldError from '../FormFieldError/FormFieldError';
 import { useMessage } from '../Providers/MessageProvider';
+import { post } from '@/lib/response/fetchUtil';
 
 export default function CourseForm() {
   const { palette } = useTheme();
@@ -27,13 +28,8 @@ export default function CourseForm() {
   });
 
   const submitForm = async (data: CourseSchemaType) => {
-    const response = await fetch('/api/course', {
-      method: 'POST',
-      body: JSON.stringify(data),
-    });
-
-    notify(response);
-
+    const responseJson = await post('/api/course', data);
+    notify(responseJson);
     reset();
     router.refresh();
   };

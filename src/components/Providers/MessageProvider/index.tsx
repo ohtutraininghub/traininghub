@@ -3,10 +3,10 @@
 import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
 import React, { createContext, useContext, useState } from 'react';
-import { MessageResponseType, MessageType } from '@/lib/response/responseUtil';
+import { MessageResponseType } from '@/lib/response/responseUtil';
 
 const MessageContext = createContext({
-  notify: ({}: MessageResponseType | Response) => {},
+  notify: ({}: MessageResponseType) => {},
 });
 
 export default function NotificationProvider({
@@ -16,39 +16,10 @@ export default function NotificationProvider({
 }) {
   const [message, setMessage] = useState<MessageResponseType | undefined>();
 
-  const notify = async (data: MessageResponseType | Response) => {
-    if (data instanceof Response) {
-      const dataAsResponse: Response = data;
-
-      const contentType = dataAsResponse.headers.get('Content-Type');
-      if (
-        !dataAsResponse.ok &&
-        (!contentType || !contentType.includes('application/json'))
-      ) {
-        setMessage({
-          message: 'Internal server error!',
-          messageType: MessageType.ERROR,
-        });
-        return;
-      }
-
-      const jsonResponse: MessageResponseType = await dataAsResponse.json();
-      if (!jsonResponse.message || !jsonResponse.messageType) {
-        throw Error('Response did not use proper message format...');
-      }
-
-      setMessage({
-        message: jsonResponse.message,
-        messageType: jsonResponse.messageType,
-      });
-
-      return;
-    }
-
-    const dataAsMessage: MessageResponseType = data;
+  const notify = async (data: MessageResponseType) => {
     setMessage({
-      message: dataAsMessage.message,
-      messageType: dataAsMessage.messageType,
+      message: data.message,
+      messageType: data.messageType,
     });
   };
 
