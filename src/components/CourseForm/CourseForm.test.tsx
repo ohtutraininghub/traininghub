@@ -23,6 +23,17 @@ jest.mock('../Providers/MessageProvider', () => ({
   },
 }));
 
+var mockFetch = jest.fn((...args: any[]) =>
+  Promise.resolve({
+    json: () => Promise.resolve({ args: args }),
+    ok: true,
+  })
+);
+
+jest.mock('../../lib/response/fetchUtil', () => ({
+  post: (...args: any[]) => mockFetch(...args),
+}));
+
 const requiredErrors = [
   'Name is required',
   'Description is required',
@@ -50,15 +61,6 @@ describe('Course Form Tests', () => {
   });
 
   it('Form is submitted with correct values', async () => {
-    const mockFetch = jest.fn(() =>
-      Promise.resolve({
-        json: () => Promise.resolve({}),
-        ok: true,
-      })
-    );
-
-    global.fetch = mockFetch as jest.Mock;
-
     const inputValues = {
       name: 'New course',
       description: 'A test course',
@@ -87,13 +89,10 @@ describe('Course Form Tests', () => {
 
     await waitFor(() => {
       expect(mockFetch).toBeCalledWith('/api/course', {
-        body: JSON.stringify({
-          ...inputValues,
-          startDate: new Date(inputValues.startDate),
-          endDate: new Date(inputValues.endDate),
-          maxStudents: Number(inputValues.maxStudents),
-        }),
-        method: 'POST',
+        ...inputValues,
+        endDate: new Date(inputValues.endDate),
+        maxStudents: Number(inputValues.maxStudents),
+        startDate: new Date(inputValues.startDate),
       });
     });
   });
