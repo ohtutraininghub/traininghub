@@ -38,11 +38,6 @@ NEXTAUTH_URL="http://localhost:3000"
 # for your personal development environment.
 GOOGLE_CLIENT_ID=""
 GOOGLE_CLIENT_SECRET=""
-
-# Required for Sentry
-SENTRY_AUTH_TOKEN=""
-SENTRY_ORG=""
-SENTRY_PROJECT=""
 ```
 
 #### More information about Google Client Id
@@ -57,10 +52,6 @@ You will need the following information:
 - Add to Authorized redirect URIs the following: http://localhost:3000/api/auth/callback/google
 - Ensure the app publishing status is set to "Testing"
 - Add to "Test users" your own email. This way you can sign in using NextAuth.
-
-#### More information about Sentry
-
-// todo
 
 ### 3 Install
 
