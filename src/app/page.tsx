@@ -19,7 +19,7 @@ export default async function HomePage() {
         padding: '0px 16px 100px 16px',
       }}
     >
-      <h2>Actions -- placeholder</h2>
+      <h2>Actions</h2>
       <NewCourseButton />
       <CourseList courses={courses} />
     </div>
