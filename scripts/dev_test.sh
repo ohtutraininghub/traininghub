@@ -1,8 +1,6 @@
 # Take additional args passed
 ARGS=$1
 
-echo $ARGS
-
 # Start and build if there is changes
 # Started as background task
 npm run test:docker
