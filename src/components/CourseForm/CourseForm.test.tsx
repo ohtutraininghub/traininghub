@@ -10,7 +10,7 @@ window.alert = jest.fn();
 jest.mock('next/navigation', () => ({
   useRouter() {
     return {
-      refresh: jest.fn(),
+      push: jest.fn(),
     };
   },
 }));

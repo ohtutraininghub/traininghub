@@ -53,7 +53,7 @@ export default function CourseForm({ tags }: CourseFormProps) {
       }
       reset();
       alert('Course successfully created!');
-      router.refresh();
+      router.push('/');
     } catch (error: any) {
       alert(error?.statusText ?? 'Internal server error');
       console.error(error);
@@ -70,7 +70,7 @@ export default function CourseForm({ tags }: CourseFormProps) {
           backgroundColor: palette.secondary.main,
         }}
       >
-        <Typography variant="h4" color={palette.black.main}>
+        <Typography variant="h2" color={palette.black.main}>
           Add a new course
         </Typography>
         <form
