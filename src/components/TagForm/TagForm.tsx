@@ -49,6 +49,11 @@ export default function TagForm() {
       if (!response.ok) {
         throw response;
       }
+
+      const responseData = await response.json();
+      setNotification('Tag ' + responseData.data.name + ' was created.');
+      setSeverity('success');
+
       reset();
       router.refresh();
     } catch (error: any) {
