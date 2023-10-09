@@ -72,3 +72,7 @@ jobs:
           HD_NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
           HD_GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
           HD_GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          HD_SENTRY_ENVIRONMENT: 'staging'
+          HD_SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          HD_SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+          HD_SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}

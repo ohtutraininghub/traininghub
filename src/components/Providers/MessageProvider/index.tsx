@@ -42,11 +42,7 @@ export default function NotificationProvider({
           autoHideDuration={5000}
           onClose={handleClose}
         >
-          <Alert
-            onClose={handleClose}
-            severity={message.messageType}
-            sx={{ width: '100%' }}
-          >
+          <Alert onClose={handleClose} severity={message.messageType}>
             {message.message}
           </Alert>
         </Snackbar>
