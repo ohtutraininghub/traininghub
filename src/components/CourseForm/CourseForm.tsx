@@ -65,9 +65,11 @@ export default function CourseForm({ tags }: CourseFormProps) {
       <Box
         sx={{
           p: 4,
+          mb: 4,
           borderRadius: 2,
           maxWidth: '95%',
           backgroundColor: palette.secondary.main,
+          boxShadow: 8,
         }}
       >
         <Typography variant="h2" color={palette.black.main}>
@@ -122,8 +124,8 @@ export default function CourseForm({ tags }: CourseFormProps) {
                             label={tag}
                             variant="outlined"
                             sx={{
-                              backgroundColor: palette.primary.main,
-                              borderColor: palette.black.main,
+                              backgroundColor: palette.secondary.light,
+                              borderColor: palette.black.light,
                             }}
                           />
                         ))}
@@ -131,7 +133,28 @@ export default function CourseForm({ tags }: CourseFormProps) {
                     )}
                   >
                     {tags.map((tag) => (
-                      <MenuItem key={tag.id} value={tag.name}>
+                      <MenuItem
+                        key={tag.id}
+                        value={tag.name}
+                        divider
+                        sx={{
+                          '&.Mui-selected.Mui-focusVisible': {
+                            backgroundColor: palette.secondary.dark,
+                          },
+                          '&:hover': {
+                            backgroundColor: palette.secondary.light,
+                          },
+                          '&:focus': {
+                            backgroundColor: palette.secondary.main,
+                          },
+                          '&.Mui-selected': {
+                            backgroundColor: palette.secondary.main,
+                          },
+                          '&.Mui-selected:hover': {
+                            backgroundColor: palette.secondary.main,
+                          },
+                        }}
+                      >
                         {tag.name}
                       </MenuItem>
                     ))}
