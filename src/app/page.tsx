@@ -7,11 +7,10 @@ export const dynamic = 'force-dynamic';
 export default async function HomePage() {
   const courses = await prisma.course.findMany({
     orderBy: [{ startDate: 'asc' }, { name: 'asc' }],
+    include: { tags: true },
   });
 
-  const tags = await prisma.tag.findMany({
-    orderBy: [{ name: 'asc' }],
-  });
+  const tags = await prisma.tag.findMany({});
 
   return (
     <div
