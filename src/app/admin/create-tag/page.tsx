@@ -1,5 +1,5 @@
-import TagForm from '@/components/TagForm/TagForm';
-import TagList from '@/components/TagList/TagList';
+import TagForm from '@/components/TagForm';
+import TagList from '@/components/TagList';
 import { prisma } from '@/lib/prisma';
 
 export default async function CreateTag() {
