@@ -26,11 +26,7 @@ export async function POST(request: NextRequest) {
       statusCode: StatusCodeType.CREATED,
     });
   } catch (error) {
-    const commonError = handleCommonErrors(error);
-    if (commonError) return commonError;
-
-    // If not known error throw it for error handler
-    throw error;
+    return handleCommonErrors(error);
   }
 }
 
