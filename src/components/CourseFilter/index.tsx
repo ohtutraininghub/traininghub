@@ -8,7 +8,6 @@ import {
   MenuItem,
   SelectChangeEvent,
   Box,
-  Typography,
 } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 import { useTheme } from '@mui/material/styles';
@@ -70,11 +69,17 @@ export default function CourseFilter({
   const handleDateChange = (date: Date | null) => {
     setSelectedDate(date);
     const filteredCourses = date
-      ? initialCourses.filter(
-          (course) =>
-            new Date(course.startDate) <= date &&
-            date <= new Date(course.endDate)
-        )
+      ? initialCourses.filter((course) => {
+          const courseStartDate = new Date(course.startDate);
+          courseStartDate.setHours(0, 0, 0, 0);
+          const courseEndDate = new Date(course.endDate);
+          courseEndDate.setHours(0, 0, 0, 0);
+          const selectedDate = new Date(date);
+          selectedDate.setHours(0, 0, 0, 0);
+          return (
+            courseStartDate <= selectedDate && selectedDate <= courseEndDate
+          );
+        })
       : initialCourses;
     setFilteredCourses(filteredCourses);
   };
@@ -118,11 +123,8 @@ export default function CourseFilter({
             <ClearIcon />
           </IconButton>
         </Paper>
-        <Typography variant="body2" style={{ marginBottom: '5px' }}>
-          or by a tag
-        </Typography>
         <Select
-          value={''}
+          value=""
           onChange={handleTagChange}
           variant="outlined"
           sx={{
@@ -140,9 +142,7 @@ export default function CourseFilter({
             </MenuItem>
           ))}
         </Select>
-        <Typography variant="body2" style={{ marginBottom: '5px' }}>
-          or by a date
-        </Typography>
+
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DatePicker
             sx={{
@@ -150,6 +150,7 @@ export default function CourseFilter({
               boxShadow: 10,
               marginLeft: '1rem',
             }}
+            label="Search by a date"
             value={selectedDate}
             onChange={handleDateChange}
           />
