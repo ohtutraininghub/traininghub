@@ -14,6 +14,7 @@ interface Props {
 export default async function HomePage({ params: { lang } }: Props) {
   const courses = await prisma.course.findMany({
     orderBy: [{ startDate: 'asc' }, { name: 'asc' }],
+    where: { endDate: { gte: new Date() } },
   });
   const dict = await getDictionary(lang);
   return (
