@@ -5,7 +5,7 @@ import { useTheme } from '@mui/material/styles';
 import { Course } from '@prisma/client';
 import { useState } from 'react';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { DictProps } from '@/lib/i18n/i18n';
+import { DictProps } from '@/lib/i18n';
 import { useDictionary } from '@/lib/i18n/hooks';
 
 interface Props extends DictProps {

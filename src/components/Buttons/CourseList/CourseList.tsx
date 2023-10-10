@@ -2,7 +2,7 @@ import Grid from '@mui/material/Grid';
 import { Prisma } from '@prisma/client';
 import CourseCard from '../../CourseCard/CourseCard';
 import { getDictionary } from '@/lib/i18n/dictionaries';
-import { DictProps } from '@/lib/i18n/i18n';
+import { DictProps } from '@/lib/i18n';
 
 type CoursePrismaType = Prisma.CourseGetPayload<Prisma.CourseDefaultArgs>;
 

@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { SignOutButton } from '@/components/Buttons/Buttons';
 import { getServerAuthSession } from '@/lib/auth';
 import { getDictionary } from '@/lib/i18n/dictionaries';
-import { DictProps } from '@/lib/i18n/i18n';
+import { DictProps } from '@/lib/i18n';
 
 interface Props extends DictProps {}
 

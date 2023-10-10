@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { ConfirmCard } from '../ConfirmCard';
 import { signOut } from 'next-auth/react';
 import { useDictionary } from '@/lib/i18n/hooks';
-import { DictProps } from '@/lib/i18n/i18n';
+import { DictProps } from '@/lib/i18n';
 
 interface Props extends DictProps {}
 

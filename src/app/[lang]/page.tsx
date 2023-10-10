@@ -1,7 +1,7 @@
 import CourseForm from '@/components/CourseForm/CourseForm';
 import CourseList from '@/components/Buttons/CourseList/CourseList';
 import { Typography } from '@mui/material';
-import { getDictionary } from '@i18n/dictionaries';
+import { getDictionary } from '@/lib/i18n/dictionaries';
 import { prisma } from '@/lib/prisma';
 import { Locale } from '@/lib/i18n/i18n-config';
 

@@ -2,7 +2,7 @@
 
 import { Backdrop, Box, Button, Card, Typography } from '@mui/material';
 import { Dispatch, SetStateAction } from 'react';
-import { DictProps } from '@i18n/i18n';
+import { DictProps } from '@/lib/i18n';
 import { useDictionary } from '@/lib/i18n/hooks';
 
 interface Props extends DictProps {

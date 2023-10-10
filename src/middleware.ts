@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { checkForMissingLocale, getLocale } from '@i18n/i18n';
+import { checkForMissingLocale, getLocale } from '@/lib/i18n';
 import { withAuth } from 'next-auth/middleware';
 
 export default withAuth(function middleware(request) {

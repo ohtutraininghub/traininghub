@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { courseSchema, CourseSchemaType } from '@/lib/zod/courses';
 import FormFieldError from '../FormFieldError/FormFieldError';
-import { DictProps } from '@/lib/i18n/i18n';
+import { DictProps } from '@/lib/i18n';
 import { useDictionary } from '@/lib/i18n/hooks';
 
 interface Props extends DictProps {}
