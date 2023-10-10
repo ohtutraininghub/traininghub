@@ -1,5 +1,5 @@
 import CourseForm from '@/components/CourseForm/CourseForm';
-import CourseFilter from '@/components/CourseFilter';
+import CourseFilter from '@/components/CourseFilter/CourseFilter';
 import { prisma } from '@/lib/prisma';
 
 export const dynamic = 'force-dynamic';
@@ -7,8 +7,8 @@ export const dynamic = 'force-dynamic';
 export default async function HomePage() {
   const courses = await prisma.course.findMany({
     orderBy: [{ startDate: 'asc' }, { name: 'asc' }],
-    include: { tags: true },
     where: { endDate: { gte: new Date() } },
+    include: { tags: true },
   });
 
   const tags = await prisma.tag.findMany({});

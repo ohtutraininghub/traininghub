@@ -8,6 +8,9 @@ import {
   MenuItem,
   SelectChangeEvent,
   Box,
+  InputLabel,
+  FormControl,
+  Typography,
 } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 import { useTheme } from '@mui/material/styles';
@@ -51,6 +54,7 @@ export default function CourseFilter({
       course.name.toLowerCase().includes(searchTerm.toLocaleLowerCase())
     );
     setFilteredCourses(filteredCourses);
+    setSelectedDate(null);
   };
 
   const handleTagChange = async (event: SelectChangeEvent<string>) => {
@@ -64,6 +68,8 @@ export default function CourseFilter({
             )
           );
     setFilteredCourses(filteredCourses);
+    setSearchTerm('');
+    setSelectedDate(null);
   };
 
   const handleDateChange = (date: Date | null) => {
@@ -82,6 +88,7 @@ export default function CourseFilter({
         })
       : initialCourses;
     setFilteredCourses(filteredCourses);
+    setSearchTerm('');
   };
 
   const handleClearSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -118,31 +125,43 @@ export default function CourseFilter({
             inputProps={{ 'aria-label': 'search' }}
             value={searchTerm}
             onChange={handleNameChange}
+            data-testid="search-paper"
           />
           <IconButton type="submit">
             <ClearIcon />
           </IconButton>
         </Paper>
-        <Select
-          value=""
-          onChange={handleTagChange}
-          variant="outlined"
-          sx={{
-            minWidth: 120,
-            marginLeft: '1rem',
-            marginRight: '1rem',
-            boxShadow: 10,
-            backgroundColor: palette.secondary.main,
-          }}
-        >
-          <MenuItem value="all tags">All Tags</MenuItem>
-          {initialTags.map((tag) => (
-            <MenuItem key={tag.id} value={tag.name}>
-              {tag.name}
-            </MenuItem>
-          ))}
-        </Select>
-
+        <FormControl>
+          <InputLabel
+            style={{
+              textAlign: 'center',
+              alignItems: 'center',
+              marginLeft: '1rem',
+            }}
+          >
+            <Typography variant="body1">Search by a tag</Typography>
+          </InputLabel>
+          <Select
+            value=""
+            onChange={handleTagChange}
+            variant="outlined"
+            sx={{
+              minWidth: 200,
+              marginLeft: '1rem',
+              marginRight: '1rem',
+              boxShadow: 10,
+              backgroundColor: palette.secondary.main,
+            }}
+            data-testid="tag-select"
+          >
+            <MenuItem value="all tags">All Tags</MenuItem>
+            {initialTags.map((tag) => (
+              <MenuItem key={tag.id} value={tag.name}>
+                {tag.name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DatePicker
             sx={{
@@ -153,6 +172,7 @@ export default function CourseFilter({
             label="Search by a date"
             value={selectedDate}
             onChange={handleDateChange}
+            data-testid="date-picker"
           />
         </LocalizationProvider>
       </Box>
