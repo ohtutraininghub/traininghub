@@ -22,6 +22,23 @@ export const remove = async (url: RequestInfo | URL, data: any) => {
   return await commonBody(url, data, 'DELETE');
 };
 
+/**
+ * Example usage
+ *
+ * @example
+ * const responseJson = await post('/api/some/route', inputJson);
+ * const withDataJson = asResponseDataJson(responseJson)
+ * if (withDataJson) {
+ *   const data = withDataJson.data
+ * }
+ */
+export const asResponseDataJson = (jsonResponse: any) => {
+  if (!jsonResponse.data) {
+    return undefined;
+  }
+  return jsonResponse as MessageWithDataResponseType;
+};
+
 const commonBody = async (
   url: RequestInfo | URL,
   data: any,
@@ -31,8 +48,7 @@ const commonBody = async (
     method: method,
     body: JSON.stringify(data),
   });
-  const responseAsJson = await responseToJson(response);
-  return responseAsJson;
+  return await responseToJson(response);
 };
 
 const responseToJson = async (response: Response) => {
@@ -52,7 +68,5 @@ const responseToJson = async (response: Response) => {
     throw Error('Response did not use proper message format...');
   }
 
-  return jsonResponse.data
-    ? (jsonResponse as MessageWithDataResponseType)
-    : (jsonResponse as MessageResponseType);
+  return jsonResponse as MessageResponseType;
 };
