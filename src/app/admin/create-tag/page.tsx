@@ -2,6 +2,8 @@ import TagForm from '@/components/TagForm';
 import TagList from '@/components/TagList';
 import { prisma } from '@/lib/prisma';
 
+export const dynamic = 'force-dynamic';
+
 export default async function CreateTag() {
   const tags = await prisma.tag.findMany({
     orderBy: [{ name: 'asc' }],
