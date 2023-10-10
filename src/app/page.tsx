@@ -8,6 +8,7 @@ export default async function HomePage() {
   const courses = await prisma.course.findMany({
     orderBy: [{ startDate: 'asc' }, { name: 'asc' }],
     include: { tags: true },
+    where: { endDate: { gte: new Date() } },
   });
 
   const tags = await prisma.tag.findMany({});
