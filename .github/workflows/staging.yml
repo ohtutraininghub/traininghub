@@ -12,9 +12,23 @@ env:
   HUSKY: 0
 
 jobs:
+  smoke-test:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: install
+        run: npm ci
+      - name: lint
+        run: npm run lint:test
+      - name: prettier
+        run: npm run format:test
+      - name: build
+        run: npm run build
   test:
     runs-on: ubuntu-22.04
     environment: testing
+    needs: [smoke-test]
     services:
       postgres:
         image: postgres
@@ -32,18 +46,12 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v3
-      - name: install npm
+      - name: install
         run: npm ci
-      - name: lint
-        run: npm run lint:test
-      - name: prettier
-        run: npm run format:test
-      - name: migrate db
+      - name: migrate database
         run: npx prisma migrate deploy
       - name: test
         run: npm run test:ci
-      - name: build
-        run: npm run build
   deploy:
     runs-on: ubuntu-22.04
     environment: staging
