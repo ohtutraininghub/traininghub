@@ -5,7 +5,10 @@
 
 import * as Sentry from '@sentry/nextjs';
 
-const environment = process.env.SENTRY_ENVIRONMENT ?? 'development';
+const environment =
+  process.env.SENTRY_ENVIRONMENT ??
+  process.env.NEXT_PUBLIC_SENTRY_ENVIRONMENT ??
+  'development';
 const isDevEnv = environment === 'development';
 
 Sentry.init({
