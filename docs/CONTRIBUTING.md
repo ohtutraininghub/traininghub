@@ -14,7 +14,7 @@ This getting started sections helps you setup and start development environment.
 - [Node](https://nodejs.org/en/download)
 - [Docker](https://docs.docker.com/engine/install/)
 
-### 2 Setup env file
+### 2 Setup env files
 
 Add `.env` file with following content to the project's root
 
@@ -22,25 +22,23 @@ Add `.env` file with following content to the project's root
 # Required for Prisma
 DATABASE_URL="postgresql://admin:password@localhost:5433/traininghub-db-dev?schema=public"
 
-# Required for psql Docker image
-POSTGRES_USER="admin"
-POSTGRES_PASSWORD="password"
-
 # Required for NextAuth
-# To create the NextAuth secret use OpenSSL with the following command:
-# openssl rand -base64 32
-NEXTAUTH_SECRET=""
+NEXTAUTH_SECRET="" # openssl rand -base64 32
 NEXTAUTH_URL="http://localhost:3000"
 
-# Google Client Id and Google Secret
-# A Google client id and Google secret is required for authenticating
-# with Google credentials to work. Create your own Google client id and secret
-# for your personal development environment.
+# Required for OAuth. See below how to create ID and secret for development.
 GOOGLE_CLIENT_ID=""
 GOOGLE_CLIENT_SECRET=""
 ```
 
-#### More information about Google Client Id
+Add ``.env.test` file with following content to the project's root
+
+```
+# Required for Prisma
+DATABASE_URL="postgresql://admin:password@localhost:5434/traininghub-db-dev?schema=public"
+```
+
+#### More information about Google Client ID
 
 Follow the instructions in [Google's documentation on setting up OAuth 2.0 credentials](https://support.google.com/cloud/answer/6158849).
 

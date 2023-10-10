@@ -1,4 +1,4 @@
-# For development testing purposes
+# For development purposes only, not production!!!
 version: '3.8'
 
 services:
@@ -8,6 +8,9 @@ services:
     ports:
       - '127.0.0.1:5433:5432'
     env_file: .env
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=password
     volumes:
       - postgresdevdb:/var/lib/postgresql/data
   app:

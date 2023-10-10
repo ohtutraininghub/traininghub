@@ -13,7 +13,14 @@ until docker exec $DATABASE_CONTAINER pg_isready ; do sleep 1 ; done
 trap "docker compose -f docker-compose.test.yml down" INT TERM
 
 # Run database migrations
-npx prisma migrate dev --skip-seed
+dotenv -e .env.test -- npx prisma migrate dev --skip-seed
+if [ $? -ne 0 ]; then
+  echo ""
+  echo "You're likely missing .env.test file."
+  echo "Check docs/CONTRIBUTING.md!"
+  echo ""
+  exit 1
+fi
 
 npm run test:watch $ARGS
 
