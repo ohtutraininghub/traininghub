@@ -3,7 +3,7 @@
 import Button from '@mui/material/Button';
 import { useState } from 'react';
 import { ConfirmCard } from '../ConfirmCard';
-//import { signOut } from 'next-auth/react';
+import { signOut } from 'next-auth/react';
 
 export function SignOutButton() {
   const [backdropOpen, setBackdropOpen] = useState(false);
@@ -22,9 +22,7 @@ export function SignOutButton() {
         backdropOpen={backdropOpen}
         setBackdropOpen={setBackdropOpen}
         confirmMessage={'Confirm sign out?'}
-        handleClick={() => {
-          throw RangeError('Test front error');
-        }} //signOut()}
+        handleClick={() => signOut()}
       />
     </>
   );
