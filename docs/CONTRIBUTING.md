@@ -31,7 +31,7 @@ GOOGLE_CLIENT_ID=""
 GOOGLE_CLIENT_SECRET=""
 ```
 
-Add ``.env.test` file with following content to the project's root
+Add `.env.test` file with following content to the project's root
 
 ```
 # Required for Prisma
