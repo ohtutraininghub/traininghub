@@ -1,4 +1,4 @@
-import theme from '@/components/ThemeRegistry/theme';
+import theme from '@/components/Providers/ThemeRegistry/theme';
 import { ThemeProvider } from '@mui/material/styles';
 import { render } from '@testing-library/react';
 
