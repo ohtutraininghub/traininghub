@@ -11,6 +11,8 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
+    throw TypeError('Test backend error');
+
     const dataJson = await parseRequest(request);
     const dataJsonParse = courseSchema.parse(dataJson);
     await prisma.course.create({
