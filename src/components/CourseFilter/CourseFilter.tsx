@@ -75,7 +75,14 @@ export default function CourseFilter({
     setEndDate(null);
   };
 
-  const handleDateChange = (date: Date | null) => {
+  const handleDateChange = async (date: Date | null) => {
+    setEndDate(date);
+    const compStart = startDate !== null ? new Date(startDate) : null;
+    const compDate = date !== null ? new Date(date) : null;
+    compStart !== null && compDate !== null && compStart > compDate
+      ? setStartDate(date)
+      : null;
+
     const filteredCourses = date
       ? initialCourses.filter((course) => {
           const courseStartDate = new Date(course.startDate);
@@ -91,13 +98,14 @@ export default function CourseFilter({
       : initialCourses;
     setFilteredCourses(filteredCourses);
     setSearchTerm('');
-    setEndDate(date);
   };
 
   const handleClearSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setSearchTerm('');
     setFilteredCourses(initialCourses);
+    setStartDate(null);
+    setEndDate(null);
   };
 
   return (
@@ -167,6 +175,7 @@ export default function CourseFilter({
         </FormControl>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DatePicker
+            disablePast
             sx={{
               backgroundColor: palette.secondary.main,
               boxShadow: 10,
@@ -181,6 +190,7 @@ export default function CourseFilter({
             data-testid="start-date-picker"
           />
           <DatePicker
+            disablePast
             sx={{
               backgroundColor: palette.secondary.main,
               boxShadow: 10,
