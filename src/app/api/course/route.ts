@@ -16,29 +16,16 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
-    const data = await parseRequest(request);
+    //const data = await parseRequest(request);
+    const data = await request.json();
     const dataToSchema = courseSchema.parse(data);
     await prisma.course.create({ data: dataToSchema });
-    return NextResponse.json({ data: data }, { status: 201 });
+    return NextResponse.json({ data: dataToSchema }, { status: 201 });
   } catch (error) {
-    return NextResponse.json(
-      { error: 'Internal Server Error' },
-      { status: 500 }
-    );
+    let errorMessage = 'Internal Server Error: ';
+    if (error instanceof Error) {
+      errorMessage += error.message;
+    }
+    return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
 }
-
-/* A helper function to determine whether the request is from the server or the client:
-return the request.json() if the request is from the client and else return the given arguments directly */
-
-const parseRequest = async (request: NextRequest) => {
-  try {
-    return await request.json();
-  } catch (error) {
-    if (error instanceof TypeError) {
-      return request;
-    } else {
-      throw error;
-    }
-  }
-};

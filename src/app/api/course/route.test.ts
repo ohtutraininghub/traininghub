@@ -1,5 +1,7 @@
 import { GET, POST } from './route';
 import { prisma } from '@/lib/prisma';
+import { NextRequest } from 'next/server';
+import { createMocks } from 'node-mocks-http';
 
 beforeEach(async () => {
   await prisma.course.deleteMany({});
@@ -33,8 +35,15 @@ describe('API', () => {
 
   describe('POST', () => {
     it('adds new course in to the database', async () => {
-      const response = await POST(newCourse as any);
+      const { req } = createMocks<NextRequest>({
+        method: 'POST',
+        body: newCourse,
+        json: () => newCourse,
+      });
+
+      const response = await POST(req);
       const data = await response.json();
+
       expect(data.data.name).toBe('Python');
       expect(response.status).toBe(201);
     });
