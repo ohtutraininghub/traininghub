@@ -23,6 +23,7 @@ export const getCourses = async () => {
       tags: true,
     },
     orderBy: [{ startDate: 'asc' }, { name: 'asc' }],
+    where: { endDate: { gte: new Date() } },
   });
 };
 
