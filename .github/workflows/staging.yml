@@ -14,14 +14,10 @@ env:
 jobs:
   smoke-test:
     runs-on: ubuntu-22.04
+    if: ${{ !github.event.pull_request.draft }}
     steps:
       - name: checkout
         uses: actions/checkout@v3
-      - name: cache node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-          cache: 'npm'
       - name: install
         run: npm ci
       - name: lint
@@ -51,10 +47,6 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18
-          cache: 'npm'
       - name: install
         run: npm ci
       - name: migrate database
