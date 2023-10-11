@@ -10,11 +10,13 @@ import SignupButton from './SignupButton';
 
 type Props = {
   course: CourseWithTagsAndStudentCount | undefined;
+  usersEnrolledCourseIds: string[];
 };
 
-export default function CourseModal({ course }: Props) {
+export default function CourseModal({ course, usersEnrolledCourseIds }: Props) {
   if (!course) return null;
   const courseDate = getCourseDateString(course);
+  const isUserEnrolled = usersEnrolledCourseIds.includes(course.id);
 
   return (
     <Modal
@@ -80,12 +82,16 @@ export default function CourseModal({ course }: Props) {
         >
           <Typography>{course.description}</Typography>
         </pre>
-
-        <SignupButton
-          courseId={course.id}
-          currentStudents={course._count.students}
-          maxStudents={course.maxStudents}
-        />
+        <Box sx={{ mt: 'auto', pt: 3 }}>
+          <Typography sx={{ mb: 1 }}>
+            Signups: {course._count.students} / {course.maxStudents}
+          </Typography>
+          {isUserEnrolled ? (
+            <Typography>You are signed up for this course!</Typography>
+          ) : (
+            <SignupButton courseId={course.id} />
+          )}
+        </Box>
       </Card>
     </Modal>
   );

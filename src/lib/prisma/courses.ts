@@ -26,4 +26,23 @@ export const getCourses = async () => {
   });
 };
 
+export const getEnrolledCourseIdsByUserId = async (userId: string) => {
+  return (
+    await prisma.course.findMany({
+      where: {
+        students: {
+          some: {
+            id: {
+              equals: userId,
+            },
+          },
+        },
+      },
+      select: {
+        id: true,
+      },
+    })
+  ).map((data) => data.id);
+};
+
 export type GetCoursesType = prismaClient.PromiseReturnType<typeof getCourses>;

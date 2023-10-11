@@ -6,15 +6,20 @@ import CourseModal from '@/components/CourseModal/CourseModal';
 type CourseListProps = {
   courses: CourseWithTagsAndStudentCount[];
   openedCourse: CourseWithTagsAndStudentCount | undefined;
+  usersEnrolledCourseIds: string[];
 };
 
 export default async function CourseList({
   courses,
   openedCourse,
+  usersEnrolledCourseIds,
 }: CourseListProps) {
   return (
     <>
-      <CourseModal course={openedCourse} />
+      <CourseModal
+        course={openedCourse}
+        usersEnrolledCourseIds={usersEnrolledCourseIds}
+      />
       <h1>Courses</h1>
       <Grid
         container

@@ -1,7 +1,5 @@
 'use client';
 
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { ConfirmCard } from '@/components/ConfirmCard';
 import { useState } from 'react';
@@ -9,15 +7,9 @@ import { useRouter } from 'next/navigation';
 
 type Props = {
   courseId: string;
-  currentStudents: number;
-  maxStudents: number;
 };
 
-export default function SignupButton({
-  courseId,
-  currentStudents,
-  maxStudents,
-}: Props) {
+export default function SignupButton({ courseId }: Props) {
   const [backdropOpen, setBackdropOpen] = useState(false);
   const router = useRouter();
 
@@ -40,10 +32,7 @@ export default function SignupButton({
   };
 
   return (
-    <Box sx={{ mt: 'auto', pt: 3 }}>
-      <Typography>
-        Signups: {currentStudents} / {maxStudents}
-      </Typography>
+    <>
       <Button
         onClick={() => {
           setBackdropOpen(true);
@@ -57,6 +46,6 @@ export default function SignupButton({
         confirmMessage={'Confirm signup?'}
         handleClick={() => handleSignup()}
       />
-    </Box>
+    </>
   );
 }

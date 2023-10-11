@@ -1,7 +1,8 @@
 import CourseForm from '@/components/CourseForm/CourseForm';
 import CourseList from '@/components/CourseList/CourseList';
-import { notFound } from 'next/navigation';
-import { getCourses } from '@/lib/prisma/courses';
+import { notFound, redirect } from 'next/navigation';
+import { getCourses, getEnrolledCourseIdsByUserId } from '@/lib/prisma/courses';
+import { getServerAuthSession } from '@/lib/auth';
 
 export const dynamic = 'force-dynamic';
 
@@ -9,6 +10,11 @@ type Props = {
   searchParams: { courseId?: string };
 };
 export default async function HomePage({ searchParams }: Props) {
+  const session = await getServerAuthSession();
+  if (!session) {
+    return redirect('api/auth/signin');
+  }
+
   const courses = await getCourses();
 
   const courseId = searchParams.courseId;
@@ -16,6 +22,10 @@ export default async function HomePage({ searchParams }: Props) {
   if (courseId && !openedCourse) {
     notFound();
   }
+
+  const usersEnrolledCourseIds = await getEnrolledCourseIdsByUserId(
+    session.user.id
+  );
 
   return (
     <div
@@ -29,7 +39,11 @@ export default async function HomePage({ searchParams }: Props) {
     >
       <h2>Add new Course</h2>
       <CourseForm />
-      <CourseList courses={courses} openedCourse={openedCourse} />
+      <CourseList
+        courses={courses}
+        openedCourse={openedCourse}
+        usersEnrolledCourseIds={usersEnrolledCourseIds}
+      />
     </div>
   );
 }
