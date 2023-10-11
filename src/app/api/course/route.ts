@@ -24,5 +24,3 @@ export async function POST(request: NextRequest) {
     return handleCommonErrors(error);
   }
 }
-
-
