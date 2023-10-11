@@ -68,12 +68,13 @@ jobs:
           heroku_email: ${{ secrets.HEROKU_EMAIL }}
           usedocker: true
           docker_build_args: |
+            NEXTAUTH_URL
+            NEXTAUTH_SECRET
             SENTRY_ENVIRONMENT
             NEXT_PUBLIC_SENTRY_ENVIRONMENT
             SENTRY_AUTH_TOKEN
             SENTRY_ORG
             SENTRY_PROJECT
-            NEXTAUTH_SECRET
         env:
           # NEXTAUTH
           HD_NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL }}
@@ -92,6 +93,7 @@ jobs:
           # BUILD TIME ARGS
 
           # NEXTAUTH
+          NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL }}
           NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
 
           # SENTRY
