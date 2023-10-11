@@ -10,7 +10,11 @@ export interface ProfileUserDetailProps {
   image: string;
 }
 
-export default function ProfileUserDetails({ name, email, image }: ProfileUserDetailProps) {
+export default function ProfileUserDetails({
+  name,
+  email,
+  image,
+}: ProfileUserDetailProps) {
   const { palette } = useTheme();
 
   const gradientBackground = `linear-gradient(-50deg, ${palette.darkBlue.main}, ${palette.info.main})`;
