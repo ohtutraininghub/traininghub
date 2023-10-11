@@ -44,9 +44,9 @@ export default function CourseFilter({
     try {
       setFilteredCourses(initialCourses);
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error(error);
     }
-  }, [initialCourses]);
+  }, [initialCourses, initialTags]);
 
   const handleNameChange = async (event: ChangeEvent<HTMLInputElement>) => {
     const searchTerm = event.target.value;
@@ -70,19 +70,26 @@ export default function CourseFilter({
             )
           );
     setFilteredCourses(filteredCourses);
-    setSearchTerm('');
-    setStartDate(null);
-    setEndDate(null);
+    await reset();
   };
 
   const handleDateChange = async (date: Date | null) => {
-    setEndDate(date);
+    endDate === null ? setEndDate(date) : null;
     const compStart = startDate !== null ? new Date(startDate) : null;
+    const compEnd = endDate !== null ? new Date(endDate) : null;
     const compDate = date !== null ? new Date(date) : null;
+    compEnd !== null && compDate !== null && compEnd < compDate
+      ? setEndDate(date)
+      : null;
     compStart !== null && compDate !== null && compStart > compDate
       ? setStartDate(date)
       : null;
+    const filteredCourses = await helpHandleDateChange(date);
+    setFilteredCourses(filteredCourses);
+    setSearchTerm('');
+  };
 
+  const helpHandleDateChange = async (date: Date | null) => {
     const filteredCourses = date
       ? initialCourses.filter((course) => {
           const courseStartDate = new Date(course.startDate);
@@ -96,14 +103,17 @@ export default function CourseFilter({
           );
         })
       : initialCourses;
-    setFilteredCourses(filteredCourses);
-    setSearchTerm('');
+    return filteredCourses;
   };
 
   const handleClearSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setSearchTerm('');
     setFilteredCourses(initialCourses);
+    await reset();
+  };
+
+  const reset = async () => {
+    setSearchTerm('');
     setStartDate(null);
     setEndDate(null);
   };

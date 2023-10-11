@@ -79,7 +79,7 @@ describe('Coursefilter', () => {
   it('filters with a name', async () => {
     const courseName = screen.getByTestId('search-paper');
     await userEvent.type(courseName, 'rea');
-    expect(screen.getByText('React framework'));
+    expect(screen.getByText('React framework')).toBeInTheDocument();
   });
 
   it('filters with a tag', async () => {
