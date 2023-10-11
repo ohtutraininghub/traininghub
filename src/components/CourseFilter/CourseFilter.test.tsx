@@ -93,9 +93,12 @@ describe('Coursefilter', () => {
   });
 
   it('filters with a date', async () => {
-    const datePicker = screen.getByLabelText('Search by a date');
-    const testDate = new Date('2023-11-20T00:00:00Z');
-    fireEvent.change(datePicker, { target: { value: testDate } });
+    const startDate = screen.getByLabelText('Start Date');
+    const testStartDate = new Date('2023-11-20T00:00:00Z');
+    fireEvent.change(startDate, { target: { value: testStartDate } });
+    const endDate = screen.getByLabelText('End Date');
+    const testEndDate = new Date('2023-12-18T00:00:00Z');
+    fireEvent.change(endDate, { target: { value: testEndDate } });
     expect(screen.getByText('React framework')).toBeInTheDocument();
   });
 });

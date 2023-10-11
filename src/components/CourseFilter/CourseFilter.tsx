@@ -37,7 +37,8 @@ export default function CourseFilter({
 
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredCourses, setFilteredCourses] = useState<Course[]>([]);
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [startDate, setStartDate] = useState<Date | null>(null);
+  const [endDate, setEndDate] = useState<Date | null>(null);
 
   useEffect(() => {
     try {
@@ -54,7 +55,8 @@ export default function CourseFilter({
       course.name.toLowerCase().includes(searchTerm.toLocaleLowerCase())
     );
     setFilteredCourses(filteredCourses);
-    setSelectedDate(null);
+    setStartDate(null);
+    setEndDate(null);
   };
 
   const handleTagChange = async (event: SelectChangeEvent<string>) => {
@@ -69,11 +71,11 @@ export default function CourseFilter({
           );
     setFilteredCourses(filteredCourses);
     setSearchTerm('');
-    setSelectedDate(null);
+    setStartDate(null);
+    setEndDate(null);
   };
 
   const handleDateChange = (date: Date | null) => {
-    setSelectedDate(date);
     const filteredCourses = date
       ? initialCourses.filter((course) => {
           const courseStartDate = new Date(course.startDate);
@@ -89,6 +91,7 @@ export default function CourseFilter({
       : initialCourses;
     setFilteredCourses(filteredCourses);
     setSearchTerm('');
+    setEndDate(date);
   };
 
   const handleClearSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -169,10 +172,27 @@ export default function CourseFilter({
               boxShadow: 10,
               marginLeft: '1rem',
             }}
-            label="Search by a date"
-            value={selectedDate}
-            onChange={handleDateChange}
-            data-testid="date-picker"
+            label="Start Date"
+            value={startDate}
+            onChange={(date) => {
+              setStartDate(date);
+              handleDateChange(date);
+            }}
+            data-testid="start-date-picker"
+          />
+          <DatePicker
+            sx={{
+              backgroundColor: palette.secondary.main,
+              boxShadow: 10,
+              marginLeft: '1rem',
+            }}
+            label="End Date"
+            value={endDate}
+            onChange={(date) => {
+              setEndDate(date);
+              handleDateChange(date);
+            }}
+            data-testid="end-date-picker"
           />
         </LocalizationProvider>
       </Box>
