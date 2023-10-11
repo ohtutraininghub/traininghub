@@ -7,6 +7,7 @@ export const dynamic = 'force-dynamic';
 export default async function HomePage() {
   const courses = await prisma.course.findMany({
     orderBy: [{ startDate: 'asc' }, { name: 'asc' }],
+    where: { endDate: { gte: new Date() } },
   });
 
   return (

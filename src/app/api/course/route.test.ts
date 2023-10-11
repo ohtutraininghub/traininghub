@@ -1,3 +1,4 @@
+import { MessageType } from '@/lib/response/responseUtil';
 import { GET, POST } from './route';
 import { prisma } from '@/lib/prisma';
 import { NextRequest } from 'next/server';
@@ -44,12 +45,19 @@ describe('API', () => {
       const response = await POST(req);
       const data = await response.json();
 
-      expect(data.data.name).toBe('Python');
+      expect(data.message).toBe('Course succesfully created!');
+      expect(data.messageType).toBe(MessageType.SUCCESS);
       expect(response.status).toBe(201);
     });
+
     it('fails with incorrect inputs', async () => {
       const response = await POST(failedCourse as any);
-      expect(response.status).toBe(500);
+      const data = await response.json();
+      expect(data.message).toBe(
+        'Invalid date. Invalid date. Expected number, received string.'
+      );
+      expect(data.messageType).toBe(MessageType.ERROR);
+      expect(response.status).toBe(400);
     });
   });
 });
