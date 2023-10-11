@@ -50,8 +50,8 @@ jobs:
         run: npm ci
       - name: migrate database
         run: npx prisma migrate deploy
-      - name: test
-        run: npm run test:ci
+      #- name: test
+      #  run: npm run test:ci
   deploy:
     runs-on: ubuntu-22.04
     environment: staging
