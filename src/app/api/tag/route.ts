@@ -1,7 +1,13 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 import { tagSchema, TagSchemaType } from '@/lib/zod/tags';
 import { prisma } from '@/lib/prisma';
 import { Prisma } from '@prisma/client';
+import {
+  StatusCodeType,
+  successResponse,
+  errorResponse,
+} from '@/lib/response/responseUtil';
+import { handleCommonErrors } from '@/lib/response/errorUtil';
 
 export async function POST(request: NextRequest) {
   let newTag: TagSchemaType | undefined;
@@ -11,17 +17,23 @@ export async function POST(request: NextRequest) {
     await prisma.tag.create({
       data: newTag,
     });
-    return NextResponse.json({ data: newTag }, { status: 201 });
+    return successResponse({
+      message: `Tag \"${newTag.name}\" succesfully created!`,
+      statusCode: StatusCodeType.CREATED,
+    });
   } catch (error: unknown) {
-    let errorMessage = 'Failed to create tag. ';
-    let statusCode = 500;
-    if (
-      error instanceof Prisma.PrismaClientKnownRequestError &&
-      error.code === 'P2002'
-    ) {
-      errorMessage += 'Tag "' + newTag?.name + '" already exists.';
-      statusCode = 422;
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      let errorMessage = 'Failed to create tag.';
+      let statusCode = StatusCodeType.INTERNAL_SERVER_ERROR;
+      if (error.code === 'P2002') {
+        errorMessage += ' Tag "' + newTag?.name + '" already exists.';
+        statusCode = StatusCodeType.UNPROCESSABLE_CONTENT;
+      }
+      return errorResponse({
+        message: errorMessage,
+        statusCode: statusCode,
+      });
     }
-    return NextResponse.json({ error: errorMessage }, { status: statusCode });
+    return handleCommonErrors(error);
   }
 }
