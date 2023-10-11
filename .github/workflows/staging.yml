@@ -6,7 +6,7 @@ on:
       - staging
   pull_request:
     branches: [staging]
-    types: [opened, synchronize]
+    types: [opened, synchronize, ready_for_review]
 
 env:
   HUSKY: 0
