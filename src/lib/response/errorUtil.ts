@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { ZodError } from 'zod';
-import { messageResponse, MessageType, StatusCodeType } from './responseUtil';
+import { errorResponse, StatusCodeType } from './responseUtil';
 
 /**
  * Used in routes to handle common errors.
@@ -49,9 +49,8 @@ const handleZodError = (error: ZodError) => {
     )
     .join(' ');
 
-  return messageResponse({
+  return errorResponse({
     message: errorMessage,
-    messageType: MessageType.ERROR,
     statusCode: StatusCodeType.BAD_REQUEST,
   });
 };

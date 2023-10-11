@@ -9,6 +9,11 @@ export type MessageResponseType = {
   statusCode?: StatusCodeType;
 };
 
+export type MessageWithoutTypeResponseType = Omit<
+  MessageResponseType,
+  'messageType'
+>;
+
 export type MessageWithDataResponseType = MessageResponseType & {
   data: any;
 };
@@ -27,6 +32,28 @@ export enum StatusCodeType {
   BAD_REQUEST = 400,
   INTERNAL_SERVER_ERROR = 500,
 }
+
+export const successResponse = ({
+  message,
+  statusCode,
+}: MessageWithoutTypeResponseType) => {
+  return messageResponse({
+    message: message,
+    messageType: MessageType.SUCCESS,
+    statusCode: statusCode,
+  });
+};
+
+export const errorResponse = ({
+  message,
+  statusCode,
+}: MessageWithoutTypeResponseType) => {
+  return messageResponse({
+    message: message,
+    messageType: MessageType.ERROR,
+    statusCode: statusCode,
+  });
+};
 
 export const messageResponse = ({
   message,

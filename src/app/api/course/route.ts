@@ -1,11 +1,7 @@
 import { NextResponse, NextRequest } from 'next/server';
 import { courseSchema } from '@/lib/zod/courses';
 import { prisma } from '@/lib/prisma';
-import {
-  MessageType,
-  StatusCodeType,
-  messageResponse,
-} from '@/lib/response/responseUtil';
+import { StatusCodeType, successResponse } from '@/lib/response/responseUtil';
 import { handleCommonErrors } from '@/lib/response/errorUtil';
 
 export async function GET() {
@@ -20,9 +16,8 @@ export async function POST(request: NextRequest) {
     await prisma.course.create({
       data: dataJsonParse,
     });
-    return messageResponse({
+    return successResponse({
       message: 'Course succesfully created!',
-      messageType: MessageType.SUCCESS,
       statusCode: StatusCodeType.CREATED,
     });
   } catch (error) {
