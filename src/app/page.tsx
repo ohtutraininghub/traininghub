@@ -1,6 +1,6 @@
 import CourseForm from '@/components/CourseForm/CourseForm';
 import CourseList from '@/components/CourseList/CourseList';
-import { notFound, redirect } from 'next/navigation';
+import { notFound } from 'next/navigation';
 import { getCourses, getEnrolledCourseIdsByUserId } from '@/lib/prisma/courses';
 import { getServerAuthSession } from '@/lib/auth';
 
@@ -11,10 +11,6 @@ type Props = {
 };
 export default async function HomePage({ searchParams }: Props) {
   const session = await getServerAuthSession();
-  if (!session) {
-    return redirect('api/auth/signin');
-  }
-
   const courses = await getCourses();
 
   const courseId = searchParams.courseId;

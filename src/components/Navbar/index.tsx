@@ -26,9 +26,7 @@ export default async function NavBar() {
       >
         Training hub
       </Link>
-      <Typography variant="body2">
-        Logged in as {session?.user?.name}
-      </Typography>
+      <Typography variant="body2">Logged in as {session.user.name}</Typography>
       <SignOutButton />
     </AppBar>
   );

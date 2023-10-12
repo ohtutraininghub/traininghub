@@ -38,5 +38,8 @@ export const authOptions: NextAuthOptions = {
   },
 };
 
-export const getServerAuthSession = async () =>
-  await getServerSession(authOptions);
+export const getServerAuthSession = async () => {
+  const session = await getServerSession(authOptions);
+  if (!session) throw Error('Could not find session');
+  return session;
+};

@@ -4,15 +4,10 @@ import { prisma } from '@/lib/prisma/prisma';
 import { getServerAuthSession } from '@/lib/auth';
 
 export async function POST(request: NextRequest) {
-  const session = await getServerAuthSession();
-
   try {
+    const session = await getServerAuthSession();
     const data = await request.json();
     const courseId = courseSignupSchema.parse(data);
-
-    if (!session) {
-      throw Error('Could not find session');
-    }
 
     const course = await prisma.course.findFirst({
       include: {
