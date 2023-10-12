@@ -51,7 +51,13 @@ describe('API', () => {
     });
 
     it('fails with incorrect inputs', async () => {
-      const response = await POST(failedCourse as any);
+      const { req } = createMocks<NextRequest>({
+        method: 'POST',
+        body: failedCourse,
+        json: () => failedCourse,
+      });
+
+      const response = await POST(req);
       const data = await response.json();
       expect(data.message).toBe(
         'Invalid date. Invalid date. Expected number, received string.'
