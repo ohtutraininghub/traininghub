@@ -8,22 +8,26 @@ import { Divider } from '@mui/material';
 import { Course } from '@prisma/client';
 import { useTheme } from '@mui/material/styles';
 import { Box, Tooltip, Typography } from '@mui/material';
+import { Chip } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import IconButton from '@mui/material/IconButton';
+import TimerIcon from '@mui/icons-material/Timer';
 import { useState } from 'react';
-import { formatDate } from '@/lib/timedateutils';
+import { formatDate, daysUntilStart } from '@/lib/timedateutils';
 
 export interface ProfileCourseListProps {
   headerText: string;
   courses: Course[];
   open: boolean;
+  timer?: boolean;
 }
 
 export default function ProfileCourseList({
   headerText,
   courses,
   open,
+  timer,
 }: ProfileCourseListProps) {
   const { palette } = useTheme();
   const [isCollapsed, setIsCollapsed] = useState(open);
@@ -81,12 +85,32 @@ export default function ProfileCourseList({
             >
               {courses.map((course: Course, count: number) => (
                 <React.Fragment key={course.id}>
-                  <ListItem key={course.id}>
+                  <ListItem
+                    key={course.id}
+                    style={{ display: 'flex', justifyContent: 'space-between' }}
+                  >
                     <ListItemText
                       primary={course.name}
-                      secondary={`${formatDate({ date: course.startDate })}
- - ${formatDate({ date: course.endDate })}`}
+                      secondary={`${formatDate({
+                        date: course.startDate,
+                      })} - ${formatDate({ date: course.endDate })}`}
                     />
+                    {timer && (
+                      <Chip
+                        icon={<TimerIcon />}
+                        label={
+                          daysUntilStart(course.startDate) === 0
+                            ? 'Starts today'
+                            : daysUntilStart(course.startDate) === 1
+                            ? 'Starts in 1 day'
+                            : `Starts in ${daysUntilStart(
+                                course.startDate
+                              )} days`
+                        }
+                        size="small"
+                        style={{ marginLeft: 'auto' }}
+                      />
+                    )}
                   </ListItem>
                   {count < courses.length - 1 && <Divider />}
                 </React.Fragment>

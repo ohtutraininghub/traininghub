@@ -32,7 +32,7 @@ export default function ProfileView({
   };
 
   return (
-    <div>
+    <div style={{ paddingBottom: '20px' }}>
       <ProfileUserDetails
         name={userDetails.name}
         email={userDetails.email}
@@ -71,6 +71,7 @@ export default function ProfileView({
               (course: Course) => course.startDate > currentDate
             )}
             open={true}
+            timer={true}
           />
           <ProfileCourseList
             headerText="Ended courses"

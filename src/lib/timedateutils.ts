@@ -16,3 +16,11 @@ export function formatDate({ date, variant }: FormatDateProps): string {
     return `${day}.${month}.${year} ${hours}:${minutes}`;
   }
 }
+
+export function daysUntilStart(startDate: Date): number {
+  const dateNow = new Date();
+  dateNow.setHours(0, 0, 0, 0);
+  return Math.floor(
+    (startDate.getTime() - dateNow.getTime()) / (1000 * 60 * 60 * 24)
+  );
+}
