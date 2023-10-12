@@ -13,6 +13,7 @@ import Logout from '@mui/icons-material/Logout';
 import HomeIcon from '@mui/icons-material/Home';
 import React from 'react';
 import Link from 'next/link';
+import Typography from '@mui/material/Typography/Typography';
 import { useState } from 'react';
 import { ConfirmCard } from '../ConfirmCard';
 import { signOut } from 'next-auth/react';
@@ -49,8 +50,10 @@ export default function ProfileMenu({ name, image }: ProfileMenuProps) {
           alignItems: 'center',
           textAlign: 'center',
           paddingRight: '20px',
+          paddingLeft: '10px',
         }}
       >
+        <Divider orientation="vertical" flexItem />
         <Tooltip title="User profile">
           <IconButton
             data-testid="avatarIconButton"
@@ -73,6 +76,9 @@ export default function ProfileMenu({ name, image }: ProfileMenuProps) {
             />
           </IconButton>
         </Tooltip>
+        <Typography variant="body2" style={{ marginLeft: '10px' }}>
+          {name}
+        </Typography>
       </Box>
       <Menu
         anchorEl={anchorEl}

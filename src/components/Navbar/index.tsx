@@ -1,4 +1,4 @@
-import { AppBar, Typography } from '@mui/material';
+import { AppBar } from '@mui/material';
 import Link from 'next/link';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/lib/auth';
@@ -27,9 +27,6 @@ export default async function NavBar() {
       >
         Training hub
       </Link>
-      <Typography variant="body2">
-        Logged in as {session?.user?.name}
-      </Typography>
       <ProfileMenu
         name={session?.user?.name ?? ''}
         image={session?.user?.image ?? ''}
