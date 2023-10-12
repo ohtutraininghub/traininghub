@@ -1,6 +1,7 @@
 import TagForm from '@/components/TagForm';
 import TagList from '@/components/TagList';
 import { prisma } from '@/lib/prisma/prisma';
+import Typography from '@mui/material/Typography';
 
 export const dynamic = 'force-dynamic';
 
@@ -11,9 +12,13 @@ export default async function CreateTag() {
 
   return (
     <>
-      <h1>Add a new tag</h1>
+      <Typography variant="h3" component="h1">
+        Add a new tag
+      </Typography>
       <TagForm />
-      <h3>Existing tags:</h3>
+      <Typography variant="h5" component="h2">
+        Existing tags:
+      </Typography>
       <TagList tags={tags} />
     </>
   );
