@@ -52,7 +52,6 @@ describe('API', () => {
     it('fails with incorrect inputs', async () => {
       const { req } = createMocks<NextRequest>({
         method: 'POST',
-        body: failedCourse,
         json: () => failedCourse,
       });
 
