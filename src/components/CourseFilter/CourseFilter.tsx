@@ -185,12 +185,13 @@ export default function CourseFilter({
         </FormControl>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DatePicker
-            disablePast
             sx={{
               backgroundColor: palette.secondary.main,
               boxShadow: 10,
               marginLeft: '1rem',
             }}
+            disablePast
+            displayWeekNumber
             label="Start Date"
             value={startDate}
             onChange={(date) => {
@@ -200,12 +201,13 @@ export default function CourseFilter({
             data-testid="start-date-picker"
           />
           <DatePicker
-            disablePast
             sx={{
               backgroundColor: palette.secondary.main,
               boxShadow: 10,
               marginLeft: '1rem',
             }}
+            disablePast
+            displayWeekNumber
             label="End Date"
             value={endDate}
             onChange={(date) => {
@@ -217,6 +219,16 @@ export default function CourseFilter({
         </LocalizationProvider>
       </Box>
       <CourseList courses={filteredCourses} />
+      {filteredCourses.length === 0 && (
+        <Typography
+          variant="h5"
+          sx={{
+            color: palette.secondary.dark,
+          }}
+        >
+          No courses found
+        </Typography>
+      )}
     </>
   );
 }
