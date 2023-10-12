@@ -1,6 +1,6 @@
 import { MessageType } from '@/lib/response/responseUtil';
 import { GET, POST } from './route';
-import { prisma } from '@/lib/prisma';
+import { prisma } from '@/lib/prisma/prisma';
 
 beforeEach(async () => {
   await prisma.course.deleteMany({});

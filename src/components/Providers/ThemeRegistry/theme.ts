@@ -2,6 +2,7 @@ import {
   PaletteColor,
   PaletteColorOptions,
   createTheme,
+  responsiveFontSizes,
 } from '@mui/material/styles';
 
 declare module '@mui/material/styles' {
@@ -20,7 +21,7 @@ declare module '@mui/material/styles' {
   }
 }
 
-const theme = createTheme({
+let theme = createTheme({
   // overrides the default MUI color palette: (https://mui.com/material-ui/customization/palette/)
   palette: {
     primary: {
@@ -43,5 +44,7 @@ const theme = createTheme({
     },
   },
 });
+
+theme = responsiveFontSizes(theme);
 
 export default theme;
