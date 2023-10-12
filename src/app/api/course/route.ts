@@ -11,7 +11,7 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
-    const dataJson = await parseRequest(request);
+    const dataJson = await request.json();
     const dataJsonParse = courseSchema.parse(dataJson);
     await prisma.course.create({
       data: dataJsonParse,
@@ -24,18 +24,3 @@ export async function POST(request: NextRequest) {
     return handleCommonErrors(error);
   }
 }
-
-/* A helper function to determine whether the request is from the server or the client:
-return the request.json() if the request is from the client and else return the given arguments directly */
-
-const parseRequest = async (request: NextRequest) => {
-  try {
-    return await request.json();
-  } catch (error) {
-    if (error instanceof TypeError) {
-      return request;
-    } else {
-      throw error;
-    }
-  }
-};
