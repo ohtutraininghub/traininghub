@@ -1,8 +1,10 @@
 import { MessageType } from '@/lib/response/responseUtil';
 import { GET, POST } from './route';
+
 import { prisma } from '@/lib/prisma';
 import { NextRequest } from 'next/server';
 import { createMocks } from 'node-mocks-http';
+
 
 beforeEach(async () => {
   await prisma.course.deleteMany({});

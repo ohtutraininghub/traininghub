@@ -16,24 +16,26 @@ model User {
   email         String?   @unique
   emailVerified DateTime?
   image         String?
+  courses       Course[]
   accounts      Account[]
   sessions      Session[]
 }
 
 model Course {
-  id          String    @id @default(cuid())
+  id          String   @id @default(cuid())
   name        String
   description String
   startDate   DateTime
   endDate     DateTime
   maxStudents Int
+  students    User[]
   tags        Tag[]
 }
 
 model Tag {
   id      String   @id @default(cuid())
   name    String   @unique
-  courses Course[]   
+  courses Course[]
 }
 
 model Account {
