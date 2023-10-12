@@ -1,10 +1,12 @@
-import { DefaultSession } from 'next-auth';
+/* eslint-disable no-unused-vars */
+import { Session } from 'next-auth';
 
 declare module 'next-auth' {
-  // eslint-disable-next-line no-unused-vars
   interface Session {
     user: {
       id: string;
-    } & DefaultSession['user'];
+      name: string;
+      email: string;
+    };
   }
 }
