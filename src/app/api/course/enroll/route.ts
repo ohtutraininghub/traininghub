@@ -1,7 +1,13 @@
-import { NextResponse, NextRequest } from 'next/server';
+import { NextRequest } from 'next/server';
 import { courseSignupSchema } from '@/lib/zod/courses';
 import { prisma } from '@/lib/prisma/prisma';
 import { getServerAuthSession } from '@/lib/auth';
+import {
+  StatusCodeType,
+  successResponse,
+  errorResponse,
+} from '@/lib/response/responseUtil';
+import { handleCommonErrors } from '@/lib/response/errorUtil';
 
 export async function POST(request: NextRequest) {
   try {
@@ -21,11 +27,17 @@ export async function POST(request: NextRequest) {
     });
 
     if (!course) {
-      throw Error('Could not find course');
+      return errorResponse({
+        message: 'Could not find course with given identifier!',
+        statusCode: StatusCodeType.UNPROCESSABLE_CONTENT,
+      });
     }
 
     if (course._count.students >= course.maxStudents) {
-      throw Error('Course is already full');
+      return errorResponse({
+        message: 'Course is already full!',
+        statusCode: StatusCodeType.UNPROCESSABLE_CONTENT,
+      });
     }
 
     const userCourseIds = await prisma.user.findUnique({
@@ -40,7 +52,10 @@ export async function POST(request: NextRequest) {
     });
 
     if (userCourseIds?.courses.find((course) => course.id === courseId)) {
-      throw Error('User is already in course');
+      return errorResponse({
+        message: 'You have already enrolled!',
+        statusCode: StatusCodeType.UNPROCESSABLE_CONTENT,
+      });
     }
 
     await prisma.course.update({
@@ -56,12 +71,11 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    return NextResponse.json({ data: 'created' }, { status: 201 });
+    return successResponse({
+      message: 'Enrolled succesfully!',
+      statusCode: StatusCodeType.CREATED,
+    });
   } catch (error) {
-    console.log(error);
-    return NextResponse.json(
-      { error: 'Internal Server Error' },
-      { status: 500 }
-    );
+    return handleCommonErrors(error);
   }
 }

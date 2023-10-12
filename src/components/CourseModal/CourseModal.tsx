@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import Card from '@mui/material/Card';
 import Chip from '@mui/material/Chip';
 import Box from '@mui/material/Box';
-import SignupButton from './SignupButton';
+import EnrollHolder from './EnrollHolder';
 
 type Props = {
   course: CourseWithTagsAndStudentCount | undefined;
@@ -17,6 +17,7 @@ export default function CourseModal({ course, usersEnrolledCourseIds }: Props) {
   if (!course) return null;
   const courseDate = getCourseDateString(course);
   const isUserEnrolled = usersEnrolledCourseIds.includes(course.id);
+  const isCourseFull = course._count.students === course.maxStudents;
 
   return (
     <Modal
@@ -84,13 +85,13 @@ export default function CourseModal({ course, usersEnrolledCourseIds }: Props) {
         </pre>
         <Box sx={{ mt: 'auto', pt: 3 }}>
           <Typography sx={{ mb: 1 }}>
-            Signups: {course._count.students} / {course.maxStudents}
+            Enrolls: {course._count.students} / {course.maxStudents}
           </Typography>
-          {isUserEnrolled ? (
-            <Typography>You are signed up for this course!</Typography>
-          ) : (
-            <SignupButton courseId={course.id} />
-          )}
+          <EnrollHolder
+            isUserEnrolled={isUserEnrolled}
+            courseId={course.id}
+            isCourseFull={isCourseFull}
+          />
         </Box>
       </Card>
     </Modal>
