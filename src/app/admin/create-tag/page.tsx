@@ -1,6 +1,6 @@
 import TagForm from '@/components/TagForm';
 import TagList from '@/components/TagList';
-import { prisma } from '@/lib/prisma';
+import { prisma } from '@/lib/prisma/prisma';
 
 export const dynamic = 'force-dynamic';
 
