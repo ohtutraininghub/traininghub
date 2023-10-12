@@ -38,7 +38,6 @@ describe('API', () => {
     it('adds new course in to the database', async () => {
       const { req } = createMocks<NextRequest>({
         method: 'POST',
-        body: newCourse,
         json: () => newCourse,
       });
 
