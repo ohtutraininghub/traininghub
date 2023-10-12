@@ -11,7 +11,7 @@ const testUser: ProfileMenuProps = {
   image: 'someimage.jpg',
 };
 
-const menuItems = ['viewProfileMenuItem', 'signOutMenuItem'];
+const menuItems = ['homeMenuItem', 'viewProfileMenuItem', 'signOutMenuItem'];
 
 describe('ProfileMenu component', () => {
   it('avatar button is rendered', () => {

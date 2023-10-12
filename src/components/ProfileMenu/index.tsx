@@ -10,7 +10,7 @@ import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import PersonIcon from '@mui/icons-material/Person';
 import Logout from '@mui/icons-material/Logout';
-import LocalOfferIcon from '@mui/icons-material/LocalOffer';
+import HomeIcon from '@mui/icons-material/Home';
 import React from 'react';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -84,6 +84,17 @@ export default function ProfileMenu({ name, image }: ProfileMenuProps) {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
+        <Link href="/" style={{ textDecoration: 'none' }}>
+          <MenuItem
+            data-testid="homeMenuItem"
+            style={{ color: palette.black.main }}
+          >
+            <ListItemIcon>
+              <HomeIcon fontSize="small" />
+            </ListItemIcon>
+            Home
+          </MenuItem>
+        </Link>
         <Link href="/profile" style={{ textDecoration: 'none' }}>
           <MenuItem
             data-testid="viewProfileMenuItem"
@@ -95,12 +106,6 @@ export default function ProfileMenu({ name, image }: ProfileMenuProps) {
             View profile
           </MenuItem>
         </Link>
-        <MenuItem onClick={handleClose}>
-          <ListItemIcon>
-            <LocalOfferIcon fontSize="small" />
-          </ListItemIcon>
-          Tags
-        </MenuItem>
         <Divider />
         <MenuItem
           data-testid="signOutMenuItem"
