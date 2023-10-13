@@ -5,14 +5,27 @@ import { useRouter } from 'next/navigation';
 import { useTheme } from '@mui/material/styles';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { courseSchema, CourseSchemaType } from '@/lib/zod/courses';
-import FormFieldError from '../FormFieldError/FormFieldError';
+import {
+  courseSchema,
+  CourseSchemaType,
+  courseSchemaWithId,
+  CourseSchemaWithIdType,
+} from '@/lib/zod/courses';
 import { useMessage } from '../Providers/MessageProvider';
-import { post } from '@/lib/response/fetchUtil';
+import { post, update } from '@/lib/response/fetchUtil';
+import { Course } from '@prisma/client';
+import FormFieldError from '../FormFieldError/FormFieldError';
 
-export default function CourseForm() {
-  const { palette } = useTheme();
+type Props = {
+  courseData?: Course;
+};
+
+type FormType = CourseSchemaType | CourseSchemaWithIdType;
+
+export default function CourseForm({ courseData }: Props) {
+  const isEditMode = !!courseData;
   const router = useRouter();
+  const { palette } = useTheme();
   const { notify } = useMessage();
 
   const {
@@ -20,18 +33,30 @@ export default function CourseForm() {
     formState: { errors, isSubmitting },
     handleSubmit,
     reset,
-  } = useForm<CourseSchemaType>({
-    resolver: zodResolver(courseSchema),
+  } = useForm<FormType>({
+    resolver: zodResolver(isEditMode ? courseSchemaWithId : courseSchema),
     defaultValues: {
-      maxStudents: 10,
+      ...(isEditMode
+        ? {
+            ...courseData,
+            startDate: undefined,
+            endDate: undefined,
+          }
+        : { maxStudents: 10 }),
     },
   });
 
-  const submitForm = async (data: CourseSchemaType) => {
-    const responseJson = await post('/api/course', data);
+  const submitForm = async (data: FormType) => {
+    const responseJson = isEditMode
+      ? await update(`/api/course`, data)
+      : await post('/api/course', data);
+
     notify(responseJson);
-    reset();
-    router.refresh();
+
+    if (!isEditMode) {
+      reset();
+    }
+    router.push('/');
   };
 
   return (
@@ -69,6 +94,10 @@ export default function CourseForm() {
           autoComplete="off"
           inputProps={{
             'data-testid': 'courseFormDescription',
+            style: {
+              resize: 'both',
+            },
+            defaultValue: courseData?.description,
           }}
         />
         <FormFieldError error={errors.description} />
@@ -76,6 +105,7 @@ export default function CourseForm() {
         <InputLabel htmlFor="courseFormStartDate">Start date</InputLabel>
         <Input
           {...register('startDate')}
+          // defaultValue={courseData ? '2023-01-01T12:00' : ''}
           id="courseFormStartDate"
           type="datetime-local"
           error={!!errors.startDate}
@@ -127,7 +157,7 @@ export default function CourseForm() {
           }}
           data-testid="courseFormSubmit"
         >
-          Submit
+          {isEditMode ? 'Update' : 'Submit'}
         </Button>
       </form>
     </Box>
