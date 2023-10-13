@@ -89,6 +89,7 @@ export default function ProfileMenu({ name, image }: ProfileMenuProps) {
         onClick={handleClose}
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+        disableScrollLock={true}
       >
         <Link href="/" style={{ textDecoration: 'none' }}>
           <MenuItem
