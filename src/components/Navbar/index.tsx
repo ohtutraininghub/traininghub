@@ -1,11 +1,10 @@
 import { AppBar } from '@mui/material';
 import Link from 'next/link';
-import { getServerSession } from 'next-auth/next';
-import { authOptions } from '@/lib/auth';
+import { getServerAuthSession } from '@/lib/auth';
 import ProfileMenu from '@/components/ProfileMenu';
 
 export default async function NavBar() {
-  const session = await getServerSession(authOptions);
+  const session = await getServerAuthSession();
 
   return (
     <AppBar

@@ -1,6 +1,8 @@
 import { MessageType } from '@/lib/response/responseUtil';
 import { GET, POST } from './route';
-import { prisma } from '@/lib/prisma';
+import { prisma } from '@/lib/prisma/prisma';
+import { NextRequest } from 'next/server';
+import { createMocks } from 'node-mocks-http';
 
 beforeEach(async () => {
   await prisma.course.deleteMany({});
@@ -34,15 +36,26 @@ describe('API', () => {
 
   describe('POST', () => {
     it('adds new course in to the database', async () => {
-      const response = await POST(newCourse as any);
+      const { req } = createMocks<NextRequest>({
+        method: 'POST',
+        json: () => newCourse,
+      });
+
+      const response = await POST(req);
       const data = await response.json();
+
       expect(data.message).toBe('Course succesfully created!');
       expect(data.messageType).toBe(MessageType.SUCCESS);
       expect(response.status).toBe(201);
     });
 
     it('fails with incorrect inputs', async () => {
-      const response = await POST(failedCourse as any);
+      const { req } = createMocks<NextRequest>({
+        method: 'POST',
+        json: () => failedCourse,
+      });
+
+      const response = await POST(req);
       const data = await response.json();
       expect(data.message).toBe(
         'Invalid date. Invalid date. Expected number, received string.'
