@@ -13,7 +13,7 @@ import Logout from '@mui/icons-material/Logout';
 import HomeIcon from '@mui/icons-material/Home';
 import React from 'react';
 import Link from 'next/link';
-import Typography from '@mui/material/Typography/Typography';
+import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 import { ConfirmCard } from '../ConfirmCard';
 import { signOut } from 'next-auth/react';
