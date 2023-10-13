@@ -44,20 +44,24 @@ export default function ProfileMenu({ name, image }: ProfileMenuProps) {
         confirmMessage={'Confirm sign out?'}
         handleClick={() => signOut()}
       />
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          textAlign: 'center',
-          paddingRight: '20px',
-          paddingLeft: '10px',
-        }}
-      >
-        <Divider orientation="vertical" flexItem />
-        <Tooltip title="User profile">
+      <Tooltip title="User profile">
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            textAlign: 'center',
+            padding: { xs: '0 0.5em 0 0', sm: '0 1em 0 0' },
+            '&:hover': {
+              backgroundColor: palette.primary.light,
+              cursor: 'pointer',
+            },
+          }}
+          onClick={handleClick}
+        >
+          <Divider orientation="vertical" flexItem />
+
           <IconButton
             data-testid="avatarIconButton"
-            onClick={handleClick}
             size="small"
             sx={{ ml: 2 }}
             aria-controls={open ? 'account-menu' : undefined}
@@ -75,11 +79,12 @@ export default function ProfileMenu({ name, image }: ProfileMenuProps) {
               }}
             />
           </IconButton>
-        </Tooltip>
-        <Typography variant="body2" style={{ marginLeft: '10px' }}>
-          {name}
-        </Typography>
-      </Box>
+
+          <Typography variant="body2" style={{ marginLeft: '10px' }}>
+            {name}
+          </Typography>
+        </Box>
+      </Tooltip>
       <Menu
         anchorEl={anchorEl}
         id="account-menu"
