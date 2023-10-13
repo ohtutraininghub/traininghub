@@ -22,16 +22,14 @@ export async function POST(request: NextRequest) {
       statusCode: StatusCodeType.CREATED,
     });
   } catch (error: unknown) {
-    if (error instanceof Prisma.PrismaClientKnownRequestError) {
-      let errorMessage = 'Failed to create tag.';
-      let statusCode = StatusCodeType.INTERNAL_SERVER_ERROR;
-      if (error.code === 'P2002') {
-        errorMessage += ' Tag "' + newTag?.name + '" already exists.';
-        statusCode = StatusCodeType.UNPROCESSABLE_CONTENT;
-      }
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === 'P2002'
+    ) {
       return errorResponse({
-        message: errorMessage,
-        statusCode: statusCode,
+        message:
+          'Failed to create tag. Tag "' + newTag?.name + '" already exists.',
+        statusCode: StatusCodeType.UNPROCESSABLE_CONTENT,
       });
     }
     return handleCommonErrors(error);
