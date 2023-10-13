@@ -72,7 +72,14 @@ const initialTags: Tag[] = [
 ];
 
 beforeEach(async () => {
-  renderWithTheme(<CourseFilter courses={initialCourses} tags={initialTags} />);
+  renderWithTheme(
+    <CourseFilter
+      initialCourses={initialCourses}
+      initialTags={initialTags}
+      openedCourse={undefined}
+      usersEnrolledCourseIds={[]}
+    />
+  );
 });
 
 describe('Coursefilter', () => {

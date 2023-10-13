@@ -1,11 +1,10 @@
 import { AppBar, Typography } from '@mui/material';
 import Link from 'next/link';
 import { SignOutButton } from '@/components/Buttons/Buttons';
-import { getServerSession } from 'next-auth/next';
-import { authOptions } from '@/lib/auth';
+import { getServerAuthSession } from '@/lib/auth';
 
 export default async function NavBar() {
-  const session = await getServerSession(authOptions);
+  const session = await getServerAuthSession();
 
   return (
     <AppBar
@@ -27,9 +26,7 @@ export default async function NavBar() {
       >
         Training hub
       </Link>
-      <Typography variant="body2">
-        Logged in as {session?.user?.name}
-      </Typography>
+      <Typography variant="body2">Logged in as {session.user.name}</Typography>
       <SignOutButton />
     </AppBar>
   );

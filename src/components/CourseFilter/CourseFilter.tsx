@@ -15,28 +15,31 @@ import {
 import ClearIcon from '@mui/icons-material/Clear';
 import { useTheme } from '@mui/material/styles';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
-import { Course, Prisma } from '@prisma/client';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import CourseList from '../CourseList/CourseList';
 import { DatePicker } from '@mui/x-date-pickers';
-
-type CoursePrismaType = Prisma.CourseGetPayload<Prisma.CourseDefaultArgs>;
-type TagPrismaType = Prisma.TagGetPayload<Prisma.TagDefaultArgs>;
+import { CourseWithTagsAndStudentCount } from '@/lib/prisma/courses';
 
 type CourseFilterProps = {
-  courses: CoursePrismaType[];
-  tags: TagPrismaType[];
+  initialCourses: CourseWithTagsAndStudentCount[];
+  initialTags: any;
+  openedCourse: CourseWithTagsAndStudentCount | undefined;
+  usersEnrolledCourseIds: string[];
 };
 
 export default function CourseFilter({
-  courses: initialCourses,
-  tags: initialTags,
+  initialCourses,
+  initialTags,
+  openedCourse,
+  usersEnrolledCourseIds,
 }: CourseFilterProps) {
   const { palette } = useTheme();
 
   const [searchTerm, setSearchTerm] = useState('');
-  const [filteredCourses, setFilteredCourses] = useState<Course[]>([]);
+  const [filteredCourses, setFilteredCourses] = useState<
+    CourseWithTagsAndStudentCount[]
+  >([]);
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
 
@@ -176,7 +179,7 @@ export default function CourseFilter({
             data-testid="tag-select"
           >
             <MenuItem value="all tags">All Tags</MenuItem>
-            {initialTags.map((tag) => (
+            {initialTags.map((tag: any) => (
               <MenuItem key={tag.id} value={tag.name}>
                 {tag.name}
               </MenuItem>
@@ -218,7 +221,13 @@ export default function CourseFilter({
           />
         </LocalizationProvider>
       </Box>
-      <CourseList courses={filteredCourses} />
+
+      <CourseList
+        courses={filteredCourses}
+        openedCourse={openedCourse}
+        usersEnrolledCourseIds={usersEnrolledCourseIds}
+      />
+
       {filteredCourses.length === 0 && (
         <Typography
           variant="h5"

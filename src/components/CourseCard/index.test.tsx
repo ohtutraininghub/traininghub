@@ -1,16 +1,19 @@
 import { renderWithTheme } from '@/lib/test-utils';
-import CourseCard from './CourseCard';
-import { Course } from '@prisma/client';
+import { CourseWithTagsAndStudentCount } from '@/lib/prisma/courses';
 import { screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import CourseCard from '.';
 
-const course: Course = {
+const course: CourseWithTagsAndStudentCount = {
   id: '22',
   name: 'Test course',
   description: 'A Test course',
   startDate: new Date(),
   endDate: new Date(),
   maxStudents: 42,
+  _count: {
+    students: 0,
+  },
+  tags: [],
 };
 
 beforeEach(() => {
@@ -24,12 +27,6 @@ describe('CourseCard tests', () => {
     expect(
       screen.getByText(`0 / ${course.maxStudents}`, { exact: false })
     ).toBeVisible();
-    expect(screen.getByText(course.description)).not.toBeVisible();
-  });
-
-  it('Course description should be visible when collapse is opened', async () => {
-    const toggle = screen.getByRole('button');
-    await userEvent.click(toggle);
-    expect(screen.getByText(course.description)).toBeVisible();
+    expect(screen.queryByText(course.description)).not.toBeInTheDocument();
   });
 });

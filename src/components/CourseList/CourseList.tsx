@@ -1,18 +1,27 @@
 'use client';
 
 import { Grid } from '@mui/material';
-import CourseCard from '../CourseCard/CourseCard';
-import { Prisma } from '@prisma/client';
-
-type CoursePrismaType = Prisma.CourseGetPayload<Prisma.CourseDefaultArgs>;
+import { CourseWithTagsAndStudentCount } from '@/lib/prisma/courses';
+import CourseCard from '@/components/CourseCard/';
+import CourseModal from '@/components/CourseModal/CourseModal';
 
 type CourseListProps = {
-  courses: CoursePrismaType[];
+  courses: CourseWithTagsAndStudentCount[];
+  openedCourse: CourseWithTagsAndStudentCount | undefined;
+  usersEnrolledCourseIds: string[];
 };
 
-export default function CourseList({ courses }: CourseListProps) {
+export default function CourseList({
+  courses,
+  openedCourse,
+  usersEnrolledCourseIds,
+}: CourseListProps) {
   return (
     <>
+      <CourseModal
+        course={openedCourse}
+        usersEnrolledCourseIds={usersEnrolledCourseIds}
+      />
       <h1>Courses</h1>
       <Grid
         container
