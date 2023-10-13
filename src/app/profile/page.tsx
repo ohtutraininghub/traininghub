@@ -3,8 +3,13 @@ import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma/prisma';
 import ProfileView from '@/components/ProfileView';
 import Container from '@mui/material/Container/Container';
+import CourseModal from '@/components/CourseModal/CourseModal';
 
-export default async function ProfilePage() {
+type Props = {
+  searchParams: { courseId?: string };
+};
+
+export default async function ProfilePage({ searchParams }: Props) {
   const session = await getServerSession(authOptions);
 
   const userData = await prisma.user.findUnique({
@@ -13,13 +18,27 @@ export default async function ProfilePage() {
     },
     include: {
       courses: {
+        include: {
+          tags: true,
+          _count: {
+            select: {
+              students: true,
+            },
+          },
+        },
         orderBy: [{ startDate: 'asc' }, { name: 'asc' }],
       },
     },
   });
 
+  const courseIds = userData?.courses.map((course) => course.id) ?? [];
+  const openedCourse = userData?.courses.find(
+    (course) => course.id === searchParams.courseId
+  );
+
   return (
     <Container maxWidth="md">
+      <CourseModal course={openedCourse} usersEnrolledCourseIds={courseIds} />
       <ProfileView
         userDetails={{
           name: userData?.name ?? '',

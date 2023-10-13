@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { List } from '@mui/material';
+import { Link, List } from '@mui/material';
 import { ListItem } from '@mui/material';
 import { ListItemText } from '@mui/material';
 import { Divider } from '@mui/material';
@@ -85,33 +85,49 @@ export default function ProfileCourseList({
             >
               {courses.map((course: Course, count: number) => (
                 <React.Fragment key={course.id}>
-                  <ListItem
-                    key={course.id}
-                    style={{ display: 'flex', justifyContent: 'space-between' }}
+                  <Link
+                    href={`/profile/?courseId=${course.id}`}
+                    color="inherit"
+                    style={{ textDecoration: 'none' }}
                   >
-                    <ListItemText
-                      primary={course.name}
-                      secondary={`${formatDate({
-                        date: course.startDate,
-                      })} - ${formatDate({ date: course.endDate })}`}
-                    />
-                    {timer && (
-                      <Chip
-                        icon={<TimerIcon />}
-                        label={
-                          daysUntilStart(course.startDate) === 0
-                            ? 'Starts today'
-                            : daysUntilStart(course.startDate) === 1
-                            ? 'Starts in 1 day'
-                            : `Starts in ${daysUntilStart(
-                                course.startDate
-                              )} days`
-                        }
-                        size="small"
-                        style={{ marginLeft: 'auto' }}
+                    <ListItem
+                      key={course.id}
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                      }}
+                      onMouseEnter={(e) =>
+                        (e.currentTarget.style.backgroundColor =
+                          palette.secondary.light)
+                      }
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.style.backgroundColor = 'transparent')
+                      }
+                    >
+                      <ListItemText
+                        primary={course.name}
+                        secondary={`${formatDate({
+                          date: course.startDate,
+                        })} - ${formatDate({ date: course.endDate })}`}
                       />
-                    )}
-                  </ListItem>
+                      {timer && (
+                        <Chip
+                          icon={<TimerIcon />}
+                          label={
+                            daysUntilStart(course.startDate) === 0
+                              ? 'Starts today'
+                              : daysUntilStart(course.startDate) === 1
+                              ? 'Starts in 1 day'
+                              : `Starts in ${daysUntilStart(
+                                  course.startDate
+                                )} days`
+                          }
+                          size="small"
+                          style={{ marginLeft: 'auto' }}
+                        />
+                      )}
+                    </ListItem>
+                  </Link>
                   {count < courses.length - 1 && <Divider />}
                 </React.Fragment>
               ))}
