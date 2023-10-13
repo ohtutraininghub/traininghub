@@ -1,21 +1,11 @@
 import React from 'react';
-import '@testing-library/jest-dom';
 import { fireEvent, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { renderWithTheme } from '@/lib/test-utils';
 import CourseFilter from './CourseFilter';
+import { CourseWithTagsAndStudentCount } from '@/lib/prisma/courses';
 
-type Course = {
-  id: string;
-  name: string;
-  description: string;
-  startDate: Date;
-  endDate: Date;
-  maxStudents: number;
-  tags: string[];
-};
-
-const initialCourses: Course[] = [
+const initialCourses: CourseWithTagsAndStudentCount[] = [
   {
     id: '1',
     name: 'Python',
@@ -23,7 +13,12 @@ const initialCourses: Course[] = [
     startDate: new Date('2023-10-27T00:00:00Z'),
     endDate: new Date('2023-11-28T00:00:00Z'),
     maxStudents: 20,
-    tags: ['Testing', 'Python', 'Robot Framework'],
+    tags: [
+      { id: '9', name: 'Testing' },
+      { id: '7', name: 'Python' },
+      { id: '8', name: 'Robot Framework' },
+    ],
+    _count: { students: 0 },
   },
   {
     id: '2',
@@ -32,7 +27,11 @@ const initialCourses: Course[] = [
     startDate: new Date('2023-11-10T00:00:00Z'),
     endDate: new Date('2023-12-12T00:00:00Z'),
     maxStudents: 25,
-    tags: ['CI/CD', 'Jenkins'],
+    tags: [
+      { id: '2', name: 'CI/CD' },
+      { id: '5', name: 'Jenkins' },
+    ],
+    _count: { students: 0 },
   },
   {
     id: '3',
@@ -41,7 +40,8 @@ const initialCourses: Course[] = [
     startDate: new Date('2023-11-15T00:00:00Z'),
     endDate: new Date('2023-12-18T00:00:00Z'),
     maxStudents: 18,
-    tags: ['Programming', 'Python'],
+    tags: [{ id: '7', name: 'Python' }],
+    _count: { students: 0 },
   },
   {
     id: '4',
@@ -50,7 +50,12 @@ const initialCourses: Course[] = [
     startDate: new Date('2023-12-01T00:00:00Z'),
     endDate: new Date('2023-12-04T00:00:00Z'),
     maxStudents: 22,
-    tags: ['Kubernetes', 'Docker', 'CI/CD'],
+    tags: [
+      { id: '6', name: 'Kubernetes' },
+      { id: '3', name: 'Docker' },
+      { id: '2', name: 'CI/CD' },
+    ],
+    _count: { students: 0 },
   },
 ];
 
@@ -71,6 +76,8 @@ const initialTags: Tag[] = [
   { id: '9', name: 'Testing' },
 ];
 
+console.log('jeees');
+
 beforeEach(async () => {
   renderWithTheme(
     <CourseFilter
@@ -84,6 +91,7 @@ beforeEach(async () => {
 
 describe('Coursefilter', () => {
   it('filters with a name', async () => {
+    console.log('jees');
     const courseName = screen.getByTestId('search-paper');
     await userEvent.type(courseName, 'rea');
     expect(screen.getByText('React framework')).toBeInTheDocument();
