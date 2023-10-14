@@ -58,6 +58,7 @@ export default function CourseForm({ courseData }: Props) {
       reset();
     }
     router.push('/');
+    router.refresh();
   };
 
   return (
