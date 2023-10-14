@@ -11,6 +11,7 @@ const tooLongTag = {
   name: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
 };
 const emptyTag = { name: '' };
+const extraSpacesTag = { name: 'Robot  Framework' };
 
 beforeEach(async () => {
   await prisma.tag.deleteMany({});
@@ -97,6 +98,21 @@ describe('API', () => {
       expect(data.message).toBe(
         'The maximum length for a tag is 50 characters.'
       );
+      expect(data.messageType).toBe(MessageType.ERROR);
+      expect(response.status).toBe(StatusCodeType.BAD_REQUEST);
+    });
+  });
+  describe('POST', () => {
+    it('fails if there is consecutive spaces in the tag name', async () => {
+      const { req } = createMocks<NextRequest>({
+        method: 'POST',
+        json: () => extraSpacesTag,
+      });
+
+      const response = await POST(req);
+      const data = await response.json();
+
+      expect(data.message).toBe('Consecutive spaces are not allowed.');
       expect(data.messageType).toBe(MessageType.ERROR);
       expect(response.status).toBe(StatusCodeType.BAD_REQUEST);
     });
