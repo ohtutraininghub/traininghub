@@ -2,7 +2,7 @@ import React from 'react';
 import { fireEvent, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { renderWithTheme } from '@/lib/test-utils';
-import CourseFilter from './CourseFilter';
+import MockedCourseFilter from './MockedCourseFilter';
 import { CourseWithTagsAndStudentCount } from '@/lib/prisma/courses';
 
 const initialCourses: CourseWithTagsAndStudentCount[] = [
@@ -76,25 +76,23 @@ const initialTags: Tag[] = [
   { id: '9', name: 'Testing' },
 ];
 
-console.log('jeees');
-
 beforeEach(async () => {
+  jest.spyOn(console, 'error').mockImplementation(() => {});
   renderWithTheme(
-    <CourseFilter
+    <MockedCourseFilter
       initialCourses={initialCourses}
       initialTags={initialTags}
-      openedCourse={undefined}
-      usersEnrolledCourseIds={[]}
     />
   );
 });
 
 describe('Coursefilter', () => {
   it('filters with a name', async () => {
-    console.log('jees');
     const courseName = screen.getByTestId('search-paper');
     await userEvent.type(courseName, 'rea');
     expect(screen.getByText('React framework')).toBeInTheDocument();
+    await userEvent.type(courseName, 'dddd');
+    expect(screen.getByText('No courses found')).toBeInTheDocument();
   });
 
   it('filters with a tag', async () => {
