@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
     if (!course) {
       return errorResponse({
         message: 'Could not find course with given identifier!',
-        statusCode: StatusCodeType.UNPROCESSABLE_CONTENT,
+        statusCode: StatusCodeType.NOT_FOUND,
       });
     }
 

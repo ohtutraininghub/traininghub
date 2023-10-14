@@ -4,12 +4,14 @@ import { fireEvent, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { renderWithTheme } from '@/lib/test-utils';
 import CourseForm from './CourseForm';
+import { dateToDateTimeLocal } from '@/lib/util';
 
 window.alert = jest.fn();
 
 jest.mock('next/navigation', () => ({
   useRouter() {
     return {
+      push: jest.fn(),
       refresh: jest.fn(),
     };
   },
@@ -32,6 +34,7 @@ var mockFetch = jest.fn((...args: any[]) =>
 
 jest.mock('../../lib/response/fetchUtil', () => ({
   post: (...args: any[]) => mockFetch(...args),
+  update: (...args: any[]) => mockFetch(...args),
 }));
 
 const requiredErrors = [
@@ -42,12 +45,9 @@ const requiredErrors = [
   'Max students is required',
 ];
 
-beforeEach(() => {
-  renderWithTheme(<CourseForm />);
-});
-
-describe('Course Form Tests', () => {
+describe('Course Form New Course Tests', () => {
   it('Required errors for form fields are displayed correctly', async () => {
+    renderWithTheme(<CourseForm />);
     // Clear the max students input because it has a default value
     const maxStudents = screen.getByTestId('courseFormMaxStudents');
     await userEvent.clear(maxStudents);
@@ -61,6 +61,8 @@ describe('Course Form Tests', () => {
   });
 
   it('Form is submitted with correct values', async () => {
+    renderWithTheme(<CourseForm />);
+
     const inputValues = {
       name: 'New course',
       description: 'A test course',
@@ -93,6 +95,65 @@ describe('Course Form Tests', () => {
         endDate: new Date(inputValues.endDate),
         maxStudents: Number(inputValues.maxStudents),
         startDate: new Date(inputValues.startDate),
+      });
+    });
+  });
+});
+
+describe('Course Form Course Edit Tests', () => {
+  it('Form is filled with course values in Edit Mode', async () => {
+    const course = {
+      id: '1234',
+      name: 'New course',
+      description: 'A test course',
+      startDate: new Date(),
+      endDate: new Date(),
+      maxStudents: 55,
+    };
+    renderWithTheme(<CourseForm courseData={course} />);
+
+    const name = screen
+      .getByTestId('courseFormName')
+      .querySelector('input') as HTMLInputElement;
+    const description = screen.getByTestId(
+      'courseFormDescription'
+    ) as HTMLInputElement;
+    const startDate = screen.getByTestId(
+      'courseFormStartDate'
+    ) as HTMLInputElement;
+    const endDate = screen.getByTestId('courseFormEndDate') as HTMLInputElement;
+    const maxStudents = screen.getByTestId(
+      'courseFormMaxStudents'
+    ) as HTMLInputElement;
+
+    expect(name.value).toBe(course.name);
+    expect(description.value).toBe(course.description);
+    expect(maxStudents.value).toBe(course.maxStudents.toString());
+    expect(startDate.value).toBe(dateToDateTimeLocal(course.startDate));
+    expect(endDate.value).toBe(dateToDateTimeLocal(course.endDate));
+  });
+
+  it('Form is submitted with correct values in Edit Mode', async () => {
+    const course = {
+      id: '1234',
+      name: 'New course',
+      description: 'A test course',
+      startDate: new Date(),
+      endDate: new Date(),
+      maxStudents: 55,
+    };
+
+    renderWithTheme(<CourseForm courseData={course} />);
+
+    const submitButton = screen.getByTestId('courseFormSubmit');
+    await userEvent.click(submitButton);
+
+    await waitFor(() => {
+      expect(mockFetch).toBeCalledWith('/api/course', {
+        ...course,
+        endDate: new Date(course.endDate),
+        maxStudents: Number(course.maxStudents),
+        startDate: new Date(course.startDate),
       });
     });
   });
