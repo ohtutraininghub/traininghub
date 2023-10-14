@@ -21,8 +21,8 @@
     "lint:write": "next lint --fix",
     "lint:test": "next lint",
     "_FORMAT SCRIPTS": "===",
-    "format:write": "prettier . --write",
-    "format:test": "prettier . --check",
+    "format:write": "prettier . --write --plugin=prettier-plugin-prisma",
+    "format:test": "prettier . --check --plugin=prettier-plugin-prisma",
     "_LIFECYCLE SCRIPTS": "===",
     "prepare": "node -e \"try { require('husky').install() } catch (e) {if (e.code !== 'MODULE_NOT_FOUND') throw e}\"",
     "precommit": "lint-staged"
@@ -32,7 +32,7 @@
       "eslint --quiet --fix"
     ],
     "*.{json,js,ts,jsx,tsx,html,prisma,md,yml,yaml}": [
-      "prettier --write --ignore-unknown"
+      "prettier --write --ignore-unknown --plugin=prettier-plugin-prisma"
     ]
   },
   "prisma": {
@@ -46,7 +46,7 @@
     "@hookform/resolvers": "^3.3.1",
     "@mui/icons-material": "^5.14.8",
     "@mui/material": "^5.14.8",
-    "@prisma/client": "^5.3.1",
+    "@prisma/client": "^5.4.1",
     "@sentry/nextjs": "^7.73.0",
     "@types/node": "20.5.9",
     "@types/react": "18.2.21",
@@ -73,9 +73,10 @@
     "jest-environment-jsdom": "^29.7.0",
     "jest-environment-node": "^29.7.0",
     "lint-staged": "^14.0.1",
+    "node-mocks-http": "^1.13.0",
     "prettier": "^3.0.3",
     "prettier-plugin-prisma": "^5.0.0",
-    "prisma": "^5.3.1",
+    "prisma": "^5.4.1",
     "ts-node": "^10.9.1"
   }
 }

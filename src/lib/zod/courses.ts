@@ -1,6 +1,24 @@
 import z from 'zod';
 
-export const courseSchema = z
+const withRefine = <O extends CourseSchemaType, T extends z.ZodTypeDef, I>(
+  schema: z.ZodType<O, T, I>
+) => {
+  return schema.refine(
+    ({ startDate, endDate }) => {
+      // don't show this error if either of the date fields is still empty
+      if (!startDate || !endDate) {
+        return true;
+      }
+      return startDate.getTime() <= endDate.getTime();
+    },
+    {
+      message: 'The end date cannot be before the start date',
+      path: ['endDate'],
+    }
+  );
+};
+
+const courseSchemaBase = z
   .object({
     name: z.string().min(1, 'Name is required'),
     description: z.string().min(1, 'Description is required'),
@@ -24,19 +42,20 @@ export const courseSchema = z
     maxStudents: z.number().min(1, 'Max students is required'),
     tags: z.array(z.string().min(1, 'Tag name cannot be empty')),
   })
-  .strict()
-  .refine(
-    ({ startDate, endDate }) => {
-      // don't show this error if either of the date fields is still empty
-      if (!startDate || !endDate) {
-        return true;
-      }
-      return startDate.getTime() <= endDate.getTime();
-    },
-    {
-      message: 'The end date cannot be before the start date',
-      path: ['endDate'],
-    }
-  );
+  .strict();
 
-export type CourseSchemaType = z.infer<typeof courseSchema>;
+const courseSchemaBaseWithId = courseSchemaBase.extend({
+  id: z.string().min(1, 'Id is required'),
+});
+
+export const courseSchema = withRefine(courseSchemaBase);
+export const courseSchemaWithId = withRefine(courseSchemaBaseWithId);
+
+export type CourseSchemaType = z.infer<typeof courseSchemaBase>;
+export type CourseSchemaWithIdType = z.infer<typeof courseSchemaBaseWithId>;
+
+export const courseSignupSchema = z.string(
+  z.string().min(1, 'Course id is required')
+);
+
+export type CourseSignupSchemaType = z.infer<typeof courseSignupSchema>;

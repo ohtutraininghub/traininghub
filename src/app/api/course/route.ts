@@ -1,9 +1,18 @@
 import { NextResponse, NextRequest } from 'next/server';
-import { courseSchema } from '@/lib/zod/courses';
+import { courseSchema, courseSchemaWithId } from '@/lib/zod/courses';
+import {
+  StatusCodeType,
+  errorResponse,
+  successResponse,
+} from '@/lib/response/responseUtil';
 import { prisma } from '@/lib/prisma/prisma';
 import { Tag } from '@prisma/client';
-import { StatusCodeType, successResponse } from '@/lib/response/responseUtil';
 import { handleCommonErrors } from '@/lib/response/errorUtil';
+
+const parseTags = async (tags: string[]): Promise<Tag[]> => {
+  let allTags = await prisma.tag.findMany();
+  return allTags.filter((e) => tags.includes(e.name));
+};
 
 export async function GET() {
   const courses = await prisma.course.findMany();
@@ -12,17 +21,12 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
-    const data = await parseRequest(request);
-    const { name, description, startDate, endDate, maxStudents, tags } =
-      courseSchema.parse(data);
-    const parsedTags = await parseTags(tags);
+    const data = await request.json();
+    const body = courseSchema.parse(data);
+    const parsedTags = await parseTags(body.tags);
     await prisma.course.create({
       data: {
-        name,
-        description,
-        startDate,
-        endDate,
-        maxStudents,
+        ...body,
         tags: {
           connect: parsedTags?.map((tag) => ({ id: tag.id })) || [],
         },
@@ -38,22 +42,31 @@ export async function POST(request: NextRequest) {
   }
 }
 
-const parseTags = async (tags: string[]): Promise<Tag[]> => {
-  let allTags = await prisma.tag.findMany();
-  return allTags.filter((e) => tags.includes(e.name));
-};
-
-/* A helper function to determine whether the request is from the server or the client:
-return the request.json() if the request is from the client and else return the given arguments directly */
-
-const parseRequest = async (request: NextRequest) => {
+export async function PUT(request: NextRequest) {
   try {
-    return await request.json();
-  } catch (error) {
-    if (error instanceof TypeError) {
-      return request;
-    } else {
-      throw error;
+    const body = courseSchemaWithId.parse(await request.json());
+    const parsedTags = await parseTags(body.tags);
+    const course = await prisma.course.findFirst({
+      where: { id: body.id },
+    });
+    if (!course) {
+      return errorResponse({
+        message: 'Course not found',
+        statusCode: StatusCodeType.NOT_FOUND,
+      });
     }
+    await prisma.course.update({
+      where: { id: body.id },
+      data: {
+        ...body,
+        tags: { connect: parsedTags?.map((tag) => ({ id: tag.id })) || [] },
+      },
+    });
+    return successResponse({
+      message: 'Course succesfully updated!',
+      statusCode: StatusCodeType.OK,
+    });
+  } catch (error) {
+    return handleCommonErrors(error);
   }
-};
+}
