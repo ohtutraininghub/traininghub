@@ -92,17 +92,14 @@ export default function ProfileCourseList({
                   >
                     <ListItem
                       key={course.id}
-                      style={{
+                      sx={{
                         display: 'flex',
                         justifyContent: 'space-between',
+                        backgroundColor: 'transparent',
+                        '&:hover': {
+                          backgroundColor: palette.secondary.light,
+                        },
                       }}
-                      onMouseEnter={(e) =>
-                        (e.currentTarget.style.backgroundColor =
-                          palette.secondary.light)
-                      }
-                      onMouseLeave={(e) =>
-                        (e.currentTarget.style.backgroundColor = 'transparent')
-                      }
                     >
                       <ListItemText
                         primary={course.name}
