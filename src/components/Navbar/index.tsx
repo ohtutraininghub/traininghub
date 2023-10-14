@@ -26,10 +26,7 @@ export default async function NavBar() {
       >
         Training hub
       </Link>
-      <ProfileMenu
-        name={session?.user?.name ?? ''}
-        image={session?.user?.image ?? ''}
-      />
+      <ProfileMenu name={session.user.name} image={session.user.image} />
     </AppBar>
   );
 }
