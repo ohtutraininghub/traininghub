@@ -15,6 +15,7 @@ import { useMessage } from '../Providers/MessageProvider';
 import { post, update } from '@/lib/response/fetchUtil';
 import { Course } from '@prisma/client';
 import FormFieldError from '../FormFieldError/FormFieldError';
+import { dateToDateTimeLocal } from '@/lib/util';
 
 type Props = {
   courseData?: Course;
@@ -105,7 +106,9 @@ export default function CourseForm({ courseData }: Props) {
         <InputLabel htmlFor="courseFormStartDate">Start date</InputLabel>
         <Input
           {...register('startDate')}
-          // defaultValue={courseData ? '2023-01-01T12:00' : ''}
+          defaultValue={
+            courseData ? dateToDateTimeLocal(courseData.startDate) : ''
+          }
           id="courseFormStartDate"
           type="datetime-local"
           error={!!errors.startDate}
@@ -118,6 +121,9 @@ export default function CourseForm({ courseData }: Props) {
         <InputLabel htmlFor="courseFormEndDate">End date</InputLabel>
         <Input
           {...register('endDate')}
+          defaultValue={
+            courseData ? dateToDateTimeLocal(courseData.endDate) : ''
+          }
           id="courseFormEndDate"
           type="datetime-local"
           error={!!errors.endDate}
