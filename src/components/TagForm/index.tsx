@@ -23,6 +23,7 @@ export default function TagForm() {
   });
 
   const submitForm = async (data: TagSchemaType) => {
+    data.name = data.name.replace(/\s{2,}/g, ' ').trim();
     const responseJson = await post('/api/tag', data);
     notify(responseJson);
     reset();
