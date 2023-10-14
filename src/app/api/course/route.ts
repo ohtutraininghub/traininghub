@@ -1,7 +1,11 @@
 import { NextResponse, NextRequest } from 'next/server';
-import { courseSchema } from '@/lib/zod/courses';
+import { courseSchema, courseSchemaWithId } from '@/lib/zod/courses';
+import {
+  StatusCodeType,
+  errorResponse,
+  successResponse,
+} from '@/lib/response/responseUtil';
 import { prisma } from '@/lib/prisma/prisma';
-import { StatusCodeType, successResponse } from '@/lib/response/responseUtil';
 import { handleCommonErrors } from '@/lib/response/errorUtil';
 
 export async function GET() {
@@ -19,6 +23,28 @@ export async function POST(request: NextRequest) {
     return successResponse({
       message: 'Course succesfully created!',
       statusCode: StatusCodeType.CREATED,
+    });
+  } catch (error) {
+    return handleCommonErrors(error);
+  }
+}
+
+export async function PUT(request: NextRequest) {
+  try {
+    const body = courseSchemaWithId.parse(await request.json());
+    const course = await prisma.course.findFirst({
+      where: { id: body.id },
+    });
+    if (!course) {
+      return errorResponse({
+        message: 'Course not found',
+        statusCode: StatusCodeType.NOT_FOUND,
+      });
+    }
+    await prisma.course.update({ where: { id: body.id }, data: body });
+    return successResponse({
+      message: 'Course succesfully updated!',
+      statusCode: StatusCodeType.OK,
     });
   } catch (error) {
     return handleCommonErrors(error);

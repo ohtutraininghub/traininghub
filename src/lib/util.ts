@@ -7,3 +7,10 @@ export const getCourseDateString = (course: CourseWithTagsAndStudentCount) => {
     ? startDateString
     : `${startDateString} - ${endDateString}`;
 };
+
+// https://stackoverflow.com/a/66558369
+export const dateToDateTimeLocal = (date: Date) => {
+  return new Date(date.getTime() - date.getTimezoneOffset() * 60000)
+    .toISOString()
+    .slice(0, -1);
+};
