@@ -19,6 +19,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { courseSchema, CourseSchemaType } from '@/lib/zod/courses';
 import FormFieldError from '../FormFieldError/FormFieldError';
 import { Tag } from '@prisma/client';
+import { useMessage } from '../Providers/MessageProvider';
+import { post } from '@/lib/response/fetchUtil';
 
 type CourseFormProps = {
   tags: Tag[];
@@ -27,6 +29,7 @@ type CourseFormProps = {
 export default function CourseForm({ tags }: CourseFormProps) {
   const { palette } = useTheme();
   const router = useRouter();
+  const { notify } = useMessage();
 
   const {
     control,
@@ -42,22 +45,10 @@ export default function CourseForm({ tags }: CourseFormProps) {
   });
 
   const submitForm = async (data: CourseSchemaType) => {
-    try {
-      const response = await fetch('/api/course', {
-        method: 'POST',
-        body: JSON.stringify(data),
-      });
-
-      if (!response.ok) {
-        throw response;
-      }
-      reset();
-      alert('Course successfully created!');
-      router.push('/');
-    } catch (error: any) {
-      alert(error?.statusText ?? 'Internal server error');
-      console.error(error);
-    }
+    const responseJson = await post('/api/course', data);
+    notify(responseJson);
+    reset();
+    router.push('/');
   };
 
   return (

@@ -2,17 +2,12 @@ import { NextResponse, NextRequest } from 'next/server';
 import { courseSchema } from '@/lib/zod/courses';
 import { prisma } from '@/lib/prisma/prisma';
 import { Tag } from '@prisma/client';
+import { StatusCodeType, successResponse } from '@/lib/response/responseUtil';
+import { handleCommonErrors } from '@/lib/response/errorUtil';
 
 export async function GET() {
-  try {
-    const courses = await prisma.course.findMany();
-    return NextResponse.json({ data: courses }, { status: 200 });
-  } catch (error) {
-    return NextResponse.json(
-      { error: 'Internal Server Error' },
-      { status: 500 }
-    );
-  }
+  const courses = await prisma.course.findMany();
+  return NextResponse.json({ data: courses }, { status: StatusCodeType.OK });
 }
 
 export async function POST(request: NextRequest) {
@@ -34,12 +29,12 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    return NextResponse.json({ data: data }, { status: 201 });
+    return successResponse({
+      message: 'Course succesfully created!',
+      statusCode: StatusCodeType.CREATED,
+    });
   } catch (error) {
-    return NextResponse.json(
-      { error: 'Internal Server Error' },
-      { status: 500 }
-    );
+    return handleCommonErrors(error);
   }
 }
 

@@ -6,7 +6,7 @@ on:
       - staging
   pull_request:
     branches: [staging]
-    types: [opened, synchronize]
+    types: [opened, synchronize, ready_for_review]
 
 env:
   HUSKY: 0
@@ -14,6 +14,7 @@ env:
 jobs:
   smoke-test:
     runs-on: ubuntu-22.04
+    if: ${{ !github.event.pull_request.draft }}
     steps:
       - name: checkout
         uses: actions/checkout@v3
@@ -67,8 +68,38 @@ jobs:
           heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
           heroku_email: ${{ secrets.HEROKU_EMAIL }}
           usedocker: true
+          docker_build_args: |
+            NEXTAUTH_URL
+            NEXTAUTH_SECRET
+            SENTRY_ENVIRONMENT
+            NEXT_PUBLIC_SENTRY_ENVIRONMENT
+            SENTRY_AUTH_TOKEN
+            SENTRY_ORG
+            SENTRY_PROJECT
         env:
+          # NEXTAUTH
           HD_NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL }}
           HD_NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
+
+          # GOOGLE
           HD_GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
           HD_GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+
+          # SENTRY
+          HD_SENTRY_ENVIRONMENT: 'staging'
+          HD_SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          HD_SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+          HD_SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
+
+          # BUILD TIME ARGS
+
+          # NEXTAUTH
+          NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL }}
+          NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
+
+          # SENTRY
+          SENTRY_ENVIRONMENT: 'staging'
+          NEXT_PUBLIC_SENTRY_ENVIRONMENT: 'staging'
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+          SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}

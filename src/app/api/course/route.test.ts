@@ -1,3 +1,4 @@
+import { MessageType } from '@/lib/response/responseUtil';
 import { GET, POST } from './route';
 import { prisma } from '@/lib/prisma/prisma';
 
@@ -20,6 +21,7 @@ const startAfterEndCourse = {
   startDate: '2100-09-27T00:00:00Z',
   endDate: '2100-09-20T00:00:00Z',
   maxStudents: 20,
+  tags: [],
 };
 
 const studentsAsStringCourse = {
@@ -57,24 +59,35 @@ describe('API', () => {
     it('adds new course in to the database', async () => {
       const response = await POST(newCourse as any);
       const data = await response.json();
-      expect(data.data.name).toBe('Python');
+      expect(data.message).toBe('Course succesfully created!');
+      expect(data.messageType).toBe(MessageType.SUCCESS);
       expect(response.status).toBe(201);
       expect(await getTableLength()).toBe(1);
     });
     it('fails with non-number student amount', async () => {
       const response = await POST(studentsAsStringCourse as any);
-      expect(response.status).toBe(500);
-      expect(await getTableLength()).toBe(0);
+      const data = await response.json();
+      expect(data.message).toContain('Expected number, received string.');
+      expect(data.messageType).toBe(MessageType.ERROR);
+      expect(response.status).toBe(400);
     });
     it('fails if end date is prior to start date', async () => {
       const response = await POST(startAfterEndCourse as any);
-      expect(response.status).toBe(500);
+      const data = await response.json();
+      expect(data.message).toContain(
+        'The end date cannot be before the start date'
+      );
+      expect(data.messageType).toBe(MessageType.ERROR);
       expect(await getTableLength()).toBe(0);
+      expect(response.status).toBe(400);
     });
     it('fails if start date is in the past', async () => {
       const response = await POST(startDateInThePastCourse as any);
-      expect(response.status).toBe(500);
+      const data = await response.json();
+      expect(data.message).toContain('Start date cannot be in the past');
+      expect(data.messageType).toBe(MessageType.ERROR);
       expect(await getTableLength()).toBe(0);
+      expect(response.status).toBe(400);
     });
   });
 });
