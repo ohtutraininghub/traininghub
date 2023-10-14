@@ -1,5 +1,5 @@
 import CourseForm from '@/components/CourseForm/CourseForm';
-import { prisma } from '@/lib/prisma';
+import { prisma } from '@/lib/prisma/prisma';
 import { Box, Typography } from '@mui/material';
 import { notFound } from 'next/navigation';
 
