@@ -1,5 +1,5 @@
 import { MessageType } from '@/lib/response/responseUtil';
-import { GET, POST } from './route';
+import { GET, POST, PUT } from './route';
 import { prisma } from '@/lib/prisma/prisma';
 import { NextRequest } from 'next/server';
 import { createMocks } from 'node-mocks-http';
@@ -24,7 +24,7 @@ const failedCourse = {
   maxStudents: '112',
 };
 
-describe('API', () => {
+describe('Course route tests', () => {
   describe('GET', () => {
     it('returns an empty list from the database at the beginning of the tests', async () => {
       const response = await GET();
@@ -62,6 +62,29 @@ describe('API', () => {
       );
       expect(data.messageType).toBe(MessageType.ERROR);
       expect(response.status).toBe(400);
+    });
+  });
+
+  describe('PUT', () => {
+    const courseData = {
+      id: '1337',
+      name: 'Spaghetti coding 101',
+      description: 'Security by obscurity',
+      endDate: new Date().toString(),
+      startDate: new Date().toString(),
+      maxStudents: 200,
+    };
+
+    it('Should return 404 when course does not exist in the db', async () => {
+      const { req } = createMocks<NextRequest>({
+        method: 'PUT',
+        json: () => courseData,
+      });
+
+      const response = await PUT(req);
+      const data = await response.json();
+      expect(data.messageType).toBe(MessageType.ERROR);
+      expect(response.status).toBe(404);
     });
   });
 });
