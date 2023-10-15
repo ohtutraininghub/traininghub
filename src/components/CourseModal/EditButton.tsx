@@ -5,14 +5,14 @@ import EditIcon from '@mui/icons-material/Edit';
 
 export default function EditButton({ courseId }: { courseId: string }) {
   return (
-    <Link style={{ all: 'unset' }} href={`/course/${courseId}/edit`}>
+    <Link
+      style={{ all: 'unset', display: 'flex', flex: 1 }}
+      href={`/course/${courseId}/edit`}
+    >
       <Box
         sx={{
-          position: 'absolute',
-          bottom: '24px',
-          left: '24px',
           display: 'flex',
-          flexDirection: 'column',
+          flexDirection: { xs: 'row-reverse', sm: 'column' },
           alignItems: 'center',
           width: 'fit-content',
           gap: 1,

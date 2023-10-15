@@ -48,7 +48,6 @@ export default function CourseModal({ course, usersEnrolledCourseIds }: Props) {
           textAlign: 'center',
         }}
       >
-        <EditButton courseId={course.id} />
         <CourseModalCloseButton />
         <Typography variant="h3">{course.name}</Typography>
         <Typography sx={{ my: 2 }}>{courseDate}</Typography>
@@ -86,15 +85,32 @@ export default function CourseModal({ course, usersEnrolledCourseIds }: Props) {
         >
           <Typography>{course.description}</Typography>
         </pre>
-        <Box sx={{ mt: 'auto', pt: 3 }}>
-          <Typography sx={{ mb: 1 }}>
-            Enrolls: {course._count.students} / {course.maxStudents}
-          </Typography>
-          <EnrollHolder
-            isUserEnrolled={isUserEnrolled}
-            courseId={course.id}
-            isCourseFull={isCourseFull}
-          />
+        <Box
+          sx={{
+            mt: 'auto',
+            pt: 3,
+            display: 'flex',
+            flexDirection: { xs: 'column-reverse', sm: 'row' },
+            alignItems: 'center',
+            gap: 1,
+          }}
+        >
+          <EditButton courseId={course.id} />
+          <Box
+            sx={{
+              flex: 1,
+            }}
+          >
+            <Typography sx={{ mb: 1 }}>
+              Enrolls: {course._count.students} / {course.maxStudents}
+            </Typography>
+            <EnrollHolder
+              isUserEnrolled={isUserEnrolled}
+              courseId={course.id}
+              isCourseFull={isCourseFull}
+            />
+          </Box>
+          <Box sx={{ flex: 1 }} />
         </Box>
       </Card>
     </Modal>
