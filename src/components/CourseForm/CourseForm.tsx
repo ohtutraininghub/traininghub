@@ -161,17 +161,14 @@ export default function CourseForm({ tags, courseData }: CourseFormProps) {
                         value={tag.name}
                         divider
                         sx={{
+                          '&.Mui-selected': {
+                            backgroundColor: palette.secondary.main,
+                          },
                           '&.Mui-selected.Mui-focusVisible': {
                             backgroundColor: palette.secondary.dark,
                           },
                           '&:hover': {
                             backgroundColor: palette.secondary.light,
-                          },
-                          '&:focus': {
-                            backgroundColor: palette.secondary.main,
-                          },
-                          '&.Mui-selected': {
-                            backgroundColor: palette.secondary.main,
                           },
                           '&.Mui-selected:hover': {
                             backgroundColor: palette.secondary.main,
