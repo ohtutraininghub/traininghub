@@ -1,7 +1,6 @@
 import CourseForm from '@/components/CourseForm/CourseForm';
 import { getTags } from '@/lib/prisma/courses';
 import { prisma } from '@/lib/prisma/prisma';
-import { Box, Typography } from '@mui/material';
 import { notFound } from 'next/navigation';
 
 type Props = {
@@ -21,21 +20,5 @@ export default async function CourseEditPage({ params }: Props) {
     notFound();
   }
 
-  return (
-    <Box
-      sx={{
-        height: '100%',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        flexDirection: 'column',
-        pb: 10,
-      }}
-    >
-      <Typography variant="h4" sx={{ m: 4, textAlign: 'center' }}>
-        Edit Course Details
-      </Typography>
-      <CourseForm tags={tags} courseData={course} />
-    </Box>
-  );
+  return <CourseForm tags={tags} courseData={course} />;
 }

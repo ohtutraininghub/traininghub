@@ -82,13 +82,17 @@ export default function CourseForm({ tags, courseData }: CourseFormProps) {
           p: 4,
           mb: 4,
           borderRadius: 2,
-          maxWidth: '95%',
           backgroundColor: palette.secondary.main,
           boxShadow: 8,
         }}
       >
-        <Typography variant="h2" color={palette.black.main}>
-          Add a new course
+        <Typography
+          variant="h4"
+          color={palette.black.main}
+          textAlign="center"
+          marginBottom={1}
+        >
+          {!isEditMode ? 'Add New Course' : 'Edit Course Details'}
         </Typography>
         <form
           id="courseForm"
