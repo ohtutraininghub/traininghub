@@ -1,7 +1,8 @@
 'use client';
 
 import React from 'react';
-import { Link, List } from '@mui/material';
+import Link from 'next/link';
+import { List } from '@mui/material';
 import { ListItem } from '@mui/material';
 import { ListItemText } from '@mui/material';
 import { Divider } from '@mui/material';
@@ -87,7 +88,6 @@ export default function ProfileCourseList({
                 <React.Fragment key={course.id}>
                   <Link
                     href={`/profile/?courseId=${course.id}`}
-                    color="inherit"
                     style={{ textDecoration: 'none' }}
                   >
                     <ListItem
@@ -106,6 +106,7 @@ export default function ProfileCourseList({
                         secondary={`${formatDate({
                           date: course.startDate,
                         })} - ${formatDate({ date: course.endDate })}`}
+                        sx={{ color: palette.black.main }}
                       />
                       {timer && (
                         <Chip
