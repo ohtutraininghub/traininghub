@@ -46,8 +46,11 @@ const requiredErrors = [
 ];
 
 describe('Course Form New Course Tests', () => {
+  beforeEach(() => {
+    renderWithTheme(<CourseForm tags={[]} />);
+  });
+
   it('Required errors for form fields are displayed correctly', async () => {
-    renderWithTheme(<CourseForm />);
     // Clear the max students input because it has a default value
     const maxStudents = screen.getByTestId('courseFormMaxStudents');
     await userEvent.clear(maxStudents);
@@ -61,14 +64,13 @@ describe('Course Form New Course Tests', () => {
   });
 
   it('Form is submitted with correct values', async () => {
-    renderWithTheme(<CourseForm />);
-
     const inputValues = {
       name: 'New course',
       description: 'A test course',
       startDate: '2053-09-13T16:43',
       endDate: '2053-10-13T18:50',
       maxStudents: '55',
+      tags: [],
     };
 
     const name = screen.getByTestId('courseFormName');
@@ -109,8 +111,9 @@ describe('Course Form Course Edit Tests', () => {
       startDate: new Date(),
       endDate: new Date(),
       maxStudents: 55,
+      tags: [],
     };
-    renderWithTheme(<CourseForm courseData={course} />);
+    renderWithTheme(<CourseForm tags={[]} courseData={course} />);
 
     const name = screen
       .getByTestId('courseFormName')
@@ -138,12 +141,13 @@ describe('Course Form Course Edit Tests', () => {
       id: '1234',
       name: 'New course',
       description: 'A test course',
-      startDate: new Date(),
-      endDate: new Date(),
+      startDate: new Date(Date.now() + 1000 * 60 * 60 * 24),
+      endDate: new Date(Date.now() + 1000 * 60 * 60 * 24 * 2),
       maxStudents: 55,
+      tags: [],
     };
 
-    renderWithTheme(<CourseForm courseData={course} />);
+    renderWithTheme(<CourseForm tags={[]} courseData={course} />);
 
     const submitButton = screen.getByTestId('courseFormSubmit');
     await userEvent.click(submitButton);

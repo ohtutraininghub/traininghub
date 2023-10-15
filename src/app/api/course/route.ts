@@ -6,7 +6,13 @@ import {
   successResponse,
 } from '@/lib/response/responseUtil';
 import { prisma } from '@/lib/prisma/prisma';
+import { Tag } from '@prisma/client';
 import { handleCommonErrors } from '@/lib/response/errorUtil';
+
+const parseTags = async (tags: string[]): Promise<Tag[]> => {
+  let allTags = await prisma.tag.findMany();
+  return allTags.filter((e) => tags.includes(e.name));
+};
 
 export async function GET() {
   const courses = await prisma.course.findMany();
@@ -15,13 +21,20 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
-    const dataJson = await request.json();
-    const dataJsonParse = courseSchema.parse(dataJson);
+    const data = await request.json();
+    const body = courseSchema.parse(data);
+    const parsedTags = await parseTags(body.tags);
     await prisma.course.create({
-      data: dataJsonParse,
+      data: {
+        ...body,
+        tags: {
+          connect: parsedTags?.map((tag) => ({ id: tag.id })) || [],
+        },
+      },
     });
+
     return successResponse({
-      message: 'Course succesfully created!',
+      message: 'Course successfully created!',
       statusCode: StatusCodeType.CREATED,
     });
   } catch (error) {
@@ -32,6 +45,7 @@ export async function POST(request: NextRequest) {
 export async function PUT(request: NextRequest) {
   try {
     const body = courseSchemaWithId.parse(await request.json());
+    const parsedTags = await parseTags(body.tags);
     const course = await prisma.course.findFirst({
       where: { id: body.id },
     });
@@ -41,9 +55,18 @@ export async function PUT(request: NextRequest) {
         statusCode: StatusCodeType.NOT_FOUND,
       });
     }
-    await prisma.course.update({ where: { id: body.id }, data: body });
+    await prisma.course.update({
+      where: { id: body.id },
+      data: {
+        ...body,
+        tags: {
+          set: [],
+          connect: parsedTags?.map((tag) => ({ id: tag.id })) || [],
+        },
+      },
+    });
     return successResponse({
-      message: 'Course succesfully updated!',
+      message: 'Course successfully updated!',
       statusCode: StatusCodeType.OK,
     });
   } catch (error) {
