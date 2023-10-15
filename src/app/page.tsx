@@ -1,8 +1,9 @@
+import NewCourseButton from '@/components/Buttons/NewCourseButton';
+import NewTagButton from '@/components/Buttons/NewTagButton';
 import { notFound } from 'next/navigation';
 import { getCourses, getEnrolledCourseIdsByUserId } from '@/lib/prisma/courses';
 import { getServerAuthSession } from '@/lib/auth';
 import CourseFilter from '@/components/CourseFilter/CourseFilter';
-import CourseForm from '@/components/CourseForm/CourseForm';
 import { prisma } from '@/lib/prisma/prisma';
 
 export const dynamic = 'force-dynamic';
@@ -36,8 +37,8 @@ export default async function HomePage({ searchParams }: Props) {
         padding: '0px 16px 100px 16px',
       }}
     >
-      <h2>Add new Course</h2>
-      <CourseForm />
+      <NewCourseButton />
+      <NewTagButton />
       <CourseFilter
         initialCourses={courses}
         initialTags={tags}

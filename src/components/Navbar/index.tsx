@@ -1,7 +1,7 @@
-import { AppBar, Typography } from '@mui/material';
+import { AppBar } from '@mui/material';
 import Link from 'next/link';
-import { SignOutButton } from '@/components/Buttons/Buttons';
 import { getServerAuthSession } from '@/lib/auth';
+import ProfileMenu from '@/components/ProfileMenu';
 
 export default async function NavBar() {
   const session = await getServerAuthSession();
@@ -15,7 +15,7 @@ export default async function NavBar() {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        padding: { xs: '0 0.5em', sm: '0 1em' },
+        padding: { xs: '0 0 0 0.5em', sm: '0 0 0 1em' },
         marginBottom: '2em',
         textAlign: 'center',
       }}
@@ -26,8 +26,7 @@ export default async function NavBar() {
       >
         Training hub
       </Link>
-      <Typography variant="body2">Logged in as {session.user.name}</Typography>
-      <SignOutButton />
+      <ProfileMenu name={session.user.name} image={session.user.image} />
     </AppBar>
   );
 }

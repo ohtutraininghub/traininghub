@@ -1,6 +1,6 @@
 'use client';
 
-import { Grid } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 import { CourseWithTagsAndStudentCount } from '@/lib/prisma/courses';
 import CourseCard from '@/components/CourseCard/';
 import CourseModal from '@/components/CourseModal/CourseModal';
@@ -22,7 +22,7 @@ export default function CourseList({
         course={openedCourse}
         usersEnrolledCourseIds={usersEnrolledCourseIds}
       />
-      <h1>Courses</h1>
+      <Typography variant="h4">Courses</Typography>
       <Grid
         container
         spacing={2}

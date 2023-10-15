@@ -1,6 +1,6 @@
 import CourseForm from '@/components/CourseForm/CourseForm';
-import { prisma } from '@/lib/prisma/prisma';
-import { Box, Typography } from '@mui/material';
+import { getCourseById } from '@/lib/prisma/courses';
+import { getTags } from '@/lib/prisma/tags';
 import { notFound } from 'next/navigation';
 
 type Props = {
@@ -11,29 +11,12 @@ type Props = {
 
 export default async function CourseEditPage({ params }: Props) {
   const courseId = params.id;
-  const course = await prisma.course.findFirst({
-    where: { id: courseId },
-  });
+  const tags = await getTags();
+  const course = await getCourseById(courseId);
 
   if (!course) {
     notFound();
   }
 
-  return (
-    <Box
-      sx={{
-        height: '100%',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        flexDirection: 'column',
-        pb: 10,
-      }}
-    >
-      <Typography variant="h4" sx={{ m: 4, textAlign: 'center' }}>
-        Edit Course Details
-      </Typography>
-      <CourseForm courseData={course} />
-    </Box>
-  );
+  return <CourseForm tags={tags} courseData={course} />;
 }
