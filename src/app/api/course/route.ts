@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
     });
 
     return successResponse({
-      message: 'Course succesfully created!',
+      message: 'Course successfully created!',
       statusCode: StatusCodeType.CREATED,
     });
   } catch (error) {
@@ -66,7 +66,7 @@ export async function PUT(request: NextRequest) {
       },
     });
     return successResponse({
-      message: 'Course succesfully updated!',
+      message: 'Course successfully updated!',
       statusCode: StatusCodeType.OK,
     });
   } catch (error) {
