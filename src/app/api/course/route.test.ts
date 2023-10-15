@@ -32,6 +32,7 @@ const studentsAsStringCourse = {
   startDate: '2100-09-27T00:00:00Z',
   endDate: '2100-09-28T00:00:00Z',
   maxStudents: '112',
+  tags: [],
 };
 
 const startDateInThePastCourse = {
@@ -40,11 +41,19 @@ const startDateInThePastCourse = {
   startDate: '1900-09-27T00:00:00Z',
   endDate: '2100-09-28T00:00:00Z',
   maxStudents: 20,
+  tags: [],
 };
 
 const getTableLength = async () => {
   const allCourses = await prisma.course.findMany();
   return allCourses.length;
+};
+
+const mockPostRequest = (body: any) => {
+  return createMocks<NextRequest>({
+    method: 'POST',
+    json: () => body,
+  }).req;
 };
 
 describe('API', () => {
@@ -59,11 +68,7 @@ describe('API', () => {
 
   describe('POST', () => {
     it('adds new course in to the database', async () => {
-      const { req } = createMocks<NextRequest>({
-        method: 'POST',
-        json: () => newCourse,
-      });
-
+      const req = mockPostRequest(newCourse);
       const response = await POST(req);
       const data = await response.json();
 
@@ -74,19 +79,17 @@ describe('API', () => {
     });
 
     it('fails with incorrect inputs', async () => {
-      const { req } = createMocks<NextRequest>({
-        method: 'POST',
-        json: () => studentsAsStringCourse,
-      });
-
+      const req = mockPostRequest(studentsAsStringCourse);
       const response = await POST(req);
       const data = await response.json();
       expect(data.message).toContain('Expected number, received string.');
       expect(data.messageType).toBe(MessageType.ERROR);
       expect(response.status).toBe(400);
     });
+
     it('fails if end date is prior to start date', async () => {
-      const response = await POST(startAfterEndCourse as any);
+      const req = mockPostRequest(startAfterEndCourse);
+      const response = await POST(req);
       const data = await response.json();
       expect(data.message).toContain(
         'The end date cannot be before the start date'
@@ -95,8 +98,10 @@ describe('API', () => {
       expect(await getTableLength()).toBe(0);
       expect(response.status).toBe(400);
     });
+
     it('fails if start date is in the past', async () => {
-      const response = await POST(startDateInThePastCourse as any);
+      const req = mockPostRequest(startDateInThePastCourse);
+      const response = await POST(req);
       const data = await response.json();
       expect(data.message).toContain('Start date cannot be in the past');
       expect(data.messageType).toBe(MessageType.ERROR);
@@ -110,19 +115,18 @@ describe('API', () => {
       id: '1337',
       name: 'Spaghetti coding 101',
       description: 'Security by obscurity',
-      endDate: new Date().toString(),
-      startDate: new Date().toString(),
+      startDate: new Date(Date.now() + 1000 * 60 * 60 * 24).toString(),
+      endDate: new Date(Date.now() + 1000 * 60 * 60 * 24 * 2).toString(),
       maxStudents: 200,
+      tags: [],
     };
 
     it('Should return 404 when course does not exist in the db', async () => {
-      const { req } = createMocks<NextRequest>({
-        method: 'PUT',
-        json: () => courseData,
-      });
+      const req = mockPostRequest(courseData);
 
       const response = await PUT(req);
       const data = await response.json();
+      expect(data.message).toContain('Course not found');
       expect(data.messageType).toBe(MessageType.ERROR);
       expect(response.status).toBe(404);
     });
