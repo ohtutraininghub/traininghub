@@ -24,16 +24,16 @@ import {
 } from '@/lib/zod/courses';
 import { useMessage } from '../Providers/MessageProvider';
 import { post, update } from '@/lib/response/fetchUtil';
-import { Course } from '@prisma/client';
 import FormFieldError from '../FormFieldError/FormFieldError';
 import { Tag } from '@prisma/client';
 import { dateToDateTimeLocal } from '@/lib/util';
+import { CourseWithTags } from '@/lib/prisma/courses';
 
 type FormType = CourseSchemaType | CourseSchemaWithIdType;
 
 type CourseFormProps = {
   tags: Tag[];
-  courseData?: Course;
+  courseData?: CourseWithTags;
 };
 
 export default function CourseForm({ tags, courseData }: CourseFormProps) {
@@ -56,6 +56,7 @@ export default function CourseForm({ tags, courseData }: CourseFormProps) {
             ...courseData,
             startDate: undefined,
             endDate: undefined,
+            tags: courseData.tags.map((tag) => tag.name),
           }
         : { maxStudents: 10 }),
     },
@@ -120,9 +121,8 @@ export default function CourseForm({ tags, courseData }: CourseFormProps) {
             inputProps={{
               'data-testid': 'courseFormDescription',
               style: {
-                resize: 'both',
+                resize: 'block',
               },
-              defaultValue: courseData?.description,
             }}
           />
           <FormFieldError error={errors.description} />
