@@ -4,9 +4,11 @@ import Container from '@mui/material/Container/Container';
 import CourseModal from '@/components/CourseModal/CourseModal';
 import { getServerAuthSession } from '@/lib/auth';
 import { notFound } from 'next/navigation';
+import { Locale } from '@i18n/i18n-config';
 
 type Props = {
   searchParams: { courseId?: string };
+  params: { lang: Locale };
 };
 
 export default async function ProfilePage({ searchParams }: Props) {

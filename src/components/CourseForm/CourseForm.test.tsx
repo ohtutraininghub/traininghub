@@ -47,7 +47,7 @@ const requiredErrors = [
 
 describe('Course Form New Course Tests', () => {
   beforeEach(() => {
-    renderWithTheme(<CourseForm tags={[]} />);
+    renderWithTheme(<CourseForm lang="en" tags={[]} />);
   });
 
   it('Required errors for form fields are displayed correctly', async () => {
@@ -113,7 +113,7 @@ describe('Course Form Course Edit Tests', () => {
       maxStudents: 55,
       tags: [],
     };
-    renderWithTheme(<CourseForm tags={[]} courseData={course} />);
+    renderWithTheme(<CourseForm lang="en" tags={[]} courseData={course} />);
 
     const name = screen
       .getByTestId('courseFormName')
@@ -147,7 +147,7 @@ describe('Course Form Course Edit Tests', () => {
       tags: [],
     };
 
-    renderWithTheme(<CourseForm tags={[]} courseData={course} />);
+    renderWithTheme(<CourseForm lang="en" tags={[]} courseData={course} />);
 
     const submitButton = screen.getByTestId('courseFormSubmit');
     await userEvent.click(submitButton);

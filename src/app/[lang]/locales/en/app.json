@@ -1,0 +1,35 @@
+{
+  "AppTitle": "Training hub",
+  "HomePage": {
+    "trainingListTitle": "Add new Course"
+  },
+  "Navbar": {
+    "loggedUser": "Logged in as {{username}}",
+    "signOutButton": {
+      "signOut": "Sign out",
+      "signOutConfirmation": "Confirm sign out"
+    }
+  },
+  "ConfirmCard": {
+    "cancel": "Cancel",
+    "confirm": "Confirm"
+  },
+  "CourseList": {
+    "courses": "Courses",
+    "courseCard": {}
+  },
+  "CourseCard": {
+    "signups": "Signups: 0 / {x}",
+    "details": "View details",
+    "courseDescription": "Course description"
+  },
+  "CourseForm": {
+    "name": "Name",
+    "description": "Description",
+    "startDate": "Start date",
+    "endDate": "End date",
+    "maxStudents": "Max students",
+    "submit": "Submit",
+    "tags": "Tags"
+  }
+}

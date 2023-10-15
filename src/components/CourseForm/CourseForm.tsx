@@ -28,15 +28,22 @@ import FormFieldError from '../FormFieldError/FormFieldError';
 import { Tag } from '@prisma/client';
 import { dateToDateTimeLocal } from '@/lib/util';
 import { CourseWithTags } from '@/lib/prisma/courses';
+import { useTranslation } from '@i18n/client';
+import { DictProps } from '@i18n/index';
+
+interface CourseFormProps extends DictProps {
+  tags: Tag[];
+  courseData?: CourseWithTags;
+}
 
 type FormType = CourseSchemaType | CourseSchemaWithIdType;
 
-type CourseFormProps = {
-  tags: Tag[];
-  courseData?: CourseWithTags;
-};
-
-export default function CourseForm({ tags, courseData }: CourseFormProps) {
+export default function CourseForm({
+  courseData,
+  lang,
+  tags,
+}: CourseFormProps) {
+  const { t } = useTranslation(lang);
   const isEditMode = !!courseData;
   const router = useRouter();
   const { palette } = useTheme();
@@ -100,7 +107,9 @@ export default function CourseForm({ tags, courseData }: CourseFormProps) {
           style={{ display: 'flex', flexDirection: 'column', gap: 10 }}
           onSubmit={handleSubmit(submitForm)}
         >
-          <InputLabel htmlFor="courseFormName">Name</InputLabel>
+          <InputLabel htmlFor="courseFormName">
+            {t('CourseForm.name')}
+          </InputLabel>
           <Input
             {...register('name')}
             id="courseFormName"
@@ -110,7 +119,9 @@ export default function CourseForm({ tags, courseData }: CourseFormProps) {
           />
           <FormFieldError error={errors.name} />
 
-          <InputLabel htmlFor="courseFormDescription">Description</InputLabel>
+          <InputLabel htmlFor="courseFormDescription">
+            {t('CourseForm.description')}
+          </InputLabel>
           <TextField
             {...register('description')}
             id="courseFormDescription"
@@ -134,7 +145,9 @@ export default function CourseForm({ tags, courseData }: CourseFormProps) {
             render={({ field }) => {
               return (
                 <>
-                  <InputLabel htmlFor="tagSelection">Tags</InputLabel>
+                  <InputLabel htmlFor="tagSelection">
+                    {t('CourseForm.tags')}
+                  </InputLabel>
                   <Select
                     {...field}
                     id="tagSelection"
@@ -184,7 +197,9 @@ export default function CourseForm({ tags, courseData }: CourseFormProps) {
             }}
           />
 
-          <InputLabel htmlFor="courseFormStartDate">Start date</InputLabel>
+          <InputLabel htmlFor="courseFormStartDate">
+            {t('CourseForm.startDate')}
+          </InputLabel>
           <Input
             {...register('startDate')}
             defaultValue={
@@ -199,7 +214,9 @@ export default function CourseForm({ tags, courseData }: CourseFormProps) {
           />
           <FormFieldError error={errors.startDate} />
 
-          <InputLabel htmlFor="courseFormEndDate">End date</InputLabel>
+          <InputLabel htmlFor="courseFormEndDate">
+            {t('CourseForm.endDate')}
+          </InputLabel>
           <Input
             {...register('endDate')}
             defaultValue={
@@ -214,7 +231,9 @@ export default function CourseForm({ tags, courseData }: CourseFormProps) {
           />
           <FormFieldError error={errors.endDate} />
 
-          <InputLabel htmlFor="courseFormMaxStudents">Max students</InputLabel>
+          <InputLabel htmlFor="courseFormMaxStudents">
+            {t('CourseForm.maxStudents')}
+          </InputLabel>
           <Input
             {...register('maxStudents', {
               setValueAs: (value) => Number(value),

@@ -2,25 +2,28 @@ import { Grid, Typography } from '@mui/material';
 import { CourseWithTagsAndStudentCount } from '@/lib/prisma/courses';
 import CourseCard from '@/components/CourseCard/';
 import CourseModal from '@/components/CourseModal/CourseModal';
+import { DictProps, useTranslation } from '@/lib/i18n';
 
-type CourseListProps = {
+interface CourseListProps extends DictProps {
   courses: CourseWithTagsAndStudentCount[];
   openedCourse: CourseWithTagsAndStudentCount | undefined;
   usersEnrolledCourseIds: string[];
-};
+}
 
 export default async function CourseList({
   courses,
   openedCourse,
   usersEnrolledCourseIds,
+  lang,
 }: CourseListProps) {
+  const { t } = await useTranslation(lang);
   return (
     <>
       <CourseModal
         course={openedCourse}
         usersEnrolledCourseIds={usersEnrolledCourseIds}
       />
-      <Typography variant="h4">Courses</Typography>
+      <Typography variant="h4">{t('CourseList.courses')}</Typography>
       <Grid
         container
         spacing={2}
