@@ -1,5 +1,6 @@
 import CourseForm from '@/components/CourseForm/CourseForm';
-import { getCourseById, getTags } from '@/lib/prisma/courses';
+import { getCourseById } from '@/lib/prisma/courses';
+import { getTags } from '@/lib/prisma/tags';
 import { notFound } from 'next/navigation';
 
 type Props = {

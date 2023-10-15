@@ -18,10 +18,6 @@ export type CourseWithTagsAndStudentCount = prismaClient.CourseGetPayload<{
   };
 }>;
 
-export const getTags = async () => {
-  return await prisma.tag.findMany({});
-};
-
 export const getCourseById = async (courseId: Course['id']) => {
   return await prisma.course.findFirst({
     include: {
