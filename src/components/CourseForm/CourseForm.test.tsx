@@ -12,6 +12,7 @@ jest.mock('next/navigation', () => ({
   useRouter() {
     return {
       push: jest.fn(),
+      refresh: jest.fn(),
     };
   },
 }));
@@ -110,6 +111,7 @@ describe('Course Form Course Edit Tests', () => {
       startDate: new Date(),
       endDate: new Date(),
       maxStudents: 55,
+      tags: [],
     };
     renderWithTheme(<CourseForm tags={[]} courseData={course} />);
 
@@ -139,9 +141,10 @@ describe('Course Form Course Edit Tests', () => {
       id: '1234',
       name: 'New course',
       description: 'A test course',
-      startDate: new Date(),
-      endDate: new Date(),
+      startDate: new Date(Date.now() + 1000 * 60 * 60 * 24),
+      endDate: new Date(Date.now() + 1000 * 60 * 60 * 24 * 2),
       maxStudents: 55,
+      tags: [],
     };
 
     renderWithTheme(<CourseForm tags={[]} courseData={course} />);
