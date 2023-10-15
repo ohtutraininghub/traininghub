@@ -7,6 +7,7 @@ import Card from '@mui/material/Card';
 import Chip from '@mui/material/Chip';
 import Box from '@mui/material/Box';
 import EnrollHolder from './EnrollHolder';
+import EditButton from './EditButton';
 
 type Props = {
   course: CourseWithTagsAndStudentCount | undefined;
@@ -30,6 +31,7 @@ export default function CourseModal({ course, usersEnrolledCourseIds }: Props) {
     >
       <Card
         sx={{
+          position: 'relative',
           display: 'flex',
           flexDirection: 'column',
           width: '1000px',
@@ -46,6 +48,7 @@ export default function CourseModal({ course, usersEnrolledCourseIds }: Props) {
           textAlign: 'center',
         }}
       >
+        <EditButton courseId={course.id} />
         <CourseModalCloseButton />
         <Typography variant="h3">{course.name}</Typography>
         <Typography sx={{ my: 2 }}>{courseDate}</Typography>
