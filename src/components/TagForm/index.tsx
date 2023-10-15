@@ -1,6 +1,6 @@
 'use client';
 
-import { TagSchemaType, tagSchema } from '@/lib/zod/tags';
+import { TagSchemaType, tagSchema, maxTagLength } from '@/lib/zod/tags';
 import { TextField, Button, Box } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
@@ -34,7 +34,11 @@ export default function TagForm() {
     <>
       <Box sx={{ mt: 1, mb: 4 }}>
         <form onSubmit={handleSubmit(submitForm)}>
-          <TextField label="Tag name" {...register('name')}></TextField>
+          <TextField
+            label="Tag name"
+            {...register('name')}
+            inputProps={{ maxLength: maxTagLength + 1 }}
+          ></TextField>
           <FormFieldError error={errors.name}></FormFieldError>
           <Button
             type="submit"

@@ -4,6 +4,7 @@ import '@testing-library/jest-dom';
 import { renderWithTheme } from '@/lib/test-utils';
 import TagForm from '.';
 import userEvent from '@testing-library/user-event';
+import { maxTagLength } from '@/lib/zod/tags';
 
 jest.mock('next/navigation', () => ({
   useRouter() {
@@ -45,15 +46,17 @@ describe('Tag form: adding a new tag', () => {
     renderWithTheme(<TagForm />);
     const inputField = screen.getByRole('textbox');
 
-    await userEvent.type(
-      inputField,
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
-    );
+    const tooLongTag =
+      'Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat';
+
+    await userEvent.type(inputField, tooLongTag);
 
     const submitButton = screen.getByRole('button', { name: /Submit/i });
     await userEvent.click(submitButton);
     expect(
-      screen.getByText('The maximum length for a tag is 50 characters')
+      screen.getByText(
+        `The maximum length for a tag is ${maxTagLength} characters`
+      )
     ).toBeVisible();
   });
 
