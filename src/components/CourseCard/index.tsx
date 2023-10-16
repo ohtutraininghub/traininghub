@@ -3,15 +3,13 @@ import CardContent from '@mui/material/CardContent';
 import Card from '@mui/material/Card';
 import Link from 'next/link';
 import { CourseWithTagsAndStudentCount } from '@/lib/prisma/courses';
-import { getCourseDateString } from '@/lib/util';
+import LocalizedDateTime from '../LocalizedDateTime';
 
 type Props = {
   course: CourseWithTagsAndStudentCount;
 };
 
 const CourseCard = ({ course }: Props) => {
-  const courseDate = getCourseDateString(course);
-
   return (
     <Link href={`/?courseId=${course.id}`} style={{ textDecoration: 'none' }}>
       <Card
@@ -29,7 +27,13 @@ const CourseCard = ({ course }: Props) => {
           <Typography variant="h5" m={2}>
             {course.name}
           </Typography>
-          <Typography>{courseDate}</Typography>
+          <Typography suppressHydrationWarning>
+            <LocalizedDateTime
+              variant="range-short"
+              startDate={course.startDate}
+              endDate={course.endDate}
+            />
+          </Typography>
           <Typography>
             Signups: {course._count.students} / {course.maxStudents}
           </Typography>
