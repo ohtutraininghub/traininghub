@@ -1,14 +1,23 @@
 import React from 'react';
-import { fireEvent, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { renderWithTheme } from '@/lib/test-utils';
-import MockedCourseFilter from './MockedCourseFilter';
 import { CourseWithTagsAndStudentCount } from '@/lib/prisma/courses';
+import CourseFilter from './CourseFilter';
+
+jest.mock('next/navigation', () => ({
+  usePathname: jest.fn().mockReturnValue('/'),
+  useRouter: jest.fn().mockReturnValue({
+    push: jest.fn(),
+    set: jest.fn(),
+  }),
+  useSearchParams: jest.fn().mockReturnValue(new URLSearchParams()),
+}));
 
 const initialCourses: CourseWithTagsAndStudentCount[] = [
   {
     id: '1',
-    name: 'Python',
+    name: 'Python fundamentals',
     description: 'Python fundamentals',
     startDate: new Date('2023-10-27T00:00:00Z'),
     endDate: new Date('2023-11-28T00:00:00Z'),
@@ -77,41 +86,26 @@ const initialTags: Tag[] = [
 ];
 
 beforeEach(async () => {
-  jest.spyOn(console, 'error').mockImplementation(() => {});
   renderWithTheme(
-    <MockedCourseFilter
-      initialCourses={initialCourses}
-      initialTags={initialTags}
-    />
+    <CourseFilter initialCourses={initialCourses} initialTags={initialTags} />
   );
 });
 
 describe('Coursefilter', () => {
   it('filters with a name', async () => {
-    const courseName = screen.getByTestId('search-paper');
-    await userEvent.type(courseName, 'rea');
-    expect(screen.getByText('React framework')).toBeInTheDocument();
-    await userEvent.type(courseName, 'dddd');
-    expect(screen.getByText('No courses found')).toBeInTheDocument();
+    const courseName = screen.getByTestId('search-autocomplete');
+    await userEvent.type(courseName, 'Python');
+    const option = screen.getByText('Python fundamentals');
+    await userEvent.click(option);
+    expect(screen.queryByText('No options')).toBeNull();
+    await userEvent.type(courseName, 'pyr');
+    expect(screen.getByText('No options'));
   });
 
   it('filters with a tag', async () => {
-    const tagSelect = screen.getByTestId('tag-select');
-    await userEvent.click(tagSelect);
     expect(screen.getByText('Python')).toBeInTheDocument();
-    const select = 'Python';
-    const option = screen.getByText(select);
-    await userEvent.click(option);
+    const button = screen.getByText('Python');
+    await userEvent.click(button);
     expect(screen.getByText('Python fundamentals')).toBeInTheDocument();
-  });
-
-  it('filters with a date', async () => {
-    const startDate = screen.getByLabelText('Start Date');
-    const testStartDate = new Date('2023-11-20T00:00:00Z');
-    fireEvent.change(startDate, { target: { value: testStartDate } });
-    const endDate = screen.getByLabelText('End Date');
-    const testEndDate = new Date('2023-12-18T00:00:00Z');
-    fireEvent.change(endDate, { target: { value: testEndDate } });
-    expect(screen.getByText('React framework')).toBeInTheDocument();
   });
 });

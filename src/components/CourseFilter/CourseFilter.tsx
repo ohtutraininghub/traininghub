@@ -1,124 +1,59 @@
 'use client';
 
-import {
-  IconButton,
-  InputBase,
-  Paper,
-  Select,
-  MenuItem,
-  SelectChangeEvent,
-  Box,
-  InputLabel,
-  FormControl,
-  Typography,
-} from '@mui/material';
-import ClearIcon from '@mui/icons-material/Clear';
+import { Box, Autocomplete, TextField, Button } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
-import { LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import CourseList from '../CourseList/CourseList';
-import { DatePicker } from '@mui/x-date-pickers';
+import { Key, useCallback, useState } from 'react';
 import { CourseWithTagsAndStudentCount } from '@/lib/prisma/courses';
+import { usePathname, useSearchParams, useRouter } from 'next/navigation';
 
 type CourseFilterProps = {
   initialCourses: CourseWithTagsAndStudentCount[];
   initialTags: any;
-  openedCourse: CourseWithTagsAndStudentCount | undefined;
-  usersEnrolledCourseIds: string[];
 };
 
 export default function CourseFilter({
   initialCourses,
   initialTags,
-  openedCourse,
-  usersEnrolledCourseIds,
 }: CourseFilterProps) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
   const { palette } = useTheme();
 
-  const [searchTerm, setSearchTerm] = useState('');
   const [filteredCourses, setFilteredCourses] = useState<
     CourseWithTagsAndStudentCount[]
   >([]);
-  const [startDate, setStartDate] = useState<Date | null>(null);
-  const [endDate, setEndDate] = useState<Date | null>(null);
 
-  useEffect(() => {
-    try {
-      setFilteredCourses(initialCourses);
-    } catch (error) {
-      console.error(error);
-    }
-  }, [initialCourses, initialTags]);
+  const createQueryString = useCallback(
+    (name: string, value: string) => {
+      const params = new URLSearchParams(searchParams);
+      params.set(name, value);
 
-  const handleNameChange = async (event: ChangeEvent<HTMLInputElement>) => {
-    const searchTerm = event.target.value;
-    setSearchTerm(searchTerm);
-    const filteredCourses = initialCourses.filter((course) =>
+      return params.toString();
+    },
+    [searchParams]
+  );
+
+  const handleNameChange = async (value: string | null) => {
+    setFilteredCourses([]);
+    const searchTerm: string | null = value;
+    if (searchTerm === null) return;
+    const filteredCourse = initialCourses.filter((course) =>
       course.name.toLowerCase().includes(searchTerm.toLocaleLowerCase())
     );
+    const courseId = filteredCourse[0].id;
+    router.push(pathname + '?' + createQueryString('courseId', courseId));
+  };
+
+  const handleTagChange = async (tagName: string | null) => {
+    if (tagName === null) return;
+    const filteredCourses = initialCourses.filter((course: any) =>
+      course.tags.some((tag: { name: string }) =>
+        tag.name.toLowerCase().includes(tagName.toLowerCase())
+      )
+    );
     setFilteredCourses(filteredCourses);
-    setStartDate(null);
-    setEndDate(null);
-  };
-
-  const handleTagChange = async (event: SelectChangeEvent<string>) => {
-    const selectedTag = event.target.value;
-    const filteredCourses =
-      selectedTag === 'all tags'
-        ? initialCourses
-        : initialCourses.filter((course: any) =>
-            course.tags.some((tag: { name: string }) =>
-              tag.name.toLowerCase().includes(selectedTag.toLowerCase())
-            )
-          );
-    setFilteredCourses(filteredCourses);
-    await reset();
-  };
-
-  const handleDateChange = async (date: Date | null) => {
-    endDate === null ? setEndDate(date) : null;
-    const compStart = startDate !== null ? new Date(startDate) : null;
-    const compEnd = endDate !== null ? new Date(endDate) : null;
-    const compDate = date !== null ? new Date(date) : null;
-    compEnd !== null && compDate !== null && compEnd < compDate
-      ? setEndDate(date)
-      : null;
-    compStart !== null && compDate !== null && compStart > compDate
-      ? setStartDate(date)
-      : null;
-    const filteredCourses = await helpHandleDateChange(date);
-    setFilteredCourses(filteredCourses);
-    setSearchTerm('');
-  };
-
-  const helpHandleDateChange = async (date: Date | null) => {
-    const filteredCourses = date
-      ? initialCourses.filter((course) => {
-          const courseStartDate = new Date(course.startDate);
-          courseStartDate.setHours(0, 0, 0, 0);
-          const courseEndDate = new Date(course.endDate);
-          courseEndDate.setHours(0, 0, 0, 0);
-          const selectedDate = new Date(date);
-          selectedDate.setHours(0, 0, 0, 0);
-          return (
-            courseStartDate <= selectedDate && selectedDate <= courseEndDate
-          );
-        })
-      : initialCourses;
-    return filteredCourses;
-  };
-
-  const handleClearSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setFilteredCourses(initialCourses);
-    await reset();
-  };
-
-  const reset = async () => {
-    setSearchTerm('');
-    setStartDate(null);
-    setEndDate(null);
   };
 
   return (
@@ -131,113 +66,59 @@ export default function CourseFilter({
           backgroundColor: palette.white.main,
         }}
       >
-        <Paper
-          component="form"
-          elevation={10}
-          sx={{
-            backgroundColor: palette.secondary.main,
-            display: 'flex',
-            alignItems: 'center',
-            padding: '10px',
-            marginRight: '1rem',
-          }}
-          onSubmit={handleClearSubmit}
-        >
-          <InputBase
-            sx={{ ml: 1, flex: 1 }}
-            placeholder="Search by a course name"
-            inputProps={{ 'aria-label': 'search' }}
-            value={searchTerm}
-            onChange={handleNameChange}
-            data-testid="search-paper"
-          />
-          <IconButton type="submit">
-            <ClearIcon />
-          </IconButton>
-        </Paper>
-        <FormControl>
-          <InputLabel
-            style={{
-              textAlign: 'center',
-              alignItems: 'center',
-              marginLeft: '1rem',
-            }}
-          >
-            <Typography variant="body1">Search by a tag</Typography>
-          </InputLabel>
-          <Select
-            value=""
-            onChange={handleTagChange}
-            variant="outlined"
-            sx={{
-              minWidth: 200,
-              marginLeft: '1rem',
-              marginRight: '1rem',
-              boxShadow: 10,
-              backgroundColor: palette.secondary.main,
-            }}
-            data-testid="tag-select"
-          >
-            <MenuItem value="all tags">All Tags</MenuItem>
-            {initialTags.map((tag: any) => (
-              <MenuItem key={tag.id} value={tag.name}>
-                {tag.name}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DatePicker
-            sx={{
-              backgroundColor: palette.secondary.main,
-              boxShadow: 10,
-              marginLeft: '1rem',
-            }}
-            disablePast
-            displayWeekNumber
-            label="Start Date"
-            value={startDate}
-            onChange={(date) => {
-              setStartDate(date);
-              handleDateChange(date);
-            }}
-            data-testid="start-date-picker"
-          />
-          <DatePicker
-            sx={{
-              backgroundColor: palette.secondary.main,
-              boxShadow: 10,
-              marginLeft: '1rem',
-            }}
-            disablePast
-            displayWeekNumber
-            label="End Date"
-            value={endDate}
-            onChange={(date) => {
-              setEndDate(date);
-              handleDateChange(date);
-            }}
-            data-testid="end-date-picker"
-          />
-        </LocalizationProvider>
+        <Autocomplete
+          disablePortal
+          data-testid="search-autocomplete"
+          id="combo-box"
+          options={initialCourses.map((course) => course.name)}
+          sx={{ width: 300 }}
+          renderInput={(params) => (
+            <TextField {...params} label="Search by a name" />
+          )}
+          onChange={(event, value) => handleNameChange(value)}
+        />
       </Box>
-
-      <CourseList
-        courses={filteredCourses}
-        openedCourse={openedCourse}
-        usersEnrolledCourseIds={usersEnrolledCourseIds}
-      />
-
-      {filteredCourses.length === 0 && (
-        <Typography
-          variant="h5"
-          sx={{
-            color: palette.secondary.dark,
-          }}
-        >
-          No courses found
-        </Typography>
-      )}
+      <Box
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          padding: '6px',
+          backgroundColor: palette.white.main,
+        }}
+      >
+        {initialTags.map((tag: { id: Key | null | undefined; name: any }) => (
+          <Button
+            data-testid="search-tags"
+            key={tag.id}
+            variant="contained"
+            onClick={() => handleTagChange(tag.name)}
+            style={{ marginRight: '10px', marginBottom: '10px' }}
+          >
+            {tag.name}
+          </Button>
+        ))}
+      </Box>
+      <Box
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          padding: '6px',
+          backgroundColor: palette.white.main,
+        }}
+      >
+        {filteredCourses.map(
+          (tag: { id: Key | null | undefined; name: any }) => (
+            <Button
+              data-testid="tagButton"
+              key={tag.id}
+              onClick={() => handleNameChange(tag.name)}
+              style={{ marginRight: '10px', marginBottom: '10px' }}
+            >
+              {tag.name}
+            </Button>
+          )
+        )}
+      </Box>
     </>
   );
 }

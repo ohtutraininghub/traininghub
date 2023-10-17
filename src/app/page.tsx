@@ -5,12 +5,14 @@ import { getCourses, getEnrolledCourseIdsByUserId } from '@/lib/prisma/courses';
 import { getServerAuthSession } from '@/lib/auth';
 import CourseFilter from '@/components/CourseFilter/CourseFilter';
 import { prisma } from '@/lib/prisma/prisma';
+import CourseList from '@/components/CourseList/CourseList';
 
 export const dynamic = 'force-dynamic';
 
 type Props = {
   searchParams: { courseId?: string };
 };
+
 export default async function HomePage({ searchParams }: Props) {
   const session = await getServerAuthSession();
   const courses = await getCourses();
@@ -39,9 +41,9 @@ export default async function HomePage({ searchParams }: Props) {
     >
       <NewCourseButton />
       <NewTagButton />
-      <CourseFilter
-        initialCourses={courses}
-        initialTags={tags}
+      <CourseFilter initialCourses={courses} initialTags={tags} />
+      <CourseList
+        courses={courses}
         openedCourse={openedCourse}
         usersEnrolledCourseIds={usersEnrolledCourseIds}
       />
