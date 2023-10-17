@@ -13,7 +13,7 @@ const CourseCard = ({ course }: Props) => {
   const courseDate = getCourseDateString(course);
 
   return (
-    <Link href={`/?courseId=${course.id}`} style={{ textDecoration: 'none' }}>
+    <Link href={`?courseId=${course.id}`} style={{ textDecoration: 'none' }}>
       <Card
         sx={{
           backgroundColor: 'secondary.main',
