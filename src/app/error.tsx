@@ -15,7 +15,7 @@ export default function Error({ reset }: { reset: () => void }) {
         alignItems: 'center',
         p: 4,
         borderRadius: 2,
-        backgroundColor: palette.secondary.main,
+        backgroundColor: palette.surface.main,
       }}
     >
       <Button
@@ -23,10 +23,10 @@ export default function Error({ reset }: { reset: () => void }) {
         sx={{
           margin: 'auto',
           mt: 2,
-          color: palette.secondary.main,
-          backgroundColor: palette.darkBlue.main,
+          color: palette.white.main,
+          backgroundColor: palette.secondary.main,
           '&:hover': {
-            backgroundColor: palette.info.main,
+            backgroundColor: palette.secondary.light,
           },
         }}
       >

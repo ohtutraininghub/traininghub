@@ -44,7 +44,7 @@ export default function CourseModal({ course, usersEnrolledCourseIds }: Props) {
           m: 2,
           p: 3,
           color: 'white.main',
-          backgroundColor: 'darkBlue.main',
+          backgroundColor: 'secondary.main',
           textAlign: 'center',
         }}
       >
