@@ -26,6 +26,8 @@ let theme = createTheme({
   palette: {
     primary: {
       main: '#ffd100', // yellow
+      light: '#ffe62b',
+      dark: '#ffb500',
     },
     secondary: {
       main: '#e5e1dc', // grey
