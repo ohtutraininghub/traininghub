@@ -25,18 +25,24 @@ let theme = createTheme({
   // overrides the default MUI color palette: (https://mui.com/material-ui/customization/palette/)
   palette: {
     primary: {
-      main: '#ffd100', // yellow
+      main: '#ffd100', // vibrant yellow
       light: '#ffe62b',
       dark: '#ffb500',
     },
     secondary: {
       main: '#e5e1dc', // grey
+      light: '#f6f4f2',
+      dark: '#999999',
     },
     info: {
       main: '#007fa3', // light blue
+      light: '#33acd8',
+      dark: '#005872',
     },
     darkBlue: {
-      main: '#003e51',
+      main: '#003e51', // deep teal
+      light: '#006699',
+      dark: '#002943',
     },
     black: {
       main: '#1f1e1e',
