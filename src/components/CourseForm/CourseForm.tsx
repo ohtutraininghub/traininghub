@@ -126,7 +126,7 @@ export default function CourseForm({
             {...register('description')}
             id="courseFormDescription"
             multiline
-            minRows={5}
+            rows={10} // fixed row count to prevent re-render issue: [https://github.com/mui/material-ui/issues/33081]
             error={!!errors.description}
             autoComplete="off"
             inputProps={{
