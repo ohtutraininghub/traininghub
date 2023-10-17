@@ -1,5 +1,17 @@
 'use client';
 
+/* 
+  This component should be used if a localized date is wanted
+  to be shown in an otherwise server-side-rendered component
+*/
+
+import { useEffect, useState } from 'react';
+import {
+  formatDateRangeShort,
+  formatDateRangeWithTime,
+  options,
+} from '@/lib/timedateutils';
+
 type DateConverterProps = DateRangeProps | SingleDateProps;
 
 type DateRangeProps = {
@@ -9,45 +21,39 @@ type DateRangeProps = {
 };
 
 type SingleDateProps = {
-  variant: 'short' | 'long';
+  variant: 'short' | 'long' | 'countDown';
   date: Date;
 };
-
-const options = {
-  year: 'numeric',
-  month: 'numeric',
-  day: 'numeric',
-  hour: '2-digit',
-  minute: '2-digit',
-} as Intl.DateTimeFormatOptions;
 
 export default function LocalizedDateTime({
   variant,
   ...props
 }: DateConverterProps) {
-  let dateString;
+  const [dateString, setDateString] = useState('');
 
-  switch (variant) {
-    case 'range-short':
-    case 'range-long':
+  useEffect(() => {
+    if (['range-short', 'range-long'].includes(variant)) {
       const { startDate, endDate } = props as DateRangeProps;
-      variant === 'range-short'
-        ? (dateString = `${startDate.toDateString()} - ${endDate.toDateString()}`)
-        : (dateString = `${startDate.toLocaleString(
-            [],
-            options
-          )} - ${endDate.toLocaleString([], options)}`);
-      console.log(endDate.toDateString());
-      break;
-
-    case 'short':
-    case 'long':
+      switch (variant) {
+        case 'range-short':
+          setDateString(formatDateRangeShort(startDate, endDate));
+          break;
+        case 'range-long':
+          setDateString(formatDateRangeWithTime(startDate, endDate));
+          break;
+      }
+    } else if (['short', 'long'].includes(variant)) {
       const { date } = props as SingleDateProps;
-      variant === 'short'
-        ? (dateString = date.toDateString())
-        : (dateString = date.toLocaleString([], options));
-      break;
-  }
+      switch (variant) {
+        case 'short':
+          setDateString(date.toDateString());
+          break;
+        case 'long':
+          setDateString(date.toLocaleString([], options));
+          break;
+      }
+    }
+  }, []);
 
   return <>{dateString}</>;
 }

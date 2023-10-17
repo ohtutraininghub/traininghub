@@ -15,7 +15,8 @@ import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import IconButton from '@mui/material/IconButton';
 import TimerIcon from '@mui/icons-material/Timer';
 import { useState } from 'react';
-import { formatDate, daysUntilStart } from '@/lib/timedateutils';
+import { daysUntilStart } from '@/lib/timedateutils';
+import LocalizedDateTime from '../LocalizedDateTime';
 
 export interface ProfileCourseListProps {
   headerText: string;
@@ -103,9 +104,13 @@ export default function ProfileCourseList({
                     >
                       <ListItemText
                         primary={course.name}
-                        secondary={`${formatDate({
-                          date: course.startDate,
-                        })} - ${formatDate({ date: course.endDate })}`}
+                        secondary={
+                          <LocalizedDateTime
+                            variant="range-long"
+                            startDate={course.startDate}
+                            endDate={course.endDate}
+                          />
+                        }
                         sx={{ color: palette.black.main }}
                       />
                       {timer && (

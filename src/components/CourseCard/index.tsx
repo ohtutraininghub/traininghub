@@ -27,7 +27,7 @@ const CourseCard = ({ course }: Props) => {
           <Typography variant="h5" m={2}>
             {course.name}
           </Typography>
-          <Typography suppressHydrationWarning>
+          <Typography>
             <LocalizedDateTime
               variant="range-short"
               startDate={course.startDate}
