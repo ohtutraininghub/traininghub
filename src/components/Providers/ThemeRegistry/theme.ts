@@ -9,14 +9,14 @@ declare module '@mui/material/styles' {
   // Types for new additional colors
   // eslint-disable-next-line no-unused-vars
   interface Palette {
-    tetriary: PaletteColor;
+    tertiary: PaletteColor;
     surface: PaletteColor;
     black: PaletteColor;
     white: PaletteColor;
   }
   // eslint-disable-next-line no-unused-vars
   interface PaletteOptions {
-    tetriary?: PaletteColorOptions;
+    tertiary?: PaletteColorOptions;
     surface?: PaletteColorOptions;
     black?: PaletteColorOptions;
     white?: PaletteColorOptions;
@@ -37,7 +37,7 @@ let theme = createTheme({
       dark: '#002943',
       contrastText: '#fff',
     },
-    tetriary: {
+    tertiary: {
       main: '#800020', // deep burgundy
       light: '#cc3333',
       dark: '#590013',
