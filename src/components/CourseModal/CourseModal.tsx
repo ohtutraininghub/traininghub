@@ -70,7 +70,7 @@ export default function CourseModal({ course, usersEnrolledCourseIds }: Props) {
           ))}
         </Box>
 
-        <Typography variant="h6" sx={{ my: 2, color: 'secondary.main' }}>
+        <Typography variant="h6" sx={{ my: 2, color: 'white.main' }}>
           Description
         </Typography>
 
