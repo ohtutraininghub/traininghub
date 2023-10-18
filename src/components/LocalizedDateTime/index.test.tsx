@@ -25,7 +25,7 @@ describe('LocalizedDateTime', () => {
         endDate={course.endDate}
       />
     );
-    const expectedString = `${course.startDate.toDateString()} - ${course.endDate.toDateString()}`;
+    const expectedString = course.startDate.toDateString();
     expect(screen.getByText(expectedString)).toBeVisible();
   });
 });
