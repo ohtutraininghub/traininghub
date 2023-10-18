@@ -32,7 +32,6 @@ export function getOptions(
   return {
     // debug: true,
     supportedLngs: i18n.locales,
-    en: i18n.defaultLocale,
     lng,
     fallbackNS: defaultNS,
     defaultNS,
