@@ -98,7 +98,7 @@ export default function ProfileCourseList({
                         justifyContent: 'space-between',
                         backgroundColor: 'transparent',
                         '&:hover': {
-                          backgroundColor: palette.surface.dark,
+                          backgroundColor: palette.surface.light,
                         },
                       }}
                     >
