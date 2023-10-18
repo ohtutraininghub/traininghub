@@ -35,6 +35,7 @@ export default function ProfileUserDetails({
       <Avatar
         src={image}
         alt={name}
+        imgProps={{ referrerPolicy: 'no-referrer' }}
         style={{
           width: '100px',
           height: '100px',
