@@ -1,11 +1,13 @@
 import app from '@/app/[lang]/locales/en/app.json';
 import course from '@/app/[lang]/locales/en/course.json';
 import profile from '@/app/[lang]/locales/en/profile.json';
+import admin from '@/app/[lang]/locales/en/admin.json';
+import components from '@/app/[lang]/locales/en/components.json';
 
 export const i18n = {
   defaultLocale: 'en',
   locales: ['en'],
-  nameSpaces: ['app', 'course', 'profile'], // locale filenames based on route structure
+  nameSpaces: ['app', 'course', 'profile', 'admin', 'components'], // locale filenames
 } as const;
 
 export const defaultNS = 'app';
@@ -18,6 +20,8 @@ export const resources = {
     app,
     course,
     profile,
+    admin,
+    components,
   },
 } as const;
 

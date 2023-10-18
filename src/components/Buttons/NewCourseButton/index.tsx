@@ -1,15 +1,20 @@
 'use client';
 
+import { DictProps } from '@/lib/i18n';
+import { useTranslation } from '@/lib/i18n/client';
 import { Button, Typography } from '@mui/material';
 import Link from 'next/link';
 
-export default function NewCourseButton() {
+interface Props extends DictProps {}
+
+export default function NewCourseButton({ lang }: Props) {
+  const { t } = useTranslation(lang);
   return (
     <>
-      <Typography variant="h4">Actions</Typography>
+      <Typography variant="h4">{t('NewCourseButton.actions')}</Typography>
       <Link href="/courses/create">
         <Button variant="contained" sx={{ m: 1 }}>
-          Add New Course
+          {t('NewCourseButton.newCourse')}
         </Button>
       </Link>
     </>

@@ -38,7 +38,7 @@ export default async function HomePage({ searchParams, params }: Props) {
         padding: '0px 16px 100px 16px',
       }}
     >
-      <NewCourseButton />
+      <NewCourseButton lang={params.lang} />
       <NewTagButton />
       <CourseList
         lang={params.lang}

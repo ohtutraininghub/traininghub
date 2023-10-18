@@ -31,5 +31,8 @@
     "maxStudents": "Max students",
     "submit": "Submit",
     "tags": "Tags"
+  },
+  "Error": {
+    "somethingWrong": "Something went wrong... Try again"
   }
 }
