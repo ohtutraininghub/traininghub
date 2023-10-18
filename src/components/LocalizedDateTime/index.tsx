@@ -35,7 +35,7 @@ export default function LocalizedDateTime({
   variant,
   ...props
 }: DateConverterProps) {
-  const [dateString, setDateString] = useState('loading ...');
+  const [dateString, setDateString] = useState('Loading ...');
 
   useEffect(() => {
     if (['range-short', 'range-long'].includes(variant)) {

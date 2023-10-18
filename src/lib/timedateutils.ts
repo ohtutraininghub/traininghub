@@ -22,10 +22,12 @@ export const timeUntilstart = (startDate: Date): string => {
     return `Starts in ${Math.floor(asHours)} ${
       Math.floor(asHours) === 1 ? 'hour' : 'hours'
     }`;
-  } else {
+  } else if (asMinutes > 1) {
     return `Starts in ${Math.floor(asMinutes)} ${
       Math.floor(asMinutes) === 1 ? 'minute' : 'minutes'
     }`;
+  } else {
+    return `Starts soon...`;
   }
 };
 
