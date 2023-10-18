@@ -30,7 +30,11 @@ export const timeUntilstart = (startDate: Date): string => {
 };
 
 export const formatDateRangeShort = (startDate: Date, endDate: Date) => {
-  return `${startDate.toDateString()} - ${endDate.toDateString()}`;
+  const startDateString = startDate.toDateString();
+  const endDateString = endDate.toDateString();
+  return startDateString === endDateString
+    ? startDateString
+    : `${startDateString} - ${endDateString}`;
 };
 
 export const formatDateRangeWithTime = (startDate: Date, endDate: Date) => {
@@ -38,4 +42,11 @@ export const formatDateRangeWithTime = (startDate: Date, endDate: Date) => {
     [],
     options
   )}`;
+};
+
+// https://stackoverflow.com/a/66558369
+export const dateToDateTimeLocal = (date: Date) => {
+  return new Date(date.getTime() - date.getTimezoneOffset() * 60000)
+    .toISOString()
+    .slice(0, -1);
 };
