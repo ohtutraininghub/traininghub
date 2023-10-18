@@ -44,10 +44,10 @@ export default function ProfileView({
         centered
         sx={{
           '& .MuiTab-root': {
-            color: `${palette.darkBlue.main} !important`,
+            color: `${palette.secondary.main} !important`,
           },
           '& .MuiTabs-indicator': {
-            backgroundColor: palette.darkBlue.main,
+            backgroundColor: palette.secondary.main,
           },
         }}
       >

@@ -83,7 +83,7 @@ export default function CourseForm({ tags, courseData }: CourseFormProps) {
           p: 4,
           mb: 4,
           borderRadius: 2,
-          backgroundColor: palette.secondary.main,
+          backgroundColor: palette.surface.main,
           boxShadow: 8,
         }}
       >
@@ -147,7 +147,7 @@ export default function CourseForm({ tags, courseData }: CourseFormProps) {
                             label={tag}
                             variant="outlined"
                             sx={{
-                              backgroundColor: palette.secondary.light,
+                              backgroundColor: palette.surface.light,
                               borderColor: palette.black.light,
                             }}
                           />
@@ -162,16 +162,16 @@ export default function CourseForm({ tags, courseData }: CourseFormProps) {
                         divider
                         sx={{
                           '&.Mui-selected': {
-                            backgroundColor: palette.secondary.main,
+                            backgroundColor: palette.surface.main,
                           },
                           '&.Mui-selected.Mui-focusVisible': {
-                            backgroundColor: palette.secondary.dark,
+                            backgroundColor: palette.surface.dark,
                           },
                           '&:hover': {
-                            backgroundColor: palette.secondary.light,
+                            backgroundColor: palette.surface.light,
                           },
                           '&.Mui-selected:hover': {
-                            backgroundColor: palette.secondary.main,
+                            backgroundColor: palette.surface.main,
                           },
                         }}
                       >
@@ -236,10 +236,10 @@ export default function CourseForm({ tags, courseData }: CourseFormProps) {
               display: 'block',
               margin: 'auto',
               mt: 2,
-              color: palette.secondary.main,
-              backgroundColor: palette.darkBlue.main,
+              color: palette.white.main,
+              backgroundColor: palette.secondary.main,
               '&:hover': {
-                backgroundColor: palette.info.main,
+                backgroundColor: palette.secondary.light,
               },
             }}
             data-testid="courseFormSubmit"

@@ -46,7 +46,7 @@ export default function ProfileCourseList({
     >
       <Typography
         sx={{
-          backgroundColor: palette.darkBlue.main,
+          backgroundColor: palette.secondary.main,
           color: palette.white.main,
           paddingLeft: '10px',
         }}

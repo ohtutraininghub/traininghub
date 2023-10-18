@@ -14,7 +14,7 @@ const CourseCard = ({ course }: Props) => {
     <Link href={`/?courseId=${course.id}`} style={{ textDecoration: 'none' }}>
       <Card
         sx={{
-          backgroundColor: 'darkBlue.main',
+          backgroundColor: 'secondary.main',
           color: 'white.main',
           width: 340,
           maxWidth: '100%',
