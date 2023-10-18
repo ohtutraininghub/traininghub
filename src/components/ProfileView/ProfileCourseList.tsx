@@ -81,7 +81,7 @@ export default function ProfileCourseList({
           ) : (
             <List
               style={{
-                backgroundColor: palette.secondary.main,
+                backgroundColor: palette.surface.main,
               }}
             >
               {courses.map((course: Course, count: number) => (
@@ -97,7 +97,7 @@ export default function ProfileCourseList({
                         justifyContent: 'space-between',
                         backgroundColor: 'transparent',
                         '&:hover': {
-                          backgroundColor: palette.secondary.light,
+                          backgroundColor: palette.surface.light,
                         },
                       }}
                     >
