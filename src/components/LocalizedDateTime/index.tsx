@@ -1,10 +1,5 @@
 'use client';
 
-/* 
-  This component should be used if a localized date is wanted
-  to be shown in an otherwise server-side-rendered component
-*/
-
 import { useEffect, useState } from 'react';
 import {
   formatDateRangeShort,
@@ -25,6 +20,17 @@ type SingleDateProps = {
   date: Date;
 };
 
+/**
+ * This component should be used if a localized date is wanted
+ * to be shown in an otherwise server-side-rendered component.
+ *
+ * @example
+ * <LocalizedDateTime variant='short' date={dateObj} />
+ * // returns <>{'Mon Jan 08 2024'}</>
+ *
+ * <LocalizedDateTime variant='range-long' startDate={dateObj1} endDate={dateObj2} />
+ * // returns <>{'08/01/2024, 11:30 - 08/01/2024, 18:30'}</>
+ */
 export default function LocalizedDateTime({
   variant,
   ...props
