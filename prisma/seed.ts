@@ -1,4 +1,4 @@
-import { prisma } from '../src/lib/prisma/prisma';
+import { prisma } from '../src/lib/prisma';
 
 const courseData = [
   {

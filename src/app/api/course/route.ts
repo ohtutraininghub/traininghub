@@ -5,7 +5,7 @@ import {
   errorResponse,
   successResponse,
 } from '@/lib/response/responseUtil';
-import { prisma } from '@/lib/prisma/prisma';
+import { prisma } from '@/lib/prisma';
 import { Tag } from '@prisma/client';
 import { handleCommonErrors } from '@/lib/response/errorUtil';
 

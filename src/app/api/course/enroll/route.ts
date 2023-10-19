@@ -1,6 +1,6 @@
 import { NextRequest } from 'next/server';
 import { courseSignupSchema } from '@/lib/zod/courses';
-import { prisma } from '@/lib/prisma/prisma';
+import { prisma } from '@/lib/prisma';
 import { getServerAuthSession } from '@/lib/auth';
 import {
   StatusCodeType,

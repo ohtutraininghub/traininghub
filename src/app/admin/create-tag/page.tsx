@@ -1,6 +1,6 @@
 import TagForm from '@/components/TagForm';
 import TagList from '@/components/TagList';
-import { prisma } from '@/lib/prisma/prisma';
+import { prisma } from '@/lib/prisma';
 import Typography from '@mui/material/Typography';
 
 export const dynamic = 'force-dynamic';

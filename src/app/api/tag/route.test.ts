@@ -1,7 +1,7 @@
 import { createMocks } from 'node-mocks-http';
 import { NextRequest } from 'next/server';
 import { POST } from './route';
-import { prisma } from '@/lib/prisma/prisma';
+import { prisma } from '@/lib/prisma';
 import { MessageType, StatusCodeType } from '@/lib/response/responseUtil';
 
 const existingTag = { name: 'Git' };

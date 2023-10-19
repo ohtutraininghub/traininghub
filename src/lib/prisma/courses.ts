@@ -1,4 +1,4 @@
-import { prisma } from './prisma';
+import { prisma } from '.';
 import { Course, Prisma as prismaClient } from '@prisma/client';
 
 export type CourseWithTags = prismaClient.CourseGetPayload<{
