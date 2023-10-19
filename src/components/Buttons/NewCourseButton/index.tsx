@@ -7,7 +7,7 @@ export default function NewCourseButton() {
   return (
     <>
       <Typography variant="h4">Actions</Typography>
-      <Link href="/courses/create">
+      <Link href="/course/create">
         <Button variant="contained" sx={{ m: 1 }}>
           Add New Course
         </Button>

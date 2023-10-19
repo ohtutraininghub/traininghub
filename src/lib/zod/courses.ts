@@ -54,8 +54,8 @@ export const courseSchemaWithId = withRefine(courseSchemaBaseWithId);
 export type CourseSchemaType = z.infer<typeof courseSchemaBase>;
 export type CourseSchemaWithIdType = z.infer<typeof courseSchemaBaseWithId>;
 
-export const courseSignupSchema = z.string(
+export const courseEnrollSchema = z.string(
   z.string().min(1, 'Course id is required')
 );
 
-export type CourseSignupSchemaType = z.infer<typeof courseSignupSchema>;
+export type CourseEnrollSchemaType = z.infer<typeof courseEnrollSchema>;

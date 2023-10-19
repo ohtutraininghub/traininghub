@@ -1,6 +1,5 @@
 import { CourseWithTagsAndStudentCount } from '@/lib/prisma/courses';
 import { CourseModalCloseButton } from '@/components/Buttons/Buttons';
-import { getCourseDateString } from '@/lib/util';
 import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography';
 import Card from '@mui/material/Card';
@@ -8,6 +7,7 @@ import Chip from '@mui/material/Chip';
 import Box from '@mui/material/Box';
 import EnrollHolder from './EnrollHolder';
 import EditButton from './EditButton';
+import LocalizedDateTime from '../LocalizedDateTime';
 
 type Props = {
   course: CourseWithTagsAndStudentCount | undefined;
@@ -16,7 +16,6 @@ type Props = {
 
 export default function CourseModal({ course, usersEnrolledCourseIds }: Props) {
   if (!course) return null;
-  const courseDate = getCourseDateString(course);
   const isUserEnrolled = usersEnrolledCourseIds.includes(course.id);
   const isCourseFull = course._count.students === course.maxStudents;
 
@@ -50,7 +49,13 @@ export default function CourseModal({ course, usersEnrolledCourseIds }: Props) {
       >
         <CourseModalCloseButton />
         <Typography variant="h3">{course.name}</Typography>
-        <Typography sx={{ my: 2 }}>{courseDate}</Typography>
+        <Typography sx={{ my: 2 }}>
+          <LocalizedDateTime
+            variant="range-long"
+            startDate={course.startDate}
+            endDate={course.endDate}
+          />
+        </Typography>
 
         <Box
           sx={{
@@ -70,7 +75,7 @@ export default function CourseModal({ course, usersEnrolledCourseIds }: Props) {
           ))}
         </Box>
 
-        <Typography variant="h6" sx={{ my: 2, color: 'secondary.main' }}>
+        <Typography variant="h6" sx={{ my: 2, color: 'white.main' }}>
           Description
         </Typography>
 
