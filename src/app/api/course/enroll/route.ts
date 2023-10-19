@@ -8,10 +8,12 @@ import {
   errorResponse,
 } from '@/lib/response/responseUtil';
 import { handleCommonErrors } from '@/lib/response/errorUtil';
+import { insertCourseToCalendar } from '@/lib/google/calendar';
 
 export async function POST(request: NextRequest) {
   try {
     const session = await getServerAuthSession();
+    const userId = session.user.id;
     const data = await request.json();
     const courseId = courseSignupSchema.parse(data);
 
@@ -41,7 +43,7 @@ export async function POST(request: NextRequest) {
     }
 
     const userCourseIds = await prisma.user.findUnique({
-      where: { id: session.user.id },
+      where: { id: userId },
       include: {
         courses: {
           select: {
@@ -65,11 +67,13 @@ export async function POST(request: NextRequest) {
       data: {
         students: {
           connect: {
-            id: session.user.id,
+            id: userId,
           },
         },
       },
     });
+
+    await insertCourseToCalendar(userId, course);
 
     return successResponse({
       message: 'Enrolled succesfully!',

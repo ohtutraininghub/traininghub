@@ -13,25 +13,39 @@ datasource db {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
-  courses       Course[]
-  accounts      Account[]
-  sessions      Session[]
+  id             String           @id @default(cuid())
+  name           String?
+  email          String?          @unique
+  emailVerified  DateTime?
+  image          String?
+  courses        Course[]
+  accounts       Account[]
+  sessions       Session[]
+  googleCalendar GoogleCalendar[]
 }
 
 model Course {
-  id          String   @id @default(cuid())
-  name        String
-  description String
-  startDate   DateTime
-  endDate     DateTime
-  maxStudents Int
-  students    User[]
-  tags        Tag[]
+  id             String           @id @default(cuid())
+  name           String
+  description    String
+  startDate      DateTime
+  endDate        DateTime
+  maxStudents    Int
+  students       User[]
+  tags           Tag[]
+  googleCalendar GoogleCalendar[]
+}
+
+model GoogleCalendar {
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  courseId String
+  course   Course @relation(fields: [courseId], references: [id])
+
+  eventId String // google calendar event id
+
+  @@unique([userId, courseId])
 }
 
 model Tag {

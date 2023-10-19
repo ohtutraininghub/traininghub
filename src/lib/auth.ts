@@ -1,14 +1,23 @@
 import type { NextAuthOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
-import { prisma } from './prisma/prisma';
+import { prisma } from './prisma';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import { getServerSession } from 'next-auth/next';
 
 export const authOptions: NextAuthOptions = {
   providers: [
     GoogleProvider({
-      clientId: process.env?.GOOGLE_CLIENT_ID ?? '',
-      clientSecret: process.env?.GOOGLE_CLIENT_SECRET ?? '',
+      clientId: process.env.GOOGLE_CLIENT_ID ?? '',
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? '',
+      authorization: {
+        params: {
+          prompt: 'select_account',
+          access_type: 'offline',
+          response_type: 'code',
+          scope:
+            'openid email profile https://www.googleapis.com/auth/calendar.events.owned',
+        },
+      },
     }),
   ],
   adapter: PrismaAdapter(prisma),
