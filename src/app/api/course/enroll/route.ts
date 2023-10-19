@@ -8,7 +8,7 @@ import {
   errorResponse,
 } from '@/lib/response/responseUtil';
 import { handleCommonErrors } from '@/lib/response/errorUtil';
-import { insertCourseToCalendar } from '@/lib/google/calendar';
+import { insertCourseToCalendar } from '@/lib/google';
 
 export async function POST(request: NextRequest) {
   try {
@@ -73,6 +73,7 @@ export async function POST(request: NextRequest) {
       },
     });
 
+    // Insert course to Google calendar
     await insertCourseToCalendar(userId, course);
 
     return successResponse({

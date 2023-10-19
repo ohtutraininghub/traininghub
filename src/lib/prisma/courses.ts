@@ -18,6 +18,8 @@ export type CourseWithTagsAndStudentCount = prismaClient.CourseGetPayload<{
   };
 }>;
 
+export type GetCoursesType = prismaClient.PromiseReturnType<typeof getCourses>;
+
 export const getCourseById = async (courseId: Course['id']) => {
   return await prisma.course.findFirst({
     include: {
@@ -61,4 +63,22 @@ export const getEnrolledCourseIdsByUserId = async (userId: string) => {
   ).map((data) => data.id);
 };
 
-export type GetCoursesType = prismaClient.PromiseReturnType<typeof getCourses>;
+export const getGoogleCalendarsInCourse = async (courseId: string) => {
+  return await prisma.course.findFirst({
+    where: { id: courseId },
+    select: {
+      students: {
+        select: {
+          accounts: {
+            where: { provider: 'google' },
+            select: { refresh_token: true },
+          },
+          googleCalendar: {
+            where: { courseId: courseId },
+            select: { eventId: true },
+          },
+        },
+      },
+    },
+  });
+};
