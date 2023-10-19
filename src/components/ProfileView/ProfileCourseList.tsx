@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { List } from '@mui/material';
+import { List, NoSsr } from '@mui/material';
 import { ListItem } from '@mui/material';
 import { ListItemText } from '@mui/material';
 import { Divider } from '@mui/material';
@@ -15,7 +15,8 @@ import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import IconButton from '@mui/material/IconButton';
 import TimerIcon from '@mui/icons-material/Timer';
 import { useState } from 'react';
-import { formatDate, daysUntilStart } from '@/lib/timedateutils';
+import { timeUntilstart } from '@/lib/timedateutils';
+import LocalizedDateTime from '../LocalizedDateTime';
 
 export interface ProfileCourseListProps {
   headerText: string;
@@ -103,26 +104,24 @@ export default function ProfileCourseList({
                     >
                       <ListItemText
                         primary={course.name}
-                        secondary={`${formatDate({
-                          date: course.startDate,
-                        })} - ${formatDate({ date: course.endDate })}`}
+                        secondary={
+                          <LocalizedDateTime
+                            variant="range-long"
+                            startDate={course.startDate}
+                            endDate={course.endDate}
+                          />
+                        }
                         sx={{ color: palette.black.main }}
                       />
                       {timer && (
-                        <Chip
-                          icon={<TimerIcon />}
-                          label={
-                            daysUntilStart(course.startDate) === 0
-                              ? 'Starts today'
-                              : daysUntilStart(course.startDate) === 1
-                              ? 'Starts in 1 day'
-                              : `Starts in ${daysUntilStart(
-                                  course.startDate
-                                )} days`
-                          }
-                          size="small"
-                          style={{ marginLeft: 'auto' }}
-                        />
+                        <NoSsr>
+                          <Chip
+                            icon={<TimerIcon />}
+                            label={timeUntilstart(course.startDate)}
+                            size="small"
+                            style={{ marginLeft: 'auto' }}
+                          />
+                        </NoSsr>
                       )}
                     </ListItem>
                   </Link>

@@ -4,7 +4,7 @@ import { fireEvent, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { renderWithTheme } from '@/lib/test-utils';
 import CourseForm from './CourseForm';
-import { dateToDateTimeLocal } from '@/lib/util';
+import { dateToDateTimeLocal } from '@/lib/timedateutils';
 
 window.alert = jest.fn();
 
