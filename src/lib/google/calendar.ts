@@ -24,8 +24,8 @@ export const insertCourseToCalendar = async (
   const refreshTokenAuth = await getRefreshTokenAuth(userId);
   const calendar = googlecalendar({ version: 'v3', auth: refreshTokenAuth });
 
-  calendar.events.insert(
-    {
+  return await calendar.events
+    .insert({
       calendarId: 'primary',
       requestBody: {
         colorId: '5', // yellow
@@ -38,17 +38,21 @@ export const insertCourseToCalendar = async (
           dateTime: course.endDate.toISOString(),
         },
       },
-    },
-    async (err, event) => {
-      if (err) {
-        // Let error handling handle
-        throw err;
+    })
+    .then(async (res) => {
+      const eventId = res?.data?.id;
+      if (!eventId) {
+        throw Error('Google response did not contain event ID!');
       }
 
-      const eventId = event?.data?.id;
-      if (!eventId) throw Error('Google response did not contain event ID!');
-
       await upsertCalendarEntry(userId, course.id, eventId);
-    }
-  );
+    })
+    .catch((error) => {
+      if (error.status === 403 && error.message === 'Insufficient Permission') {
+        // User hasn't granted permissions to access calendar
+        // -> Ignore error
+        return;
+      }
+      throw error;
+    });
 };
