@@ -1,4 +1,5 @@
 import EnrollButton from './EnrollButton';
+import CancelEnroll from './CancelEnroll';
 import Typography from '@mui/material/Typography';
 
 type Props = {
@@ -13,7 +14,12 @@ export default function EnrollHolder({
   isCourseFull,
 }: Props) {
   if (isUserEnrolled) {
-    return <Typography>You have enrolled for this course!</Typography>;
+    return (
+      <>
+        <Typography>You have enrolled for this course!</Typography>
+        <CancelEnroll courseId={courseId} />
+      </>
+    );
   }
 
   if (isCourseFull) {

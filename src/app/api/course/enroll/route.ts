@@ -79,3 +79,27 @@ export async function POST(request: NextRequest) {
     return handleCommonErrors(error);
   }
 }
+
+export async function PUT(request: NextRequest) {
+  try {
+    const session = await getServerAuthSession();
+    const data = await request.json();
+    const courseId = courseEnrollSchema.parse(data);
+
+    await prisma.course.update({
+      where: { id: courseId },
+      data: {
+        students: {
+          disconnect: [{ id: session.user.id }],
+        },
+      },
+    });
+
+    return successResponse({
+      message: 'Your enrollment was canceled',
+      statusCode: StatusCodeType.OK,
+    });
+  } catch (error) {
+    return handleCommonErrors(error);
+  }
+}
