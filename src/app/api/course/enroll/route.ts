@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server';
-import { courseSignupSchema } from '@/lib/zod/courses';
+import { courseEnrollSchema } from '@/lib/zod/courses';
 import { prisma } from '@/lib/prisma/prisma';
 import { getServerAuthSession } from '@/lib/auth';
 import {
@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
   try {
     const session = await getServerAuthSession();
     const data = await request.json();
-    const courseId = courseSignupSchema.parse(data);
+    const courseId = courseEnrollSchema.parse(data);
 
     const course = await prisma.course.findFirst({
       include: {

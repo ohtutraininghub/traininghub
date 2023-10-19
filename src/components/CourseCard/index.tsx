@@ -35,7 +35,7 @@ const CourseCard = ({ course }: Props) => {
             />
           </Typography>
           <Typography>
-            Signups: {course._count.students} / {course.maxStudents}
+            Enrolls: {course._count.students} / {course.maxStudents}
           </Typography>
         </CardContent>
       </Card>
