@@ -10,18 +10,9 @@
       "signOutConfirmation": "Confirm sign out"
     }
   },
-  "ConfirmCard": {
-    "cancel": "Cancel",
-    "confirm": "Confirm"
-  },
   "CourseList": {
     "courses": "Courses",
     "courseCard": {}
-  },
-  "CourseCard": {
-    "signups": "Signups: 0 / {x}",
-    "details": "View details",
-    "courseDescription": "Course description"
   },
   "CourseForm": {
     "name": "Name",

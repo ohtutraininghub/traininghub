@@ -20,6 +20,7 @@ export default async function CourseList({
   return (
     <>
       <CourseModal
+        lang={lang}
         course={openedCourse}
         usersEnrolledCourseIds={usersEnrolledCourseIds}
       />
@@ -34,7 +35,7 @@ export default async function CourseList({
       >
         {courses.map((course) => (
           <Grid key={course.id} item xs={1}>
-            <CourseCard course={course} />
+            <CourseCard lang={lang} course={course} />
           </Grid>
         ))}
       </Grid>

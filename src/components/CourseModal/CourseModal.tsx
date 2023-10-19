@@ -8,13 +8,19 @@ import Box from '@mui/material/Box';
 import EnrollHolder from './EnrollHolder';
 import EditButton from './EditButton';
 import LocalizedDateTime from '../LocalizedDateTime';
+import { DictProps, useTranslation } from '@/lib/i18n';
 
-type Props = {
+interface Props extends DictProps {
   course: CourseWithTagsAndStudentCount | undefined;
   usersEnrolledCourseIds: string[];
-};
+}
 
-export default function CourseModal({ course, usersEnrolledCourseIds }: Props) {
+export default async function CourseModal({
+  course,
+  usersEnrolledCourseIds,
+  lang,
+}: Props) {
+  const { t } = await useTranslation(lang, 'components');
   if (!course) return null;
   const isUserEnrolled = usersEnrolledCourseIds.includes(course.id);
   const isCourseFull = course._count.students === course.maxStudents;
@@ -47,7 +53,7 @@ export default function CourseModal({ course, usersEnrolledCourseIds }: Props) {
           textAlign: 'center',
         }}
       >
-        <CourseModalCloseButton />
+        <CourseModalCloseButton lang={lang} />
         <Typography variant="h3">{course.name}</Typography>
         <Typography sx={{ my: 2 }}>
           <LocalizedDateTime
@@ -76,7 +82,7 @@ export default function CourseModal({ course, usersEnrolledCourseIds }: Props) {
         </Box>
 
         <Typography variant="h6" sx={{ my: 2, color: 'white.main' }}>
-          Description
+          {t('CourseModal.description')}
         </Typography>
 
         <pre
@@ -100,14 +106,17 @@ export default function CourseModal({ course, usersEnrolledCourseIds }: Props) {
             gap: 1,
           }}
         >
-          <EditButton courseId={course.id} />
+          <EditButton lang={lang} courseId={course.id} />
           <Box
             sx={{
               flex: 1,
             }}
           >
             <Typography sx={{ mb: 1 }}>
-              Enrolls: {course._count.students} / {course.maxStudents}
+              {t('CourseModal.enrolls', {
+                studentCount: course._count.students,
+                maxStudentCount: course.maxStudents,
+              })}
             </Typography>
             <EnrollHolder
               isUserEnrolled={isUserEnrolled}

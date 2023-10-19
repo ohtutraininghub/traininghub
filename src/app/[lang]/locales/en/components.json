@@ -2,5 +2,28 @@
   "NewCourseButton": {
     "actions": "Actions",
     "newCourse": "Add New Course"
+  },
+  "NewTagButton": {
+    "newTag": "Add New Tag"
+  },
+  "SignOutButton": {
+    "signOut": "Sign out"
+  },
+  "CourseModal": {
+    "description": "Description",
+    "enrolls": "Enrolls: {{studentCount}} / {{maxStudentCount}}"
+  },
+  "CourseModalCloseButton": {
+    "close": "Close"
+  },
+  "ConfirmCard": {
+    "cancel": "Cancel",
+    "confirm": "Confirm"
+  },
+  "CourseCard": {
+    "enrolls": "Enrolls: {{studentCount}} / {{maxStudentCount}}"
+  },
+  "EditButton": {
+    "editCourse": "Edit course"
   }
 }
