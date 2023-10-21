@@ -8,16 +8,23 @@ import Box from '@mui/material/Box';
 import EnrollHolder from './EnrollHolder';
 import EditButton from './EditButton';
 import LocalizedDateTime from '../LocalizedDateTime';
+import { getServerAuthSession } from '@/lib/auth';
+import { hasCourseEditRights } from '@/lib/auth-utils';
 
 type Props = {
   course: CourseWithTagsAndStudentCount | undefined;
   usersEnrolledCourseIds: string[];
 };
 
-export default function CourseModal({ course, usersEnrolledCourseIds }: Props) {
+export default async function CourseModal({
+  course,
+  usersEnrolledCourseIds,
+}: Props) {
   if (!course) return null;
+  const { user } = await getServerAuthSession();
   const isUserEnrolled = usersEnrolledCourseIds.includes(course.id);
   const isCourseFull = course._count.students === course.maxStudents;
+  const hasEditRights = hasCourseEditRights(user, course);
 
   return (
     <Modal
@@ -100,7 +107,7 @@ export default function CourseModal({ course, usersEnrolledCourseIds }: Props) {
             gap: 1,
           }}
         >
-          <EditButton courseId={course.id} />
+          <EditButton courseId={course.id} hidden={!hasEditRights} />
           <Box
             sx={{
               flex: 1,
