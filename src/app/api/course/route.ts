@@ -12,7 +12,7 @@ import { getServerAuthSession } from '@/lib/auth';
 import { hasCourseEditRights, isTrainerOrAdmin } from '@/lib/auth-utils';
 
 const parseTags = async (tags: string[]): Promise<Tag[]> => {
-  let allTags = await prisma.tag.findMany();
+  const allTags = await prisma.tag.findMany();
   return allTags.filter((e) => tags.includes(e.name));
 };
 
@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
         ...body,
         createdById: user.id,
         tags: {
-          connect: parsedTags?.map((tag) => ({ id: tag.id })) || [],
+          connect: parsedTags.map((tag) => ({ id: tag.id })),
         },
       },
     });
@@ -78,7 +78,7 @@ export async function PUT(request: NextRequest) {
         ...body,
         tags: {
           set: [],
-          connect: parsedTags?.map((tag) => ({ id: tag.id })) || [],
+          connect: parsedTags.map((tag) => ({ id: tag.id })),
         },
       },
     });
