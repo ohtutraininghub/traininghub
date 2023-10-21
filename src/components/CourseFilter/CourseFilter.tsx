@@ -65,13 +65,18 @@ export default function CourseFilter({
 
   const handleDateChange = async (range: [any, any]) => {
     const [startDate, endDate] = range;
+    console.log(range);
     setStartDate(startDate);
     setEndDate(endDate);
-    router.push(
-      pathname +
-        '?' +
-        createQueryString('courseDates', startDate + '-' + endDate)
-    );
+    if (startDate === null && endDate === null) {
+      router.push(pathname + '?' + createQueryString('courseDates', ''));
+    } else {
+      router.push(
+        pathname +
+          '?' +
+          createQueryString('courseDates', startDate + '-' + endDate)
+      );
+    }
   };
 
   const customStyles = {
@@ -131,7 +136,7 @@ export default function CourseFilter({
         </FormControl>
         <DatePicker
           fixedHeight
-          placeholderText="Search by dates"
+          placeholderText="  Search by dates"
           minDate={new Date()}
           selected={startDate}
           onChange={handleDateChange}
