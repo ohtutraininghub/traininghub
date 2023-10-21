@@ -54,6 +54,8 @@ const tagData = [
 async function main() {
   await prisma.tag.deleteMany();
   await prisma.course.deleteMany();
+  const userFromDB = await prisma.user.findFirst();
+  const user = userFromDB ?? (await prisma.user.create({ data: {} }));
 
   await prisma.tag.createMany({
     data: tagData,
@@ -69,6 +71,7 @@ async function main() {
           startDate: course.startDate,
           endDate: course.endDate,
           maxStudents: course.maxStudents,
+          createdById: user.id,
           tags: {
             connect: course.tags.map((tag) => ({ name: tag })),
           },
