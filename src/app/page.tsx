@@ -4,14 +4,16 @@ import CourseList from '@/components/CourseList/CourseList';
 import { notFound } from 'next/navigation';
 import { getCourses, getEnrolledCourseIdsByUserId } from '@/lib/prisma/courses';
 import { getServerAuthSession } from '@/lib/auth';
+import { isAdmin, isTrainerOrAdmin } from '@/lib/auth-utils';
 
 export const dynamic = 'force-dynamic';
 
 type Props = {
   searchParams: { courseId?: string };
 };
+
 export default async function HomePage({ searchParams }: Props) {
-  const session = await getServerAuthSession();
+  const { user } = await getServerAuthSession();
   const courses = await getCourses();
 
   const courseId = searchParams.courseId;
@@ -20,9 +22,7 @@ export default async function HomePage({ searchParams }: Props) {
     notFound();
   }
 
-  const usersEnrolledCourseIds = await getEnrolledCourseIdsByUserId(
-    session.user.id
-  );
+  const usersEnrolledCourseIds = await getEnrolledCourseIdsByUserId(user.id);
 
   return (
     <div
@@ -34,8 +34,9 @@ export default async function HomePage({ searchParams }: Props) {
         padding: '0px 16px 100px 16px',
       }}
     >
-      <NewCourseButton />
-      <NewTagButton />
+      {isTrainerOrAdmin(user) && <NewCourseButton />}
+      {isAdmin(user) && <NewTagButton />}
+
       <CourseList
         courses={courses}
         openedCourse={openedCourse}
