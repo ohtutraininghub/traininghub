@@ -77,7 +77,6 @@ export default function CourseFilter({
   const customStyles = {
     width: '250px',
     height: '55px',
-    textAlign: 'center',
     fontSize: '16px',
   };
 
