@@ -76,6 +76,7 @@ export async function PUT(request: NextRequest) {
       where: { id: body.id },
       data: {
         ...body,
+        createdById: course.createdById,
         tags: {
           set: [],
           connect: parsedTags.map((tag) => ({ id: tag.id })),
