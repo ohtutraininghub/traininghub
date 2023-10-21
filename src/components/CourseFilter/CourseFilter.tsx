@@ -1,10 +1,23 @@
 'use client';
 
-import { Box, Autocomplete, TextField, Button } from '@mui/material';
+import React, { useState } from 'react';
+import {
+  Box,
+  Autocomplete,
+  TextField,
+  Button,
+  Typography,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+} from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { Key, useCallback, useState } from 'react';
+import { Key, useCallback } from 'react';
 import { CourseWithTagsAndStudentCount } from '@/lib/prisma/courses';
 import { usePathname, useSearchParams, useRouter } from 'next/navigation';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 type CourseFilterProps = {
   initialCourses: CourseWithTagsAndStudentCount[];
@@ -21,9 +34,9 @@ export default function CourseFilter({
 
   const { palette } = useTheme();
 
-  const [filteredCourses, setFilteredCourses] = useState<
-    CourseWithTagsAndStudentCount[]
-  >([]);
+  const [startDate, setStartDate] = useState();
+  const [endDate, setEndDate] = useState();
+  const [selectedTag, setSelectedTag] = useState('');
 
   const createQueryString = useCallback(
     (name: string, value: string) => {
@@ -36,28 +49,41 @@ export default function CourseFilter({
   );
 
   const handleNameChange = async (value: string | null) => {
-    setFilteredCourses([]);
     const searchTerm: string | null = value;
-    if (searchTerm === null) return;
-    const filteredCourse = initialCourses.filter((course) =>
-      course.name.toLowerCase().includes(searchTerm.toLocaleLowerCase())
+    router.push(
+      pathname + '?' + createQueryString('courseName', searchTerm || '')
     );
-    const courseId = filteredCourse[0].id;
-    router.push(pathname + '?' + createQueryString('courseId', courseId));
   };
 
   const handleTagChange = async (tagName: string | null) => {
-    if (tagName === null) return;
-    const filteredCourses = initialCourses.filter((course: any) =>
-      course.tags.some((tag: { name: string }) =>
-        tag.name.toLowerCase().includes(tagName.toLowerCase())
-      )
+    const searchTerm: string | null = tagName;
+    setSelectedTag(searchTerm || '');
+    router.push(
+      pathname + '?' + createQueryString('courseTag', searchTerm || '')
     );
-    setFilteredCourses(filteredCourses);
+  };
+
+  const handleDateChange = async (range: [any, any]) => {
+    const [startDate, endDate] = range;
+    setStartDate(startDate);
+    setEndDate(endDate);
+    router.push(
+      pathname +
+        '?' +
+        createQueryString('courseDates', startDate + '-' + endDate)
+    );
+  };
+
+  const customStyles = {
+    width: '250px',
+    height: '55px',
+    textAlign: 'center',
+    fontSize: '16px',
   };
 
   return (
     <>
+      <Typography variant="h4">Search courses</Typography>
       <Box
         style={{
           display: 'flex',
@@ -66,58 +92,58 @@ export default function CourseFilter({
           backgroundColor: palette.white.main,
         }}
       >
-        <Autocomplete
-          disablePortal
-          data-testid="search-autocomplete"
-          id="combo-box"
-          options={initialCourses.map((course) => course.name)}
-          sx={{ width: 300 }}
-          renderInput={(params) => (
-            <TextField {...params} label="Search by a name" />
-          )}
-          onChange={(event, value) => handleNameChange(value)}
-        />
-      </Box>
-      <Box
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          padding: '6px',
-          backgroundColor: palette.white.main,
-        }}
-      >
-        {initialTags.map((tag: { id: Key | null | undefined; name: any }) => (
-          <Button
-            data-testid="search-tags"
-            key={tag.id}
-            variant="contained"
-            onClick={() => handleTagChange(tag.name)}
-            style={{ marginRight: '10px', marginBottom: '10px' }}
+        <Button
+          variant="contained"
+          onClick={() => router.replace(pathname)}
+          sx={{ width: '200px', marginRight: '50px', marginBottom: '10px' }}
+        >
+          Clear search
+        </Button>
+        <div>
+          <Autocomplete
+            clearOnEscape
+            disablePortal
+            data-testid="search-autocomplete"
+            id="combo-box"
+            options={initialCourses.map((course) => course.name)}
+            sx={{ width: '250px', marginRight: '50px' }}
+            renderInput={(params) => (
+              <TextField {...params} label="Search by a name" />
+            )}
+            onChange={(event, value) => handleNameChange(value)}
+          />
+        </div>
+        <FormControl>
+          <InputLabel>Search by a tag</InputLabel>
+          <Select
+            value={selectedTag}
+            onChange={(event) => handleTagChange(event.target.value as string)}
+            sx={{ width: '250px', marginRight: '50px' }}
           >
-            {tag.name}
-          </Button>
-        ))}
-      </Box>
-      <Box
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          padding: '6px',
-          backgroundColor: palette.white.main,
-        }}
-      >
-        {filteredCourses.map(
-          (tag: { id: Key | null | undefined; name: any }) => (
-            <Button
-              data-testid="tagButton"
-              key={tag.id}
-              onClick={() => handleNameChange(tag.name)}
-              style={{ marginRight: '10px', marginBottom: '10px' }}
-            >
-              {tag.name}
-            </Button>
-          )
-        )}
+            <MenuItem value="">All tags</MenuItem>
+            {initialTags.map(
+              (tag: { id: Key | null | undefined; name: string }) => (
+                <MenuItem key={tag.id} value={tag.name}>
+                  {tag.name}
+                </MenuItem>
+              )
+            )}
+          </Select>
+        </FormControl>
+        <DatePicker
+          fixedHeight
+          placeholderText="Search by dates"
+          minDate={new Date()}
+          selected={startDate}
+          onChange={handleDateChange}
+          startDate={startDate}
+          endDate={endDate}
+          selectsRange
+          showWeekNumbers
+          isClearable
+          highlightDates={initialCourses.map((course) => course.startDate)}
+          customInput={<input style={customStyles} />}
+        />
       </Box>
     </>
   );

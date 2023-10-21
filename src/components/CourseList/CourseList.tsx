@@ -4,18 +4,27 @@ import { Grid, Typography } from '@mui/material';
 import { CourseWithTagsAndStudentCount } from '@/lib/prisma/courses';
 import CourseCard from '@/components/CourseCard/';
 import CourseModal from '@/components/CourseModal/CourseModal';
+import { filterCourses } from '@/components/CourseFilter/CourseFilterTool';
 
 type CourseListProps = {
   courses: CourseWithTagsAndStudentCount[];
   openedCourse: CourseWithTagsAndStudentCount | undefined;
   usersEnrolledCourseIds: string[];
+  searchCourses: {
+    courseName?: string;
+    courseTag?: string;
+    courseDates?: string;
+  };
 };
 
 export default function CourseList({
   courses,
   openedCourse,
   usersEnrolledCourseIds,
+  searchCourses,
 }: CourseListProps) {
+  const filteredCourses = filterCourses(courses, searchCourses);
+
   return (
     <>
       <CourseModal
@@ -31,7 +40,7 @@ export default function CourseList({
         sx={{ margin: 'auto' }}
         columns={{ xs: 1, sm: 2, md: 3 }}
       >
-        {courses.map((course) => (
+        {filteredCourses.map((course) => (
           <Grid key={course.id} item xs={1}>
             <CourseCard course={course} />
           </Grid>

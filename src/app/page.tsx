@@ -10,7 +10,12 @@ import CourseList from '@/components/CourseList/CourseList';
 export const dynamic = 'force-dynamic';
 
 type Props = {
-  searchParams: { courseId?: string };
+  searchParams: {
+    courseName?: string;
+    courseTag?: string;
+    courseDates?: string;
+    courseId?: string;
+  };
 };
 
 export default async function HomePage({ searchParams }: Props) {
@@ -46,6 +51,11 @@ export default async function HomePage({ searchParams }: Props) {
         courses={courses}
         openedCourse={openedCourse}
         usersEnrolledCourseIds={usersEnrolledCourseIds}
+        searchCourses={{
+          courseName: searchParams.courseName,
+          courseTag: searchParams.courseTag,
+          courseDates: searchParams.courseDates,
+        }}
       />
     </div>
   );
