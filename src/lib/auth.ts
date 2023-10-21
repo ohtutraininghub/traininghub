@@ -3,6 +3,7 @@ import GoogleProvider from 'next-auth/providers/google';
 import { prisma } from './prisma/prisma';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import { getServerSession } from 'next-auth/next';
+import { Adapter } from 'next-auth/adapters';
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -11,7 +12,7 @@ export const authOptions: NextAuthOptions = {
       clientSecret: process.env?.GOOGLE_CLIENT_SECRET ?? '',
     }),
   ],
-  adapter: PrismaAdapter(prisma),
+  adapter: PrismaAdapter(prisma) as Adapter,
   session: {
     strategy: 'jwt',
     maxAge: 7 * 24 * 60 * 60,
@@ -23,6 +24,7 @@ export const authOptions: NextAuthOptions = {
         user: {
           ...session.user,
           id: token.id,
+          role: token.role,
         },
       };
     },
@@ -31,6 +33,7 @@ export const authOptions: NextAuthOptions = {
         return {
           ...token,
           id: user.id,
+          role: user.role,
         };
       }
       return token;
