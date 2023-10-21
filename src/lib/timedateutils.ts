@@ -1,26 +1,54 @@
-export interface FormatDateProps {
-  date: Date;
-  variant?: string;
-}
+export const options = {
+  year: 'numeric',
+  month: 'numeric',
+  day: 'numeric',
+  hour: '2-digit',
+  minute: '2-digit',
+  // timeZoneName: 'short',
+} as Intl.DateTimeFormatOptions;
 
-export function formatDate({ date, variant }: FormatDateProps): string {
-  const day = String(date.getDate()).padStart(2, '0');
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const year = date.getFullYear();
-  const hours = String(date.getHours()).padStart(2, '0');
-  const minutes = String(date.getMinutes()).padStart(2, '0');
+export const timeUntilstart = (startDate: Date): string => {
+  const dateNow = Date.now();
+  const asMs = startDate.getTime() - dateNow;
+  const asMinutes = asMs / (1000 * 60);
+  const asHours = asMinutes / 60;
+  const asDays = asHours / 24;
 
-  if (variant === 'no-hours') {
-    return `${day}.${month}.${year}`;
+  if (asDays >= 1) {
+    return `Starts in ${Math.floor(asDays)} ${
+      Math.floor(asDays) === 1 ? 'day' : 'days'
+    }`;
+  } else if (asMinutes >= 60) {
+    return `Starts in ${Math.floor(asHours)} ${
+      Math.floor(asHours) === 1 ? 'hour' : 'hours'
+    }`;
+  } else if (asMinutes > 1) {
+    return `Starts in ${Math.floor(asMinutes)} ${
+      Math.floor(asMinutes) === 1 ? 'minute' : 'minutes'
+    }`;
   } else {
-    return `${day}.${month}.${year} ${hours}:${minutes}`;
+    return `Starts soon...`;
   }
-}
+};
 
-export function daysUntilStart(startDate: Date): number {
-  const dateNow = new Date();
-  dateNow.setHours(0, 0, 0, 0);
-  return Math.floor(
-    (startDate.getTime() - dateNow.getTime()) / (1000 * 60 * 60 * 24)
-  );
-}
+export const formatDateRangeShort = (startDate: Date, endDate: Date) => {
+  const startDateString = startDate.toDateString();
+  const endDateString = endDate.toDateString();
+  return startDateString === endDateString
+    ? startDateString
+    : `${startDateString} - ${endDateString}`;
+};
+
+export const formatDateRangeWithTime = (startDate: Date, endDate: Date) => {
+  return `${startDate.toLocaleString([], options)} - ${endDate.toLocaleString(
+    [],
+    options
+  )}`;
+};
+
+// https://stackoverflow.com/a/66558369
+export const dateToDateTimeLocal = (date: Date) => {
+  return new Date(date.getTime() - date.getTimezoneOffset() * 60000)
+    .toISOString()
+    .slice(0, -1);
+};

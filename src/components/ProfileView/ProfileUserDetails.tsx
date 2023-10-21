@@ -17,7 +17,7 @@ export default function ProfileUserDetails({
 }: ProfileUserDetailProps) {
   const { palette } = useTheme();
 
-  const gradientBackground = `linear-gradient(-50deg, ${palette.darkBlue.main}, ${palette.info.main})`;
+  const gradientBackground = `linear-gradient(-50deg, ${palette.secondary.main}, ${palette.secondary.light})`;
 
   return (
     <Paper
