@@ -65,7 +65,6 @@ export default function CourseFilter({
 
   const handleDateChange = async (range: [any, any]) => {
     const [startDate, endDate] = range;
-    console.log(range);
     setStartDate(startDate);
     setEndDate(endDate);
     if (startDate === null && endDate === null) {
