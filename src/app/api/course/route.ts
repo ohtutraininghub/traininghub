@@ -8,6 +8,8 @@ import {
 import { prisma } from '@/lib/prisma/prisma';
 import { Tag } from '@prisma/client';
 import { handleCommonErrors } from '@/lib/response/errorUtil';
+import { getServerAuthSession } from '@/lib/auth';
+import { hasCourseEditRights, isTrainerOrAdmin } from '@/lib/auth-utils';
 
 const parseTags = async (tags: string[]): Promise<Tag[]> => {
   let allTags = await prisma.tag.findMany();
@@ -21,12 +23,20 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
+    const { user } = await getServerAuthSession();
+    if (!isTrainerOrAdmin(user)) {
+      return errorResponse({
+        message: 'Forbidden',
+        statusCode: StatusCodeType.FORBIDDEN,
+      });
+    }
     const data = await request.json();
     const body = courseSchema.parse(data);
     const parsedTags = await parseTags(body.tags);
     await prisma.course.create({
       data: {
         ...body,
+        createdById: user.id,
         tags: {
           connect: parsedTags?.map((tag) => ({ id: tag.id })) || [],
         },
@@ -44,6 +54,7 @@ export async function POST(request: NextRequest) {
 
 export async function PUT(request: NextRequest) {
   try {
+    const { user } = await getServerAuthSession();
     const body = courseSchemaWithId.parse(await request.json());
     const parsedTags = await parseTags(body.tags);
     const course = await prisma.course.findFirst({
@@ -53,6 +64,12 @@ export async function PUT(request: NextRequest) {
       return errorResponse({
         message: 'Course not found',
         statusCode: StatusCodeType.NOT_FOUND,
+      });
+    }
+    if (!hasCourseEditRights(user, course)) {
+      return errorResponse({
+        message: 'Forbidden',
+        statusCode: StatusCodeType.FORBIDDEN,
       });
     }
     await prisma.course.update({
