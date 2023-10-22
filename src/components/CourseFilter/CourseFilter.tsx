@@ -36,6 +36,7 @@ export default function CourseFilter({
 
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
+  const [courseName, setCourseName] = useState('');
   const [selectedTag, setSelectedTag] = useState('');
 
   const createQueryString = useCallback(
@@ -50,6 +51,7 @@ export default function CourseFilter({
 
   const handleNameChange = async (value: string | null) => {
     const searchTerm: string | null = value;
+    setCourseName(searchTerm || '');
     router.push(
       pathname + '?' + createQueryString('courseName', searchTerm || '')
     );
@@ -78,6 +80,13 @@ export default function CourseFilter({
     }
   };
 
+  const handleClearSearch = async () => {
+    await handleNameChange(null);
+    await handleTagChange('');
+    await handleDateChange([null, null]);
+    router.replace(pathname);
+  };
+
   const customStyles = {
     width: '250px',
     height: '55px',
@@ -97,7 +106,7 @@ export default function CourseFilter({
       >
         <Button
           variant="contained"
-          onClick={() => router.replace(pathname)}
+          onClick={() => handleClearSearch()}
           sx={{
             width: '200px',
             marginRight: '50px',
@@ -108,16 +117,19 @@ export default function CourseFilter({
         </Button>
         <div>
           <Autocomplete
+            value={courseName}
             clearOnEscape
             disablePortal
             data-testid="search-autocomplete"
             id="combo-box"
             options={initialCourses.map((course) => course.name)}
             sx={{ width: '250px', marginRight: '50px' }}
-            renderInput={(params) => (
-              <TextField {...params} label="Search by a name" />
+            renderInput={(value) => (
+              <TextField {...value} label="Search by a name" />
             )}
-            onChange={(event, value) => handleNameChange(value)}
+            onChange={(event, value) => {
+              handleNameChange(value);
+            }}
           />
         </div>
         <FormControl>
