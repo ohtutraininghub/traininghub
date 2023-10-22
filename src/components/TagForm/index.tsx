@@ -8,10 +8,15 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import FormFieldError from '@/components/FormFieldError/FormFieldError';
 import { useMessage } from '../Providers/MessageProvider';
 import { post } from '@/lib/response/fetchUtil';
+import { DictProps } from '@/lib/i18n';
+import { useTranslation } from '@i18n/client';
 
-export default function TagForm() {
+interface Props extends DictProps {}
+
+export default function TagForm({ lang }: Props) {
   const router = useRouter();
   const { notify } = useMessage();
+  const { t } = useTranslation(lang, 'components');
 
   const {
     register,
@@ -49,7 +54,7 @@ export default function TagForm() {
               mt: 1,
             }}
           >
-            Submit
+            {t('TagForm.submit')}
           </Button>
         </form>
       </Box>

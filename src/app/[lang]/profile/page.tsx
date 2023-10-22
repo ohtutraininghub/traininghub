@@ -11,7 +11,7 @@ type Props = {
   params: { lang: Locale };
 };
 
-export default async function ProfilePage({ searchParams }: Props) {
+export default async function ProfilePage({ searchParams, params }: Props) {
   const session = await getServerAuthSession();
 
   const userData = await prisma.user.findUnique({
@@ -44,7 +44,11 @@ export default async function ProfilePage({ searchParams }: Props) {
 
   return (
     <Container maxWidth="md">
-      <CourseModal course={openedCourse} usersEnrolledCourseIds={courseIds} />
+      <CourseModal
+        lang={params.lang}
+        course={openedCourse}
+        usersEnrolledCourseIds={courseIds}
+      />
       <ProfileView
         userDetails={{
           name: userData.name ?? '',

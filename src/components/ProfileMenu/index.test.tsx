@@ -9,6 +9,7 @@ import userEvent from '@testing-library/user-event';
 const testUser: ProfileMenuProps = {
   name: 'Test User',
   image: 'someimage.jpg',
+  lang: 'en',
 };
 
 const menuItems = ['homeMenuItem', 'viewProfileMenuItem', 'signOutMenuItem'];

@@ -22,11 +22,11 @@ export default async function CreateTag({ params }: Props) {
       <Typography variant="h3" component="h1">
         {t('CreateTag.addNewTag')}
       </Typography>
-      <TagForm />
+      <TagForm lang={params.lang} />
       <Typography variant="h5" component="h2">
         {t('CreateTag.existingTags')}
       </Typography>
-      <TagList tags={tags} />
+      <TagList lang={params.lang} tags={tags} />
     </>
   );
 }

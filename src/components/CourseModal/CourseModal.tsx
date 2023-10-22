@@ -119,6 +119,7 @@ export default async function CourseModal({
               })}
             </Typography>
             <EnrollHolder
+              lang={lang}
               isUserEnrolled={isUserEnrolled}
               courseId={course.id}
               isCourseFull={isCourseFull}

@@ -1,24 +1,27 @@
+import { DictProps, useTranslation } from '@/lib/i18n';
 import EnrollButton from './EnrollButton';
 import Typography from '@mui/material/Typography';
 
-type Props = {
+interface Props extends DictProps {
   isUserEnrolled: boolean;
   courseId: string;
   isCourseFull: boolean;
-};
+}
 
-export default function EnrollHolder({
+export default async function EnrollHolder({
   isUserEnrolled,
   courseId,
   isCourseFull,
+  lang,
 }: Props) {
+  const { t } = await useTranslation(lang, 'components');
   if (isUserEnrolled) {
-    return <Typography>You have enrolled for this course!</Typography>;
+    return <Typography>{t('EnrollHolder.confirmMessage')}</Typography>;
   }
 
   if (isCourseFull) {
     return null;
   }
 
-  return <EnrollButton courseId={courseId}></EnrollButton>;
+  return <EnrollButton lang={lang} courseId={courseId} />;
 }

@@ -5,9 +5,9 @@ import { Locale, i18n, NameSpace, getOptions } from './i18n-config';
 import { match as matchLocale } from '@formatjs/intl-localematcher';
 import Negotiator from 'negotiator';
 import { FlatNamespace, KeyPrefix, createInstance } from 'i18next';
-import resourcesToBackend from 'i18next-resources-to-backend';
 import { initReactI18next } from 'react-i18next/initReactI18next';
 import { FallbackNs } from 'react-i18next';
+import resourcesToBackend from 'i18next-resources-to-backend';
 
 export interface DictProps {
   lang: Locale;
@@ -55,13 +55,14 @@ const initI18next = async (lng: Locale, ns?: NameSpace | NameSpace[]) => {
 export async function useTranslation<
   Ns extends FlatNamespace,
   KPrefix extends KeyPrefix<FallbackNs<Ns>> = undefined,
->(lng: Locale, ns?: Ns, options: { keyPrefix?: KPrefix } = {}) {
-  const i18nextInstance = await initI18next(
-    lng,
-    Array.isArray(ns) ? (ns as NameSpace[]) : (ns as NameSpace)
-  );
+>(lng: Locale, ns?: Ns | Ns[], options: { keyPrefix?: KPrefix } = {}) {
+  const i18nextInstance = await initI18next(lng, ns);
   return {
-    t: i18nextInstance.getFixedT(lng, ns, options.keyPrefix),
+    t: i18nextInstance.getFixedT(
+      lng,
+      Array.isArray(ns) ? ns[0] : ns,
+      options.keyPrefix
+    ),
     i18n: i18nextInstance,
   };
 }
