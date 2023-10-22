@@ -96,7 +96,7 @@ export default function CourseModal({ course, usersEnrolledCourseIds }: Props) {
             pt: 3,
             display: 'flex',
             flexDirection: { xs: 'column-reverse', sm: 'row' },
-            alignItems: 'center',
+            alignItems: { xs: 'center', sm: 'flex-end' },
             gap: 1,
           }}
         >
@@ -113,6 +113,7 @@ export default function CourseModal({ course, usersEnrolledCourseIds }: Props) {
               isUserEnrolled={isUserEnrolled}
               courseId={course.id}
               isCourseFull={isCourseFull}
+              startDate={course.startDate}
             />
           </Box>
           <Box sx={{ flex: 1 }} />

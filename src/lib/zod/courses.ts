@@ -1,5 +1,9 @@
 import z from 'zod';
 
+// The minimum time in milliseconds to course start
+// at which cancelling enrollment is still allowed
+export const minCancelTimelMs = 48 * 60 * 60 * 1000; // 48 hours
+
 const withRefine = <O extends CourseSchemaType, T extends z.ZodTypeDef, I>(
   schema: z.ZodType<O, T, I>
 ) => {
