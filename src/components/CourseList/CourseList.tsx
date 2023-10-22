@@ -1,5 +1,3 @@
-'use client';
-
 import { Grid, Typography } from '@mui/material';
 import { CourseWithTagsAndStudentCount } from '@/lib/prisma/courses';
 import CourseCard from '@/components/CourseCard/';
