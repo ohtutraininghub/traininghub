@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Autocomplete,
@@ -48,6 +48,17 @@ export default function CourseFilter({
     },
     [searchParams]
   );
+
+  useEffect(() => {
+    if (
+      searchParams.get('courseName') === null &&
+      searchParams.get('courseTag') === null &&
+      searchParams.get('courseDates') === null &&
+      searchParams.get('courseId') === null
+    ) {
+      handleClearSearch();
+    }
+  }, [searchParams]);
 
   const handleNameChange = async (value: string | null) => {
     const searchTerm: string | null = value;
