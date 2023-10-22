@@ -98,7 +98,11 @@ export default function CourseFilter({
         <Button
           variant="contained"
           onClick={() => router.replace(pathname)}
-          sx={{ width: '200px', marginRight: '50px', marginBottom: '10px' }}
+          sx={{
+            width: '200px',
+            marginRight: '50px',
+            backgroundColor: palette.surface.main,
+          }}
         >
           Clear search
         </Button>
@@ -123,7 +127,7 @@ export default function CourseFilter({
             onChange={(event) => handleTagChange(event.target.value as string)}
             sx={{ width: '250px', marginRight: '50px' }}
           >
-            <MenuItem value="">All tags</MenuItem>
+            <MenuItem value="">-</MenuItem>
             {initialTags.map(
               (tag: { id: Key | null | undefined; name: string }) => (
                 <MenuItem key={tag.id} value={tag.name}>

@@ -1,3 +1,8 @@
+/*
+CourseFilterLogic works in conjunction; e.g. if a courseName AND courseTag AND courseDates are all chosen, all courses that meet all the conditions are displayed
+to the user. If one of the contidions is not chosen, e.g. courseName being null, courses are filtered by the conjunction of courseTag AND courseDates etc.
+*/
+
 export function filterCourses(
   courses: ({
     _count: { students: number };
@@ -43,14 +48,5 @@ export function filterCourses(
         new Date(course.endDate) <= endDate
     );
   }
-  if (
-    searchCourses.courseDates === null ||
-    ('' && searchCourses.courseName === null) ||
-    ('' && searchCourses.courseTag == null) ||
-    ''
-  ) {
-    return filteredCourses;
-  }
-
   return filteredCourses;
 }

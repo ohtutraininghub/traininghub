@@ -4,7 +4,7 @@ import { Grid, Typography } from '@mui/material';
 import { CourseWithTagsAndStudentCount } from '@/lib/prisma/courses';
 import CourseCard from '@/components/CourseCard/';
 import CourseModal from '@/components/CourseModal/CourseModal';
-import { filterCourses } from '@/components/CourseFilter/CourseFilterTool';
+import { filterCourses } from '@/components/CourseFilter/CourseFilterLogic';
 
 type CourseListProps = {
   courses: CourseWithTagsAndStudentCount[];
