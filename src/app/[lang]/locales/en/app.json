@@ -10,10 +10,7 @@
       "signOutConfirmation": "Confirm sign out"
     }
   },
-  "CourseList": {
-    "courses": "Courses",
-    "courseCard": {}
-  },
+
   "CourseForm": {
     "name": "Name",
     "description": "Description",

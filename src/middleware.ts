@@ -2,15 +2,18 @@ import { NextResponse } from 'next/server';
 import { checkForMissingLocale, getLocale } from '@i18n/index';
 import { withAuth } from 'next-auth/middleware';
 
+const PUBLIC_FILE = /\.(.*)$/;
+
 export default withAuth(function middleware(request) {
   const { pathname } = request.nextUrl;
+  console.log('PATHNAME: ', pathname);
   if (
     !(
-      (
-        pathname.startsWith('/_next') || // exclude Next.js internals
-        pathname.startsWith('/api') || // exclude all API routes
-        pathname.startsWith('/static')
-      ) // exclude static files
+      pathname.startsWith('/_next') || // exclude Next.js internals
+      pathname.startsWith('/api') || // exclude all API routes
+      pathname.startsWith('/static') ||
+      pathname.startsWith('/public') ||
+      PUBLIC_FILE.test(pathname)
     )
   ) {
     const pathnameIsMissingLocale = checkForMissingLocale(pathname);

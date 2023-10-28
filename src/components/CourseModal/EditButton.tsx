@@ -2,16 +2,20 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Link from 'next/link';
 import EditIcon from '@mui/icons-material/Edit';
-import { DictProps, useTranslation } from '@i18n/index';
 
-interface Props extends DictProps {
+interface Props {
   courseId: string;
+  editCourseLabel: string;
 }
 
-export default async function EditButton({ courseId, lang }: Props) {
-  const { t } = await useTranslation(lang, 'components');
+export default function EditButton({ courseId, editCourseLabel }: Props) {
   return (
-    <Box sx={{ display: 'flex', flex: 1 }}>
+    <Box
+      sx={{
+        display: 'flex',
+        flex: 1,
+      }}
+    >
       <Link style={{ all: 'unset' }} href={`/course/${courseId}/edit`}>
         <Box
           sx={{
@@ -27,7 +31,7 @@ export default async function EditButton({ courseId, lang }: Props) {
           }}
         >
           <EditIcon />
-          <Typography>{t('EditButton.editCourse')}</Typography>
+          <Typography>{editCourseLabel}</Typography>
         </Box>
       </Link>
     </Box>

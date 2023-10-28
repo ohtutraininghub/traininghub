@@ -43,7 +43,7 @@ export default function ProfileMenu({ name, image, lang }: ProfileMenuProps) {
   };
 
   return (
-    <React.Fragment>
+    <>
       <ConfirmCard
         lang={lang}
         backdropOpen={backdropOpen}
@@ -138,6 +138,6 @@ export default function ProfileMenu({ name, image, lang }: ProfileMenuProps) {
           {t('signOut')}
         </MenuItem>
       </Menu>
-    </React.Fragment>
+    </>
   );
 }

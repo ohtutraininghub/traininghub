@@ -55,6 +55,7 @@ export function useTranslation<
   useEffect(() => {
     if (runsOnServerSide && lng && i18n.resolvedLanguage !== lng) return;
     if (!lng || i18n.resolvedLanguage === lng) return;
+
     i18n.changeLanguage(lng);
   }, [lng, i18n]);
 

@@ -39,7 +39,7 @@ export default async function HomePage({ searchParams, params }: Props) {
       }}
     >
       <NewCourseButton lang={params.lang} />
-      <NewTagButton />
+      <NewTagButton lang={params.lang} />
       <CourseList
         lang={params.lang}
         courses={courses}

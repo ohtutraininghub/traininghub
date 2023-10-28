@@ -30,9 +30,10 @@ export function getOptions(
   ns: NameSpace | NameSpace[] = defaultNS
 ) {
   return {
-    debug: true,
+    //debug: true,
     supportedLngs: i18n.locales,
-    lng,
+    lng: lng,
+    fallbackLng: i18n.defaultLocale,
     fallbackNS: defaultNS,
     defaultNS,
     ns,

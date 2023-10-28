@@ -20,6 +20,9 @@
     "cancel": "Cancel",
     "confirm": "Confirm"
   },
+  "CourseList": {
+    "courses": "Courses"
+  },
   "CourseCard": {
     "enrolls": "Enrolls: {{studentCount}} / {{maxStudentCount}}"
   },

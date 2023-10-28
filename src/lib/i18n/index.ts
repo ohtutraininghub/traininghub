@@ -4,7 +4,13 @@ import { NextRequest } from 'next/server';
 import { Locale, i18n, NameSpace, getOptions } from './i18n-config';
 import { match as matchLocale } from '@formatjs/intl-localematcher';
 import Negotiator from 'negotiator';
-import { FlatNamespace, KeyPrefix, createInstance } from 'i18next';
+import {
+  FlatNamespace,
+  KeyPrefix,
+  TFunction,
+  TFunctionReturnOptionalDetails,
+  createInstance,
+} from 'i18next';
 import { initReactI18next } from 'react-i18next/initReactI18next';
 import { FallbackNs } from 'react-i18next';
 import resourcesToBackend from 'i18next-resources-to-backend';
@@ -15,6 +21,7 @@ export interface DictProps {
 
 // Check if there is any supported locale in the pathname
 export const checkForMissingLocale = (pathname: string) => {
+  console.log('PATHNAME', pathname);
   return i18n.locales.every(
     (locale) => !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`
   );
@@ -24,7 +31,7 @@ export function getLocale(request: NextRequest): string | undefined {
   // Negotiator expects plain object so we need to transform headers
   const negotiatorHeaders: Record<string, string> = {};
   request.headers.forEach((value, key) => (negotiatorHeaders[key] = value));
-
+  console.log(negotiatorHeaders);
   // @ts-ignore locales are readonly
   const locales: string[] = i18n.locales;
 
@@ -34,11 +41,12 @@ export function getLocale(request: NextRequest): string | undefined {
   );
 
   const locale = matchLocale(languages, locales, i18n.defaultLocale);
-
+  console.log('LOCALE IN GETLOCALE', locale);
   return locale;
 }
 
 const initI18next = async (lng: Locale, ns?: NameSpace | NameSpace[]) => {
+  console.log('INIT LANG: ', lng);
   const i18nInstance = createInstance();
   await i18nInstance
     .use(initReactI18next)
@@ -66,3 +74,10 @@ export async function useTranslation<
     i18n: i18nextInstance,
   };
 }
+
+export const mockTFunction: TFunction<'app', undefined> = function () {
+  return {} as TFunctionReturnOptionalDetails<any, any>;
+};
+
+// Provide the $TFunctionBrand property to match the TFunction interface
+mockTFunction.$TFunctionBrand = 'app';

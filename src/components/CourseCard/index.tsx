@@ -4,14 +4,13 @@ import Card from '@mui/material/Card';
 import Link from 'next/link';
 import { CourseWithTagsAndStudentCount } from '@/lib/prisma/courses';
 import LocalizedDateTime from '../LocalizedDateTime';
-import { DictProps, useTranslation } from '@/lib/i18n';
 
-interface Props extends DictProps {
+interface Props {
   course: CourseWithTagsAndStudentCount;
+  enrolls: string;
 }
 
-const CourseCard = async ({ course, lang }: Props) => {
-  const { t } = await useTranslation(lang, 'components');
+const CourseCard = ({ course, enrolls }: Props) => {
   return (
     <Link href={`?courseId=${course.id}`} style={{ textDecoration: 'none' }}>
       <Card
@@ -36,12 +35,7 @@ const CourseCard = async ({ course, lang }: Props) => {
               endDate={course.endDate}
             />
           </Typography>
-          <Typography>
-            {t('CourseCard.enrolls', {
-              studentCount: course._count.students,
-              maxStudentCount: course.maxStudents,
-            })}
-          </Typography>
+          <Typography>{enrolls}</Typography>
         </CardContent>
       </Card>
     </Link>

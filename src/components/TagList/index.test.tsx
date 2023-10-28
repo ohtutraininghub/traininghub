@@ -12,11 +12,11 @@ const tags = [
   { name: 'Python' },
   { name: 'Robot Framework' },
   { name: 'Testing' },
-];
+].map((tag, i) => ({ ...tag, id: String(i) }));
 
 describe('Tag list tests', () => {
   it('displays the existing tags', async () => {
-    renderWithTheme(<TagList tags={tags} />);
+    renderWithTheme(<TagList lang="en" tags={tags} />);
 
     tags.forEach((tag) => {
       expect(screen.getByText(tag.name)).toBeVisible();
@@ -24,7 +24,7 @@ describe('Tag list tests', () => {
   });
 
   it('displays expected message and no list if the tag list is empty', async () => {
-    const { container } = renderWithTheme(<TagList tags={[]} />);
+    const { container } = renderWithTheme(<TagList lang="en" tags={[]} />);
 
     expect(screen.getByText('(No tags added)')).toBeVisible();
     const tagList = container.querySelector('ul');

@@ -35,7 +35,7 @@ jest.mock('../../lib/response/fetchUtil', () => ({
 
 describe('Tag form: adding a new tag', () => {
   it('displays the correct error message when an empty tag is submitted', async () => {
-    renderWithTheme(<TagForm />);
+    renderWithTheme(<TagForm lang="en" />);
     const submitButton = screen.getByRole('button', { name: /Submit/i });
     await userEvent.click(submitButton);
 
@@ -43,7 +43,7 @@ describe('Tag form: adding a new tag', () => {
   });
 
   it('displays the correct error message when a too long tag is submitted', async () => {
-    renderWithTheme(<TagForm />);
+    renderWithTheme(<TagForm lang="en" />);
     const inputField = screen.getByRole('textbox');
 
     const tooLongTag =
@@ -61,7 +61,7 @@ describe('Tag form: adding a new tag', () => {
   });
 
   it('displays the correct error message when a tag with extra spaces is submitted', async () => {
-    renderWithTheme(<TagForm />);
+    renderWithTheme(<TagForm lang="en" />);
     const inputField = screen.getByRole('textbox');
 
     await userEvent.type(inputField, 'Robot  Framework');
@@ -74,7 +74,7 @@ describe('Tag form: adding a new tag', () => {
   });
 
   it('correct values are submitted from the tag form', async () => {
-    renderWithTheme(<TagForm />);
+    renderWithTheme(<TagForm lang="en" />);
     const inputField = screen.getByRole('textbox');
 
     const tagName = 'Jenkins';
@@ -91,7 +91,7 @@ describe('Tag form: adding a new tag', () => {
   });
 
   it('any leading and trailing spaces are trimmed from the submitted tag', async () => {
-    renderWithTheme(<TagForm />);
+    renderWithTheme(<TagForm lang="en" />);
     const inputField = screen.getByRole('textbox');
 
     const tagName = ' Python ';

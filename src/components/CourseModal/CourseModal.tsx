@@ -8,19 +8,24 @@ import Box from '@mui/material/Box';
 import EnrollHolder from './EnrollHolder';
 import EditButton from './EditButton';
 import LocalizedDateTime from '../LocalizedDateTime';
-import { DictProps, useTranslation } from '@/lib/i18n';
+import { DictProps } from '@/lib/i18n';
 
 interface Props extends DictProps {
   course: CourseWithTagsAndStudentCount | undefined;
   usersEnrolledCourseIds: string[];
+  enrolls: string;
+  description: string;
+  editCourseLabel: string;
 }
 
-export default async function CourseModal({
+export default function CourseModal({
   course,
   usersEnrolledCourseIds,
   lang,
+  enrolls,
+  description,
+  editCourseLabel,
 }: Props) {
-  const { t } = await useTranslation(lang, 'components');
   if (!course) return null;
   const isUserEnrolled = usersEnrolledCourseIds.includes(course.id);
   const isCourseFull = course._count.students === course.maxStudents;
@@ -82,7 +87,7 @@ export default async function CourseModal({
         </Box>
 
         <Typography variant="h6" sx={{ my: 2, color: 'white.main' }}>
-          {t('CourseModal.description')}
+          {description}
         </Typography>
 
         <pre
@@ -103,21 +108,13 @@ export default async function CourseModal({
             display: 'flex',
             flexDirection: { xs: 'column-reverse', sm: 'row' },
             alignItems: 'center',
+            justifyContent: 'center',
             gap: 1,
           }}
         >
-          <EditButton lang={lang} courseId={course.id} />
-          <Box
-            sx={{
-              flex: 1,
-            }}
-          >
-            <Typography sx={{ mb: 1 }}>
-              {t('CourseModal.enrolls', {
-                studentCount: course._count.students,
-                maxStudentCount: course.maxStudents,
-              })}
-            </Typography>
+          <EditButton editCourseLabel={editCourseLabel} courseId={course.id} />
+          <Box sx={{ flex: 1 }}>
+            <Typography sx={{ mb: 1 }}>{enrolls}</Typography>
             <EnrollHolder
               lang={lang}
               isUserEnrolled={isUserEnrolled}
@@ -125,7 +122,7 @@ export default async function CourseModal({
               isCourseFull={isCourseFull}
             />
           </Box>
-          <Box sx={{ flex: 1 }} />
+          <Box sx={{ flex: 1 }}></Box>
         </Box>
       </Card>
     </Modal>
