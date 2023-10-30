@@ -86,6 +86,32 @@ export async function PUT(request: NextRequest) {
     const data = await request.json();
     const courseId = courseEnrollSchema.parse(data);
 
+    /**
+     * Prisma does not throw an error if a student tries to
+     * cancel an enrollment for a course they are in fact not enrolled to.
+     * Checking if the relationship exists before disconnecting
+     * has to be done manually if an error message is wanted
+     * https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#disconnect
+     */
+
+    const userCourseIds = await prisma.user.findUnique({
+      where: { id: session.user.id },
+      include: {
+        courses: {
+          select: {
+            id: true,
+          },
+        },
+      },
+    });
+
+    if (!userCourseIds?.courses.find((course) => course.id === courseId)) {
+      return errorResponse({
+        message: 'You are not enrolled to this course',
+        statusCode: StatusCodeType.UNPROCESSABLE_CONTENT,
+      });
+    }
+
     await prisma.course.update({
       where: { id: courseId },
       data: {
