@@ -16,8 +16,7 @@ export const metadata: Metadata = {
 };
 
 export async function generateStaticParams() {
-  console.log(i18n);
-  return i18n.locales.map((lng) => ({ lang: lng }));
+  return i18n.locales.map((locale) => ({ lang: locale }));
 }
 
 export default function RootLayout({
@@ -27,8 +26,6 @@ export default function RootLayout({
   children: React.ReactNode;
   params: { lang: Locale };
 }) {
-  console.log(params);
-  console.log('ROOTLAYOUT locale', params.lang);
   return (
     <html lang={params.lang}>
       <body className={inter.className}>

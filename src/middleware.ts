@@ -6,7 +6,7 @@ const PUBLIC_FILE = /\.(.*)$/;
 
 export default withAuth(function middleware(request) {
   const { pathname } = request.nextUrl;
-  console.log('PATHNAME: ', pathname);
+
   if (
     !(
       pathname.startsWith('/_next') || // exclude Next.js internals

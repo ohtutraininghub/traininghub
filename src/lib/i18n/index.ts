@@ -21,7 +21,6 @@ export interface DictProps {
 
 // Check if there is any supported locale in the pathname
 export const checkForMissingLocale = (pathname: string) => {
-  console.log('PATHNAME', pathname);
   return i18n.locales.every(
     (locale) => !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`
   );
@@ -31,7 +30,7 @@ export function getLocale(request: NextRequest): string | undefined {
   // Negotiator expects plain object so we need to transform headers
   const negotiatorHeaders: Record<string, string> = {};
   request.headers.forEach((value, key) => (negotiatorHeaders[key] = value));
-  console.log(negotiatorHeaders);
+
   // @ts-ignore locales are readonly
   const locales: string[] = i18n.locales;
 
@@ -41,12 +40,11 @@ export function getLocale(request: NextRequest): string | undefined {
   );
 
   const locale = matchLocale(languages, locales, i18n.defaultLocale);
-  console.log('LOCALE IN GETLOCALE', locale);
+
   return locale;
 }
 
 const initI18next = async (lng: Locale, ns?: NameSpace | NameSpace[]) => {
-  console.log('INIT LANG: ', lng);
   const i18nInstance = createInstance();
   await i18nInstance
     .use(initReactI18next)
