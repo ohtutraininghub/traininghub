@@ -46,7 +46,7 @@ export default function CancelEnroll({ courseId, startDate }: Props) {
       >
         <TimerOutlined sx={{ flex: 1 }} />
         <Typography variant="body2" sx={{ flex: 6 }}>
-          The course starts soon. Contact the trainer if you want to cancel you
+          The course starts soon. Contact the trainer if you want to cancel your
           enrollment.
         </Typography>
       </Box>
