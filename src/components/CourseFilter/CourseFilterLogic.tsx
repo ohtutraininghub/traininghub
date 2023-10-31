@@ -42,10 +42,14 @@ export function filterCourses(
     const [start, end] = searchCourses.courseDates.split('-');
     const startDate = new Date(start);
     const endDate = new Date(end);
+    startDate.setDate(startDate.getDate() + 1);
+    endDate.setDate(endDate.getDate() + 1);
+    startDate.setUTCHours(0, 0, 0, 0);
+    endDate.setUTCHours(0, 0, 0, 0);
     filteredCourses = filteredCourses.filter(
       (course) =>
-        startDate <= new Date(course.startDate) &&
-        new Date(course.endDate) <= endDate
+        startDate <= new Date(course.startDate.setUTCHours(0, 0, 0, 0)) &&
+        new Date(course.endDate.setUTCHours(0, 0, 0, 0)) <= endDate
     );
   }
   return filteredCourses;

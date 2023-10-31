@@ -7,10 +7,8 @@ import {
   TextField,
   Button,
   Typography,
-  Select,
-  MenuItem,
   FormControl,
-  InputLabel,
+  ButtonGroup,
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { Key, useCallback } from 'react';
@@ -92,7 +90,7 @@ export default function CourseFilter({
   };
 
   const handleClearSearch = async () => {
-    await handleNameChange(null);
+    await handleNameChange('');
     await handleTagChange('');
     await handleDateChange([null, null]);
     router.replace(pathname);
@@ -128,12 +126,19 @@ export default function CourseFilter({
         </Button>
         <div>
           <Autocomplete
-            value={courseName}
+            value={courseName || null}
             clearOnEscape
             disablePortal
             data-testid="search-autocomplete"
             id="combo-box"
             options={initialCourses.map((course) => course.name)}
+            renderOption={(props, option) => {
+              return (
+                <li {...props} key={option}>
+                  {option}
+                </li>
+              );
+            }}
             sx={{ width: '250px', marginRight: '50px' }}
             renderInput={(value) => (
               <TextField {...value} label="Search by a name" />
@@ -143,23 +148,6 @@ export default function CourseFilter({
             }}
           />
         </div>
-        <FormControl>
-          <InputLabel>Search by a tag</InputLabel>
-          <Select
-            value={selectedTag}
-            onChange={(event) => handleTagChange(event.target.value as string)}
-            sx={{ width: '250px', marginRight: '50px' }}
-          >
-            <MenuItem value="">-</MenuItem>
-            {initialTags.map(
-              (tag: { id: Key | null | undefined; name: string }) => (
-                <MenuItem key={tag.id} value={tag.name}>
-                  {tag.name}
-                </MenuItem>
-              )
-            )}
-          </Select>
-        </FormControl>
         <DatePicker
           fixedHeight
           placeholderText="  Search by dates"
@@ -175,6 +163,29 @@ export default function CourseFilter({
           customInput={<input style={customStyles} />}
         />
       </Box>
+      <FormControl>
+        <ButtonGroup>
+          <Button
+            variant={selectedTag === '' ? 'contained' : 'outlined'}
+            color="primary"
+            onClick={() => handleTagChange('')}
+          >
+            All
+          </Button>
+          {initialTags.map(
+            (tag: { id: Key | null | undefined; name: string }) => (
+              <Button
+                key={tag.id}
+                variant={selectedTag === tag.name ? 'contained' : 'outlined'}
+                color="primary"
+                onClick={() => handleTagChange(tag.name)}
+              >
+                {tag.name}
+              </Button>
+            )
+          )}
+        </ButtonGroup>
+      </FormControl>
     </>
   );
 }
