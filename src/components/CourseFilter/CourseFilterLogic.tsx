@@ -31,10 +31,10 @@ export function filterCourses(
   }
 
   if (searchCourses?.courseTag) {
-    const searchTag = searchCourses.courseTag.toLowerCase();
+    const tags = searchCourses.courseTag.toLowerCase().split(',');
     filteredCourses = filteredCourses.filter((course) =>
       course.tags.some((tag: { name: string }) =>
-        tag.name.toLowerCase().includes(searchTag)
+        tags.includes(tag.name.toLowerCase())
       )
     );
   }

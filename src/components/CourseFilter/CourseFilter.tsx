@@ -32,10 +32,10 @@ export default function CourseFilter({
 
   const { palette } = useTheme();
 
-  const [startDate, setStartDate] = useState();
-  const [endDate, setEndDate] = useState();
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
   const [courseName, setCourseName] = useState('');
-  const [selectedTag, setSelectedTag] = useState('');
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
   const createQueryString = useCallback(
     (name: string, value: string) => {
@@ -66,12 +66,20 @@ export default function CourseFilter({
     );
   };
 
-  const handleTagChange = async (tagName: string | null) => {
-    const searchTerm: string | null = tagName;
-    setSelectedTag(searchTerm || '');
-    router.push(
-      pathname + '?' + createQueryString('courseTag', searchTerm || '')
-    );
+  const handleTagChange = async (tagName: string) => {
+    let updatedTags = [];
+    if (selectedTags.includes(tagName)) {
+      updatedTags = selectedTags.filter((tag) => tag !== tagName);
+      setSelectedTags(updatedTags);
+    } else {
+      updatedTags = [...selectedTags, tagName];
+      setSelectedTags(updatedTags);
+    }
+    if (tagName === '') {
+      setSelectedTags([]);
+    }
+    const tagsAsaString = updatedTags.filter((tag) => tag).join(',');
+    router.push(pathname + '?' + createQueryString('courseTag', tagsAsaString));
   };
 
   const handleDateChange = async (range: [any, any]) => {
@@ -90,7 +98,7 @@ export default function CourseFilter({
   };
 
   const handleClearSearch = async () => {
-    await handleNameChange('');
+    await handleNameChange(null);
     await handleTagChange('');
     await handleDateChange([null, null]);
     router.replace(pathname);
@@ -165,25 +173,18 @@ export default function CourseFilter({
       </Box>
       <FormControl>
         <ButtonGroup>
-          <Button
-            variant={selectedTag === '' ? 'contained' : 'outlined'}
-            color="primary"
-            onClick={() => handleTagChange('')}
-          >
-            All
-          </Button>
-          {initialTags.map(
-            (tag: { id: Key | null | undefined; name: string }) => (
-              <Button
-                key={tag.id}
-                variant={selectedTag === tag.name ? 'contained' : 'outlined'}
-                color="primary"
-                onClick={() => handleTagChange(tag.name)}
-              >
-                {tag.name}
-              </Button>
-            )
-          )}
+          {initialTags.map((tag: { id: Key; name: string }) => (
+            <Button
+              key={tag.id}
+              variant={
+                selectedTags.includes(tag.name) ? 'contained' : 'outlined'
+              }
+              color="primary"
+              onClick={() => handleTagChange(tag.name)}
+            >
+              {tag.name}
+            </Button>
+          ))}
         </ButtonGroup>
       </FormControl>
     </>
