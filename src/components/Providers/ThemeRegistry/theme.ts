@@ -60,6 +60,16 @@ let theme = createTheme({
       main: '#ffffff',
     },
   },
+  components: {
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          color: '#ffffff',
+          backgroundColor: '#003e51',
+        },
+      },
+    },
+  },
 });
 
 theme = responsiveFontSizes(theme);
