@@ -12,6 +12,18 @@ const testUser: ProfileMenuProps = {
   lang: 'en',
 };
 
+jest.mock('../../lib/i18n/client', () => ({
+  // this mock makes sure any components using the translate hook can use it without a warning being shown
+  useTranslation: () => {
+    return {
+      t: (str: string) => str,
+      i18n: {
+        changeLanguage: () => new Promise(() => {}),
+      },
+    };
+  },
+}));
+
 const menuItems = ['homeMenuItem', 'viewProfileMenuItem', 'signOutMenuItem'];
 
 describe('ProfileMenu component', () => {

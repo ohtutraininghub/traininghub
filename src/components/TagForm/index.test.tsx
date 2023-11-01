@@ -33,6 +33,18 @@ jest.mock('../../lib/response/fetchUtil', () => ({
   post: (...args: any[]) => mockFetch(...args),
 }));
 
+jest.mock('../../lib/i18n/client', () => ({
+  // this mock makes sure any components using the translate hook can use it without a warning being shown
+  useTranslation: () => {
+    return {
+      t: (str: string) => str,
+      i18n: {
+        changeLanguage: () => new Promise(() => {}),
+      },
+    };
+  },
+}));
+
 describe('Tag form: adding a new tag', () => {
   it('displays the correct error message when an empty tag is submitted', async () => {
     renderWithTheme(<TagForm lang="en" />);

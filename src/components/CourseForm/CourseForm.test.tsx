@@ -37,6 +37,18 @@ jest.mock('../../lib/response/fetchUtil', () => ({
   update: (...args: any[]) => mockFetch(...args),
 }));
 
+jest.mock('../../lib/i18n/client', () => ({
+  // this mock makes sure any components using the translate hook can use it without a warning being shown
+  useTranslation: () => {
+    return {
+      t: (str: string) => str,
+      i18n: {
+        changeLanguage: () => new Promise(() => {}),
+      },
+    };
+  },
+}));
+
 const requiredErrors = [
   'Name is required',
   'Description is required',
