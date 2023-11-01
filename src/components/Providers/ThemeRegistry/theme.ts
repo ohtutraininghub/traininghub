@@ -66,6 +66,7 @@ let theme = createTheme({
         root: {
           color: '#ffffff',
           backgroundColor: '#003e51',
+          height: 65,
         },
       },
     },

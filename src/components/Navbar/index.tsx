@@ -1,7 +1,8 @@
-import { AppBar } from '@mui/material';
+import { AppBar, Box } from '@mui/material';
 import Link from 'next/link';
 import { getServerAuthSession } from '@/lib/auth';
 import ProfileMenu from '@/components/ProfileMenu';
+import Image from 'next/image';
 
 export default async function NavBar() {
   const session = await getServerAuthSession();
@@ -16,15 +17,25 @@ export default async function NavBar() {
         justifyContent: 'space-between',
         alignItems: 'center',
         padding: { xs: '0 0 0 0.5em', sm: '0 0 0 1em' },
-        marginBottom: '2em',
         textAlign: 'center',
       }}
     >
-      <Link
-        href="/"
-        style={{ fontWeight: 700, textDecoration: 'none', color: 'black' }}
-      >
-        Training hub
+      <Link href="/">
+        <Box
+          sx={{
+            paddingTop: '5px',
+            paddingLeft: '10px',
+            display: 'inline-block',
+          }}
+        >
+          <Image
+            src="/decorated_small_logo.png"
+            alt="TrainingHub logo"
+            width={107}
+            height={55}
+            priority={true}
+          />
+        </Box>
       </Link>
       <ProfileMenu name={session.user.name} image={session.user.image} />
     </AppBar>
