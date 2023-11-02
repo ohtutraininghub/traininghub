@@ -5,6 +5,7 @@ import ViewHeadlineIcon from '@mui/icons-material/ViewHeadline';
 import WindowIcon from '@mui/icons-material/Window';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import { Typography } from '@mui/material';
 
 export default function CourseViewToggle() {
   const [viewStyle, setViewStyle] = React.useState<string | null>('grid');
@@ -19,18 +20,47 @@ export default function CourseViewToggle() {
   };
 
   return (
-    <ToggleButtonGroup
-      value={viewStyle}
-      exclusive
-      onChange={handleViewToggle}
-      aria-label="course view style"
-    >
-      <ToggleButton value="grid" aria-label="grid view">
-        <WindowIcon />
-      </ToggleButton>
-      <ToggleButton value="list" aria-label="list view">
-        <ViewHeadlineIcon />
-      </ToggleButton>
-    </ToggleButtonGroup>
+    <div>
+      <ToggleButtonGroup
+        value={viewStyle}
+        exclusive
+        onChange={handleViewToggle}
+        aria-label="course view style"
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
+        }}
+      >
+        <ToggleButton value="grid" aria-label="grid view">
+          <WindowIcon />
+        </ToggleButton>
+        <ToggleButton value="list" aria-label="list view">
+          <ViewHeadlineIcon />
+        </ToggleButton>
+      </ToggleButtonGroup>
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <Typography
+          variant="caption"
+          style={{
+            fontWeight: 500,
+            textTransform: 'uppercase',
+            marginRight: '20px',
+          }}
+        >
+          Grid
+        </Typography>
+        <Typography
+          variant="caption"
+          style={{
+            fontWeight: 500,
+            textTransform: 'uppercase',
+          }}
+        >
+          List
+        </Typography>
+      </div>
+    </div>
   );
 }
