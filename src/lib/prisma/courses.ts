@@ -73,9 +73,9 @@ export const getGoogleCalendarsInCourse = async (courseId: string) => {
             where: { provider: 'google' },
             select: { refresh_token: true },
           },
-          googleCalendar: {
+          calendar: {
             where: { courseId: courseId },
-            select: { eventId: true },
+            select: { googleEventId: true },
           },
         },
       },
