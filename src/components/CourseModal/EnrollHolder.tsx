@@ -25,7 +25,7 @@ export default function EnrollHolder({
     return (
       <>
         <Typography>{t('EnrollHolder.confirmMessage')}</Typography>
-        <CancelEnroll courseId={courseId} startDate={startDate} />
+        <CancelEnroll courseId={courseId} startDate={startDate} lang={lang} />
       </>
     );
   }

@@ -11,13 +11,16 @@ import { useMessage } from '../Providers/MessageProvider';
 import { update } from '@/lib/response/fetchUtil';
 import { msUntilStart } from '@/lib/timedateutils';
 import { minCancelTimeMs } from '@/lib/zod/courses';
+import { DictProps } from '@/lib/i18n';
+import { useTranslation } from '@i18n/client';
 
-type Props = {
+interface Props extends DictProps {
   courseId: string;
   startDate: Date;
-};
+}
 
-export default function CancelEnroll({ courseId, startDate }: Props) {
+export default function CancelEnroll({ courseId, startDate, lang }: Props) {
+  const { t } = useTranslation(lang, 'components');
   const router = useRouter();
   const [backdropOpen, setBackdropOpen] = useState(false);
   const { notify } = useMessage();
@@ -46,8 +49,7 @@ export default function CancelEnroll({ courseId, startDate }: Props) {
       >
         <TimerOutlined sx={{ flex: 1 }} />
         <Typography variant="body2" sx={{ flex: 6 }}>
-          The course starts soon. Contact the trainer if you want to cancel your
-          enrollment.
+          {t('CancelEnroll.pastCancellationDate')}
         </Typography>
       </Box>
     );
@@ -60,12 +62,13 @@ export default function CancelEnroll({ courseId, startDate }: Props) {
           setBackdropOpen(true);
         }}
       >
-        Cancel enrollment
+        {t('CancelEnroll.cancelEnrollment')}
       </Button>
       <ConfirmCard
+        lang={lang}
         backdropOpen={backdropOpen}
         setBackdropOpen={setBackdropOpen}
-        confirmMessage={'Are you sure you want to unenroll from the course?'}
+        confirmMessage={t('CancelEnroll.confirmCancellation')}
         handleClick={handleCancelEnroll}
       />
     </>
