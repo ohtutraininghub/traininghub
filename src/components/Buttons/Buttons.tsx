@@ -5,9 +5,14 @@ import { useState } from 'react';
 import { ConfirmCard } from '../ConfirmCard';
 import { signOut } from 'next-auth/react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { DictProps } from '@/lib/i18n';
+import { useTranslation } from '@i18n/client';
 
-export function SignOutButton() {
+interface SignOutButtonProps extends DictProps {}
+
+export function SignOutButton({ lang }: SignOutButtonProps) {
   const [backdropOpen, setBackdropOpen] = useState(false);
+  const { t } = useTranslation(lang, 'components');
   return (
     <>
       <Button
@@ -17,9 +22,10 @@ export function SignOutButton() {
           setBackdropOpen(true);
         }}
       >
-        Sign out
+        {t('SignOutButton.signOut')}
       </Button>
       <ConfirmCard
+        lang={lang}
         backdropOpen={backdropOpen}
         setBackdropOpen={setBackdropOpen}
         confirmMessage={'Confirm sign out?'}
@@ -29,10 +35,13 @@ export function SignOutButton() {
   );
 }
 
-export function CourseModalCloseButton() {
+interface CourseModalCloseButtonProps extends DictProps {}
+
+export function CourseModalCloseButton({ lang }: CourseModalCloseButtonProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
+  const { t } = useTranslation(lang, 'components');
 
   const handleClick = () => {
     const params = new URLSearchParams(searchParams);
@@ -42,7 +51,7 @@ export function CourseModalCloseButton() {
 
   return (
     <Button sx={{ display: 'block', ml: 'auto' }} onClick={handleClick}>
-      Close
+      {t('CourseModalCloseButton.close')}
     </Button>
   );
 }

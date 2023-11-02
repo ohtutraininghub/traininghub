@@ -8,8 +8,7 @@ export const options = {
 } as Intl.DateTimeFormatOptions;
 
 export const timeUntilstart = (startDate: Date): string => {
-  const dateNow = Date.now();
-  const asMs = startDate.getTime() - dateNow;
+  const asMs = msUntilStart(startDate);
   const asMinutes = asMs / (1000 * 60);
   const asHours = asMinutes / 60;
   const asDays = asHours / 24;
@@ -29,6 +28,11 @@ export const timeUntilstart = (startDate: Date): string => {
   } else {
     return `Starts soon...`;
   }
+};
+
+export const msUntilStart = (startDate: Date): number => {
+  const dateNow = Date.now();
+  return startDate.getTime() - dateNow;
 };
 
 export const formatDateRangeShort = (startDate: Date, endDate: Date) => {

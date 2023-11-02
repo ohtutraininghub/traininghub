@@ -1,10 +1,11 @@
 import { Grid, Typography } from '@mui/material';
 import { CourseWithTagsAndStudentCount } from '@/lib/prisma/courses';
-import CourseCard from '@/components/CourseCard/';
 import CourseModal from '@/components/CourseModal/CourseModal';
 import { filterCourses } from '@/components/CourseFilter/CourseFilterLogic';
+import { DictProps, useTranslation } from '@/lib/i18n';
+import CourseCard from '../CourseCard';
 
-type CourseListProps = {
+interface CourseListProps extends DictProps {
   courses: CourseWithTagsAndStudentCount[];
   openedCourse: CourseWithTagsAndStudentCount | undefined;
   usersEnrolledCourseIds: string[];
@@ -13,23 +14,32 @@ type CourseListProps = {
     courseTag?: string;
     courseDates?: string;
   };
-};
+}
 
-export default function CourseList({
+export default async function CourseList({
   courses,
   openedCourse,
   usersEnrolledCourseIds,
   searchCourses,
+  lang,
 }: CourseListProps) {
   const filteredCourses = filterCourses(courses, searchCourses);
+  const { t } = await useTranslation(lang, 'components');
 
   return (
     <>
       <CourseModal
+        lang={lang}
         course={openedCourse}
         usersEnrolledCourseIds={usersEnrolledCourseIds}
+        enrolls={t('CourseModal.enrolls', {
+          studentCount: openedCourse?._count.students,
+          maxStudentCount: openedCourse?.maxStudents,
+        })}
+        description={t('CourseModal.description')}
+        editCourseLabel={t('EditButton.editCourse')}
       />
-      <Typography variant="h4">Courses</Typography>
+      <Typography variant="h4">{t('CourseList.courses')}</Typography>
       <Grid
         container
         spacing={2}
@@ -40,7 +50,13 @@ export default function CourseList({
       >
         {filteredCourses.map((course) => (
           <Grid key={course.id} item xs={1}>
-            <CourseCard course={course} />
+            <CourseCard
+              enrolls={t('CourseCard.enrolls', {
+                studentCount: course._count.students,
+                maxStudentCount: course.maxStudents,
+              })}
+              course={course}
+            />
           </Grid>
         ))}
       </Grid>

@@ -1,4 +1,4 @@
-import { prisma } from '../src/lib/prisma/prisma';
+import { clearDatabase, prisma } from '../src/lib/prisma/prisma';
 
 const courseData = [
   {
@@ -52,8 +52,7 @@ const tagData = [
 ];
 
 async function main() {
-  await prisma.tag.deleteMany();
-  await prisma.course.deleteMany();
+  await clearDatabase();
 
   await prisma.tag.createMany({
     data: tagData,

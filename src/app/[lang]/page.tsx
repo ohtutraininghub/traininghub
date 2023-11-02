@@ -6,6 +6,7 @@ import { getServerAuthSession } from '@/lib/auth';
 import CourseFilter from '@/components/CourseFilter/CourseFilter';
 import { prisma } from '@/lib/prisma/prisma';
 import CourseList from '@/components/CourseList/CourseList';
+import { Locale } from '@/lib/i18n/i18n-config';
 
 export const dynamic = 'force-dynamic';
 
@@ -16,9 +17,12 @@ type Props = {
     courseDates?: string;
     courseId?: string;
   };
+  params: {
+    lang: Locale;
+  };
 };
 
-export default async function HomePage({ searchParams }: Props) {
+export default async function HomePage({ searchParams, params }: Props) {
   const session = await getServerAuthSession();
   const courses = await getCourses();
 
@@ -44,10 +48,11 @@ export default async function HomePage({ searchParams }: Props) {
         padding: '0px 16px 100px 16px',
       }}
     >
-      <NewCourseButton />
-      <NewTagButton />
+      <NewCourseButton lang={params.lang} />
+      <NewTagButton lang={params.lang} />
       <CourseFilter initialCourses={courses} initialTags={tags} />
       <CourseList
+        lang={params.lang}
         courses={courses}
         openedCourse={openedCourse}
         usersEnrolledCourseIds={usersEnrolledCourseIds}
