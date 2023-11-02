@@ -62,23 +62,3 @@ export const getEnrolledCourseIdsByUserId = async (userId: string) => {
     })
   ).map((data) => data.id);
 };
-
-export const getGoogleCalendarsInCourse = async (courseId: string) => {
-  return await prisma.course.findFirst({
-    where: { id: courseId },
-    select: {
-      students: {
-        select: {
-          accounts: {
-            where: { provider: 'google' },
-            select: { refresh_token: true },
-          },
-          calendar: {
-            where: { courseId: courseId },
-            select: { googleEventId: true },
-          },
-        },
-      },
-    },
-  });
-};

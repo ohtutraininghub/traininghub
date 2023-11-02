@@ -2,8 +2,12 @@ import { Course } from '@prisma/client';
 import { calendar as googlecalendar } from '@googleapis/calendar';
 import { UserRefreshClient } from 'google-auth-library';
 import { getRefreshToken } from '@/lib/prisma/account';
-import { createGoogleCalendarEntry } from '@/lib/prisma/calendar';
-import { getGoogleCalendarsInCourse } from '@/lib/prisma/courses';
+import {
+  createGoogleCalendarEntry,
+  deleteGoogleCalendarEntry,
+  findGoogleCalendarEntry,
+  getUsersWithGoogleCalendar,
+} from '@/lib/prisma/calendar';
 import { logHandledException } from '@/lib/sentry';
 
 export const insertCourseToCalendar = async (
@@ -29,21 +33,42 @@ export const insertCourseToCalendar = async (
     .catch((error) => handleGoogleError(error));
 };
 
-export const updateCourseToCalendars = async (course: Course) => {
-  const googleCalendarsInCourse = await getGoogleCalendarsInCourse(course.id);
-  googleCalendarsInCourse?.students.forEach((student) => {
-    const refreshToken = student?.accounts[0]?.refresh_token;
-    const eventId = student?.calendar[0]?.googleEventId;
+export const deleteCourseFromCalendar = async (
+  userId: string,
+  course: Course
+) => {
+  const googleEntry = await findGoogleCalendarEntry(userId, course.id);
+  if (!googleEntry?.googleEventId) {
+    // Not google calendar entry or no permissions to calendar
+    return;
+  }
 
-    if (!refreshToken || !eventId) {
-      // Likely haven't granted permissions to calendar
+  const refreshTokenAuth = await getRefreshTokenAuth(userId);
+  const calendar = googlecalendar({ version: 'v3', auth: refreshTokenAuth });
+
+  calendar.events
+    .delete({ calendarId: 'primary', eventId: googleEntry.googleEventId })
+    .then(async () => {
+      await deleteGoogleCalendarEntry(
+        userId,
+        course.id,
+        googleEntry.googleEventId
+      );
+    })
+    .catch((error) => handleGoogleError(error));
+};
+
+export const updateCourseToCalendars = async (course: Course) => {
+  const googleCalendarsInCourse = await getUsersWithGoogleCalendar(course);
+  googleCalendarsInCourse.forEach(async (user) => {
+    const eventId = user.googleEventId;
+    if (!eventId) {
+      // Not google calendar entry or no permissions to calendar
       return;
     }
 
-    const calendar = googlecalendar({
-      version: 'v3',
-      auth: getRefreshClient(refreshToken),
-    });
+    const refreshTokenAuth = await getRefreshTokenAuth(user.userId);
+    const calendar = googlecalendar({ version: 'v3', auth: refreshTokenAuth });
 
     calendar.events
       .update({

@@ -43,7 +43,7 @@ model Calendar {
   courseId String
   course   Course @relation(fields: [courseId], references: [id])
 
-  googleEventId String // google calendar event id
+  googleEventId String
 
   @@unique([userId, courseId])
 }
