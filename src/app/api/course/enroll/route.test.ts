@@ -1,6 +1,6 @@
 import { MessageType, StatusCodeType } from '@/lib/response/responseUtil';
 import { POST, PUT } from './route';
-import { prisma } from '@/lib/prisma/prisma';
+import { clearDatabase, prisma } from '@/lib/prisma/prisma';
 import { NextRequest } from 'next/server';
 import { createMocks } from 'node-mocks-http';
 
@@ -20,9 +20,7 @@ const testUser = {
 const invalidCourseId = '123';
 
 beforeEach(async () => {
-  await prisma.course.deleteMany({});
-  await prisma.tag.deleteMany({});
-  await prisma.user.deleteMany({});
+  await clearDatabase();
   await prisma.user.create({
     data: { id: testUser.id },
   });
