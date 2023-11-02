@@ -1,0 +1,26 @@
+{
+  "AppTitle": "Training hub",
+  "HomePage": {
+    "trainingListTitle": "Add new Course"
+  },
+  "Navbar": {
+    "loggedUser": "Logged in as {{username}}",
+    "signOutButton": {
+      "signOut": "Sign out",
+      "signOutConfirmation": "Confirm sign out"
+    }
+  },
+
+  "CourseForm": {
+    "name": "Name",
+    "description": "Description",
+    "startDate": "Start date",
+    "endDate": "End date",
+    "maxStudents": "Max students",
+    "submit": "Submit",
+    "tags": "Tags"
+  },
+  "Error": {
+    "somethingWrong": "Something went wrong... Try again"
+  }
+}

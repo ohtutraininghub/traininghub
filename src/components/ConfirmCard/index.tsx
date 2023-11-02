@@ -1,9 +1,11 @@
 'use client';
 
+import { DictProps } from '@i18n/index';
+import { useTranslation } from '@i18n/client';
 import { Backdrop, Box, Button, Card, Typography } from '@mui/material';
 import { Dispatch, SetStateAction } from 'react';
 
-interface Props {
+interface Props extends DictProps {
   backdropOpen: boolean;
   setBackdropOpen: Dispatch<SetStateAction<boolean>>;
   confirmMessage: string;
@@ -15,7 +17,9 @@ export function ConfirmCard({
   setBackdropOpen,
   confirmMessage,
   handleClick,
+  lang,
 }: Props) {
+  const { t } = useTranslation(lang, 'components');
   return (
     <Backdrop
       sx={{ zIndex: 1200 }}
@@ -46,9 +50,11 @@ export function ConfirmCard({
           className="button-container"
           display="flex"
         >
-          <Button onClick={() => setBackdropOpen(false)}>Cancel</Button>
+          <Button onClick={() => setBackdropOpen(false)}>
+            {t('ConfirmCard.cancel')}
+          </Button>
           <Button variant="outlined" onClick={handleClick}>
-            Confirm
+            {t('ConfirmCard.confirm')}
           </Button>
         </Box>
       </Card>

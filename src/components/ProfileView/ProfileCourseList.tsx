@@ -88,7 +88,7 @@ export default function ProfileCourseList({
               {courses.map((course: Course, count: number) => (
                 <React.Fragment key={course.id}>
                   <Link
-                    href={`/profile/?courseId=${course.id}`}
+                    href={`profile/?courseId=${course.id}`}
                     style={{ textDecoration: 'none' }}
                   >
                     <ListItem

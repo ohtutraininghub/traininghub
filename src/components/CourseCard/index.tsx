@@ -5,13 +5,14 @@ import Link from 'next/link';
 import { CourseWithTagsAndStudentCount } from '@/lib/prisma/courses';
 import LocalizedDateTime from '../LocalizedDateTime';
 
-type Props = {
+interface Props {
   course: CourseWithTagsAndStudentCount;
-};
+  enrolls: string;
+}
 
-const CourseCard = ({ course }: Props) => {
+const CourseCard = ({ course, enrolls }: Props) => {
   return (
-    <Link href={`/?courseId=${course.id}`} style={{ textDecoration: 'none' }}>
+    <Link href={`?courseId=${course.id}`} style={{ textDecoration: 'none' }}>
       <Card
         sx={{
           backgroundColor: 'secondary.main',
@@ -34,9 +35,7 @@ const CourseCard = ({ course }: Props) => {
               endDate={course.endDate}
             />
           </Typography>
-          <Typography>
-            Enrolls: {course._count.students} / {course.maxStudents}
-          </Typography>
+          <Typography>{enrolls}</Typography>
         </CardContent>
       </Card>
     </Link>
