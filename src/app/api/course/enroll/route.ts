@@ -8,6 +8,8 @@ import {
   errorResponse,
 } from '@/lib/response/responseUtil';
 import { handleCommonErrors } from '@/lib/response/errorUtil';
+import { msUntilStart } from '@/lib/timedateutils';
+import { minCancelTimeMs } from '@/lib/zod/courses';
 
 export async function POST(request: NextRequest) {
   try {
@@ -86,18 +88,10 @@ export async function PUT(request: NextRequest) {
     const data = await request.json();
     const courseId = courseEnrollSchema.parse(data);
 
-    /**
-     * Prisma does not throw an error if a student tries to
-     * cancel an enrollment for a course they are in fact not enrolled to.
-     * Checking if the relationship exists before disconnecting
-     * has to be done manually if an error message is wanted
-     * https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#disconnect
-     */
-
-    const userCourseIds = await prisma.user.findUnique({
-      where: { id: session.user.id },
+    const course = await prisma.course.findFirst({
+      where: { id: courseId },
       include: {
-        courses: {
+        students: {
           select: {
             id: true,
           },
@@ -105,9 +99,23 @@ export async function PUT(request: NextRequest) {
       },
     });
 
-    if (!userCourseIds?.courses.find((course) => course.id === courseId)) {
+    if (!course) {
+      return errorResponse({
+        message: 'Could not find course with given identifier!',
+        statusCode: StatusCodeType.NOT_FOUND,
+      });
+    }
+
+    if (!course.students.find((student) => student.id === session.user.id)) {
       return errorResponse({
         message: 'You are not enrolled to this course',
+        statusCode: StatusCodeType.UNPROCESSABLE_CONTENT,
+      });
+    }
+
+    if (msUntilStart(course.startDate) < minCancelTimeMs) {
+      return errorResponse({
+        message: 'No cancelling allowed after cancellation deadline',
         statusCode: StatusCodeType.UNPROCESSABLE_CONTENT,
       });
     }

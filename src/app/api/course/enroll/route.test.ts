@@ -3,6 +3,7 @@ import { POST, PUT } from './route';
 import { clearDatabase, prisma } from '@/lib/prisma/prisma';
 import { NextRequest } from 'next/server';
 import { createMocks } from 'node-mocks-http';
+import { minCancelTimeMs } from '@/lib/zod/courses';
 
 const newCourse = {
   name: 'Git Fundamentals',
@@ -11,6 +12,19 @@ const newCourse = {
   startDate: '2100-01-01T00:00:00Z',
   endDate: '2100-01-02T00:00:00Z',
   maxStudents: 3,
+};
+
+const startMsSoon = Date.now() + Math.round(minCancelTimeMs / 2);
+const startDateSoon = new Date(startMsSoon);
+const endDateSoon = new Date(startMsSoon + 24 * 60 * 60 * 1000); // 1 day course
+
+const startingSoonCourse = {
+  name: 'Git Fundamentals',
+  description:
+    'This course will walk you through the fundamentals of using Git for version control. You will learn how to create a local Git repository, commit files and push your changes to a remote repository. The course will introduce you to concepts like the working copy and the staging area and teach you how to organise you repository using tags and branches. You will learn how to make pull requests and merge branches, and tackle merge conflicts when they arise.',
+  startDate: startDateSoon,
+  endDate: endDateSoon,
+  maxStudents: 8,
 };
 
 const testUser = {
@@ -148,7 +162,7 @@ describe('Course enrollment API tests', () => {
     });
 
     it('cancelling enrollment in a course one was not signed up for throws error', async () => {
-      const enrolledCourse = await prisma.course.create({
+      const notEnrolledCourse = await prisma.course.create({
         data: {
           ...newCourse,
           students: {
@@ -157,11 +171,32 @@ describe('Course enrollment API tests', () => {
         },
       });
 
-      const req = mockUpdateRequest(enrolledCourse.id);
+      const req = mockUpdateRequest(notEnrolledCourse.id);
       const response = await PUT(req);
       const data = await response.json();
 
       expect(data.message).toBe('You are not enrolled to this course');
+      expect(data.messageType).toBe(MessageType.ERROR);
+      expect(response.status).toBe(StatusCodeType.UNPROCESSABLE_CONTENT);
+    });
+
+    it('cancelling enrollment after cancellation deadline is not possible', async () => {
+      const enrolledCourse = await prisma.course.create({
+        data: {
+          ...startingSoonCourse,
+          students: {
+            connect: [{ id: testUser.id }],
+          },
+        },
+      });
+
+      const req = mockUpdateRequest(enrolledCourse.id);
+      const response = await PUT(req);
+      const data = await response.json();
+
+      expect(data.message).toBe(
+        'No cancelling allowed after cancellation deadline'
+      );
       expect(data.messageType).toBe(MessageType.ERROR);
       expect(response.status).toBe(StatusCodeType.UNPROCESSABLE_CONTENT);
     });
