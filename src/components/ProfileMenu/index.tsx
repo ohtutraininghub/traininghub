@@ -15,7 +15,7 @@ import React from 'react';
 import Link from 'next/link';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
-import { ConfirmCard } from '../ConfirmCard';
+import { ConfirmCard } from '@/components/ConfirmCard';
 import { signOut } from 'next-auth/react';
 import { useTheme } from '@mui/material/styles';
 import { DictProps } from '@/lib/i18n';
@@ -48,10 +48,10 @@ export default function ProfileMenu({ name, image, lang }: ProfileMenuProps) {
         lang={lang}
         backdropOpen={backdropOpen}
         setBackdropOpen={setBackdropOpen}
-        confirmMessage={'Confirm sign out?'}
+        confirmMessage={t('confirmSignOut')}
         handleClick={() => signOut()}
       />
-      <Tooltip title="User profile">
+      <Tooltip title={t('menuTooltip')}>
         <Box
           sx={{
             display: 'flex',
@@ -79,7 +79,7 @@ export default function ProfileMenu({ name, image, lang }: ProfileMenuProps) {
                 fontSize: '20px',
               }}
             >
-              Profile
+              {t('profileTitle')}
             </Typography>
             <Avatar
               src={image}

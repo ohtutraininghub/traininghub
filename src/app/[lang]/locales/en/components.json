@@ -37,9 +37,12 @@
     "confirmMessage": "You have enrolled for this course!"
   },
   "ProfileMenu": {
+    "profileTitle": "Profile",
+    "menuTooltip": "User profile",
     "home": "Home",
     "viewProfile": "View profile",
-    "signOut": "Sign out"
+    "signOut": "Sign out",
+    "confirmSignOut": "Are you sure you want to sign out?"
   },
   "TagForm": {
     "submit": "Submit"
