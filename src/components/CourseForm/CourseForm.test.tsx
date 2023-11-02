@@ -37,6 +37,18 @@ jest.mock('../../lib/response/fetchUtil', () => ({
   update: (...args: any[]) => mockFetch(...args),
 }));
 
+jest.mock('../../lib/i18n/client', () => ({
+  // this mock makes sure any components using the translate hook can use it without a warning being shown
+  useTranslation: () => {
+    return {
+      t: (str: string) => str,
+      i18n: {
+        changeLanguage: () => new Promise(() => {}),
+      },
+    };
+  },
+}));
+
 const requiredErrors = [
   'Name is required',
   'Description is required',
@@ -47,7 +59,7 @@ const requiredErrors = [
 
 describe('Course Form New Course Tests', () => {
   beforeEach(() => {
-    renderWithTheme(<CourseForm tags={[]} />);
+    renderWithTheme(<CourseForm lang="en" tags={[]} />);
   });
 
   it('Required errors for form fields are displayed correctly', async () => {
@@ -113,7 +125,7 @@ describe('Course Form Course Edit Tests', () => {
       maxStudents: 55,
       tags: [],
     };
-    renderWithTheme(<CourseForm tags={[]} courseData={course} />);
+    renderWithTheme(<CourseForm lang="en" tags={[]} courseData={course} />);
 
     const name = screen
       .getByTestId('courseFormName')
@@ -147,7 +159,7 @@ describe('Course Form Course Edit Tests', () => {
       tags: [],
     };
 
-    renderWithTheme(<CourseForm tags={[]} courseData={course} />);
+    renderWithTheme(<CourseForm lang="en" tags={[]} courseData={course} />);
 
     const submitButton = screen.getByTestId('courseFormSubmit');
     await userEvent.click(submitButton);

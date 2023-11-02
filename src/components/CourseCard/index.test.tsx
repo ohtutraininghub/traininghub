@@ -17,7 +17,9 @@ const course: CourseWithTagsAndStudentCount = {
 };
 
 beforeEach(() => {
-  renderWithTheme(<CourseCard course={course} />);
+  renderWithTheme(
+    <CourseCard enrolls={`0 / ${course.maxStudents}`} course={course} />
+  );
 });
 
 describe('CourseCard tests', () => {

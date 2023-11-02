@@ -18,17 +18,23 @@ import { useState } from 'react';
 import { ConfirmCard } from '../ConfirmCard';
 import { signOut } from 'next-auth/react';
 import { useTheme } from '@mui/material/styles';
+import { DictProps } from '@/lib/i18n';
+import { useTranslation } from '@i18n/client';
 
-export interface ProfileMenuProps {
+export interface ProfileMenuProps extends DictProps {
   name: string;
   image: string;
 }
 
-export default function ProfileMenu({ name, image }: ProfileMenuProps) {
+export default function ProfileMenu({ name, image, lang }: ProfileMenuProps) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const [backdropOpen, setBackdropOpen] = useState(false);
   const { palette } = useTheme();
+  const { t } = useTranslation(lang, 'components', {
+    keyPrefix: 'ProfileMenu',
+  });
+
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -37,8 +43,9 @@ export default function ProfileMenu({ name, image }: ProfileMenuProps) {
   };
 
   return (
-    <React.Fragment>
+    <>
       <ConfirmCard
+        lang={lang}
         backdropOpen={backdropOpen}
         setBackdropOpen={setBackdropOpen}
         confirmMessage={'Confirm sign out?'}
@@ -104,7 +111,7 @@ export default function ProfileMenu({ name, image }: ProfileMenuProps) {
             <ListItemIcon>
               <HomeIcon fontSize="small" />
             </ListItemIcon>
-            Home
+            {t('home')}
           </MenuItem>
         </Link>
         <Link href="/profile" style={{ textDecoration: 'none' }}>
@@ -115,7 +122,7 @@ export default function ProfileMenu({ name, image }: ProfileMenuProps) {
             <ListItemIcon>
               <PersonIcon fontSize="small" />
             </ListItemIcon>
-            View profile
+            {t('viewProfile')}
           </MenuItem>
         </Link>
         <Divider />
@@ -128,9 +135,9 @@ export default function ProfileMenu({ name, image }: ProfileMenuProps) {
           <ListItemIcon>
             <Logout fontSize="small" />
           </ListItemIcon>
-          Sign out
+          {t('signOut')}
         </MenuItem>
       </Menu>
-    </React.Fragment>
+    </>
   );
 }
