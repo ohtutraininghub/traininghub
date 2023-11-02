@@ -107,8 +107,7 @@ export default function CourseModal({
             pt: 3,
             display: 'flex',
             flexDirection: { xs: 'column-reverse', sm: 'row' },
-            alignItems: 'center',
-            justifyContent: 'center',
+            alignItems: { xs: 'center', sm: 'flex-end' },
             gap: 1,
           }}
         >
@@ -120,6 +119,7 @@ export default function CourseModal({
               isUserEnrolled={isUserEnrolled}
               courseId={course.id}
               isCourseFull={isCourseFull}
+              startDate={course.startDate}
             />
           </Box>
           <Box sx={{ flex: 1 }}></Box>
