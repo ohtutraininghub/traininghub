@@ -30,6 +30,11 @@ export default async function HomePage({ searchParams }: Props) {
         justifyContent: 'center',
         alignItems: 'center',
         padding: '0px 16px 100px 16px',
+        backgroundImage: 'url("navbar-wave.svg")',
+        backgroundPosition: 'top',
+        backgroundAttachment: 'fixed',
+        backgroundRepeat: 'no-repeat',
+        backgroundColor: 'white',
       }}
     >
       <CourseViewToggle />

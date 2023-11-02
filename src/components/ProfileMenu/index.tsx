@@ -51,15 +51,9 @@ export default function ProfileMenu({ name, image }: ProfileMenuProps) {
             alignItems: 'center',
             textAlign: 'center',
             padding: { xs: '0 0.5em 0 0', sm: '0 1em 0 0' },
-            '&:hover': {
-              backgroundColor: palette.primary.light,
-              cursor: 'pointer',
-            },
           }}
           onClick={handleClick}
         >
-          <Divider orientation="vertical" flexItem />
-
           <IconButton
             data-testid="avatarIconButton"
             size="small"
@@ -68,21 +62,30 @@ export default function ProfileMenu({ name, image }: ProfileMenuProps) {
             aria-haspopup="true"
             aria-expanded={open ? 'true' : undefined}
           >
+            <Typography
+              variant="body2"
+              style={{
+                marginRight: '25px',
+                textTransform: 'uppercase',
+                fontWeight: 700,
+                color: palette.white.main,
+                fontSize: '20px',
+              }}
+            >
+              Profile
+            </Typography>
             <Avatar
               src={image}
               alt={name}
               style={{
-                width: '32px',
-                height: '32px',
+                width: '50px',
+                height: '50px',
                 boxShadow: '0px 2px 3px rgba(0, 0, 0, 0.2)',
-                border: '1px solid white',
+                border: '2px solid white',
+                marginRight: '20px',
               }}
             />
           </IconButton>
-
-          <Typography variant="body2" style={{ marginLeft: '10px' }}>
-            {name}
-          </Typography>
         </Box>
       </Tooltip>
       <Menu

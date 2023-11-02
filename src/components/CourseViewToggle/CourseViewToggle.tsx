@@ -6,8 +6,10 @@ import WindowIcon from '@mui/icons-material/Window';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { Typography } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
 export default function CourseViewToggle() {
+  const { palette } = useTheme();
   const [viewStyle, setViewStyle] = React.useState<string | null>('grid');
   const handleViewToggle = (
     // eslint-disable-next-line
@@ -46,6 +48,7 @@ export default function CourseViewToggle() {
           style={{
             fontWeight: 500,
             textTransform: 'uppercase',
+            color: palette.white.main,
             marginRight: '20px',
           }}
         >
@@ -55,6 +58,7 @@ export default function CourseViewToggle() {
           variant="caption"
           style={{
             fontWeight: 500,
+            color: palette.white.main,
             textTransform: 'uppercase',
           }}
         >

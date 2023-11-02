@@ -65,7 +65,7 @@ let theme = createTheme({
       styleOverrides: {
         root: {
           color: '#ffffff',
-          backgroundColor: '#003e51',
+          backgroundColor: '#0081aa',
           height: 65,
         },
       },
