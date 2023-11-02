@@ -1,12 +1,11 @@
 import { MessageType } from '@/lib/response/responseUtil';
 import { GET, POST, PUT } from './route';
-import { prisma } from '@/lib/prisma';
+import { prisma, clearDatabase } from '@/lib/prisma';
 import { NextRequest } from 'next/server';
 import { createMocks } from 'node-mocks-http';
 
 beforeEach(async () => {
-  await prisma.course.deleteMany({});
-  await prisma.tag.deleteMany({});
+  await clearDatabase();
 });
 
 const newCourse = {
@@ -92,7 +91,8 @@ describe('API', () => {
       expect(data.message).toBe('Course successfully created!');
       expect(data.messageType).toBe(MessageType.SUCCESS);
       expect(response.status).toBe(201);
-      expect(await getTableLength()).toBe(1);
+      const tblLength = await getTableLength();
+      expect(tblLength).toBe(1);
     });
 
     it('adds new course only with existing tags to the db', async () => {
@@ -107,10 +107,15 @@ describe('API', () => {
       const courseInDb = await prisma.course.findFirst({
         include: { tags: true },
       });
-      if (!courseInDb) throw Error;
-      courseInDb.tags.map((tag) => {
-        expect(['Unit Testing', 'Jest']).toContain(tag.name);
-      });
+
+      expect(courseInDb).not.toBeNull();
+      expect(courseInDb).toBeDefined();
+
+      if (courseInDb) {
+        courseInDb.tags.map((tag) => {
+          expect(['Unit Testing', 'Jest']).toContain(tag.name);
+        });
+      }
     });
 
     it('fails with incorrect inputs', async () => {
@@ -130,7 +135,8 @@ describe('API', () => {
         'The end date cannot be before the start date'
       );
       expect(data.messageType).toBe(MessageType.ERROR);
-      expect(await getTableLength()).toBe(0);
+      const tblLength = await getTableLength();
+      expect(tblLength).toBe(0);
       expect(response.status).toBe(400);
     });
 
@@ -140,14 +146,15 @@ describe('API', () => {
       const data = await response.json();
       expect(data.message).toContain('Start date cannot be in the past');
       expect(data.messageType).toBe(MessageType.ERROR);
-      expect(await getTableLength()).toBe(0);
+      const tblLength = await getTableLength();
+      expect(tblLength).toBe(0);
       expect(response.status).toBe(400);
     });
   });
 
   describe('PUT', () => {
     const courseDataWithDate = {
-      id: '1337',
+      id: 'cloh5jr6h000008l40614d1vr',
       name: 'Spaghetti coding 101',
       description: 'Security by obscurity',
       startDate: new Date(Date.now() + 1000 * 60 * 60 * 24),
@@ -173,6 +180,10 @@ describe('API', () => {
     });
 
     it('Updates course details accordingly', async () => {
+      await prisma.tag.createMany({
+        data: [{ name: 'Unit Testing' }, { name: 'Jest' }],
+      });
+
       await prisma.course.create({
         data: {
           ...courseDataWithDate,
@@ -180,9 +191,6 @@ describe('API', () => {
             connect: [],
           },
         },
-      });
-      await prisma.tag.createMany({
-        data: [{ name: 'Unit Testing' }, { name: 'Jest' }],
       });
 
       const courseInDb = await prisma.course.findFirst({

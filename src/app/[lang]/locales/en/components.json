@@ -1,0 +1,50 @@
+{
+  "NewCourseButton": {
+    "actions": "Actions",
+    "newCourse": "Add New Course"
+  },
+  "NewTagButton": {
+    "newTag": "Add New Tag"
+  },
+  "SignOutButton": {
+    "signOut": "Sign out"
+  },
+  "CourseModal": {
+    "description": "Description",
+    "enrolls": "Enrolls: {{studentCount}} / {{maxStudentCount}}"
+  },
+  "CourseModalCloseButton": {
+    "close": "Close"
+  },
+  "ConfirmCard": {
+    "cancel": "Cancel",
+    "confirm": "Confirm"
+  },
+  "CourseList": {
+    "courses": "Courses"
+  },
+  "CourseCard": {
+    "enrolls": "Enrolls: {{studentCount}} / {{maxStudentCount}}"
+  },
+  "EditButton": {
+    "editCourse": "Edit course"
+  },
+  "EnrollButton": {
+    "enroll": "Enroll",
+    "confirmEnroll": "Confirm enroll?"
+  },
+  "EnrollHolder": {
+    "confirmMessage": "You have enrolled for this course!"
+  },
+  "ProfileMenu": {
+    "home": "Home",
+    "viewProfile": "View profile",
+    "signOut": "Sign out"
+  },
+  "TagForm": {
+    "submit": "Submit"
+  },
+  "TagList": {
+    "noTagsAdded": "No tags added"
+  }
+}

@@ -8,13 +8,24 @@ import Box from '@mui/material/Box';
 import EnrollHolder from './EnrollHolder';
 import EditButton from './EditButton';
 import LocalizedDateTime from '../LocalizedDateTime';
+import { DictProps } from '@/lib/i18n';
 
-type Props = {
+interface Props extends DictProps {
   course: CourseWithTagsAndStudentCount | undefined;
   usersEnrolledCourseIds: string[];
-};
+  enrolls: string;
+  description: string;
+  editCourseLabel: string;
+}
 
-export default function CourseModal({ course, usersEnrolledCourseIds }: Props) {
+export default function CourseModal({
+  course,
+  usersEnrolledCourseIds,
+  lang,
+  enrolls,
+  description,
+  editCourseLabel,
+}: Props) {
   if (!course) return null;
   const isUserEnrolled = usersEnrolledCourseIds.includes(course.id);
   const isCourseFull = course._count.students === course.maxStudents;
@@ -47,7 +58,7 @@ export default function CourseModal({ course, usersEnrolledCourseIds }: Props) {
           textAlign: 'center',
         }}
       >
-        <CourseModalCloseButton />
+        <CourseModalCloseButton lang={lang} />
         <Typography variant="h3">{course.name}</Typography>
         <Typography sx={{ my: 2 }}>
           <LocalizedDateTime
@@ -76,7 +87,7 @@ export default function CourseModal({ course, usersEnrolledCourseIds }: Props) {
         </Box>
 
         <Typography variant="h6" sx={{ my: 2, color: 'white.main' }}>
-          Description
+          {description}
         </Typography>
 
         <pre
@@ -97,25 +108,21 @@ export default function CourseModal({ course, usersEnrolledCourseIds }: Props) {
             display: 'flex',
             flexDirection: { xs: 'column-reverse', sm: 'row' },
             alignItems: 'center',
+            justifyContent: 'center',
             gap: 1,
           }}
         >
-          <EditButton courseId={course.id} />
-          <Box
-            sx={{
-              flex: 1,
-            }}
-          >
-            <Typography sx={{ mb: 1 }}>
-              Enrolls: {course._count.students} / {course.maxStudents}
-            </Typography>
+          <EditButton editCourseLabel={editCourseLabel} courseId={course.id} />
+          <Box sx={{ flex: 1 }}>
+            <Typography sx={{ mb: 1 }}>{enrolls}</Typography>
             <EnrollHolder
+              lang={lang}
               isUserEnrolled={isUserEnrolled}
               courseId={course.id}
               isCourseFull={isCourseFull}
             />
           </Box>
-          <Box sx={{ flex: 1 }} />
+          <Box sx={{ flex: 1 }}></Box>
         </Box>
       </Card>
     </Modal>

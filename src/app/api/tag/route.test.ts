@@ -1,7 +1,7 @@
 import { createMocks } from 'node-mocks-http';
 import { NextRequest } from 'next/server';
 import { POST } from './route';
-import { prisma } from '@/lib/prisma';
+import { clearDatabase, prisma } from '@/lib/prisma';
 import { MessageType, StatusCodeType } from '@/lib/response/responseUtil';
 
 const existingTag = { name: 'Git' };
@@ -14,7 +14,7 @@ const emptyTag = { name: '' };
 const extraSpacesTag = { name: 'Robot  Framework' };
 
 beforeEach(async () => {
-  await prisma.tag.deleteMany({});
+  await clearDatabase();
   await prisma.tag.create({
     data: existingTag,
   });
