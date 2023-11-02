@@ -3,13 +3,17 @@ import { notFound } from 'next/navigation';
 import { getCourses, getEnrolledCourseIdsByUserId } from '@/lib/prisma/courses';
 import { getServerAuthSession } from '@/lib/auth';
 import CourseViewToggle from '@/components/CourseViewToggle/CourseViewToggle';
+import { Locale } from '@/lib/i18n/i18n-config';
 
 export const dynamic = 'force-dynamic';
 
 type Props = {
   searchParams: { courseId?: string };
+  params: {
+    lang: Locale;
+  };
 };
-export default async function HomePage({ searchParams }: Props) {
+export default async function HomePage({ searchParams, params }: Props) {
   const session = await getServerAuthSession();
   const courses = await getCourses();
   const courseId = searchParams.courseId;
@@ -39,6 +43,7 @@ export default async function HomePage({ searchParams }: Props) {
     >
       <CourseViewToggle />
       <CourseList
+        lang={params.lang}
         courses={courses}
         openedCourse={openedCourse}
         usersEnrolledCourseIds={usersEnrolledCourseIds}

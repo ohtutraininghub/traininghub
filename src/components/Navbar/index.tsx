@@ -3,8 +3,11 @@ import Link from 'next/link';
 import { getServerAuthSession } from '@/lib/auth';
 import ProfileMenu from '@/components/ProfileMenu';
 import Image from 'next/image';
+import { DictProps } from '@/lib/i18n';
 
-export default async function NavBar() {
+interface Props extends DictProps {}
+
+export default async function NavBar({ lang }: Props) {
   const session = await getServerAuthSession();
 
   return (
@@ -37,7 +40,11 @@ export default async function NavBar() {
           />
         </Box>
       </Link>
-      <ProfileMenu name={session.user.name} image={session.user.image} />
+      <ProfileMenu
+        lang={lang}
+        name={session.user.name}
+        image={session.user.image}
+      />
     </AppBar>
   );
 }

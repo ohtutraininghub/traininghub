@@ -59,7 +59,7 @@ export default function LocalizedDateTime({
           break;
       }
     }
-  }, []);
+  }, [props, variant]);
 
   return <>{dateString}</>;
 }
