@@ -36,10 +36,10 @@ export default function CourseViewToggle() {
         }}
       >
         <ToggleButton value="grid" aria-label="grid view">
-          <WindowIcon />
+          <WindowIcon style={{ color: palette.white.main }} />
         </ToggleButton>
         <ToggleButton value="list" aria-label="list view">
-          <ViewHeadlineIcon />
+          <ViewHeadlineIcon style={{ color: palette.white.main }} />
         </ToggleButton>
       </ToggleButtonGroup>
       <div style={{ display: 'flex', justifyContent: 'center' }}>

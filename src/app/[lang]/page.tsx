@@ -29,25 +29,32 @@ export default async function HomePage({ searchParams, params }: Props) {
   return (
     <div
       style={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: '0px 16px 100px 16px',
-        backgroundImage: 'url("navbar-wave.svg")',
-        backgroundPosition: 'top',
-        backgroundAttachment: 'fixed',
-        backgroundRepeat: 'no-repeat',
-        backgroundColor: 'white',
+        backgroundColor: '#00607e',
+        height: '100vh',
       }}
     >
-      <CourseViewToggle />
-      <CourseList
-        lang={params.lang}
-        courses={courses}
-        openedCourse={openedCourse}
-        usersEnrolledCourseIds={usersEnrolledCourseIds}
-      />
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          padding: '0px 16px 100px 16px',
+          backgroundImage: 'url("navbar-wave-s.svg")',
+          backgroundPosition: 'top',
+          backgroundAttachment: 'fixed',
+          backgroundRepeat: 'no-repeat',
+          backgroundColor: '#00607e',
+        }}
+      >
+        <CourseViewToggle />
+        <CourseList
+          lang={params.lang}
+          courses={courses}
+          openedCourse={openedCourse}
+          usersEnrolledCourseIds={usersEnrolledCourseIds}
+        />
+      </div>
     </div>
   );
 }
