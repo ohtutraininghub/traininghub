@@ -40,7 +40,7 @@ export default async function HomePage({ searchParams, params }: Props) {
           justifyContent: 'center',
           alignItems: 'center',
           padding: '0px 16px 100px 16px',
-          backgroundImage: 'url("navbar-wave-s.svg")',
+          backgroundImage: 'url("/navbar-wave-s.svg")',
           backgroundPosition: 'top',
           backgroundAttachment: 'fixed',
           backgroundRepeat: 'no-repeat',
