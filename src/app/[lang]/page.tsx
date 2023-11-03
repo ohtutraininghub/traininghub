@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 import { getCourses, getEnrolledCourseIdsByUserId } from '@/lib/prisma/courses';
 import { getServerAuthSession } from '@/lib/auth';
 import CourseFilter from '@/components/CourseFilter/CourseFilter';
-import { prisma } from '@/lib/prisma/prisma';
+import { prisma } from '@/lib/prisma/index';
 import CourseList from '@/components/CourseList/CourseList';
 import { Locale } from '@/lib/i18n/i18n-config';
 
