@@ -15,8 +15,8 @@ export const insertCourseToCalendar = async (
   course: Course
 ) => {
   if (process.env.NODE_ENV !== 'production') {
-    // Don't try to insert google calendar entries
-    // in test or dev environment
+    //  // Don't try to insert google calendar entries
+    //  // in test or dev environment
     return;
   }
 
@@ -36,7 +36,7 @@ export const insertCourseToCalendar = async (
 
       await createGoogleCalendarEntry(userId, course.id, eventId);
     })
-    .catch((error) => handleGoogleError(error));
+    .catch(async (error) => await handleGoogleError(error));
 };
 
 export const deleteCourseFromCalendar = async (
@@ -61,7 +61,16 @@ export const deleteCourseFromCalendar = async (
         googleEntry.googleEventId
       );
     })
-    .catch((error) => handleGoogleError(error));
+    .catch(
+      async (error) =>
+        await handleGoogleError(
+          error,
+          false,
+          userId,
+          course.id,
+          googleEntry.googleEventId
+        )
+    );
 };
 
 export const updateCourseToCalendars = async (course: Course) => {
@@ -82,7 +91,10 @@ export const updateCourseToCalendars = async (course: Course) => {
         eventId: eventId,
         ...courseRequestBody(course),
       })
-      .catch((error) => handleGoogleError(error, true));
+      .catch(
+        async (error) =>
+          await handleGoogleError(error, true, user.userId, course.id, eventId)
+      );
   });
 };
 
@@ -119,10 +131,28 @@ const courseRequestBody = (course: Course) => {
   };
 };
 
-const handleGoogleError = (error: any, unblocking?: boolean) => {
+const handleGoogleError = async (
+  error: any,
+  unblocking?: boolean,
+  userId?: string,
+  courseId?: string,
+  eventId?: string
+) => {
   if (error.status === 403 && error.message === 'Insufficient Permission') {
     // User hasn't granted permissions to access calendar
     // -> Ignore error
+    return;
+  }
+
+  if (
+    error.status === 410 &&
+    error.message === 'Resource has been deleted' &&
+    userId &&
+    courseId &&
+    eventId
+  ) {
+    // User has manually deleted resource. Remove it from database also
+    await deleteGoogleCalendarEntry(userId, courseId, eventId);
     return;
   }
 
