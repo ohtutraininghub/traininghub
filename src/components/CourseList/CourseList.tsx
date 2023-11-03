@@ -1,4 +1,4 @@
-import { Grid, Typography } from '@mui/material';
+import { Grid } from '@mui/material';
 import { CourseWithTagsAndStudentCount } from '@/lib/prisma/courses';
 import CourseModal from '@/components/CourseModal/CourseModal';
 import { DictProps, useTranslation } from '@/lib/i18n';
@@ -30,7 +30,7 @@ export default async function CourseList({
         description={t('CourseModal.description')}
         editCourseLabel={t('EditButton.editCourse')}
       />
-      <Typography variant="h4">{t('CourseList.courses')}</Typography>
+
       <Grid
         container
         spacing={2}

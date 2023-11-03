@@ -4,6 +4,7 @@ import { DictProps } from '@i18n/index';
 import { useTranslation } from '@i18n/client';
 import { Backdrop, Box, Button, Card, Typography } from '@mui/material';
 import { Dispatch, SetStateAction } from 'react';
+import { useTheme } from '@mui/material/styles';
 
 interface Props extends DictProps {
   backdropOpen: boolean;
@@ -20,6 +21,7 @@ export function ConfirmCard({
   lang,
 }: Props) {
   const { t } = useTranslation(lang, 'components');
+  const { palette } = useTheme();
   return (
     <Backdrop
       sx={{ zIndex: 1200 }}
@@ -36,9 +38,35 @@ export function ConfirmCard({
           minWidth: '200px',
           width: '40%',
           minHeight: '20%',
+          backgroundColor: palette.coverBlue.main,
+          position: 'relative',
         }}
       >
-        <Typography variant="subtitle1">{confirmMessage}</Typography>
+        <Box
+          sx={{
+            backgroundImage: `url("/navbar-wave.svg")`,
+            backgroundPosition: 'top',
+            backgroundAttachment: 'fixed',
+            backgroundRepeat: 'no-repeat',
+            backgroundSize: '100% 100%',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            transform: 'scaleX(-1)',
+          }}
+        />
+        <Typography
+          variant="subtitle1"
+          sx={{
+            color: palette.white.main,
+            position: 'relative',
+            zIndex: 1,
+          }}
+        >
+          {confirmMessage}
+        </Typography>
         <Box
           sx={{
             width: '100%',
@@ -50,10 +78,10 @@ export function ConfirmCard({
           className="button-container"
           display="flex"
         >
-          <Button onClick={() => setBackdropOpen(false)}>
+          <Button variant="outlined" onClick={() => setBackdropOpen(false)}>
             {t('ConfirmCard.cancel')}
           </Button>
-          <Button variant="outlined" onClick={handleClick}>
+          <Button variant="contained" onClick={handleClick}>
             {t('ConfirmCard.confirm')}
           </Button>
         </Box>
