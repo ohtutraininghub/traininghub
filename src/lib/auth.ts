@@ -3,6 +3,13 @@ import GoogleProvider from 'next-auth/providers/google';
 import { prisma } from './prisma';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import { getServerSession } from 'next-auth/next';
+import { updateGoogleAccount } from './prisma/account';
+
+const scopes =
+  'openid ' +
+  'https://www.googleapis.com/auth/userinfo.email ' +
+  'https://www.googleapis.com/auth/userinfo.profile ' +
+  'https://www.googleapis.com/auth/calendar.events.owned ';
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -14,8 +21,7 @@ export const authOptions: NextAuthOptions = {
           prompt: 'select_account',
           access_type: 'offline',
           response_type: 'code',
-          scope:
-            'openid email profile https://www.googleapis.com/auth/calendar.events.owned',
+          scope: scopes,
         },
       },
     }),
@@ -35,7 +41,12 @@ export const authOptions: NextAuthOptions = {
         },
       };
     },
-    jwt: ({ token, user }) => {
+    jwt: async ({ token, user, account }) => {
+      if (account) {
+        // Account is only provided on first call right after sign in
+        await updateGoogleAccount(account);
+      }
+
       if (user) {
         return {
           ...token,
