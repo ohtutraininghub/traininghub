@@ -1,9 +1,12 @@
+'use client';
+
 import Typography from '@mui/material/Typography';
 import CardContent from '@mui/material/CardContent';
 import Card from '@mui/material/Card';
 import Link from 'next/link';
 import { CourseWithTagsAndStudentCount } from '@/lib/prisma/courses';
 import LocalizedDateTime from '../LocalizedDateTime';
+import { useTheme } from '@mui/material/styles';
 
 interface Props {
   course: CourseWithTagsAndStudentCount;
@@ -11,12 +14,14 @@ interface Props {
 }
 
 const CourseCard = ({ course, enrolls }: Props) => {
+  const { palette } = useTheme();
+
   return (
     <Link href={`?courseId=${course.id}`} style={{ textDecoration: 'none' }}>
       <Card
         sx={{
-          backgroundColor: 'secondary.main',
-          color: 'white.main',
+          backgroundColor: palette.coverBlue.dark,
+          color: palette.white.main,
           width: 450,
           height: 540,
           maxWidth: '100%',
