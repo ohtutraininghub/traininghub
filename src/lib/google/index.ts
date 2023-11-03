@@ -14,6 +14,12 @@ export const insertCourseToCalendar = async (
   userId: string,
   course: Course
 ) => {
+  if (process.env.NODE_ENV !== 'production') {
+    // Don't try to insert google calendar entries
+    // in test or dev environment
+    return;
+  }
+
   const refreshTokenAuth = await getRefreshTokenAuth(userId);
   const calendar = googlecalendar({ version: 'v3', auth: refreshTokenAuth });
 

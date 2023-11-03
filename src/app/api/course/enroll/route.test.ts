@@ -1,6 +1,6 @@
 import { MessageType, StatusCodeType } from '@/lib/response/responseUtil';
 import { POST, PUT } from './route';
-import { clearDatabase, prisma } from '@/lib/prisma/prisma';
+import { clearDatabase, prisma } from '@/lib/prisma';
 import { NextRequest } from 'next/server';
 import { createMocks } from 'node-mocks-http';
 import { minCancelTimeMs } from '@/lib/zod/courses';
