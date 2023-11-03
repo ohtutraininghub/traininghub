@@ -5,9 +5,10 @@ import {
   errorResponse,
   successResponse,
 } from '@/lib/response/responseUtil';
-import { prisma } from '@/lib/prisma/prisma';
+import { prisma } from '@/lib/prisma';
 import { Tag } from '@prisma/client';
 import { handleCommonErrors } from '@/lib/response/errorUtil';
+import { updateCourseToCalendars } from '@/lib/google';
 
 const parseTags = async (tags: string[]): Promise<Tag[]> => {
   let allTags = await prisma.tag.findMany();
@@ -55,7 +56,7 @@ export async function PUT(request: NextRequest) {
         statusCode: StatusCodeType.NOT_FOUND,
       });
     }
-    await prisma.course.update({
+    const updatedCourse = await prisma.course.update({
       where: { id: body.id },
       data: {
         ...body,
@@ -65,6 +66,10 @@ export async function PUT(request: NextRequest) {
         },
       },
     });
+
+    // Update course to Google calendars
+    await updateCourseToCalendars(updatedCourse);
+
     return successResponse({
       message: 'Course successfully updated!',
       statusCode: StatusCodeType.OK,

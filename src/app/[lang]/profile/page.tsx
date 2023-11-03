@@ -1,4 +1,4 @@
-import { prisma } from '@/lib/prisma/prisma';
+import { prisma } from '@/lib/prisma';
 import ProfileView from '@/components/ProfileView';
 import Container from '@mui/material/Container/Container';
 import CourseModal from '@/components/CourseModal/CourseModal';

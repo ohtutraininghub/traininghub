@@ -1,4 +1,4 @@
-import { prisma } from './prisma';
+import { prisma } from '.';
 import { Course, Prisma as prismaClient } from '@prisma/client';
 
 export type CourseWithTags = prismaClient.CourseGetPayload<{
@@ -17,6 +17,8 @@ export type CourseWithTagsAndStudentCount = prismaClient.CourseGetPayload<{
     tags: true;
   };
 }>;
+
+export type GetCoursesType = prismaClient.PromiseReturnType<typeof getCourses>;
 
 export const getCourseById = async (courseId: Course['id']) => {
   return await prisma.course.findFirst({
@@ -60,5 +62,3 @@ export const getEnrolledCourseIdsByUserId = async (userId: string) => {
     })
   ).map((data) => data.id);
 };
-
-export type GetCoursesType = prismaClient.PromiseReturnType<typeof getCourses>;

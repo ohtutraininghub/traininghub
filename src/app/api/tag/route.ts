@@ -1,6 +1,6 @@
 import { NextRequest } from 'next/server';
 import { tagSchema, TagSchemaType } from '@/lib/zod/tags';
-import { prisma } from '@/lib/prisma/prisma';
+import { prisma } from '@/lib/prisma';
 import { Prisma } from '@prisma/client';
 import {
   StatusCodeType,
