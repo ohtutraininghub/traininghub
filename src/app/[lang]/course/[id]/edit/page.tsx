@@ -20,5 +20,9 @@ export default async function CourseEditPage({ params }: Props) {
     notFound();
   }
 
-  return <CourseForm lang={params.lang} tags={tags} courseData={course} />;
+  return (
+    <div style={{ paddingTop: '32px' }}>
+      <CourseForm lang={params.lang} tags={tags} courseData={course} />
+    </div>
+  );
 }

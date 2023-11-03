@@ -14,8 +14,8 @@ export default async function NewCoursePage({ params }: Props) {
   const tags = await getTags();
 
   return (
-    <>
+    <div style={{ paddingTop: '32px' }}>
       <CourseForm lang={params.lang} tags={tags} />
-    </>
+    </div>
   );
 }
