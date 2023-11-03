@@ -102,6 +102,8 @@ export default function CourseFilter({
       width: '250px',
       height: '55px',
       fontSize: '16px',
+      paddingLeft: '10px',
+      verticalAlign: 'middle',
     },
 
     deleteIcon: {
@@ -158,7 +160,7 @@ export default function CourseFilter({
         </div>
         <DatePicker
           fixedHeight
-          placeholderText="  Search by dates"
+          placeholderText="Search by dates"
           minDate={new Date()}
           selected={startDate}
           onChange={handleDateChange}
@@ -167,7 +169,6 @@ export default function CourseFilter({
           selectsRange
           showWeekNumbers
           isClearable
-          highlightDates={initialCourses.map((course) => course.startDate)}
           customInput={<input style={InputStyles.datepicker} />}
         />
       </Box>
