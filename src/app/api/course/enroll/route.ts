@@ -10,7 +10,7 @@ import {
 import { handleCommonErrors } from '@/lib/response/errorUtil';
 import { msUntilStart } from '@/lib/timedateutils';
 import { minCancelTimeMs } from '@/lib/zod/courses';
-import { insertCourseToCalendar } from '@/lib/google';
+import { insertCourseToCalendar, deleteCourseFromCalendar } from '@/lib/google';
 
 export async function POST(request: NextRequest) {
   try {
@@ -75,7 +75,7 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    // Insert course to Google calendar
+    // Insert course to external calendar
     await insertCourseToCalendar(userId, course);
 
     return successResponse({
@@ -90,6 +90,7 @@ export async function POST(request: NextRequest) {
 export async function PUT(request: NextRequest) {
   try {
     const session = await getServerAuthSession();
+    const userId = session.user.id;
     const data = await request.json();
     const courseId = courseEnrollSchema.parse(data);
 
@@ -111,7 +112,7 @@ export async function PUT(request: NextRequest) {
       });
     }
 
-    if (!course.students.find((student) => student.id === session.user.id)) {
+    if (!course.students.find((student) => student.id === userId)) {
       return errorResponse({
         message: 'You are not enrolled to this course',
         statusCode: StatusCodeType.UNPROCESSABLE_CONTENT,
@@ -129,10 +130,13 @@ export async function PUT(request: NextRequest) {
       where: { id: courseId },
       data: {
         students: {
-          disconnect: [{ id: session.user.id }],
+          disconnect: [{ id: userId }],
         },
       },
     });
+
+    // Delete course from external calendar
+    await deleteCourseFromCalendar(userId, course);
 
     return successResponse({
       message: 'Your enrollment was canceled',
