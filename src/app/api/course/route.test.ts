@@ -1,6 +1,6 @@
 import { MessageType } from '@/lib/response/responseUtil';
 import { GET, POST, PUT } from './route';
-import { prisma, clearDatabase } from '@/lib/prisma/prisma';
+import { prisma, clearDatabase } from '@/lib/prisma';
 import { NextRequest } from 'next/server';
 import { createMocks } from 'node-mocks-http';
 

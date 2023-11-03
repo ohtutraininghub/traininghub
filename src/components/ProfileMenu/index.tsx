@@ -84,6 +84,7 @@ export default function ProfileMenu({ name, image, lang }: ProfileMenuProps) {
             <Avatar
               src={image}
               alt={name}
+              imgProps={{ referrerPolicy: 'no-referrer' }}
               style={{
                 width: '50px',
                 height: '50px',

@@ -1,4 +1,4 @@
-import { clearDatabase, prisma } from '../src/lib/prisma/prisma';
+import { clearDatabase, prisma } from '../src/lib/prisma';
 
 const courseData = [
   {

@@ -1,7 +1,7 @@
 import TagForm from '@/components/TagForm';
 import TagList from '@/components/TagList';
 import { Locale } from '@/lib/i18n/i18n-config';
-import { prisma } from '@/lib/prisma/prisma';
+import { prisma } from '@/lib/prisma';
 import Typography from '@mui/material/Typography';
 import { useTranslation } from '@/lib/i18n';
 

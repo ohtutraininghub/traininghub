@@ -36,6 +36,11 @@
   "EnrollHolder": {
     "confirmMessage": "You have enrolled for this course!"
   },
+  "CancelEnroll": {
+    "pastCancellationDate": "The course starts soon. Contact the trainer if you want to cancel your enrollment.",
+    "cancelEnrollment": "Cancel enrollment",
+    "confirmCancellation": "Are you sure you want to unenroll from the course?"
+  },
   "ProfileMenu": {
     "profileTitle": "Profile",
     "menuTooltip": "User profile",
