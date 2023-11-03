@@ -20,6 +20,7 @@ import { signOut } from 'next-auth/react';
 import { useTheme } from '@mui/material/styles';
 import { DictProps } from '@/lib/i18n';
 import { useTranslation } from '@i18n/client';
+import { useMediaQuery } from '@mui/material';
 
 export interface ProfileMenuProps extends DictProps {
   name: string;
@@ -30,7 +31,8 @@ export default function ProfileMenu({ name, image, lang }: ProfileMenuProps) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const [backdropOpen, setBackdropOpen] = useState(false);
-  const { palette } = useTheme();
+  const theme = useTheme();
+  const smallViewport = useMediaQuery(theme.breakpoints.down('sm'));
   const { t } = useTranslation(lang, 'components', {
     keyPrefix: 'ProfileMenu',
   });
@@ -75,8 +77,9 @@ export default function ProfileMenu({ name, image, lang }: ProfileMenuProps) {
                 marginRight: '25px',
                 textTransform: 'uppercase',
                 fontWeight: 700,
-                color: palette.white.main,
+                color: theme.palette.white.main,
                 fontSize: '20px',
+                display: smallViewport ? 'none' : 'block',
               }}
             >
               {t('profileTitle')}
@@ -110,7 +113,7 @@ export default function ProfileMenu({ name, image, lang }: ProfileMenuProps) {
         <Link href="/" style={{ textDecoration: 'none' }}>
           <MenuItem
             data-testid="homeMenuItem"
-            style={{ color: palette.black.main }}
+            style={{ color: theme.palette.black.main }}
           >
             <ListItemIcon>
               <HomeIcon fontSize="small" />
@@ -121,7 +124,7 @@ export default function ProfileMenu({ name, image, lang }: ProfileMenuProps) {
         <Link href="/profile" style={{ textDecoration: 'none' }}>
           <MenuItem
             data-testid="viewProfileMenuItem"
-            style={{ color: palette.black.main }}
+            style={{ color: theme.palette.black.main }}
           >
             <ListItemIcon>
               <PersonIcon fontSize="small" />
