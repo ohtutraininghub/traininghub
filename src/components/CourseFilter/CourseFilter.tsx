@@ -96,7 +96,7 @@ export default function CourseFilter({
     router.replace(pathname);
   };
 
-  const customStyles = {
+  const datePickerInputStyle = {
     width: '250px',
     height: '55px',
     fontSize: '16px',
@@ -160,7 +160,7 @@ export default function CourseFilter({
           showWeekNumbers
           isClearable
           highlightDates={initialCourses.map((course) => course.startDate)}
-          customInput={<input style={customStyles} />}
+          customInput={<input style={datePickerInputStyle} />}
         />
       </Box>
       <Controller
