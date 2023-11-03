@@ -13,6 +13,7 @@ import {
   Select,
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
+import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
 import { useCallback } from 'react';
 import { CourseWithTagsAndStudentCount } from '@/lib/prisma/courses';
 import { usePathname, useSearchParams, useRouter } from 'next/navigation';
@@ -96,10 +97,17 @@ export default function CourseFilter({
     router.replace(pathname);
   };
 
-  const datePickerInputStyle = {
-    width: '250px',
-    height: '55px',
-    fontSize: '16px',
+  const InputStyles = {
+    datepicker: {
+      width: '250px',
+      height: '55px',
+      fontSize: '16px',
+    },
+
+    deleteIcon: {
+      width: 60,
+      height: 60,
+    },
   };
 
   return (
@@ -114,15 +122,15 @@ export default function CourseFilter({
         }}
       >
         <Button
-          variant="contained"
           onClick={() => handleClearSearch()}
           sx={{
-            width: '200px',
+            width: '50px',
+            height: '50px',
             marginRight: '50px',
-            backgroundColor: palette.surface.main,
           }}
+          title="Clear"
         >
-          Clear
+          <DeleteSweepIcon style={InputStyles.deleteIcon} />
         </Button>
         <div>
           <Autocomplete
@@ -160,7 +168,7 @@ export default function CourseFilter({
           showWeekNumbers
           isClearable
           highlightDates={initialCourses.map((course) => course.startDate)}
-          customInput={<input style={datePickerInputStyle} />}
+          customInput={<input style={InputStyles.datepicker} />}
         />
       </Box>
       <Controller
