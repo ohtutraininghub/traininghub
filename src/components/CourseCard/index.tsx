@@ -17,11 +17,13 @@ const CourseCard = ({ course, enrolls }: Props) => {
         sx={{
           backgroundColor: 'secondary.main',
           color: 'white.main',
-          width: 340,
+          width: 450,
+          height: 540,
           maxWidth: '100%',
-          borderRadius: '15px',
+          borderRadius: '20px',
           margin: 'auto',
           textAlign: 'center',
+          boxShadow: '0px 0px 15px rgba(0, 0, 0, 0.9)',
         }}
       >
         <CardContent sx={{ overflowWrap: 'break-word' }}>

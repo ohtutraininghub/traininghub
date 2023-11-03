@@ -34,13 +34,13 @@ export default async function CourseList({
       <Grid
         container
         spacing={2}
-        maxWidth={1200}
+        maxWidth={1600}
         width="100%"
         sx={{ margin: 'auto' }}
         columns={{ xs: 1, sm: 2, md: 3 }}
       >
         {courses.map((course) => (
-          <Grid key={course.id} item xs={1}>
+          <Grid key={course.id} item xs={1} sx={{ marginBottom: '50px' }}>
             <CourseCard
               enrolls={t('CourseCard.enrolls', {
                 studentCount: course._count.students,
