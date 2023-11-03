@@ -13,7 +13,7 @@ import {
   Select,
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
+import BackspaceIcon from '@mui/icons-material/Backspace';
 import { useCallback } from 'react';
 import { CourseWithTagsAndStudentCount } from '@/lib/prisma/courses';
 import { usePathname, useSearchParams, useRouter } from 'next/navigation';
@@ -107,8 +107,8 @@ export default function CourseFilter({
     },
 
     deleteIcon: {
-      width: 60,
-      height: 60,
+      width: 30,
+      height: 30,
     },
   };
 
@@ -128,11 +128,11 @@ export default function CourseFilter({
           sx={{
             width: '50px',
             height: '50px',
-            marginRight: '50px',
+            marginRight: '20px',
           }}
           title="Clear"
         >
-          <DeleteSweepIcon style={InputStyles.deleteIcon} />
+          <BackspaceIcon style={InputStyles.deleteIcon} />
         </Button>
         <div>
           <Autocomplete
@@ -149,7 +149,7 @@ export default function CourseFilter({
                 </li>
               );
             }}
-            sx={{ width: '250px', marginRight: '50px' }}
+            sx={{ width: '250px', marginRight: '20px' }}
             renderInput={(value) => (
               <TextField {...value} label="Search by a name" />
             )}
