@@ -7,19 +7,24 @@ import {
   TextField,
   Button,
   Typography,
-  FormControl,
-  ButtonGroup,
+  Chip,
+  InputLabel,
+  MenuItem,
+  Select,
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { Key, useCallback } from 'react';
+import { useCallback } from 'react';
 import { CourseWithTagsAndStudentCount } from '@/lib/prisma/courses';
 import { usePathname, useSearchParams, useRouter } from 'next/navigation';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { t } from 'i18next';
+import { Controller, useForm } from 'react-hook-form';
+import { Tag } from '@prisma/client';
 
 type CourseFilterProps = {
   initialCourses: CourseWithTagsAndStudentCount[];
-  initialTags: any;
+  initialTags: Tag[];
 };
 
 export default function CourseFilter({
@@ -31,11 +36,11 @@ export default function CourseFilter({
   const searchParams = useSearchParams();
 
   const { palette } = useTheme();
+  const { control } = useForm();
 
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [courseName, setCourseName] = useState('');
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
   const createQueryString = useCallback(
     (name: string, value: string) => {
@@ -66,41 +71,28 @@ export default function CourseFilter({
     );
   };
 
-  const handleTagChange = async (tagName: string) => {
-    let updatedTags = [];
-    if (selectedTags.includes(tagName)) {
-      updatedTags = selectedTags.filter((tag) => tag !== tagName);
-      setSelectedTags(updatedTags);
-    } else {
-      updatedTags = [...selectedTags, tagName];
-      setSelectedTags(updatedTags);
-    }
-    if (tagName === '') {
-      setSelectedTags([]);
-    }
-    const tagsAsaString = updatedTags.filter((tag) => tag).join(',');
-    router.push(pathname + '?' + createQueryString('courseTag', tagsAsaString));
+  const handleTagChange = async (tagList: string) => {
+    const tagListQueryParam =
+      tagList === '' ? '' : createQueryString('courseTag', tagList);
+    router.push(pathname + '?' + tagListQueryParam);
   };
 
   const handleDateChange = async (range: [any, any]) => {
     const [startDate, endDate] = range;
     setStartDate(startDate);
     setEndDate(endDate);
-    if (startDate === null && endDate === null) {
-      router.push(pathname + '?' + createQueryString('courseDates', ''));
-    } else {
-      router.push(
-        pathname +
-          '?' +
-          createQueryString('courseDates', startDate + '-' + endDate)
-      );
-    }
+    const dateRangeQueryParam =
+      startDate === null && endDate === null
+        ? ''
+        : createQueryString('courseDates', startDate + '-' + endDate);
+
+    router.push(pathname + '?' + dateRangeQueryParam);
   };
 
   const handleClearSearch = async () => {
     await handleNameChange(null);
-    await handleTagChange('');
     await handleDateChange([null, null]);
+    control._reset();
     router.replace(pathname);
   };
 
@@ -130,7 +122,7 @@ export default function CourseFilter({
             backgroundColor: palette.surface.main,
           }}
         >
-          Clear search
+          Clear
         </Button>
         <div>
           <Autocomplete
@@ -171,22 +163,86 @@ export default function CourseFilter({
           customInput={<input style={customStyles} />}
         />
       </Box>
-      <FormControl>
-        <ButtonGroup>
-          {initialTags.map((tag: { id: Key; name: string }) => (
-            <Button
-              key={tag.id}
-              variant={
-                selectedTags.includes(tag.name) ? 'contained' : 'outlined'
-              }
-              color="primary"
-              onClick={() => handleTagChange(tag.name)}
-            >
-              {tag.name}
-            </Button>
-          ))}
-        </ButtonGroup>
-      </FormControl>
+      <Controller
+        name="tags"
+        control={control}
+        defaultValue={[]}
+        render={({ field }) => {
+          return (
+            <>
+              <InputLabel htmlFor="tagSelection">
+                {t('CourseForm.tags')}
+              </InputLabel>
+              <Select
+                {...field}
+                id="tagSelection"
+                multiple
+                onChange={(e) => {
+                  const newSelectedTags = e.target.value;
+                  field.onChange(newSelectedTags);
+                  handleTagChange(newSelectedTags);
+                }}
+                renderValue={(field) => (
+                  <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                    {field.map(
+                      (
+                        tag:
+                          | string
+                          | number
+                          | boolean
+                          | React.ReactElement<
+                              any,
+                              string | React.JSXElementConstructor<any>
+                            >
+                          | Iterable<React.ReactNode>
+                          | React.ReactPortal
+                          | React.PromiseLikeOfReactNode
+                          | null
+                          | undefined,
+                        idx: React.Key | null | undefined
+                      ) => (
+                        <Chip
+                          key={idx}
+                          label={tag}
+                          variant="outlined"
+                          sx={{
+                            backgroundColor: palette.surface.light,
+                            borderColor: palette.black.light,
+                          }}
+                        />
+                      )
+                    )}
+                  </Box>
+                )}
+              >
+                {initialTags.map((tag) => (
+                  <MenuItem
+                    key={tag.id}
+                    value={tag.name}
+                    divider
+                    sx={{
+                      '&.Mui-selected': {
+                        backgroundColor: palette.surface.main,
+                      },
+                      '&.Mui-selected.Mui-focusVisible': {
+                        backgroundColor: palette.surface.dark,
+                      },
+                      '&:hover': {
+                        backgroundColor: palette.surface.light,
+                      },
+                      '&.Mui-selected:hover': {
+                        backgroundColor: palette.surface.main,
+                      },
+                    }}
+                  >
+                    {tag.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </>
+          );
+        }}
+      />
     </>
   );
 }
