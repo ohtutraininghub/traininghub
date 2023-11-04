@@ -7,7 +7,6 @@ import { prisma } from '@/lib/prisma/index';
 import { Locale } from '@/lib/i18n/i18n-config';
 import BackgroundContainer from '@/components/BackgroundContainer';
 import SpeedDialMenu from '@/components/SpeedDialMenu';
-s;
 
 export const dynamic = 'force-dynamic';
 
