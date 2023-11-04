@@ -47,9 +47,14 @@ export default async function TemporaryListView({
           {courses.map((course, index) => (
             <div key={course.id}>
               <ListItem
-                style={{
+                sx={{
                   background: 'rgba(0, 0, 0, 0.2)',
                   marginBottom: '10px',
+                  transition: 'background-color 0.3s',
+                  '&:hover': {
+                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                    borderRight: '15px dashed #ffd100',
+                  },
                 }}
               >
                 <ListItemText
