@@ -9,9 +9,26 @@ import StyleIcon from '@mui/icons-material/Style';
 import SchoolIcon from '@mui/icons-material/School';
 import { useRouter } from 'next/navigation';
 
-const actions = [
-  { icon: <StyleIcon />, name: 'Add tag', link: 'admin/create-tag' },
-  { icon: <SchoolIcon />, name: 'New course', link: 'course/create' },
+export interface speedDialAction {
+  icon: React.JSX.Element;
+  name: string;
+  link: string;
+  testid: string;
+}
+
+export const speedDialActions: speedDialAction[] = [
+  {
+    icon: <StyleIcon />,
+    name: 'Add tag',
+    link: 'admin/create-tag',
+    testid: 'add-tag',
+  },
+  {
+    icon: <SchoolIcon />,
+    name: 'New course',
+    link: 'course/create',
+    testid: 'new-course',
+  },
 ];
 
 export default function SpeedDialMenu() {
@@ -31,11 +48,12 @@ export default function SpeedDialMenu() {
       }}
     >
       <SpeedDial ariaLabel="SpeedDial menu" icon={<SpeedDialIcon />}>
-        {actions.map((action) => (
+        {speedDialActions.map((action) => (
           <SpeedDialAction
             key={action.name}
             icon={action.icon}
             tooltipTitle={action.name}
+            data-testid={action.testid}
             onClick={() => handleActionClick(action.link)}
           />
         ))}
