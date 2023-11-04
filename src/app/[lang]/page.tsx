@@ -6,6 +6,7 @@ import CourseViewToggle from '@/components/CourseViewToggle/CourseViewToggle';
 import { Locale } from '@/lib/i18n/i18n-config';
 import BackgroundContainer from '@/components/BackgroundContainer';
 import TemporaryListView from '@/components/CourseList/TemporaryListView';
+import SpeedDialMenu from '@/components/SpeedDialMenu';
 
 export const dynamic = 'force-dynamic';
 
@@ -31,6 +32,7 @@ export default async function HomePage({ searchParams, params }: Props) {
   return (
     <BackgroundContainer>
       <CourseViewToggle />
+      <SpeedDialMenu />
       <CourseList
         lang={params.lang}
         courses={courses}
