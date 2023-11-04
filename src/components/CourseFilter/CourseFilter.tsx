@@ -84,7 +84,9 @@ export default function CourseFilter({
       startDate === null && endDate === null
         ? ''
         : createQueryString('courseDates', startDate + '-' + endDate);
-    router.push(pathname + '?' + dateRangeQueryParam);
+    if (startDate !== null || endDate !== null) {
+      router.push(pathname + '?' + dateRangeQueryParam);
+    }
   };
 
   const handleClearSearch = async () => {
