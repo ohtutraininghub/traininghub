@@ -39,8 +39,8 @@ export default function CourseFilter({
   const { palette } = useTheme();
   const { control } = useForm();
 
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
+  const [startDate, setStartDate] = useState<Date | null>(null);
+  const [endDate, setEndDate] = useState<Date | null>(null);
   const [courseName, setCourseName] = useState('');
 
   const createQueryString = useCallback(
@@ -54,12 +54,10 @@ export default function CourseFilter({
   );
 
   useEffect(() => {
-    if (
-      searchParams.get('courseName') === null &&
-      searchParams.get('courseTag') === null &&
-      searchParams.get('courseDates') === null &&
-      searchParams.get('courseId') === null
-    ) {
+    const { courseName, courseTag, courseDates, courseId } = Object.fromEntries(
+      searchParams.entries()
+    );
+    if (!courseName && !courseTag && !courseDates && !courseId) {
       handleClearSearch();
     }
   }, [searchParams]);
@@ -78,7 +76,7 @@ export default function CourseFilter({
     router.push(pathname + '?' + tagListQueryParam);
   };
 
-  const handleDateChange = async (range: [any, any]) => {
+  const handleDateChange = (range: [Date | null, Date | null]) => {
     const [startDate, endDate] = range;
     setStartDate(startDate);
     setEndDate(endDate);
@@ -86,13 +84,12 @@ export default function CourseFilter({
       startDate === null && endDate === null
         ? ''
         : createQueryString('courseDates', startDate + '-' + endDate);
-
     router.push(pathname + '?' + dateRangeQueryParam);
   };
 
   const handleClearSearch = async () => {
     await handleNameChange(null);
-    await handleDateChange([null, null]);
+    handleDateChange([null, null]);
     control._reset();
     router.replace(pathname);
   };
@@ -187,9 +184,9 @@ export default function CourseFilter({
                 id="tagSelection"
                 multiple
                 onChange={(e) => {
-                  const newSelectedTags = e.target.value;
-                  field.onChange(newSelectedTags);
-                  handleTagChange(newSelectedTags);
+                  const selectedTags = e.target.value;
+                  field.onChange(selectedTags);
+                  handleTagChange(selectedTags);
                 }}
                 renderValue={(field) => (
                   <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
