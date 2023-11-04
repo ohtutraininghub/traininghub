@@ -3,6 +3,7 @@ import { getCourseById } from '@/lib/prisma/courses';
 import { getTags } from '@/lib/prisma/tags';
 import { Locale } from '@/lib/i18n/i18n-config';
 import { notFound } from 'next/navigation';
+import BackgroundContainer from '@/components/BackgroundContainer';
 
 type Props = {
   params: {
@@ -21,8 +22,10 @@ export default async function CourseEditPage({ params }: Props) {
   }
 
   return (
-    <div style={{ paddingTop: '32px' }}>
-      <CourseForm lang={params.lang} tags={tags} courseData={course} />
-    </div>
+    <BackgroundContainer>
+      <div style={{ paddingTop: '32px', width: '100%' }}>
+        <CourseForm lang={params.lang} tags={tags} courseData={course} />
+      </div>
+    </BackgroundContainer>
   );
 }
