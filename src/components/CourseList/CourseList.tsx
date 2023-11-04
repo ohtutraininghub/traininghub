@@ -147,7 +147,7 @@ export default function CourseList({
           }}
         >
           <List>
-            {courses.map((course, index) => (
+            {filteredCourses.map((course, index) => (
               <div key={course.id}>
                 <Link
                   href={`?courseId=${course.id}`}
