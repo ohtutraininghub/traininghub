@@ -70,9 +70,11 @@ export default function CourseFilter({
     );
   };
 
-  const handleTagChange = async (tagList: string) => {
-    const tagListQueryParam =
-      tagList === '' ? '' : createQueryString('courseTag', tagList);
+  const handleTagChange = async (tagList: string[]) => {
+    const tagListQueryParam = createQueryString(
+      'courseTag',
+      tagList.toString()
+    );
     router.push(pathname + '?' + tagListQueryParam);
   };
 
@@ -80,9 +82,10 @@ export default function CourseFilter({
     const [startDate, endDate] = range;
     setStartDate(startDate);
     setEndDate(endDate);
+
     const dateRangeQueryParam =
       startDate === null && endDate === null
-        ? ''
+        ? createQueryString('courseDates', '')
         : createQueryString('courseDates', startDate + '-' + endDate);
     router.push(pathname + '?' + dateRangeQueryParam);
   };
