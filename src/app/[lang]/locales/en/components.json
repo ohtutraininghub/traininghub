@@ -21,7 +21,9 @@
     "confirm": "Confirm"
   },
   "CourseList": {
-    "courses": "Courses"
+    "courses": "Courses",
+    "listControlLabel": "List",
+    "gridControlLabel": "Grid"
   },
   "CourseCard": {
     "enrolls": "Enrolls: {{studentCount}} / {{maxStudentCount}}"

@@ -101,7 +101,7 @@ export default function CourseList({
             marginRight: '20px',
           }}
         >
-          Grid
+          {t('CourseList.gridControlLabel')}
         </Typography>
         <Typography
           variant="caption"
@@ -111,7 +111,7 @@ export default function CourseList({
             textTransform: 'uppercase',
           }}
         >
-          List
+          {t('CourseList.listControlLabel')}
         </Typography>
       </div>
       {viewStyle === 'grid' && (
