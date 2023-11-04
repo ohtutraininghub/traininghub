@@ -2,13 +2,12 @@ import CourseList from '@/components/CourseList/CourseList';
 import { notFound } from 'next/navigation';
 import { getCourses, getEnrolledCourseIdsByUserId } from '@/lib/prisma/courses';
 import { getServerAuthSession } from '@/lib/auth';
-import CourseViewToggle from '@/components/CourseViewToggle/CourseViewToggle';
 import CourseFilter from '@/components/CourseFilter/CourseFilter';
 import { prisma } from '@/lib/prisma/index';
 import { Locale } from '@/lib/i18n/i18n-config';
 import BackgroundContainer from '@/components/BackgroundContainer';
-import TemporaryListView from '@/components/CourseList/TemporaryListView';
 import SpeedDialMenu from '@/components/SpeedDialMenu';
+s;
 
 export const dynamic = 'force-dynamic';
 
@@ -17,6 +16,7 @@ type Props = {
     courseName?: string;
     courseTag?: string;
     courseDates?: string;
+    s;
     courseId?: string;
   };
   params: {
@@ -43,7 +43,6 @@ export default async function HomePage({ searchParams, params }: Props) {
     <BackgroundContainer>
       <SpeedDialMenu />
       <CourseFilter initialCourses={courses} initialTags={tags} />
-      <CourseViewToggle />
       <CourseList
         lang={params.lang}
         courses={courses}
@@ -54,12 +53,6 @@ export default async function HomePage({ searchParams, params }: Props) {
           courseTag: searchParams.courseTag,
           courseDates: searchParams.courseDates,
         }}
-      />
-      <TemporaryListView
-        courses={courses}
-        openedCourse={openedCourse}
-        usersEnrolledCourseIds={usersEnrolledCourseIds}
-        lang={params.lang}
       />
     </BackgroundContainer>
   );
