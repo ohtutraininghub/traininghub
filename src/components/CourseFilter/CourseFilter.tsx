@@ -70,9 +70,11 @@ export default function CourseFilter({
     );
   };
 
-  const handleTagChange = async (tagList: string) => {
-    const tagListQueryParam =
-      tagList === '' ? '' : createQueryString('courseTag', tagList);
+  const handleTagChange = async (tagList: string[]) => {
+    const tagListQueryParam = createQueryString(
+      'courseTag',
+      tagList.toString()
+    );
     router.push(pathname + '?' + tagListQueryParam);
   };
 
