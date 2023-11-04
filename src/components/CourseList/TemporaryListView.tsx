@@ -5,6 +5,7 @@ import { DictProps, useTranslation } from '@/lib/i18n';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import PeopleIcon from '@mui/icons-material/People';
 import Divider from '@mui/material/Divider';
+import LocalizedDateTime from '../LocalizedDateTime';
 
 interface CourseListProps extends DictProps {
   courses: CourseWithTagsAndStudentCount[];
@@ -38,7 +39,7 @@ export default async function TemporaryListView({
         style={{
           background: 'rgba(0, 0, 0, 0.1)',
           padding: '0px',
-          maxWidth: 1500,
+          maxWidth: 1300,
           width: '100%',
         }}
       >
@@ -58,6 +59,7 @@ export default async function TemporaryListView({
                       color: 'white',
                       fontSize: '18px',
                       fontWeight: 400,
+                      marginBottom: '10px',
                     },
                   }}
                   secondary={
@@ -69,7 +71,11 @@ export default async function TemporaryListView({
                           display: 'inline',
                         }}
                       />
-                      Start Date: {course.startDate.toISOString()}
+                      <LocalizedDateTime
+                        variant="range-short"
+                        startDate={course.startDate}
+                        endDate={course.endDate}
+                      />
                       <br />
                       <PeopleIcon
                         sx={{
