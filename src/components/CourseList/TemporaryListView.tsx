@@ -38,6 +38,8 @@ export default async function TemporaryListView({
         style={{
           background: 'rgba(0, 0, 0, 0.1)',
           padding: '0px',
+          maxWidth: 1500,
+          width: '100%',
         }}
       >
         <List>
@@ -71,7 +73,7 @@ export default async function TemporaryListView({
                       <br />
                       <PeopleIcon
                         sx={{
-                          fontSize: '0.8rem',
+                          fontSize: '0.9rem',
                           marginRight: '8px',
                           display: 'inline',
                         }}
