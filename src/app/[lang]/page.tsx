@@ -15,7 +15,6 @@ type Props = {
     courseName?: string;
     courseTag?: string;
     courseDates?: string;
-    s;
     courseId?: string;
   };
   params: {

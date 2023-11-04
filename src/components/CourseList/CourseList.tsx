@@ -15,7 +15,6 @@ import { CourseWithTagsAndStudentCount } from '@/lib/prisma/courses';
 import CourseModal from '@/components/CourseModal/CourseModal';
 import { filterCourses } from '@/components/CourseFilter/CourseFilterLogic';
 import { useTranslation } from '@i18n/client';
-import CourseCard from '../CourseCard';
 import ViewHeadlineIcon from '@mui/icons-material/ViewHeadline';
 import WindowIcon from '@mui/icons-material/Window';
 import { DictProps } from '@/lib/i18n';
@@ -25,6 +24,7 @@ import PeopleIcon from '@mui/icons-material/People';
 import Divider from '@mui/material/Divider';
 import LocalizedDateTime from '../LocalizedDateTime';
 import Link from 'next/link';
+import CourseCard from '@/components/CourseCard';
 
 interface CourseListProps extends DictProps {
   courses: CourseWithTagsAndStudentCount[];
@@ -76,9 +76,10 @@ export default function CourseList({
         exclusive
         onChange={handleViewToggle}
         aria-label="course view style"
-        style={{
+        sx={{
           display: 'flex',
           flexDirection: 'row',
+          paddingTop: '10px',
           alignItems: 'center',
           boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
         }}
@@ -113,7 +114,6 @@ export default function CourseList({
           List
         </Typography>
       </div>
-
       {viewStyle === 'grid' && (
         <Grid
           container
@@ -136,7 +136,6 @@ export default function CourseList({
           ))}
         </Grid>
       )}
-
       {viewStyle === 'list' && (
         <Box
           style={{
@@ -168,7 +167,7 @@ export default function CourseList({
                       primary={course.name}
                       primaryTypographyProps={{
                         style: {
-                          color: 'white',
+                          color: palette.white.main,
                           fontSize: '18px',
                           fontWeight: 400,
                           marginBottom: '10px',
@@ -204,7 +203,7 @@ export default function CourseList({
                       }
                       secondaryTypographyProps={{
                         style: {
-                          color: 'white',
+                          color: palette.white.main,
                         },
                       }}
                     />
