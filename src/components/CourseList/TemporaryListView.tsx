@@ -1,4 +1,4 @@
-import { Box, List, ListItem, ListItemText } from '@mui/material';
+import { Box, Link, List, ListItem, ListItemText } from '@mui/material';
 import { CourseWithTagsAndStudentCount } from '@/lib/prisma/courses';
 import CourseModal from '../CourseModal/CourseModal';
 import { DictProps, useTranslation } from '@/lib/i18n';
@@ -46,60 +46,65 @@ export default async function TemporaryListView({
         <List>
           {courses.map((course, index) => (
             <div key={course.id}>
-              <ListItem
-                sx={{
-                  background: 'rgba(0, 0, 0, 0.2)',
-                  marginBottom: '10px',
-                  transition: 'background-color 0.3s',
-                  '&:hover': {
-                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                    borderRight: '15px dashed #ffd100',
-                  },
-                }}
+              <Link
+                href={`?courseId=${course.id}`}
+                style={{ textDecoration: 'none' }}
               >
-                <ListItemText
-                  primary={course.name}
-                  primaryTypographyProps={{
-                    style: {
-                      color: 'white',
-                      fontSize: '18px',
-                      fontWeight: 400,
-                      marginBottom: '10px',
+                <ListItem
+                  sx={{
+                    background: 'rgba(0, 0, 0, 0.2)',
+                    marginBottom: '10px',
+                    transition: 'background-color 0.3s',
+                    '&:hover': {
+                      backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                      borderRight: '15px dashed #ffd100',
                     },
                   }}
-                  secondary={
-                    <span style={{ marginBottom: '8px', display: 'block' }}>
-                      <CalendarTodayIcon
-                        sx={{
-                          fontSize: '0.8rem',
-                          marginRight: '8px',
-                          display: 'inline',
-                        }}
-                      />
-                      <LocalizedDateTime
-                        variant="range-short"
-                        startDate={course.startDate}
-                        endDate={course.endDate}
-                      />
-                      <br />
-                      <PeopleIcon
-                        sx={{
-                          fontSize: '0.9rem',
-                          marginRight: '8px',
-                          display: 'inline',
-                        }}
-                      />
-                      Enrolls {course._count.students}
-                    </span>
-                  }
-                  secondaryTypographyProps={{
-                    style: {
-                      color: 'white',
-                    },
-                  }}
-                />
-              </ListItem>
-              {index < courses.length - 1 && <Divider />}
+                >
+                  <ListItemText
+                    primary={course.name}
+                    primaryTypographyProps={{
+                      style: {
+                        color: 'white',
+                        fontSize: '18px',
+                        fontWeight: 400,
+                        marginBottom: '10px',
+                      },
+                    }}
+                    secondary={
+                      <span style={{ marginBottom: '8px', display: 'block' }}>
+                        <CalendarTodayIcon
+                          sx={{
+                            fontSize: '0.8rem',
+                            marginRight: '8px',
+                            display: 'inline',
+                          }}
+                        />
+                        <LocalizedDateTime
+                          variant="range-short"
+                          startDate={course.startDate}
+                          endDate={course.endDate}
+                        />
+                        <br />
+                        <PeopleIcon
+                          sx={{
+                            fontSize: '0.9rem',
+                            marginRight: '8px',
+                            display: 'inline',
+                          }}
+                        />
+                        Enrolls {course._count.students}
+                      </span>
+                    }
+                    secondaryTypographyProps={{
+                      style: {
+                        color: 'white',
+                      },
+                    }}
+                  />
+                </ListItem>
+                {index < courses.length - 1 && <Divider />}
+              </Link>
             </div>
           ))}
         </List>
