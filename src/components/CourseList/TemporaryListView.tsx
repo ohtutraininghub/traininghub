@@ -93,7 +93,10 @@ export default async function TemporaryListView({
                             display: 'inline',
                           }}
                         />
-                        Enrolls {course._count.students}
+                        {t('CourseListView.enrolls', {
+                          studentCount: course._count.students,
+                          maxStudentCount: course.maxStudents,
+                        })}
                       </span>
                     }
                     secondaryTypographyProps={{

@@ -26,6 +26,9 @@
   "CourseCard": {
     "enrolls": "Enrolls: {{studentCount}} / {{maxStudentCount}}"
   },
+  "CourseListView": {
+    "enrolls": "Enrolls: {{studentCount}} / {{maxStudentCount}}"
+  },
   "EditButton": {
     "editCourse": "Edit course"
   },
