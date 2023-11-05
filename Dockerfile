@@ -25,7 +25,6 @@ ENV NEXT_TELEMETRY_DISABLED 1
 WORKDIR /app
 
 COPY . .
-COPY public/ public/
 
 # Why libc6: https://github.com/nodejs/docker-node/tree/ce9bfa282b62ece538fef25b954ade4401a7c8c7#nodealpine
 RUN apk add --no-cache libc6-compat && \
