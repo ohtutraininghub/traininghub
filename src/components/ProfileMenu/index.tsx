@@ -15,11 +15,12 @@ import React from 'react';
 import Link from 'next/link';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
-import { ConfirmCard } from '../ConfirmCard';
+import { ConfirmCard } from '@/components/ConfirmCard';
 import { signOut } from 'next-auth/react';
 import { useTheme } from '@mui/material/styles';
 import { DictProps } from '@/lib/i18n';
 import { useTranslation } from '@i18n/client';
+import { useMediaQuery } from '@mui/material';
 
 export interface ProfileMenuProps extends DictProps {
   name: string;
@@ -30,7 +31,8 @@ export default function ProfileMenu({ name, image, lang }: ProfileMenuProps) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const [backdropOpen, setBackdropOpen] = useState(false);
-  const { palette } = useTheme();
+  const theme = useTheme();
+  const smallViewport = useMediaQuery(theme.breakpoints.down('sm'));
   const { t } = useTranslation(lang, 'components', {
     keyPrefix: 'ProfileMenu',
   });
@@ -48,49 +50,53 @@ export default function ProfileMenu({ name, image, lang }: ProfileMenuProps) {
         lang={lang}
         backdropOpen={backdropOpen}
         setBackdropOpen={setBackdropOpen}
-        confirmMessage={'Confirm sign out?'}
+        confirmMessage={t('confirmSignOut')}
         handleClick={() => signOut()}
       />
-      <Tooltip title="User profile">
+      <Tooltip title={t('menuTooltip')}>
         <Box
           sx={{
             display: 'flex',
             alignItems: 'center',
             textAlign: 'center',
             padding: { xs: '0 0.5em 0 0', sm: '0 1em 0 0' },
-            '&:hover': {
-              backgroundColor: palette.primary.light,
-              cursor: 'pointer',
-            },
           }}
           onClick={handleClick}
         >
-          <Divider orientation="vertical" flexItem />
-
           <IconButton
             data-testid="avatarIconButton"
             size="small"
-            sx={{ ml: 2 }}
+            sx={{ ml: 2, paddingTop: '15px' }}
             aria-controls={open ? 'account-menu' : undefined}
             aria-haspopup="true"
             aria-expanded={open ? 'true' : undefined}
           >
+            <Typography
+              variant="body2"
+              style={{
+                marginRight: '25px',
+                textTransform: 'uppercase',
+                fontWeight: 700,
+                color: theme.palette.white.main,
+                fontSize: '20px',
+                display: smallViewport ? 'none' : 'block',
+              }}
+            >
+              {t('profileTitle')}
+            </Typography>
             <Avatar
               src={image}
               alt={name}
               imgProps={{ referrerPolicy: 'no-referrer' }}
               style={{
-                width: '32px',
-                height: '32px',
+                width: '50px',
+                height: '50px',
                 boxShadow: '0px 2px 3px rgba(0, 0, 0, 0.2)',
-                border: '1px solid white',
+                border: '2px solid white',
+                marginRight: '20px',
               }}
             />
           </IconButton>
-
-          <Typography variant="body2" style={{ marginLeft: '10px' }}>
-            {name}
-          </Typography>
         </Box>
       </Tooltip>
       <Menu
@@ -107,7 +113,7 @@ export default function ProfileMenu({ name, image, lang }: ProfileMenuProps) {
         <Link href="/" style={{ textDecoration: 'none' }}>
           <MenuItem
             data-testid="homeMenuItem"
-            style={{ color: palette.black.main }}
+            style={{ color: theme.palette.black.main }}
           >
             <ListItemIcon>
               <HomeIcon fontSize="small" />
@@ -118,7 +124,7 @@ export default function ProfileMenu({ name, image, lang }: ProfileMenuProps) {
         <Link href="/profile" style={{ textDecoration: 'none' }}>
           <MenuItem
             data-testid="viewProfileMenuItem"
-            style={{ color: palette.black.main }}
+            style={{ color: theme.palette.black.main }}
           >
             <ListItemIcon>
               <PersonIcon fontSize="small" />

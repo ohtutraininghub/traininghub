@@ -5,5 +5,9 @@ export default function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <Container maxWidth="md">{children}</Container>;
+  return (
+    <Container maxWidth="md" style={{ paddingTop: '32px' }}>
+      {children}
+    </Container>
+  );
 }

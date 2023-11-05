@@ -21,9 +21,14 @@
     "confirm": "Confirm"
   },
   "CourseList": {
-    "courses": "Courses"
+    "courses": "Courses",
+    "listControlLabel": "List",
+    "gridControlLabel": "Grid"
   },
   "CourseCard": {
+    "enrolls": "Enrolls: {{studentCount}} / {{maxStudentCount}}"
+  },
+  "CourseListView": {
     "enrolls": "Enrolls: {{studentCount}} / {{maxStudentCount}}"
   },
   "EditButton": {
@@ -42,9 +47,12 @@
     "confirmCancellation": "Are you sure you want to unenroll from the course?"
   },
   "ProfileMenu": {
+    "profileTitle": "Profile",
+    "menuTooltip": "User profile",
     "home": "Home",
     "viewProfile": "View profile",
-    "signOut": "Sign out"
+    "signOut": "Sign out",
+    "confirmSignOut": "Are you sure you want to sign out?"
   },
   "TagForm": {
     "submit": "Submit"

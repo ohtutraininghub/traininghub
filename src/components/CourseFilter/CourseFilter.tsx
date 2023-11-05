@@ -5,8 +5,6 @@ import {
   Box,
   Autocomplete,
   TextField,
-  Button,
-  Typography,
   Chip,
   InputLabel,
   MenuItem,
@@ -105,35 +103,19 @@ export default function CourseFilter({
       paddingLeft: '10px',
       verticalAlign: 'middle',
     },
-
-    deleteIcon: {
-      width: 30,
-      height: 30,
-    },
   };
 
   return (
     <>
-      <Typography variant="h4">Search courses</Typography>
       <Box
         style={{
           display: 'flex',
           alignItems: 'center',
           padding: '16px',
-          backgroundColor: palette.white.main,
+          flexWrap: 'wrap',
+          paddingBottom: '10px',
         }}
       >
-        <Button
-          onClick={() => handleClearSearch()}
-          sx={{
-            width: '50px',
-            height: '50px',
-            marginRight: '20px',
-          }}
-          title="Clear"
-        >
-          <BackspaceIcon style={InputStyles.deleteIcon} />
-        </Button>
         <div>
           <Autocomplete
             value={courseName || null}
@@ -149,9 +131,15 @@ export default function CourseFilter({
                 </li>
               );
             }}
-            sx={{ width: '250px', marginRight: '20px' }}
+            sx={{
+              width: '250px',
+              marginRight: '20px',
+              '& .MuiAutocomplete-inputRoot': {
+                backgroundColor: palette.white.main,
+              },
+            }}
             renderInput={(value) => (
-              <TextField {...value} label="Search by a name" />
+              <TextField {...value} label="Search by name" />
             )}
             onChange={(event, value) => {
               handleNameChange(value);
@@ -171,6 +159,22 @@ export default function CourseFilter({
           isClearable
           customInput={<input style={InputStyles.datepicker} />}
         />
+        <div>
+          <BackspaceIcon
+            onClick={() => handleClearSearch()}
+            sx={{
+              cursor: 'pointer',
+              width: '30px',
+              height: '30px',
+              paddingLeft: '10px',
+              color: palette.white.main,
+              transition: 'color 0.3s',
+              '&:hover': {
+                color: palette.secondary.main,
+              },
+            }}
+          />
+        </div>
       </Box>
       <Controller
         name="tags"
