@@ -26,6 +26,7 @@ export default withAuth(async function middleware(req) {
   }
 });
 
+// Match all routes
 export const config = {
   matcher: ['/(.*)'],
 };
