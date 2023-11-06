@@ -8,7 +8,7 @@ export default withAuth(async function middleware(req) {
 
   const isAuthenticated = !!token;
   if (!isAuthenticated) {
-    return NextResponse.redirect('/login');
+    return NextResponse.redirect(new URL('/api/auth/signin', req.url));
   }
 
   const isAdmin = token.role === Role.ADMIN;
