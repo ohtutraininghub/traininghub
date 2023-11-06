@@ -4,7 +4,7 @@ import CourseList from '@/components/CourseList/CourseList';
 import { notFound } from 'next/navigation';
 import { getCourses, getEnrolledCourseIdsByUserId } from '@/lib/prisma/courses';
 import { getServerAuthSession } from '@/lib/auth';
-import { isAdmin, isTrainerOrAdmin } from '@/lib/auth-utils';
+import { isTrainerOrAdmin } from '@/lib/auth-utils';
 
 export const dynamic = 'force-dynamic';
 
@@ -34,8 +34,12 @@ export default async function HomePage({ searchParams }: Props) {
         padding: '0px 16px 100px 16px',
       }}
     >
-      {isTrainerOrAdmin(user) && <NewCourseButton />}
-      {isAdmin(user) && <NewTagButton />}
+      {isTrainerOrAdmin(user) && (
+        <>
+          <NewCourseButton />
+          <NewTagButton />
+        </>
+      )}
 
       <CourseList
         courses={courses}
