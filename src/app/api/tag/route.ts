@@ -9,13 +9,13 @@ import {
 } from '@/lib/response/responseUtil';
 import { handleCommonErrors } from '@/lib/response/errorUtil';
 import { getServerAuthSession } from '@/lib/auth';
-import { isTrainerOrAdmin } from '@/lib/auth-utils';
+import { isAdmin } from '@/lib/auth-utils';
 
 export async function POST(request: NextRequest) {
   let newTag: TagSchemaType | undefined;
   try {
     const { user } = await getServerAuthSession();
-    if (!isTrainerOrAdmin(user)) {
+    if (!isAdmin(user)) {
       return errorResponse({
         message: 'Forbidden',
         statusCode: StatusCodeType.FORBIDDEN,

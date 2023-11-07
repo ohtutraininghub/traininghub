@@ -14,7 +14,7 @@ jest.mock('../../../lib/auth', () => ({
     Promise.resolve({
       user: {
         id: testUser.id,
-        role: Role.TRAINER,
+        role: Role.ADMIN,
       },
     }),
 }));
