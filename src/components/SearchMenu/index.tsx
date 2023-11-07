@@ -12,11 +12,30 @@ import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import ExpandCircleDown from '@mui/icons-material/ExpandCircleDown';
 import { DictProps } from '@i18n/index';
 import { useTranslation } from '@i18n/client';
+import { keyframes } from '@mui/system';
 
 interface SearchMenuProps extends DictProps {
   initialCourses: CourseWithTagsAndStudentCount[];
   initialTags: Tag[];
 }
+
+const nudgeAnimation = keyframes`
+  0% {
+    transform: translateY(0) rotate(180deg);
+  }
+  25% {
+    transform: translateY(-3px) rotate(180deg);
+  }
+  50% {
+    transform: translateY(0) rotate(180deg);
+  }
+  75% {
+    transform: translateY(-3px) rotate(180deg);
+  }
+  100% {
+    transform: translateY(0) rotate(180deg);
+  }
+`;
 
 export default function SeachMenu({
   initialCourses,
@@ -99,7 +118,9 @@ export default function SeachMenu({
             <Typography
               style={{
                 color: 'white',
+                fontSize: '20px',
                 fontWeight: '500',
+                paddingBottom: '10px',
               }}
             >
               {t('menuTitle')}
@@ -123,6 +144,7 @@ export default function SeachMenu({
                   backgroundColor: palette.coverBlue.light,
                   '& .icon': {
                     color: palette.primary.light,
+                    animation: `${nudgeAnimation} 1s ease infinite`,
                   },
                 },
               }}

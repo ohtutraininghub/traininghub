@@ -151,6 +151,7 @@ export default function CourseFilter({
             }}
             sx={{
               width: '250px',
+              boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.2)',
               [theme.breakpoints.up('sm')]: {
                 width: '300px',
               },
@@ -198,6 +199,7 @@ export default function CourseFilter({
                   '& .MuiOutlinedInput-input': {
                     color: theme.palette.white.main,
                   },
+                  boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.2)',
                 }}
               />
             }
@@ -212,6 +214,7 @@ export default function CourseFilter({
             sx={{
               m: 1,
               width: '250px',
+              boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.2)',
               [theme.breakpoints.up('sm')]: {
                 width: '300px',
               },
