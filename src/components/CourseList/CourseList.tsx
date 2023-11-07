@@ -114,106 +114,131 @@ export default function CourseList({
           {t('CourseList.listControlLabel')}
         </Typography>
       </div>
-      {viewStyle === 'grid' && (
-        <Grid
-          container
-          spacing={2}
-          maxWidth={1600}
-          width="100%"
-          sx={{ margin: 'auto' }}
-          columns={{ xs: 1, sm: 2, md: 3 }}
-        >
-          {filteredCourses.map((course) => (
-            <Grid key={course.id} item xs={1} sx={{ marginBottom: '50px' }}>
-              <CourseCard
-                enrolls={t('CourseCard.enrolls', {
-                  studentCount: course._count.students,
-                  maxStudentCount: course.maxStudents,
-                })}
-                course={course}
-              />
-            </Grid>
-          ))}
-        </Grid>
-      )}
-      {viewStyle === 'list' && (
+      {filteredCourses.length === 0 ? (
         <Box
           style={{
-            background: 'rgba(0, 0, 0, 0.1)',
-            padding: '0px',
-            maxWidth: 1300,
-            width: '100%',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: 'calc(100vh - 500px)',
           }}
         >
-          <List>
-            {filteredCourses.map((course, index) => (
-              <div key={course.id}>
-                <Link
-                  href={`?courseId=${course.id}`}
-                  style={{ textDecoration: 'none' }}
-                >
-                  <ListItem
-                    sx={{
-                      background: 'rgba(0, 0, 0, 0.2)',
-                      marginBottom: '10px',
-                      transition: 'background-color 0.3s',
-                      '&:hover': {
-                        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                        borderRight: '15px dashed #ffd100',
-                      },
-                    }}
-                  >
-                    <ListItemText
-                      primary={course.name}
-                      primaryTypographyProps={{
-                        style: {
-                          color: palette.white.main,
-                          fontSize: '18px',
-                          fontWeight: 400,
-                          marginBottom: '10px',
-                        },
-                      }}
-                      secondary={
-                        <span style={{ marginBottom: '8px', display: 'block' }}>
-                          <CalendarTodayIcon
-                            sx={{
-                              fontSize: '0.8rem',
-                              marginRight: '8px',
-                              display: 'inline',
-                            }}
-                          />
-                          <LocalizedDateTime
-                            variant="range-short"
-                            startDate={course.startDate}
-                            endDate={course.endDate}
-                          />
-                          <br />
-                          <PeopleIcon
-                            sx={{
-                              fontSize: '0.9rem',
-                              marginRight: '8px',
-                              display: 'inline',
-                            }}
-                          />
-                          {t('CourseListView.enrolls', {
-                            studentCount: course._count.students,
-                            maxStudentCount: course.maxStudents,
-                          })}
-                        </span>
-                      }
-                      secondaryTypographyProps={{
-                        style: {
-                          color: palette.white.main,
-                        },
-                      }}
-                    />
-                  </ListItem>
-                  {index < courses.length - 1 && <Divider />}
-                </Link>
-              </div>
-            ))}
-          </List>
+          <Typography
+            variant="h5"
+            style={{
+              fontWeight: 500,
+              color: palette.white.main,
+            }}
+          >
+            No courses found.
+          </Typography>
         </Box>
+      ) : (
+        <>
+          {viewStyle === 'grid' && (
+            <Grid
+              container
+              spacing={2}
+              maxWidth={1600}
+              width="100%"
+              sx={{ margin: 'auto' }}
+              columns={{ xs: 1, sm: 2, md: 3 }}
+            >
+              {filteredCourses.map((course) => (
+                <Grid key={course.id} item xs={1} sx={{ marginBottom: '50px' }}>
+                  <CourseCard
+                    enrolls={t('CourseCard.enrolls', {
+                      studentCount: course._count.students,
+                      maxStudentCount: course.maxStudents,
+                    })}
+                    course={course}
+                  />
+                </Grid>
+              ))}
+            </Grid>
+          )}
+          {viewStyle === 'list' && (
+            <Box
+              style={{
+                background: 'rgba(0, 0, 0, 0.1)',
+                padding: '0px',
+                maxWidth: 1300,
+                width: '100%',
+              }}
+            >
+              <List>
+                {filteredCourses.map((course, index) => (
+                  <div key={course.id}>
+                    <Link
+                      href={`?courseId=${course.id}`}
+                      style={{ textDecoration: 'none' }}
+                    >
+                      <ListItem
+                        sx={{
+                          background: 'rgba(0, 0, 0, 0.2)',
+                          marginBottom: '10px',
+                          transition: 'background-color 0.3s',
+                          '&:hover': {
+                            backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                            borderRight: '15px dashed #ffd100',
+                          },
+                        }}
+                      >
+                        <ListItemText
+                          primary={course.name}
+                          primaryTypographyProps={{
+                            style: {
+                              color: palette.white.main,
+                              fontSize: '18px',
+                              fontWeight: 400,
+                              marginBottom: '10px',
+                            },
+                          }}
+                          secondary={
+                            <span
+                              style={{ marginBottom: '8px', display: 'block' }}
+                            >
+                              <CalendarTodayIcon
+                                sx={{
+                                  fontSize: '0.8rem',
+                                  marginRight: '8px',
+                                  display: 'inline',
+                                }}
+                              />
+                              <LocalizedDateTime
+                                variant="range-short"
+                                startDate={course.startDate}
+                                endDate={course.endDate}
+                              />
+                              <br />
+                              <PeopleIcon
+                                sx={{
+                                  fontSize: '0.9rem',
+                                  marginRight: '8px',
+                                  display: 'inline',
+                                }}
+                              />
+                              {t('CourseListView.enrolls', {
+                                studentCount: course._count.students,
+                                maxStudentCount: course.maxStudents,
+                              })}
+                            </span>
+                          }
+                          secondaryTypographyProps={{
+                            style: {
+                              color: palette.white.main,
+                            },
+                          }}
+                        />
+                      </ListItem>
+                      {index < courses.length - 1 && <Divider />}
+                    </Link>
+                  </div>
+                ))}
+              </List>
+            </Box>
+          )}
+        </>
       )}
     </>
   );
