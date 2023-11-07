@@ -169,6 +169,7 @@ export default function CourseFilter({
           showWeekNumbers
           isClearable
           customInput={<input style={InputStyles.datepicker} />}
+          withPortal
         />
         <div>
           <BackspaceIcon
