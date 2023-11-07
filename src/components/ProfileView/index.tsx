@@ -32,7 +32,7 @@ export default function ProfileView({
   };
 
   return (
-    <div style={{ paddingBottom: '20px' }}>
+    <div style={{ paddingBottom: '20px', paddingTop: '32px' }}>
       <ProfileUserDetails
         name={userDetails.name}
         email={userDetails.email}

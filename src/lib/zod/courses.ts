@@ -1,5 +1,9 @@
 import z from 'zod';
 
+// The minimum time in milliseconds to course start
+// at which cancelling enrollment is still allowed
+export const minCancelTimeMs = 48 * 60 * 60 * 1000; // 48 hours
+
 const withRefine = <O extends CourseSchemaType, T extends z.ZodTypeDef, I>(
   schema: z.ZodType<O, T, I>
 ) => {
@@ -55,8 +59,8 @@ export const courseSchemaWithId = withRefine(courseSchemaBaseWithId);
 export type CourseSchemaType = z.infer<typeof courseSchemaBase>;
 export type CourseSchemaWithIdType = z.infer<typeof courseSchemaBaseWithId>;
 
-export const courseSignupSchema = z.string(
+export const courseEnrollSchema = z.string(
   z.string().min(1, 'Course id is required')
 );
 
-export type CourseSignupSchemaType = z.infer<typeof courseSignupSchema>;
+export type CourseEnrollSchemaType = z.infer<typeof courseEnrollSchema>;

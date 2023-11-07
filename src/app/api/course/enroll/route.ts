@@ -1,6 +1,6 @@
 import { NextRequest } from 'next/server';
-import { courseSignupSchema } from '@/lib/zod/courses';
-import { prisma } from '@/lib/prisma/prisma';
+import { courseEnrollSchema } from '@/lib/zod/courses';
+import { prisma } from '@/lib/prisma';
 import { getServerAuthSession } from '@/lib/auth';
 import {
   StatusCodeType,
@@ -8,12 +8,16 @@ import {
   errorResponse,
 } from '@/lib/response/responseUtil';
 import { handleCommonErrors } from '@/lib/response/errorUtil';
+import { msUntilStart } from '@/lib/timedateutils';
+import { minCancelTimeMs } from '@/lib/zod/courses';
+import { insertCourseToCalendar, deleteCourseFromCalendar } from '@/lib/google';
 
 export async function POST(request: NextRequest) {
   try {
     const session = await getServerAuthSession();
+    const userId = session.user.id;
     const data = await request.json();
-    const courseId = courseSignupSchema.parse(data);
+    const courseId = courseEnrollSchema.parse(data);
 
     const course = await prisma.course.findFirst({
       include: {
@@ -41,7 +45,7 @@ export async function POST(request: NextRequest) {
     }
 
     const userCourseIds = await prisma.user.findUnique({
-      where: { id: session.user.id },
+      where: { id: userId },
       include: {
         courses: {
           select: {
@@ -65,15 +69,78 @@ export async function POST(request: NextRequest) {
       data: {
         students: {
           connect: {
-            id: session.user.id,
+            id: userId,
           },
         },
       },
     });
 
+    // Insert course to external calendar
+    await insertCourseToCalendar(userId, course);
+
     return successResponse({
       message: 'Enrolled succesfully!',
       statusCode: StatusCodeType.CREATED,
+    });
+  } catch (error) {
+    return handleCommonErrors(error);
+  }
+}
+
+export async function PUT(request: NextRequest) {
+  try {
+    const session = await getServerAuthSession();
+    const userId = session.user.id;
+    const data = await request.json();
+    const courseId = courseEnrollSchema.parse(data);
+
+    const course = await prisma.course.findFirst({
+      where: { id: courseId },
+      include: {
+        students: {
+          select: {
+            id: true,
+          },
+        },
+      },
+    });
+
+    if (!course) {
+      return errorResponse({
+        message: 'Could not find course with given identifier!',
+        statusCode: StatusCodeType.NOT_FOUND,
+      });
+    }
+
+    if (!course.students.find((student) => student.id === userId)) {
+      return errorResponse({
+        message: 'You are not enrolled to this course',
+        statusCode: StatusCodeType.UNPROCESSABLE_CONTENT,
+      });
+    }
+
+    if (msUntilStart(course.startDate) < minCancelTimeMs) {
+      return errorResponse({
+        message: 'No cancelling allowed after cancellation deadline',
+        statusCode: StatusCodeType.UNPROCESSABLE_CONTENT,
+      });
+    }
+
+    await prisma.course.update({
+      where: { id: courseId },
+      data: {
+        students: {
+          disconnect: [{ id: userId }],
+        },
+      },
+    });
+
+    // Delete course from external calendar
+    await deleteCourseFromCalendar(userId, course);
+
+    return successResponse({
+      message: 'Your enrollment was canceled',
+      statusCode: StatusCodeType.OK,
     });
   } catch (error) {
     return handleCommonErrors(error);

@@ -11,6 +11,7 @@ declare module '@mui/material/styles' {
   interface Palette {
     tertiary: PaletteColor;
     surface: PaletteColor;
+    coverBlue: PaletteColor;
     black: PaletteColor;
     white: PaletteColor;
   }
@@ -18,6 +19,7 @@ declare module '@mui/material/styles' {
   interface PaletteOptions {
     tertiary?: PaletteColorOptions;
     surface?: PaletteColorOptions;
+    coverBlue?: PaletteColorOptions;
     black?: PaletteColorOptions;
     white?: PaletteColorOptions;
   }
@@ -48,6 +50,13 @@ let theme = createTheme({
       light: '#f6f4f2',
       dark: '#999999',
     },
+    coverBlue: {
+      // bundled soothing tone set for large surfaces
+      main: '#00607e', // contrast for navbar wave
+      light: '#0081aa', // used for navbar and wave
+      dark: '#002b3a', // used for elevated surfaces in connection with main and light
+      contrastText: '#fff',
+    },
     info: {
       main: '#007fa3', // light blue
       light: '#33acd8',
@@ -58,6 +67,17 @@ let theme = createTheme({
     },
     white: {
       main: '#ffffff',
+    },
+  },
+  components: {
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          color: '#ffffff',
+          backgroundColor: '#0081aa',
+          height: 65,
+        },
+      },
     },
   },
 });

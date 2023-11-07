@@ -3,14 +3,24 @@ import Typography from '@mui/material/Typography';
 import Link from 'next/link';
 import EditIcon from '@mui/icons-material/Edit';
 
-type Props = {
+interface Props {
   courseId: string;
+  editCourseLabel: string;
   hidden: boolean;
-};
+}
 
-export default function EditButton({ courseId, hidden }: Props) {
+export default function EditButton({
+  courseId,
+  editCourseLabel,
+  hidden,
+}: Props) {
   return (
-    <Box sx={{ display: 'flex', flex: 1 }}>
+    <Box
+      sx={{
+        display: 'flex',
+        flex: 1,
+      }}
+    >
       <Link
         style={{ textDecoration: 'none', color: 'inherit' }}
         href={`/course/${courseId}/edit`}
@@ -30,7 +40,7 @@ export default function EditButton({ courseId, hidden }: Props) {
           }}
         >
           <EditIcon />
-          <Typography>Edit course</Typography>
+          <Typography>{editCourseLabel}</Typography>
         </Box>
       </Link>
     </Box>

@@ -27,8 +27,8 @@ WORKDIR /app
 COPY . .
 
 # Why libc6: https://github.com/nodejs/docker-node/tree/ce9bfa282b62ece538fef25b954ade4401a7c8c7#nodealpine
-RUN apk add --no-cache libc6-compat && \ 
-  npm ci && \ 
+RUN apk add --no-cache libc6-compat && \
+  npm ci && \
   npm run build
 
 FROM node:18-alpine as runner
@@ -46,6 +46,7 @@ COPY --from=builder --chown=nextjs:nodejs /app/node_modules ./node_modules
 COPY --from=builder --chown=nextjs:nodejs /app/.next ./.next
 COPY --from=builder --chown=nextjs:nodejs /app/package*.json ./
 COPY --from=builder --chown=nextjs:nodejs /app/prisma ./prisma
+COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 
 USER nextjs
 
