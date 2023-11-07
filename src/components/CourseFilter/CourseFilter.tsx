@@ -130,12 +130,14 @@ export default function CourseFilter({
         style={{
           display: 'flex',
           alignItems: 'center',
+          flexDirection: 'column',
+          // justifyContent: 'space-between',
           padding: '16px',
           flexWrap: 'wrap',
           paddingBottom: '10px',
         }}
       >
-        <div>
+        <div style={{ marginBottom: '10px' }}>
           <Autocomplete
             value={courseName || null}
             clearOnEscape
@@ -151,7 +153,6 @@ export default function CourseFilter({
             }}
             sx={{
               width: '250px',
-              marginRight: '20px',
               '& .MuiAutocomplete-inputRoot': {
                 backgroundColor: palette.white.main,
               },
@@ -164,20 +165,46 @@ export default function CourseFilter({
             }}
           />
         </div>
-        <DatePicker
-          fixedHeight
-          placeholderText="Search by dates"
-          minDate={new Date()}
-          selected={startDate}
-          onChange={handleDateChange}
-          startDate={startDate}
-          endDate={endDate}
-          selectsRange
-          showWeekNumbers
-          isClearable
-          customInput={<input style={InputStyles.datepicker} />}
-          withPortal
-        />
+        <div style={{ marginBottom: '5px' }}>
+          <DatePicker
+            fixedHeight
+            placeholderText="Search by dates"
+            minDate={new Date()}
+            selected={startDate}
+            onChange={handleDateChange}
+            startDate={startDate}
+            endDate={endDate}
+            selectsRange
+            showWeekNumbers
+            isClearable
+            customInput={<input style={InputStyles.datepicker} />}
+            withPortal
+          />
+        </div>
+        <div style={{ marginBottom: '20px' }}>
+          <FormControl sx={{ m: 1, width: 250 }}>
+            <InputLabel id="tagSelection">Tag</InputLabel>
+            <Select
+              labelId="tagSelection"
+              id="tagSelection"
+              multiple
+              value={tagField}
+              onChange={(e) => {
+                const selectedTags = e.target.value;
+                handleTagChange(e, selectedTags);
+              }}
+              input={<OutlinedInput label="Tag" sx={{ background: 'white' }} />}
+              renderValue={(selected) => selected.join(', ')}
+            >
+              {initialTags.map((tag) => (
+                <MenuItem key={tag.id} value={tag.name}>
+                  <Checkbox checked={tagField.indexOf(tag.name) > -1} />
+                  <ListItemText primary={tag.name} />
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </div>
         <div>
           <Typography
             variant="body2"
@@ -196,30 +223,6 @@ export default function CourseFilter({
           </Typography>
         </div>
       </Box>
-      <div>
-        <FormControl sx={{ m: 1, width: 300 }}>
-          <InputLabel id="tagSelection">Tag</InputLabel>
-          <Select
-            labelId="tagSelection"
-            id="tagSelection"
-            multiple
-            value={tagField}
-            onChange={(e) => {
-              const selectedTags = e.target.value;
-              handleTagChange(e, selectedTags);
-            }}
-            input={<OutlinedInput label="Tag" sx={{ background: 'white' }} />}
-            renderValue={(selected) => selected.join(', ')}
-          >
-            {initialTags.map((tag) => (
-              <MenuItem key={tag.id} value={tag.name}>
-                <Checkbox checked={tagField.indexOf(tag.name) > -1} />
-                <ListItemText primary={tag.name} />
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      </div>
     </>
   );
 }

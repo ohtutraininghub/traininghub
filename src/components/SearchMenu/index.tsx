@@ -88,7 +88,7 @@ export default function SeachMenu({
             }}
           >
             <Typography style={{ color: 'white' }}>
-              Searchy thingies here
+              Search for courses
             </Typography>
 
             <CourseFilter
