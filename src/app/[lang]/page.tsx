@@ -2,11 +2,11 @@ import CourseList from '@/components/CourseList/CourseList';
 import { notFound } from 'next/navigation';
 import { getCourses, getEnrolledCourseIdsByUserId } from '@/lib/prisma/courses';
 import { getServerAuthSession } from '@/lib/auth';
-import CourseFilter from '@/components/CourseFilter/CourseFilter';
 import { prisma } from '@/lib/prisma/index';
 import { Locale } from '@/lib/i18n/i18n-config';
 import BackgroundContainer from '@/components/BackgroundContainer';
 import SpeedDialMenu from '@/components/SpeedDialMenu';
+import SearchMenu from '@/components/SearchMenu';
 
 export const dynamic = 'force-dynamic';
 
@@ -40,7 +40,7 @@ export default async function HomePage({ searchParams, params }: Props) {
   return (
     <BackgroundContainer>
       <SpeedDialMenu />
-      <CourseFilter initialCourses={courses} initialTags={tags} />
+      <SearchMenu initialCourses={courses} initialTags={tags} />
       <CourseList
         lang={params.lang}
         courses={courses}
