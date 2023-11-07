@@ -143,6 +143,8 @@ export default function CourseFilter({
           paddingBottom: '10px',
         }}
       >
+        {/* Start search by name field*/}
+
         <div style={{ marginBottom: '10px' }}>
           <Autocomplete
             value={courseName || null}
@@ -163,17 +165,27 @@ export default function CourseFilter({
                 width: '300px',
               },
               '& .MuiAutocomplete-inputRoot': {
-                backgroundColor: theme.palette.white.main,
+                color: theme.palette.white.main,
+                backgroundColor: theme.palette.coverBlue.light,
               },
             }}
             renderInput={(value) => (
-              <TextField {...value} label={t('label.courseName')} />
+              <TextField
+                {...value}
+                label={t('label.courseName')}
+                sx={{
+                  '& .MuiInputLabel-root': { color: theme.palette.white.main },
+                }}
+              />
             )}
             onChange={(event, value) => {
               handleNameChange(value);
             }}
           />
         </div>
+
+        {/* Start Date Picker*/}
+
         <div style={{ marginBottom: '5px' }}>
           <DatePicker
             fixedHeight
@@ -190,6 +202,9 @@ export default function CourseFilter({
             withPortal
           />
         </div>
+
+        {/* Start Tag Selector*/}
+
         <div style={{ marginBottom: '20px' }}>
           <FormControl
             sx={{
@@ -198,6 +213,7 @@ export default function CourseFilter({
               [theme.breakpoints.up('sm')]: {
                 width: '300px',
               },
+              '& .MuiInputLabel-root': { color: theme.palette.white.main },
             }}
           >
             <InputLabel id="tagSelection">{t('label.tag')}</InputLabel>
@@ -214,7 +230,7 @@ export default function CourseFilter({
                 <OutlinedInput
                   label="Tag"
                   sx={{
-                    background: theme.palette.white.main,
+                    color: theme.palette.white.main,
                   }}
                 />
               }
@@ -229,6 +245,9 @@ export default function CourseFilter({
             </Select>
           </FormControl>
         </div>
+
+        {/* Start clear search button*/}
+
         <div>
           <Typography
             variant="body2"
