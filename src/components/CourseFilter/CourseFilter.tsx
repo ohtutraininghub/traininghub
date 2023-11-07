@@ -196,6 +196,9 @@ export default function CourseFilter({
                     width: '300px',
                   },
                   '& .MuiInputLabel-root': { color: theme.palette.white.main },
+                  '& .MuiOutlinedInput-input': {
+                    color: theme.palette.white.main,
+                  },
                 }}
               />
             }
