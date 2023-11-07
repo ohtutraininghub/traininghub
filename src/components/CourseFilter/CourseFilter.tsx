@@ -16,6 +16,7 @@ import {
   Typography,
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
+import { useMediaQuery } from '@mui/material';
 import { useCallback } from 'react';
 import { CourseWithTagsAndStudentCount } from '@/lib/prisma/courses';
 import { usePathname, useSearchParams, useRouter } from 'next/navigation';
@@ -40,7 +41,8 @@ export default function CourseFilter({
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const { palette } = useTheme();
+  const theme = useTheme();
+  const mobileViewport = useMediaQuery(theme.breakpoints.down('sm'));
   const { control } = useForm();
 
   const [startDate, setStartDate] = useState<Date | null>(null);
@@ -51,6 +53,14 @@ export default function CourseFilter({
   const { t } = useTranslation(lang, 'components', {
     keyPrefix: 'CourseFilter',
   });
+
+  const inputStyle = {
+    width: mobileViewport ? '250px' : '300px',
+    height: '55px',
+    fontSize: '16px',
+    paddingLeft: '10px',
+    verticalAlign: 'middle',
+  };
 
   const createQueryString = useCallback(
     (name: string, value: string) => {
@@ -121,16 +131,6 @@ export default function CourseFilter({
     router.replace(pathname);
   };
 
-  const InputStyles = {
-    datepicker: {
-      width: '250px',
-      height: '55px',
-      fontSize: '16px',
-      paddingLeft: '10px',
-      verticalAlign: 'middle',
-    },
-  };
-
   return (
     <>
       <Box
@@ -159,8 +159,11 @@ export default function CourseFilter({
             }}
             sx={{
               width: '250px',
+              [theme.breakpoints.up('sm')]: {
+                width: '300px',
+              },
               '& .MuiAutocomplete-inputRoot': {
-                backgroundColor: palette.white.main,
+                backgroundColor: theme.palette.white.main,
               },
             }}
             renderInput={(value) => (
@@ -183,12 +186,20 @@ export default function CourseFilter({
             selectsRange
             showWeekNumbers
             isClearable
-            customInput={<input style={InputStyles.datepicker} />}
+            customInput={<input style={inputStyle} />}
             withPortal
           />
         </div>
         <div style={{ marginBottom: '20px' }}>
-          <FormControl sx={{ m: 1, width: 250 }}>
+          <FormControl
+            sx={{
+              m: 1,
+              width: '250px',
+              [theme.breakpoints.up('sm')]: {
+                width: '300px',
+              },
+            }}
+          >
             <InputLabel id="tagSelection">{t('label.tag')}</InputLabel>
             <Select
               labelId="tagSelection"
@@ -199,7 +210,14 @@ export default function CourseFilter({
                 const selectedTags = e.target.value;
                 handleTagChange(e, selectedTags);
               }}
-              input={<OutlinedInput label="Tag" sx={{ background: 'white' }} />}
+              input={
+                <OutlinedInput
+                  label="Tag"
+                  sx={{
+                    background: theme.palette.white.main,
+                  }}
+                />
+              }
               renderValue={(selected) => selected.join(', ')}
             >
               {initialTags.map((tag) => (
@@ -218,10 +236,10 @@ export default function CourseFilter({
             sx={{
               cursor: 'pointer',
               paddingLeft: '10px',
-              color: palette.primary.main,
+              color: theme.palette.primary.main,
               transition: 'color 0.3s',
               '&:hover': {
-                color: palette.secondary.main,
+                color: theme.palette.secondary.main,
               },
             }}
           >

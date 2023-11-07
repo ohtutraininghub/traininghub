@@ -22,7 +22,7 @@
   },
   "CourseList": {
     "courses": "Courses",
-    "noCoursesFound": "No courses found",
+    "noCoursesToShow": "No courses found",
     "listControlLabel": "List",
     "gridControlLabel": "Grid"
   },
@@ -67,7 +67,7 @@
   },
   "SearchMenu": {
     "menuTitle": "Search for courses",
-    "filterInUse": "The shown courses are filtered",
+    "filterInUse": "Showing filtered courses",
     "tooltip": {
       "collapseDrawer": "Close menu"
     },
