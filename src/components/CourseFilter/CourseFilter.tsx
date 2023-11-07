@@ -5,10 +5,14 @@ import {
   Box,
   Autocomplete,
   TextField,
-  Chip,
   InputLabel,
   MenuItem,
   Select,
+  FormControl,
+  ListItemText,
+  OutlinedInput,
+  Checkbox,
+  SelectChangeEvent,
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import BackspaceIcon from '@mui/icons-material/Backspace';
@@ -17,8 +21,7 @@ import { CourseWithTagsAndStudentCount } from '@/lib/prisma/courses';
 import { usePathname, useSearchParams, useRouter } from 'next/navigation';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { t } from 'i18next';
-import { Controller, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { Tag } from '@prisma/client';
 
 type CourseFilterProps = {
@@ -40,6 +43,7 @@ export default function CourseFilter({
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
   const [courseName, setCourseName] = useState('');
+  const [tagField, setTagField] = useState<string[]>([]);
 
   const createQueryString = useCallback(
     (name: string, value: string) => {
@@ -68,7 +72,14 @@ export default function CourseFilter({
     );
   };
 
-  const handleTagChange = async (tagList: string[]) => {
+  const handleTagChange = (
+    event: SelectChangeEvent<typeof tagField>,
+    tagList: string | string[]
+  ) => {
+    const {
+      target: { value },
+    } = event;
+    setTagField(typeof value === 'string' ? value.split(',') : value);
     const tagListQueryParam = createQueryString(
       'courseTag',
       tagList.toString()
@@ -91,6 +102,7 @@ export default function CourseFilter({
   const handleClearSearch = async () => {
     await handleNameChange(null);
     handleDateChange([null, null]);
+    setTagField([]);
     control._reset();
     router.replace(pathname);
   };
@@ -176,86 +188,30 @@ export default function CourseFilter({
           />
         </div>
       </Box>
-      <Controller
-        name="tags"
-        control={control}
-        defaultValue={[]}
-        render={({ field }) => {
-          return (
-            <>
-              <InputLabel htmlFor="tagSelection">
-                {t('CourseForm.tags')}
-              </InputLabel>
-              <Select
-                {...field}
-                id="tagSelection"
-                multiple
-                onChange={(e) => {
-                  const selectedTags = e.target.value;
-                  field.onChange(selectedTags);
-                  handleTagChange(selectedTags);
-                }}
-                renderValue={(field) => (
-                  <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                    {field.map(
-                      (
-                        tag:
-                          | string
-                          | number
-                          | boolean
-                          | React.ReactElement<
-                              any,
-                              string | React.JSXElementConstructor<any>
-                            >
-                          | Iterable<React.ReactNode>
-                          | React.ReactPortal
-                          | React.PromiseLikeOfReactNode
-                          | null
-                          | undefined,
-                        idx: React.Key | null | undefined
-                      ) => (
-                        <Chip
-                          key={idx}
-                          label={tag}
-                          variant="outlined"
-                          sx={{
-                            backgroundColor: palette.surface.light,
-                            borderColor: palette.black.light,
-                          }}
-                        />
-                      )
-                    )}
-                  </Box>
-                )}
-              >
-                {initialTags.map((tag) => (
-                  <MenuItem
-                    key={tag.id}
-                    value={tag.name}
-                    divider
-                    sx={{
-                      '&.Mui-selected': {
-                        backgroundColor: palette.surface.main,
-                      },
-                      '&.Mui-selected.Mui-focusVisible': {
-                        backgroundColor: palette.surface.dark,
-                      },
-                      '&:hover': {
-                        backgroundColor: palette.surface.light,
-                      },
-                      '&.Mui-selected:hover': {
-                        backgroundColor: palette.surface.main,
-                      },
-                    }}
-                  >
-                    {tag.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </>
-          );
-        }}
-      />
+      <div>
+        <FormControl sx={{ m: 1, width: 300 }}>
+          <InputLabel id="tagSelection">Tag</InputLabel>
+          <Select
+            labelId="tagSelection"
+            id="tagSelection"
+            multiple
+            value={tagField}
+            onChange={(e) => {
+              const selectedTags = e.target.value;
+              handleTagChange(e, selectedTags);
+            }}
+            input={<OutlinedInput label="Tag" />}
+            renderValue={(selected) => selected.join(', ')}
+          >
+            {initialTags.map((tag) => (
+              <MenuItem key={tag.id} value={tag.name}>
+                <Checkbox checked={tagField.indexOf(tag.name) > -1} />
+                <ListItemText primary={tag.name} />
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </div>
     </>
   );
 }
