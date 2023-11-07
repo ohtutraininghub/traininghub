@@ -3,13 +3,15 @@ import StarterKit from '@tiptap/starter-kit';
 import { MenuBar } from './MenuBar';
 import { Box } from '@mui/material';
 
+type TEditorProps = {
+  value: string;
+  onChange(_body: string): void;
+};
+
 // define your extension array
 const extensions = [StarterKit];
 
-const content =
-  '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam sed lorem in ipsum tempor pellentesque. Nam id velit venenatis, lacinia nunc ac, sagittis ex. In rhoncus nisi eu dignissim molestie. Duis vestibulum mauris sem, eu convallis nisl tincidunt sit amet. Nulla viverra iaculis neque quis scelerisque. Proin non sem egestas, semper dui non, mattis nisl. Suspendisse tempor dui ipsum, vehicula sagittis erat pellentesque in. Interdum et malesuada fames ac ante ipsum primis in faucibus.</p>';
-
-const Tiptap = () => {
+const Tiptap = ({ value, onChange }: TEditorProps) => {
   return (
     <>
       <Box
@@ -34,7 +36,8 @@ const Tiptap = () => {
         <EditorProvider
           slotBefore={<MenuBar />}
           extensions={extensions}
-          content={content}
+          content={value}
+          onUpdate={({ editor }) => onChange(editor.getHTML())}
         >
           {/* <BubbleMenu>
             <BubbleMenuOptions />

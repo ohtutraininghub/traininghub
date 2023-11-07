@@ -2,7 +2,6 @@
 
 import {
   Input,
-  TextField,
   InputLabel,
   Button,
   Box,
@@ -120,25 +119,16 @@ export default function CourseForm({
           />
           <FormFieldError error={errors.name} />
 
-          <InputLabel>TipTap Editor</InputLabel>
-          <RichTextEditor />
-
           <InputLabel htmlFor="courseFormDescription">
             {t('CourseForm.description')}
           </InputLabel>
-          <TextField
-            {...register('description')}
-            id="courseFormDescription"
-            multiline
-            rows={10} // fixed row count to prevent re-render issue: [https://github.com/mui/material-ui/issues/33081]
-            error={!!errors.description}
-            autoComplete="off"
-            inputProps={{
-              'data-testid': 'courseFormDescription',
-              style: {
-                resize: 'block',
-              },
-            }}
+          <Controller
+            name="description"
+            control={control}
+            defaultValue=""
+            render={({ field: { onChange, value } }) => (
+              <RichTextEditor value={value} onChange={onChange} />
+            )}
           />
           <FormFieldError error={errors.description} />
 
@@ -200,7 +190,6 @@ export default function CourseForm({
               );
             }}
           />
-
           <InputLabel htmlFor="courseFormStartDate">
             {t('CourseForm.startDate')}
           </InputLabel>
@@ -217,7 +206,6 @@ export default function CourseForm({
             }}
           />
           <FormFieldError error={errors.startDate} />
-
           <InputLabel htmlFor="courseFormEndDate">
             {t('CourseForm.endDate')}
           </InputLabel>
@@ -234,7 +222,6 @@ export default function CourseForm({
             }}
           />
           <FormFieldError error={errors.endDate} />
-
           <InputLabel htmlFor="courseFormMaxStudents">
             {t('CourseForm.maxStudents')}
           </InputLabel>
@@ -251,7 +238,6 @@ export default function CourseForm({
             }}
           />
           <FormFieldError error={errors.maxStudents} />
-
           <Button
             type="submit"
             disabled={isSubmitting}
