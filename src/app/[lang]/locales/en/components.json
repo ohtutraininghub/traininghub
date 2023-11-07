@@ -22,11 +22,22 @@
   },
   "CourseList": {
     "courses": "Courses",
+    "noCoursesFound": "No courses found",
     "listControlLabel": "List",
     "gridControlLabel": "Grid"
   },
   "CourseCard": {
     "enrolls": "Enrolls: {{studentCount}} / {{maxStudentCount}}"
+  },
+  "CourseFilter": {
+    "button": {
+      "clearSearch": "Clear Search"
+    },
+    "label": {
+      "courseName": "Seach by name",
+      "date": "Seach by dates",
+      "tag": "Tag"
+    }
   },
   "CourseListView": {
     "enrolls": "Enrolls: {{studentCount}} / {{maxStudentCount}}"
@@ -53,6 +64,16 @@
     "viewProfile": "View profile",
     "signOut": "Sign out",
     "confirmSignOut": "Are you sure you want to sign out?"
+  },
+  "SearchMenu": {
+    "menuTitle": "Search for courses",
+    "filterInUse": "The shown courses are filtered",
+    "tooltip": {
+      "collapseDrawer": "Close menu"
+    },
+    "button": {
+      "clearSearch": "Clear Search"
+    }
   },
   "TagForm": {
     "submit": "Submit"

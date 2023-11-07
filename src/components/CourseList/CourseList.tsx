@@ -130,7 +130,7 @@ export default function CourseList({
               color: palette.white.main,
             }}
           >
-            No courses found.
+            {t('CourseList.noCoursesToShow')}
           </Typography>
         </Box>
       ) : (

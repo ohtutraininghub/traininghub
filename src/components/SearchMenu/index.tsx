@@ -10,18 +10,24 @@ import { Box, Tooltip, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import ExpandCircleDown from '@mui/icons-material/ExpandCircleDown';
+import { DictProps } from '@i18n/index';
+import { useTranslation } from '@i18n/client';
 
-type SearchMenuProps = {
+interface SearchMenuProps extends DictProps {
   initialCourses: CourseWithTagsAndStudentCount[];
   initialTags: Tag[];
-};
+}
 
 export default function SeachMenu({
   initialCourses,
   initialTags,
+  lang,
 }: SearchMenuProps) {
   const [searchMenu, setSearchMenu] = React.useState(false);
   const { palette } = useTheme();
+  const { t } = useTranslation(lang, 'components', {
+    keyPrefix: 'SearchMenu',
+  });
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -50,7 +56,7 @@ export default function SeachMenu({
                 color: palette.white.main,
               }}
             >
-              The shown courses are filtered.
+              {t('filterInUse')}
             </Typography>
             <Typography
               onClick={clearSearchParams}
@@ -65,7 +71,7 @@ export default function SeachMenu({
                 },
               }}
             >
-              Clear Search
+              {t('button.clearSearch')}
             </Typography>
           </>
         )}
@@ -88,16 +94,15 @@ export default function SeachMenu({
               backgroundColor: palette.coverBlue.light,
             }}
           >
-            <Typography style={{ color: 'white' }}>
-              Search for courses
-            </Typography>
+            <Typography style={{ color: 'white' }}>{t('menuTitle')}</Typography>
 
             <CourseFilter
               initialCourses={initialCourses}
               initialTags={initialTags}
+              lang={lang}
             />
           </Box>
-          <Tooltip title="Close menu" placement="bottom">
+          <Tooltip title={t('tooltip.collapseDrawer')} placement="bottom">
             <Box
               sx={{
                 display: 'flex',

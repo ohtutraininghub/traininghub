@@ -40,7 +40,11 @@ export default async function HomePage({ searchParams, params }: Props) {
   return (
     <BackgroundContainer>
       <SpeedDialMenu />
-      <SearchMenu initialCourses={courses} initialTags={tags} />
+      <SearchMenu
+        initialCourses={courses}
+        initialTags={tags}
+        lang={params.lang}
+      />
       <CourseList
         lang={params.lang}
         courses={courses}

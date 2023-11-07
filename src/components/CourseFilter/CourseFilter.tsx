@@ -23,15 +23,18 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useForm } from 'react-hook-form';
 import { Tag } from '@prisma/client';
+import { DictProps } from '@i18n/index';
+import { useTranslation } from '@i18n/client';
 
-type CourseFilterProps = {
+interface CourseFilterProps extends DictProps {
   initialCourses: CourseWithTagsAndStudentCount[];
   initialTags: Tag[];
-};
+}
 
 export default function CourseFilter({
   initialCourses,
   initialTags,
+  lang,
 }: CourseFilterProps) {
   const router = useRouter();
   const pathname = usePathname();
@@ -44,6 +47,10 @@ export default function CourseFilter({
   const [endDate, setEndDate] = useState<Date | null>(null);
   const [courseName, setCourseName] = useState('');
   const [tagField, setTagField] = useState<string[]>([]);
+
+  const { t } = useTranslation(lang, 'components', {
+    keyPrefix: 'CourseFilter',
+  });
 
   const createQueryString = useCallback(
     (name: string, value: string) => {
@@ -157,7 +164,7 @@ export default function CourseFilter({
               },
             }}
             renderInput={(value) => (
-              <TextField {...value} label="Search by name" />
+              <TextField {...value} label={t('label.courseName')} />
             )}
             onChange={(event, value) => {
               handleNameChange(value);
@@ -167,7 +174,7 @@ export default function CourseFilter({
         <div style={{ marginBottom: '5px' }}>
           <DatePicker
             fixedHeight
-            placeholderText="Search by dates"
+            placeholderText={t('label.date')}
             minDate={new Date()}
             selected={startDate}
             onChange={handleDateChange}
@@ -182,7 +189,7 @@ export default function CourseFilter({
         </div>
         <div style={{ marginBottom: '20px' }}>
           <FormControl sx={{ m: 1, width: 250 }}>
-            <InputLabel id="tagSelection">Tag</InputLabel>
+            <InputLabel id="tagSelection">{t('label.tag')}</InputLabel>
             <Select
               labelId="tagSelection"
               id="tagSelection"
@@ -218,7 +225,7 @@ export default function CourseFilter({
               },
             }}
           >
-            Clear Seach
+            {t('button.clearSearch')}
           </Typography>
         </div>
       </Box>
