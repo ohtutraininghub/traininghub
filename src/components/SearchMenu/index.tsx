@@ -48,7 +48,9 @@ export default function SeachMenu({
   return (
     <div>
       <React.Fragment key="top">
-        <Button onClick={toggleSearchMenu}>Search</Button>
+        <Button onClick={toggleSearchMenu}>
+          {t('button.openSearchDrawer')}
+        </Button>
         {courseSearchParamsExist && (
           <>
             <Typography
@@ -94,7 +96,14 @@ export default function SeachMenu({
               backgroundColor: palette.coverBlue.light,
             }}
           >
-            <Typography style={{ color: 'white' }}>{t('menuTitle')}</Typography>
+            <Typography
+              style={{
+                color: 'white',
+                fontWeight: '500',
+              }}
+            >
+              {t('menuTitle')}
+            </Typography>
 
             <CourseFilter
               initialCourses={initialCourses}

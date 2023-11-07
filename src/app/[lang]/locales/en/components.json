@@ -72,6 +72,7 @@
       "collapseDrawer": "Close menu"
     },
     "button": {
+      "openSearchDrawer": "Search",
       "clearSearch": "Clear Search"
     }
   },
