@@ -30,6 +30,7 @@ import { dateToDateTimeLocal } from '@/lib/timedateutils';
 import { CourseWithTags } from '@/lib/prisma/courses';
 import { useTranslation } from '@i18n/client';
 import { DictProps } from '@i18n/index';
+import RichTextEditor from '@/components/TextEditor';
 
 interface CourseFormProps extends DictProps {
   tags: Tag[];
@@ -118,6 +119,9 @@ export default function CourseForm({
             autoComplete="off"
           />
           <FormFieldError error={errors.name} />
+
+          <InputLabel>TipTap Editor</InputLabel>
+          <RichTextEditor />
 
           <InputLabel htmlFor="courseFormDescription">
             {t('CourseForm.description')}
