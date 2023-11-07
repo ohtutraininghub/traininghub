@@ -13,9 +13,9 @@ import {
   OutlinedInput,
   Checkbox,
   SelectChangeEvent,
+  Typography,
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import BackspaceIcon from '@mui/icons-material/Backspace';
 import { useCallback } from 'react';
 import { CourseWithTagsAndStudentCount } from '@/lib/prisma/courses';
 import { usePathname, useSearchParams, useRouter } from 'next/navigation';
@@ -179,20 +179,21 @@ export default function CourseFilter({
           withPortal
         />
         <div>
-          <BackspaceIcon
+          <Typography
+            variant="body2"
             onClick={() => handleClearSearch()}
             sx={{
               cursor: 'pointer',
-              width: '30px',
-              height: '30px',
               paddingLeft: '10px',
-              color: palette.white.main,
+              color: palette.primary.main,
               transition: 'color 0.3s',
               '&:hover': {
                 color: palette.secondary.main,
               },
             }}
-          />
+          >
+            Clear Seach
+          </Typography>
         </div>
       </Box>
       <div>
@@ -207,7 +208,7 @@ export default function CourseFilter({
               const selectedTags = e.target.value;
               handleTagChange(e, selectedTags);
             }}
-            input={<OutlinedInput label="Tag" />}
+            input={<OutlinedInput label="Tag" sx={{ background: 'white' }} />}
             renderValue={(selected) => selected.join(', ')}
           >
             {initialTags.map((tag) => (
