@@ -16,7 +16,6 @@ import {
   Typography,
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { useMediaQuery } from '@mui/material';
 import { useCallback } from 'react';
 import { CourseWithTagsAndStudentCount } from '@/lib/prisma/courses';
 import { usePathname, useSearchParams, useRouter } from 'next/navigation';
@@ -42,7 +41,6 @@ export default function CourseFilter({
   const searchParams = useSearchParams();
 
   const theme = useTheme();
-  const mobileViewport = useMediaQuery(theme.breakpoints.down('sm'));
   const { control } = useForm();
 
   const [startDate, setStartDate] = useState<Date | null>(null);
@@ -53,14 +51,6 @@ export default function CourseFilter({
   const { t } = useTranslation(lang, 'components', {
     keyPrefix: 'CourseFilter',
   });
-
-  const inputStyle = {
-    width: mobileViewport ? '250px' : '300px',
-    height: '55px',
-    fontSize: '16px',
-    paddingLeft: '10px',
-    verticalAlign: 'middle',
-  };
 
   const createQueryString = useCallback(
     (name: string, value: string) => {
@@ -189,7 +179,6 @@ export default function CourseFilter({
         <div style={{ marginBottom: '5px' }}>
           <DatePicker
             fixedHeight
-            placeholderText={t('label.date')}
             minDate={new Date()}
             selected={startDate}
             onChange={handleDateChange}
@@ -198,7 +187,18 @@ export default function CourseFilter({
             selectsRange
             showWeekNumbers
             isClearable
-            customInput={<input style={inputStyle} />}
+            customInput={
+              <TextField
+                label={t('label.date')}
+                sx={{
+                  width: '250px',
+                  [theme.breakpoints.up('sm')]: {
+                    width: '300px',
+                  },
+                  '& .MuiInputLabel-root': { color: theme.palette.white.main },
+                }}
+              />
+            }
             withPortal
           />
         </div>
