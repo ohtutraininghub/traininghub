@@ -6,9 +6,10 @@ import Button from '@mui/material/Button';
 import CourseFilter from '../CourseFilter/CourseFilter';
 import { CourseWithTagsAndStudentCount } from '@/lib/prisma/courses';
 import { Tag } from '@prisma/client';
-import { Box, Typography } from '@mui/material';
+import { Box, Tooltip, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
+import ExpandCircleDown from '@mui/icons-material/ExpandCircleDown';
 
 type SearchMenuProps = {
   initialCourses: CourseWithTagsAndStudentCount[];
@@ -96,6 +97,32 @@ export default function SeachMenu({
               initialTags={initialTags}
             />
           </Box>
+          <Tooltip title="Close menu" placement="bottom">
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: palette.coverBlue.main,
+                transition: 'background-color 0.3s',
+                ':hover': {
+                  backgroundColor: palette.coverBlue.light,
+                  '& .icon': {
+                    color: palette.primary.light,
+                  },
+                },
+              }}
+              onClick={toggleSearchMenu}
+            >
+              <ExpandCircleDown
+                className="icon"
+                sx={{
+                  color: palette.primary.main,
+                  transform: 'rotate(180deg)',
+                }}
+              />
+            </Box>
+          </Tooltip>
         </Drawer>
       </React.Fragment>
     </div>

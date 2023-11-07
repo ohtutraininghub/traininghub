@@ -131,7 +131,6 @@ export default function CourseFilter({
           display: 'flex',
           alignItems: 'center',
           flexDirection: 'column',
-          // justifyContent: 'space-between',
           padding: '16px',
           flexWrap: 'wrap',
           paddingBottom: '10px',
