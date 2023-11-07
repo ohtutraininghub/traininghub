@@ -132,7 +132,6 @@ export default function CourseFilter({
           <Autocomplete
             value={courseName || null}
             clearOnEscape
-            disablePortal
             data-testid="search-autocomplete"
             id="combo-box"
             options={initialCourses.map((course) => course.name)}
