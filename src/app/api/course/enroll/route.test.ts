@@ -5,6 +5,10 @@ import { NextRequest } from 'next/server';
 import { createMocks } from 'node-mocks-http';
 import { minCancelTimeMs } from '@/lib/zod/courses';
 
+const testUser = {
+  id: 'cloeouh4x0000qiexq8tqzvh7',
+};
+
 const newCourse = {
   name: 'Git Fundamentals',
   description:
@@ -12,6 +16,7 @@ const newCourse = {
   startDate: '2100-01-01T00:00:00Z',
   endDate: '2100-01-02T00:00:00Z',
   maxStudents: 3,
+  createdById: testUser.id,
 };
 
 const startMsSoon = Date.now() + Math.round(minCancelTimeMs / 2);
@@ -25,10 +30,7 @@ const startingSoonCourse = {
   startDate: startDateSoon,
   endDate: endDateSoon,
   maxStudents: 8,
-};
-
-const testUser = {
-  id: 'cloeouh4x0000qiexq8tqzvh7',
+  createdById: testUser.id,
 };
 
 const invalidCourseId = '123';
