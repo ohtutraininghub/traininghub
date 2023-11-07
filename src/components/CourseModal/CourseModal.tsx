@@ -99,7 +99,9 @@ export default function CourseModal({
             overflow: 'auto',
           }}
         >
-          <Typography>{course.description}</Typography>
+          <Typography
+            dangerouslySetInnerHTML={{ __html: course.description }}
+          />
         </pre>
         <Box
           sx={{
