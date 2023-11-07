@@ -13,6 +13,7 @@ export default withAuth(function middleware(request) {
       pathname.startsWith('/api') || // exclude all API routes
       pathname.startsWith('/static') ||
       pathname.startsWith('/public') ||
+      pathname.startsWith('/monitoring') || // exclude sentry tunnel route
       PUBLIC_FILE.test(pathname)
     )
   ) {
