@@ -1,7 +1,6 @@
 'use client';
 
 import * as React from 'react';
-
 import Drawer from '@mui/material/Drawer';
 import Button from '@mui/material/Button';
 import CourseFilter from '../CourseFilter/CourseFilter';
@@ -9,6 +8,7 @@ import { CourseWithTagsAndStudentCount } from '@/lib/prisma/courses';
 import { Tag } from '@prisma/client';
 import { Box, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
+import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 
 type SearchMenuProps = {
   initialCourses: CourseWithTagsAndStudentCount[];
@@ -21,14 +21,53 @@ export default function SeachMenu({
 }: SearchMenuProps) {
   const [searchMenu, setSearchMenu] = React.useState(false);
   const { palette } = useTheme();
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
   const toggleSearchMenu = () => {
     setSearchMenu(!searchMenu);
   };
+
+  const clearSearchParams = () => {
+    router.replace(pathname);
+  };
+
+  const courseSearchParamsExist =
+    searchParams.has('courseName') ||
+    searchParams.has('courseDates') ||
+    searchParams.has('courseTag');
 
   return (
     <div>
       <React.Fragment key="top">
         <Button onClick={toggleSearchMenu}>Search</Button>
+        {courseSearchParamsExist && (
+          <>
+            <Typography
+              sx={{
+                color: palette.white.main,
+              }}
+            >
+              The shown courses are filtered.
+            </Typography>
+            <Typography
+              onClick={clearSearchParams}
+              variant="body2"
+              sx={{
+                cursor: 'pointer',
+                color: palette.primary.main,
+                textTransform: 'uppercase',
+                transition: 'color 0.3s',
+                '&:hover': {
+                  color: palette.secondary.main,
+                },
+              }}
+            >
+              Clear Search
+            </Typography>
+          </>
+        )}
         <Drawer
           anchor="top"
           open={searchMenu}
@@ -51,6 +90,7 @@ export default function SeachMenu({
             <Typography style={{ color: 'white' }}>
               Searchy thingies here
             </Typography>
+
             <CourseFilter
               initialCourses={initialCourses}
               initialTags={initialTags}
