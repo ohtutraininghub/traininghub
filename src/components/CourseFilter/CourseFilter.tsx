@@ -62,6 +62,13 @@ export default function CourseFilter({
     if (!courseName && !courseTag && !courseDates && !courseId) {
       handleClearSearch();
     }
+    if (courseName !== undefined) {
+      setCourseName(courseName);
+    }
+    if (courseTag !== undefined) {
+      const parsedTags = courseTag.split(',');
+      setTagField(parsedTags);
+    }
   }, [searchParams]);
 
   const handleNameChange = async (value: string | null) => {
