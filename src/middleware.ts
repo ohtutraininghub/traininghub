@@ -8,6 +8,7 @@ const PUBLIC_FILE = /\.(.*)$/;
 
 export default withAuth(async function middleware(req) {
   const token = await getToken({ req });
+  const { pathname } = req.nextUrl;
 
   const isAuthenticated = !!token;
   if (!isAuthenticated) {
@@ -19,16 +20,14 @@ export default withAuth(async function middleware(req) {
     token.role === Role.TRAINER || token.role === Role.ADMIN;
 
   // Admin only paths
-  if (!isAdmin && req.nextUrl.pathname.startsWith('/admin')) {
+  if (!isAdmin && pathname.startsWith('/admin')) {
     return NextResponse.redirect(new URL('/', req.url));
   }
 
   // Trainer and Admin paths
-  if (!isTrainerOrAdmin && req.nextUrl.pathname.startsWith('/course')) {
+  if (!isTrainerOrAdmin && pathname.startsWith('/course')) {
     return NextResponse.redirect(new URL('/', req.url));
   }
-
-  const { pathname } = req.nextUrl;
 
   if (
     !(
