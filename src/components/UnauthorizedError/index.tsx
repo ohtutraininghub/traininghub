@@ -23,10 +23,10 @@ export default function UnauthorizedError({ lang }: Props) {
       }}
     >
       <Typography variant="h4" sx={{ m: 4 }}>
-        {t('Unauthorized.unauthorizedMessage')}
+        {t('UnauthorizedError.unauthorizedMessage')}
       </Typography>
       <Button variant="contained" onClick={() => router.push('/')}>
-        {t('Unauthorized.backToHome')}
+        {t('UnauthorizedError.backToHome')}
       </Button>
     </Box>
   );

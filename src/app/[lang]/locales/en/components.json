@@ -60,7 +60,7 @@
   "TagList": {
     "noTagsAdded": "No tags added"
   },
-  "Unauthorized": {
+  "UnauthorizedError": {
     "unauthorizedMessage": "You are not authorized to view this page",
     "backToHome": "Back to home"
   }
