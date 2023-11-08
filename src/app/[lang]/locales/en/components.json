@@ -59,5 +59,9 @@
   },
   "TagList": {
     "noTagsAdded": "No tags added"
+  },
+  "Unauthorized": {
+    "unauthorizedMessage": "You are not authorized to view this page",
+    "backToHome": "Back to home"
   }
 }
