@@ -6,13 +6,13 @@ import type { Locale } from '@/lib/i18n/i18n-config';
 
 interface Props {
   children: React.ReactNode;
-  lang: Locale;
+  params: { lang: Locale };
 }
 
-export default async function AdminLayout({ children, lang }: Props) {
+export default async function AdminLayout({ children, params }: Props) {
   const session = await getServerAuthSession();
   if (!isAdmin(session.user)) {
-    return <UnauthorizedError lang={lang} />;
+    return <UnauthorizedError lang={params.lang} />;
   }
 
   return (

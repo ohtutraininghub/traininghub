@@ -5,13 +5,13 @@ import type { Locale } from '@/lib/i18n/i18n-config';
 
 interface Props {
   children: React.ReactNode;
-  lang: Locale;
+  params: { lang: Locale };
 }
 
-export default async function CourseLayout({ children, lang }: Props) {
+export default async function CourseLayout({ children, params }: Props) {
   const session = await getServerAuthSession();
   if (!isTrainerOrAdmin(session.user)) {
-    return <UnauthorizedError lang={lang} />;
+    return <UnauthorizedError lang={params.lang} />;
   }
 
   return <>{children}</>;
