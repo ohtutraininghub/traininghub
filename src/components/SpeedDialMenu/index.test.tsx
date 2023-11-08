@@ -3,11 +3,24 @@ import { screen } from '@testing-library/react';
 import SpeedDialMenu from '.';
 import '@testing-library/jest-dom';
 import { renderWithTheme } from '@/lib/test-utils';
+import { Role } from '@prisma/client';
 
 jest.mock('next/navigation', () => ({
   useRouter() {
     return {
       push: jest.fn(),
+    };
+  },
+}));
+
+jest.mock('next-auth/react', () => ({
+  useSession() {
+    return {
+      data: {
+        user: {
+          role: Role.ADMIN,
+        },
+      },
     };
   },
 }));

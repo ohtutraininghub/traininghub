@@ -118,6 +118,7 @@ describe('Course Form Course Edit Tests', () => {
   it('Form is filled with course values in Edit Mode', async () => {
     const course = {
       id: '1234',
+      createdById: '30',
       name: 'New course',
       description: 'A test course',
       startDate: new Date(),
@@ -151,6 +152,7 @@ describe('Course Form Course Edit Tests', () => {
   it('Form is submitted with correct values in Edit Mode', async () => {
     const course = {
       id: '1234',
+      createdById: '30',
       name: 'New course',
       description: 'A test course',
       startDate: new Date(Date.now() + 1000 * 60 * 60 * 24),
