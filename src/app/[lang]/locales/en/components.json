@@ -81,5 +81,9 @@
   },
   "TagList": {
     "noTagsAdded": "No tags added"
+  },
+  "UnauthorizedError": {
+    "unauthorizedMessage": "You are not authorized to view this page",
+    "backToHome": "Back to home"
   }
 }

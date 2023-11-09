@@ -7,6 +7,7 @@ import { Locale } from '@/lib/i18n/i18n-config';
 import BackgroundContainer from '@/components/BackgroundContainer';
 import SpeedDialMenu from '@/components/SpeedDialMenu';
 import SearchMenu from '@/components/SearchMenu';
+import { isTrainerOrAdmin } from '@/lib/auth-utils';
 
 export const dynamic = 'force-dynamic';
 
@@ -39,12 +40,12 @@ export default async function HomePage({ searchParams, params }: Props) {
 
   return (
     <BackgroundContainer>
-      <SpeedDialMenu />
       <SearchMenu
         initialCourses={courses}
         initialTags={tags}
         lang={params.lang}
       />
+      {isTrainerOrAdmin(session.user) && <SpeedDialMenu />}
       <CourseList
         lang={params.lang}
         courses={courses}
