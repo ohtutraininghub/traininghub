@@ -67,7 +67,12 @@ export default function CourseModal({
             endDate={course.endDate}
           />
         </Typography>
-
+        {course.lastEnrollDate && (
+          <Typography sx={{ mb: 2 }}>
+            Note: Enrollment deadline{' '}
+            <LocalizedDateTime variant="long" date={course.lastEnrollDate} />
+          </Typography>
+        )}
         <Box
           sx={{
             display: 'flex',
@@ -120,6 +125,7 @@ export default function CourseModal({
               courseId={course.id}
               isCourseFull={isCourseFull}
               startDate={course.startDate}
+              lastEnrollDate={course.lastEnrollDate}
             />
           </Box>
           <Box sx={{ flex: 1 }}></Box>
