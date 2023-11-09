@@ -41,8 +41,8 @@ model Course {
   maxStudents Int
   students    User[]
   tags        Tag[]
-  createdBy   User       @relation(name: "createdCourses", references: [id], fields: [createdById])
-  createdById String
+  createdBy   User?      @relation(name: "createdCourses", references: [id], fields: [createdById])
+  createdById String?
   calendar    Calendar[]
 }
 
