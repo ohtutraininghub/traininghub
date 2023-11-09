@@ -67,35 +67,46 @@ export default function SeachMenu({
   return (
     <div>
       <React.Fragment key="top">
-        <Button onClick={toggleSearchMenu}>
-          {t('button.openSearchDrawer')}
-        </Button>
-        {courseSearchParamsExist && (
-          <>
-            <Typography
-              sx={{
-                color: palette.white.main,
-              }}
-            >
-              {t('filterInUse')}
-            </Typography>
-            <Typography
-              onClick={clearSearchParams}
-              variant="body2"
-              sx={{
-                cursor: 'pointer',
-                color: palette.primary.main,
-                textTransform: 'uppercase',
-                transition: 'color 0.3s',
-                '&:hover': {
-                  color: palette.secondary.main,
-                },
-              }}
-            >
-              {t('button.clearSearch')}
-            </Typography>
-          </>
-        )}
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <Button onClick={toggleSearchMenu}>
+            {t('button.openSearchDrawer')}
+          </Button>
+          {courseSearchParamsExist && (
+            <>
+              <Typography
+                sx={{
+                  color: palette.white.main,
+                  fontSize: '0.8em',
+                }}
+              >
+                {t('filterInUse')}
+              </Typography>
+              <Typography
+                onClick={clearSearchParams}
+                variant="body2"
+                sx={{
+                  cursor: 'pointer',
+                  fontSize: '0.7em',
+                  color: palette.primary.main,
+                  textTransform: 'uppercase',
+                  transition: 'color 0.3s',
+                  '&:hover': {
+                    color: palette.secondary.main,
+                  },
+                }}
+              >
+                {t('button.clearSearch')}
+              </Typography>
+            </>
+          )}
+        </Box>
         <Drawer
           anchor="top"
           open={searchMenu}
@@ -117,10 +128,10 @@ export default function SeachMenu({
           >
             <Typography
               style={{
-                color: 'white',
+                color: palette.white.main,
                 fontSize: '20px',
                 fontWeight: '500',
-                paddingBottom: '10px',
+                paddingBottom: '0.5em',
               }}
             >
               {t('menuTitle')}
