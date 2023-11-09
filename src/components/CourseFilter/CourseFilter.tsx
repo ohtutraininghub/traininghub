@@ -62,22 +62,6 @@ export default function CourseFilter({
     [searchParams]
   );
 
-  useEffect(() => {
-    const { courseName, courseTag, courseDates, courseId } = Object.fromEntries(
-      searchParams.entries()
-    );
-    if (!courseName && !courseTag && !courseDates && !courseId) {
-      handleClearSearch();
-    }
-    if (courseName !== undefined) {
-      setCourseName(courseName);
-    }
-    if (courseTag !== undefined) {
-      const parsedTags = courseTag.split(',');
-      setTagField(parsedTags);
-    }
-  }, [searchParams]);
-
   const handleNameChange = async (value: string | null) => {
     const searchTerm: string | null = value;
     setCourseName(searchTerm || '');
@@ -113,13 +97,38 @@ export default function CourseFilter({
     router.push(pathname + '?' + dateRangeQueryParam);
   };
 
-  const handleClearSearch = async () => {
-    await handleNameChange(null);
-    handleDateChange([null, null]);
+  const handleClearSearch = useCallback(async () => {
+    setCourseName('');
+    setStartDate(null);
+    setEndDate(null);
     setTagField([]);
     control._reset();
     router.replace(pathname);
-  };
+  }, [
+    setCourseName,
+    setStartDate,
+    setEndDate,
+    setTagField,
+    control,
+    router,
+    pathname,
+  ]);
+
+  useEffect(() => {
+    const { courseName, courseTag, courseDates, courseId } = Object.fromEntries(
+      searchParams.entries()
+    );
+    if (!courseName && !courseTag && !courseDates && !courseId) {
+      handleClearSearch();
+    }
+    if (courseName !== undefined) {
+      setCourseName(courseName);
+    }
+    if (courseTag !== undefined) {
+      const parsedTags = courseTag.split(',');
+      setTagField(parsedTags);
+    }
+  }, [searchParams, handleClearSearch]);
 
   return (
     <>
