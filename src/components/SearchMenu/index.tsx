@@ -43,7 +43,7 @@ export default function SearchMenu({
   lang,
 }: SearchMenuProps) {
   const [searchMenu, setSearchMenu] = React.useState(false);
-  const { palette } = useTheme();
+  const theme = useTheme();
   const { t } = useTranslation(lang, 'components', {
     keyPrefix: 'SearchMenu',
   });
@@ -82,7 +82,7 @@ export default function SearchMenu({
             <>
               <Typography
                 sx={{
-                  color: palette.white.main,
+                  color: theme.palette.white.main,
                   fontSize: '0.8em',
                 }}
               >
@@ -94,11 +94,11 @@ export default function SearchMenu({
                 sx={{
                   cursor: 'pointer',
                   fontSize: '0.7em',
-                  color: palette.primary.main,
+                  color: theme.palette.primary.main,
                   textTransform: 'uppercase',
                   transition: 'color 0.3s',
                   '&:hover': {
-                    color: palette.secondary.main,
+                    color: theme.palette.secondary.main,
                   },
                 }}
               >
@@ -123,15 +123,18 @@ export default function SearchMenu({
               height: '40vh',
               justifyContent: 'center',
               alignItems: 'center',
-              backgroundColor: palette.coverBlue.light,
+              backgroundColor: theme.palette.coverBlue.light,
             }}
           >
             <Typography
-              style={{
-                color: palette.white.main,
+              sx={{
+                color: theme.palette.white.main,
                 fontSize: '20px',
                 fontWeight: '500',
                 paddingBottom: '0.5em',
+                [theme.breakpoints.down('sm')]: {
+                  display: 'none',
+                },
               }}
             >
               {t('menuTitle')}
@@ -149,12 +152,12 @@ export default function SearchMenu({
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
-                backgroundColor: palette.coverBlue.main,
+                backgroundColor: theme.palette.coverBlue.main,
                 transition: 'background-color 0.3s',
                 ':hover': {
-                  backgroundColor: palette.coverBlue.light,
+                  backgroundColor: theme.palette.coverBlue.light,
                   '& .icon': {
-                    color: palette.primary.light,
+                    color: theme.palette.primary.light,
                     animation: `${nudgeAnimation} 1s ease infinite`,
                   },
                 },
@@ -165,7 +168,7 @@ export default function SearchMenu({
               <ExpandCircleDown
                 className="icon"
                 sx={{
-                  color: palette.primary.main,
+                  color: theme.palette.primary.main,
                   transform: 'rotate(180deg)',
                 }}
               />
