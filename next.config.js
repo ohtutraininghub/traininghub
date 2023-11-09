@@ -1,6 +1,12 @@
 /** @type {import('next').NextConfig} */
 
-const nextConfig = {};
+const nextConfig = {
+  reactStrictMode: true,
+  webpack: (config) => {
+    config.externals = [...config.externals, 'canvas', 'jsdom', 'node-fetch'];
+    return config;
+  },
+};
 
 module.exports = nextConfig;
 
