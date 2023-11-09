@@ -37,7 +37,7 @@ const nudgeAnimation = keyframes`
   }
 `;
 
-export default function SeachMenu({
+export default function SearchMenu({
   initialCourses,
   initialTags,
   lang,
@@ -160,6 +160,7 @@ export default function SeachMenu({
                 },
               }}
               onClick={toggleSearchMenu}
+              data-testid="close-drawer"
             >
               <ExpandCircleDown
                 className="icon"
