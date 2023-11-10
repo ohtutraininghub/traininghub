@@ -25,7 +25,7 @@ jest.mock('next-auth/react', () => ({
   },
 }));
 
-describe('SpeedDialMenu', () => {
+describe('SpeedDial Menu', () => {
   it('renders SpeedDialMenu and all actions', () => {
     renderWithTheme(<SpeedDialMenu />);
 
