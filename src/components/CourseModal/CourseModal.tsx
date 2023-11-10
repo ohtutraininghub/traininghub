@@ -12,6 +12,7 @@ import EditButton from './EditButton';
 import LocalizedDateTime from '../LocalizedDateTime';
 import { hasCourseEditRights } from '@/lib/auth-utils';
 import { DictProps } from '@/lib/i18n';
+import { useTranslation } from '@/lib/i18n/client';
 import { useSession, signIn } from 'next-auth/react';
 
 interface Props extends DictProps {
@@ -31,6 +32,7 @@ export default function CourseModal({
   editCourseLabel,
 }: Props) {
   const { data: session } = useSession();
+  const { t } = useTranslation(lang, 'components');
 
   if (!course) return null;
 
@@ -81,7 +83,7 @@ export default function CourseModal({
         </Typography>
         {course.lastEnrollDate && (
           <Typography sx={{ mb: 2 }}>
-            Note: Enrollment deadline{' '}
+            {t('CourseModal.enrollmentDeadlineHeader')}
             <LocalizedDateTime variant="long" date={course.lastEnrollDate} />
           </Typography>
         )}

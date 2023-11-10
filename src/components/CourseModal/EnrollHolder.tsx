@@ -38,7 +38,7 @@ export default function EnrollHolder({
   }
 
   if (lastEnrollDate && isPastDeadline(new Date(), lastEnrollDate)) {
-    return <Typography>(Enrollment has closed)</Typography>;
+    return <Typography>{t('EnrollHolder.pastEnrollmentDeadline')}</Typography>;
   }
 
   return <EnrollButton lang={lang} courseId={courseId} />;
