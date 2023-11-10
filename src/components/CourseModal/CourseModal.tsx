@@ -1,3 +1,5 @@
+'use client';
+
 import { CourseWithTagsAndStudentCount } from '@/lib/prisma/courses';
 import { CourseModalCloseButton } from '@/components/Buttons/Buttons';
 import Modal from '@mui/material/Modal';
@@ -8,7 +10,9 @@ import Box from '@mui/material/Box';
 import EnrollHolder from './EnrollHolder';
 import EditButton from './EditButton';
 import LocalizedDateTime from '../LocalizedDateTime';
+import { hasCourseEditRights } from '@/lib/auth-utils';
 import { DictProps } from '@/lib/i18n';
+import { useSession, signIn } from 'next-auth/react';
 
 interface Props extends DictProps {
   course: CourseWithTagsAndStudentCount | undefined;
@@ -26,9 +30,17 @@ export default function CourseModal({
   description,
   editCourseLabel,
 }: Props) {
+  const { data: session } = useSession();
+
   if (!course) return null;
+
+  if (!session) {
+    return signIn();
+  }
+
   const isUserEnrolled = usersEnrolledCourseIds.includes(course.id);
   const isCourseFull = course._count.students === course.maxStudents;
+  const hasEditRights = hasCourseEditRights(session.user, course);
 
   return (
     <Modal
@@ -116,7 +128,11 @@ export default function CourseModal({
             gap: 1,
           }}
         >
-          <EditButton editCourseLabel={editCourseLabel} courseId={course.id} />
+          <EditButton
+            editCourseLabel={editCourseLabel}
+            courseId={course.id}
+            hidden={!hasEditRights}
+          />
           <Box sx={{ flex: 1 }}>
             <Typography sx={{ mb: 1 }}>{enrolls}</Typography>
             <EnrollHolder

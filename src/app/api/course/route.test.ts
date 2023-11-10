@@ -3,10 +3,28 @@ import { GET, POST, PUT } from './route';
 import { prisma, clearDatabase } from '@/lib/prisma';
 import { NextRequest } from 'next/server';
 import { createMocks } from 'node-mocks-http';
+import { Role } from '@prisma/client';
+
+const testUser = {
+  id: 'clo079ls3000108jsbdbsc8pv',
+};
 
 beforeEach(async () => {
   await clearDatabase();
+  await prisma.user.create({
+    data: { id: testUser.id },
+  });
 });
+
+jest.mock('../../../lib/auth', () => ({
+  getServerAuthSession: async () =>
+    Promise.resolve({
+      user: {
+        id: testUser.id,
+        role: Role.TRAINER,
+      },
+    }),
+}));
 
 const newCourse = {
   name: 'Python',
@@ -72,7 +90,7 @@ const mockUpdateRequest = (body: any) => {
   }).req;
 };
 
-describe('API', () => {
+describe('Course API tests', () => {
   describe('GET', () => {
     it('returns an empty list from the database at the beginning of the tests', async () => {
       const response = await GET();
@@ -160,6 +178,7 @@ describe('API', () => {
       startDate: new Date(Date.now() + 1000 * 60 * 60 * 24),
       endDate: new Date(Date.now() + 1000 * 60 * 60 * 24 * 2),
       maxStudents: 200,
+      createdById: testUser.id,
       tags: [],
     };
 

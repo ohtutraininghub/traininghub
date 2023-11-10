@@ -7,6 +7,7 @@ import { prisma } from '@/lib/prisma/index';
 import { Locale } from '@/lib/i18n/i18n-config';
 import BackgroundContainer from '@/components/BackgroundContainer';
 import SpeedDialMenu from '@/components/SpeedDialMenu';
+import { isTrainerOrAdmin } from '@/lib/auth-utils';
 
 export const dynamic = 'force-dynamic';
 
@@ -39,7 +40,7 @@ export default async function HomePage({ searchParams, params }: Props) {
 
   return (
     <BackgroundContainer>
-      <SpeedDialMenu />
+      {isTrainerOrAdmin(session.user) && <SpeedDialMenu />}
       <CourseFilter initialCourses={courses} initialTags={tags} />
       <CourseList
         lang={params.lang}

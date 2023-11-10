@@ -6,9 +6,14 @@ import EditIcon from '@mui/icons-material/Edit';
 interface Props {
   courseId: string;
   editCourseLabel: string;
+  hidden: boolean;
 }
 
-export default function EditButton({ courseId, editCourseLabel }: Props) {
+export default function EditButton({
+  courseId,
+  editCourseLabel,
+  hidden,
+}: Props) {
   return (
     <Box
       sx={{
@@ -16,7 +21,11 @@ export default function EditButton({ courseId, editCourseLabel }: Props) {
         flex: 1,
       }}
     >
-      <Link style={{ all: 'unset' }} href={`/course/${courseId}/edit`}>
+      <Link
+        style={{ textDecoration: 'none', color: 'inherit' }}
+        href={`/course/${courseId}/edit`}
+        hidden={hidden}
+      >
         <Box
           sx={{
             display: 'flex',

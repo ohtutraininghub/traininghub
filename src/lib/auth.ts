@@ -3,6 +3,7 @@ import GoogleProvider from 'next-auth/providers/google';
 import { prisma } from './prisma';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import { getServerSession } from 'next-auth/next';
+import { Adapter } from 'next-auth/adapters';
 import { updateGoogleAccount } from './prisma/account';
 
 const scopes =
@@ -26,7 +27,7 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   ],
-  adapter: PrismaAdapter(prisma),
+  adapter: PrismaAdapter(prisma) as Adapter,
   session: {
     strategy: 'jwt',
     maxAge: 7 * 24 * 60 * 60,
@@ -38,6 +39,7 @@ export const authOptions: NextAuthOptions = {
         user: {
           ...session.user,
           id: token.id,
+          role: token.role,
         },
       };
     },
@@ -51,6 +53,7 @@ export const authOptions: NextAuthOptions = {
         return {
           ...token,
           id: user.id,
+          role: user.role,
         };
       }
       return token;

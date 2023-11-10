@@ -69,6 +69,7 @@ const courseSchemaBase = z
 
 const courseSchemaBaseWithId = courseSchemaBase.extend({
   id: z.string().min(1, 'Id is required'),
+  createdById: z.string(),
 });
 
 export const courseSchema = withRefine(courseSchemaBase);
