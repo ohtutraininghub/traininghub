@@ -50,7 +50,7 @@ export async function POST(request: NextRequest) {
       isPastDeadline(new Date(), course.lastEnrollDate)
     ) {
       return errorResponse({
-        message: 'It is past the the deadline for enrolling',
+        message: 'No enrolling allowed after enrollment deadline',
         statusCode: StatusCodeType.UNPROCESSABLE_CONTENT,
       });
     }
