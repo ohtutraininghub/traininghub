@@ -199,6 +199,7 @@ export default function CourseFilter({
           selected={startDate}
           onChange={handleStartDateChange}
           showWeekNumbers
+          isClearable
           customInput={
             <TextField
               label={t('label.startDate')}
@@ -222,6 +223,7 @@ export default function CourseFilter({
           selected={endDate}
           onChange={handleEndDateChange}
           showWeekNumbers
+          isClearable
           customInput={
             <TextField
               label={t('label.endDate')}
