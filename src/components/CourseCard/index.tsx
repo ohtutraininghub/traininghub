@@ -11,6 +11,7 @@ import { Box, Button } from '@mui/material';
 import CardHeader from '@mui/material/CardHeader';
 import PeopleIcon from '@mui/icons-material/People';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import { usePathname, useSearchParams } from 'next/navigation';
 
 interface Props {
   course: CourseWithTagsAndStudentCount;
@@ -19,9 +20,14 @@ interface Props {
 
 const CourseCard = ({ course, enrolls }: Props) => {
   const theme = useTheme();
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const url = new URL(pathname, window.location.origin);
+  searchParams.forEach((value, key) => url.searchParams.set(key, value));
+  url.searchParams.set('courseId', course.id);
 
   return (
-    <Link href={`?courseId=${course.id}`} style={{ textDecoration: 'none' }}>
+    <Link href={url} style={{ textDecoration: 'none' }}>
       <Card
         sx={{
           backgroundColor: theme.palette.coverBlue.dark,
