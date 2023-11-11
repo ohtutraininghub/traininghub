@@ -22,12 +22,15 @@ const CourseCard = ({ course, enrolls }: Props) => {
   const theme = useTheme();
   const searchParams = useSearchParams();
   const pathname = usePathname();
-  const url = new URL(pathname, window.location.origin);
-  searchParams.forEach((value, key) => url.searchParams.set(key, value));
-  url.searchParams.set('courseId', course.id);
+
+  const getURL = () => {
+    const params = new URLSearchParams(Array.from(searchParams.entries()));
+    params.set('courseId', course.id);
+    return `${pathname}?${params.toString()}`;
+  };
 
   return (
-    <Link href={url} style={{ textDecoration: 'none' }}>
+    <Link href={getURL()} style={{ textDecoration: 'none' }}>
       <Card
         sx={{
           backgroundColor: theme.palette.coverBlue.dark,
