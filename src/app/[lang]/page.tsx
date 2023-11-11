@@ -15,7 +15,8 @@ type Props = {
   searchParams: {
     courseName?: string;
     courseTag?: string;
-    courseDates?: string;
+    startDate?: string;
+    endDate?: string;
     courseId?: string;
   };
   params: {
@@ -54,7 +55,8 @@ export default async function HomePage({ searchParams, params }: Props) {
         searchCourses={{
           courseName: searchParams.courseName,
           courseTag: searchParams.courseTag,
-          courseDates: searchParams.courseDates,
+          startDate: searchParams.startDate,
+          endDate: searchParams.endDate,
         }}
       />
     </BackgroundContainer>

@@ -61,7 +61,8 @@ export default function SearchMenu({
 
   const courseSearchParamsExist =
     searchParams.has('courseName') ||
-    searchParams.has('courseDates') ||
+    searchParams.has('startDate') ||
+    searchParams.has('endDate') ||
     searchParams.has('courseTag');
 
   return (

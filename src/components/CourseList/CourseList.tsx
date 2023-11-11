@@ -33,7 +33,8 @@ interface CourseListProps extends DictProps {
   searchCourses: {
     courseName?: string;
     courseTag?: string;
-    courseDates?: string;
+    startDate?: string;
+    endDate?: string;
   };
 }
 
