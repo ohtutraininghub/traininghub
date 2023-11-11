@@ -20,7 +20,6 @@ import { useCallback } from 'react';
 import { CourseWithTagsAndStudentCount } from '@/lib/prisma/courses';
 import { usePathname, useSearchParams, useRouter } from 'next/navigation';
 import DatePicker from 'react-datepicker';
-import { useForm } from 'react-hook-form';
 import { Tag } from '@prisma/client';
 import { DictProps } from '@i18n/index';
 import { useTranslation } from '@i18n/client';
@@ -42,7 +41,6 @@ export default function CourseFilter({
   const searchParams = useSearchParams();
 
   const theme = useTheme();
-  const { control } = useForm();
 
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
@@ -107,17 +105,8 @@ export default function CourseFilter({
     setStartDate(null);
     setEndDate(null);
     setTagField([]);
-    control._reset();
     router.replace(pathname);
-  }, [
-    setCourseName,
-    setStartDate,
-    setEndDate,
-    setTagField,
-    control,
-    router,
-    pathname,
-  ]);
+  }, [setCourseName, setStartDate, setEndDate, setTagField, router, pathname]);
 
   useEffect(() => {
     const { courseName, courseTag, startDate, endDate, courseId } =
