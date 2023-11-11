@@ -136,45 +136,44 @@ export default function CourseFilter({
     >
       {/* Start search by name field*/}
 
-      <div style={{ marginBottom: '10px' }}>
-        <Autocomplete
-          value={courseName || null}
-          clearOnEscape
-          data-testid="search-autocomplete"
-          id="combo-box"
-          options={initialCourses.map((course) => course.name)}
-          renderOption={(props, option) => {
-            return (
-              <li {...props} key={option}>
-                {option}
-              </li>
-            );
-          }}
-          sx={{
-            width: '250px',
-            boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.2)',
-            [theme.breakpoints.up('sm')]: {
-              width: '300px',
-            },
-            '& .MuiAutocomplete-inputRoot': {
-              color: theme.palette.white.main,
-              backgroundColor: theme.palette.coverBlue.light,
-            },
-          }}
-          renderInput={(value) => (
-            <TextField
-              {...value}
-              label={t('label.courseName')}
-              sx={{
-                '& .MuiInputLabel-root': { color: theme.palette.white.main },
-              }}
-            />
-          )}
-          onChange={(event, value) => {
-            handleNameChange(value);
-          }}
-        />
-      </div>
+      <Autocomplete
+        value={courseName || null}
+        clearOnEscape
+        data-testid="search-autocomplete"
+        id="combo-box"
+        options={initialCourses.map((course) => course.name)}
+        renderOption={(props, option) => {
+          return (
+            <li {...props} key={option}>
+              {option}
+            </li>
+          );
+        }}
+        sx={{
+          marginBottom: '10px',
+          width: '250px',
+          boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.2)',
+          [theme.breakpoints.up('sm')]: {
+            width: '300px',
+          },
+          '& .MuiAutocomplete-inputRoot': {
+            color: theme.palette.white.main,
+            backgroundColor: theme.palette.coverBlue.light,
+          },
+        }}
+        renderInput={(value) => (
+          <TextField
+            {...value}
+            label={t('label.courseName')}
+            sx={{
+              '& .MuiInputLabel-root': { color: theme.palette.white.main },
+            }}
+          />
+        )}
+        onChange={(event, value) => {
+          handleNameChange(value);
+        }}
+      />
 
       {/* Start Date Pickers*/}
 
@@ -235,67 +234,64 @@ export default function CourseFilter({
 
       {/* Start Tag Selector*/}
 
-      <div style={{ marginBottom: '20px' }}>
-        <FormControl
-          sx={{
-            m: 1,
-            width: '250px',
-            boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.2)',
-            [theme.breakpoints.up('sm')]: {
-              width: '300px',
-            },
-            '& .MuiInputLabel-root': { color: theme.palette.white.main },
+      <FormControl
+        sx={{
+          m: 1,
+          mb: 3,
+          width: '250px',
+          boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.2)',
+          [theme.breakpoints.up('sm')]: {
+            width: '300px',
+          },
+          '& .MuiInputLabel-root': { color: theme.palette.white.main },
+        }}
+      >
+        <InputLabel id="tagSelection">{t('label.tag')}</InputLabel>
+        <Select
+          labelId="tagSelection"
+          id="tagSelection"
+          multiple
+          value={tagField}
+          onChange={(e) => {
+            const selectedTags = e.target.value;
+            handleTagChange(e, selectedTags);
           }}
+          input={
+            <OutlinedInput
+              label="Tag"
+              sx={{
+                color: theme.palette.white.main,
+              }}
+            />
+          }
+          renderValue={(selected) => selected.join(', ')}
         >
-          <InputLabel id="tagSelection">{t('label.tag')}</InputLabel>
-          <Select
-            labelId="tagSelection"
-            id="tagSelection"
-            multiple
-            value={tagField}
-            onChange={(e) => {
-              const selectedTags = e.target.value;
-              handleTagChange(e, selectedTags);
-            }}
-            input={
-              <OutlinedInput
-                label="Tag"
-                sx={{
-                  color: theme.palette.white.main,
-                }}
-              />
-            }
-            renderValue={(selected) => selected.join(', ')}
-          >
-            {initialTags.map((tag) => (
-              <MenuItem key={tag.id} value={tag.name}>
-                <Checkbox checked={tagField.indexOf(tag.name) > -1} />
-                <ListItemText primary={tag.name} />
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      </div>
+          {initialTags.map((tag) => (
+            <MenuItem key={tag.id} value={tag.name}>
+              <Checkbox checked={tagField.indexOf(tag.name) > -1} />
+              <ListItemText primary={tag.name} />
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
 
       {/* Start clear search button*/}
 
-      <div>
-        <Typography
-          variant="body2"
-          onClick={() => handleClearSearch()}
-          sx={{
-            cursor: 'pointer',
-            paddingLeft: '10px',
-            color: theme.palette.primary.main,
-            transition: 'color 0.3s',
-            '&:hover': {
-              color: theme.palette.secondary.main,
-            },
-          }}
-        >
-          {t('button.clearSearch')}
-        </Typography>
-      </div>
+      <Typography
+        variant="body2"
+        onClick={() => handleClearSearch()}
+        sx={{
+          cursor: 'pointer',
+          paddingLeft: '10px',
+          color: theme.palette.primary.main,
+          transition: 'color 0.3s',
+          '&:hover': {
+            color: theme.palette.secondary.main,
+          },
+        }}
+      >
+        {t('button.clearSearch')}
+      </Typography>
     </Box>
   );
 }

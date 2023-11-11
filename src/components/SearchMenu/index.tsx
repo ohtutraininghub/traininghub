@@ -66,117 +66,115 @@ export default function SearchMenu({
     searchParams.has('courseTag');
 
   return (
-    <div>
-      <React.Fragment key="top">
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <Button onClick={toggleSearchMenu}>
-            {t('button.openSearchDrawer')}
-          </Button>
-          {courseSearchParamsExist && (
-            <>
-              <Typography
-                sx={{
-                  color: theme.palette.white.main,
-                  fontSize: '0.8em',
-                }}
-              >
-                {t('filterInUse')}
-              </Typography>
-              <Typography
-                onClick={clearSearchParams}
-                variant="body2"
-                sx={{
-                  cursor: 'pointer',
-                  fontSize: '0.7em',
-                  color: theme.palette.primary.main,
-                  textTransform: 'uppercase',
-                  transition: 'color 0.3s',
-                  '&:hover': {
-                    color: theme.palette.secondary.main,
-                  },
-                }}
-              >
-                {t('button.clearSearch')}
-              </Typography>
-            </>
-          )}
-        </Box>
-        <Drawer
-          anchor="top"
-          open={searchMenu}
-          onClose={toggleSearchMenu}
-          sx={{
-            backgroundColor: 'none',
-            height: '40vh',
-          }}
-        >
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              height: '40vh',
-              justifyContent: 'center',
-              alignItems: 'center',
-              backgroundColor: theme.palette.coverBlue.light,
-            }}
-          >
+    <React.Fragment key="top">
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <Button onClick={toggleSearchMenu}>
+          {t('button.openSearchDrawer')}
+        </Button>
+        {courseSearchParamsExist && (
+          <>
             <Typography
               sx={{
                 color: theme.palette.white.main,
-                fontSize: '20px',
-                fontWeight: '500',
-                paddingBottom: '0.5em',
-                [theme.breakpoints.down('sm')]: {
-                  display: 'none',
+                fontSize: '0.8em',
+              }}
+            >
+              {t('filterInUse')}
+            </Typography>
+            <Typography
+              onClick={clearSearchParams}
+              variant="body2"
+              sx={{
+                cursor: 'pointer',
+                fontSize: '0.7em',
+                color: theme.palette.primary.main,
+                textTransform: 'uppercase',
+                transition: 'color 0.3s',
+                '&:hover': {
+                  color: theme.palette.secondary.main,
                 },
               }}
             >
-              {t('menuTitle')}
+              {t('button.clearSearch')}
             </Typography>
+          </>
+        )}
+      </Box>
+      <Drawer
+        anchor="top"
+        open={searchMenu}
+        onClose={toggleSearchMenu}
+        sx={{
+          backgroundColor: 'none',
+          height: '40vh',
+        }}
+      >
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            height: '40vh',
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: theme.palette.coverBlue.light,
+          }}
+        >
+          <Typography
+            sx={{
+              color: theme.palette.white.main,
+              fontSize: '20px',
+              fontWeight: '500',
+              paddingBottom: '0.5em',
+              [theme.breakpoints.down('sm')]: {
+                display: 'none',
+              },
+            }}
+          >
+            {t('menuTitle')}
+          </Typography>
 
-            <CourseFilter
-              initialCourses={initialCourses}
-              initialTags={initialTags}
-              lang={lang}
+          <CourseFilter
+            initialCourses={initialCourses}
+            initialTags={initialTags}
+            lang={lang}
+          />
+        </Box>
+        <Tooltip title={t('tooltip.collapseDrawer')} placement="bottom">
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: theme.palette.coverBlue.main,
+              transition: 'background-color 0.3s',
+              ':hover': {
+                backgroundColor: theme.palette.coverBlue.light,
+                '& .icon': {
+                  color: theme.palette.primary.light,
+                  animation: `${nudgeAnimation} 1s ease infinite`,
+                },
+              },
+            }}
+            onClick={toggleSearchMenu}
+            data-testid="close-drawer"
+          >
+            <ExpandCircleDown
+              className="icon"
+              sx={{
+                color: theme.palette.primary.main,
+                transform: 'rotate(180deg)',
+              }}
             />
           </Box>
-          <Tooltip title={t('tooltip.collapseDrawer')} placement="bottom">
-            <Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                backgroundColor: theme.palette.coverBlue.main,
-                transition: 'background-color 0.3s',
-                ':hover': {
-                  backgroundColor: theme.palette.coverBlue.light,
-                  '& .icon': {
-                    color: theme.palette.primary.light,
-                    animation: `${nudgeAnimation} 1s ease infinite`,
-                  },
-                },
-              }}
-              onClick={toggleSearchMenu}
-              data-testid="close-drawer"
-            >
-              <ExpandCircleDown
-                className="icon"
-                sx={{
-                  color: theme.palette.primary.main,
-                  transform: 'rotate(180deg)',
-                }}
-              />
-            </Box>
-          </Tooltip>
-        </Drawer>
-      </React.Fragment>
-    </div>
+        </Tooltip>
+      </Drawer>
+    </React.Fragment>
   );
 }
