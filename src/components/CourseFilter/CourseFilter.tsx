@@ -61,6 +61,12 @@ export default function CourseFilter({
     [searchParams]
   );
 
+  const deleteSearchParam = (name: string) => {
+    const params = new URLSearchParams(searchParams);
+    params.delete(name);
+    router.push(`${pathname}?${params.toString()}`);
+  };
+
   const handleNameChange = async (value: string | null) => {
     const searchTerm: string | null = value;
     setCourseName(searchTerm || '');
@@ -86,18 +92,20 @@ export default function CourseFilter({
 
   const handleStartDateChange = (date: Date | null) => {
     setStartDate(date);
-    if (date) {
-      const param = createQueryString('startDate', date.toString());
-      router.push(pathname + '?' + param);
+    if (!date) {
+      return deleteSearchParam('startDate');
     }
+    const param = createQueryString('startDate', date.toString());
+    return router.push(`${pathname}?${param}`);
   };
 
   const handleEndDateChange = (date: Date | null) => {
     setEndDate(date);
-    if (date) {
-      const param = createQueryString('endDate', date.toString());
-      router.push(pathname + '?' + param);
+    if (!date) {
+      return deleteSearchParam('endDate');
     }
+    const param = createQueryString('endDate', date.toString());
+    return router.push(`${pathname}?${param}`);
   };
 
   const handleClearSearch = useCallback(async () => {
