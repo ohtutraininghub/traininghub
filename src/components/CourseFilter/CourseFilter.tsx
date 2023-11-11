@@ -114,12 +114,18 @@ export default function CourseFilter({
     if (!courseName && !courseTag && !startDate && !endDate && !courseId) {
       handleClearSearch();
     }
-    if (courseName !== undefined) {
+    if (courseName) {
       setCourseName(courseName);
     }
-    if (courseTag !== undefined) {
+    if (courseTag) {
       const parsedTags = courseTag.split(',');
       setTagField(parsedTags);
+    }
+    if (startDate) {
+      setStartDate(new Date(startDate));
+    }
+    if (endDate) {
+      setEndDate(new Date(endDate));
     }
   }, [searchParams, handleClearSearch]);
 
