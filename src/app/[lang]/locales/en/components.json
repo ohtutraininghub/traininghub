@@ -35,8 +35,9 @@
     },
     "label": {
       "courseName": "Seach by name",
-      "startDate": "Start date",
       "endDate": "End date",
+      "noMatches": "No matches found",
+      "startDate": "Start date",
       "tag": "Tag"
     }
   },
