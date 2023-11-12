@@ -1,6 +1,16 @@
 {
+  "DashboardTitle": "Admin dashboard",
   "CreateTag": {
     "addNewTag": "Add new tag",
     "existingTags": "Existing tags:"
+  },
+  "EditUsers": {
+    "label": "Users",
+    "tableHeaders": {
+      "name": "Name",
+      "email": "Email",
+      "emailVerified": "Email Verified",
+      "role": "Role"
+    }
   }
 }

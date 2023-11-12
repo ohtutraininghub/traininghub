@@ -5,8 +5,8 @@ import Box from '@mui/material/Box';
 import SpeedDial from '@mui/material/SpeedDial';
 import SpeedDialIcon from '@mui/material/SpeedDialIcon';
 import SpeedDialAction from '@mui/material/SpeedDialAction';
-import StyleIcon from '@mui/icons-material/Style';
 import SchoolIcon from '@mui/icons-material/School';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import { useRouter } from 'next/navigation';
 import { Role } from '@prisma/client';
 import { useSession } from 'next-auth/react';
@@ -20,10 +20,10 @@ export interface speedDialAction {
 
 export const speedDialActions: speedDialAction[] = [
   {
-    icon: <StyleIcon />,
-    name: 'Add tag',
-    link: 'admin/create-tag',
-    testid: 'add-tag',
+    icon: <AdminPanelSettingsIcon />,
+    name: 'Admin dashboard',
+    link: 'admin/dashboard',
+    testid: 'dashboard',
   },
   {
     icon: <SchoolIcon />,

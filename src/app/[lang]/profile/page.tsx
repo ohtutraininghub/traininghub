@@ -6,6 +6,8 @@ import { getServerAuthSession } from '@/lib/auth';
 import { notFound } from 'next/navigation';
 import { Locale } from '@i18n/i18n-config';
 import { useTranslation } from '@/lib/i18n';
+import { getAllUsers } from '@/lib/prisma/users';
+import CreateTag from '../admin/create-tag/page';
 
 type Props = {
   searchParams: { courseId?: string };
@@ -15,7 +17,7 @@ type Props = {
 export default async function ProfilePage({ searchParams, params }: Props) {
   const session = await getServerAuthSession();
   const { t } = await useTranslation(params.lang, 'components');
-
+  const allUsers = await getAllUsers();
   const userData = await prisma.user.findUnique({
     where: {
       id: session.user.id,
@@ -64,7 +66,10 @@ export default async function ProfilePage({ searchParams, params }: Props) {
           image: userData.image ?? '',
         }}
         courses={userData?.courses ?? []}
-      />
+        users={allUsers}
+      >
+        <CreateTag params={params} />
+      </ProfileView>
     </Container>
   );
 }
