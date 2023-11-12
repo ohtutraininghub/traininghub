@@ -25,6 +25,7 @@ import { DictProps } from '@i18n/index';
 import { useTranslation } from '@i18n/client';
 import HorizontalRuleIcon from '@mui/icons-material/HorizontalRule';
 import 'react-datepicker/dist/react-datepicker.css';
+import './datepicker-custom.css';
 
 interface CourseFilterProps extends DictProps {
   initialCourses: CourseWithTagsAndStudentCount[];
