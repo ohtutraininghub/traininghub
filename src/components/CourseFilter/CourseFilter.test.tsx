@@ -46,10 +46,10 @@ describe('filterCourses function', () => {
 
   it('filters courses by endDate', () => {
     const filtered = filterCourses(courses, {
-      startDate:
+      endDate:
         'Sun Nov 29 2023 00:00:00 GMT+0200 (Eastern European Standard Time)',
     });
-    expect(filtered).toEqual([courses[0]]);
+    expect(filtered).toEqual([courses[1]]);
   });
 
   it('returns all the courses when a search criterion is not given."', () => {
