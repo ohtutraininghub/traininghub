@@ -166,10 +166,10 @@ export default function CourseFilter({
         }}
         sx={{
           marginBottom: '10px',
-          width: '250px',
+          width: '300px',
           boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.2)',
           [theme.breakpoints.up('sm')]: {
-            width: '300px',
+            width: '400px',
           },
           '& .MuiAutocomplete-inputRoot': {
             color: theme.palette.white.main,
@@ -196,9 +196,9 @@ export default function CourseFilter({
         sx={{
           display: 'flex',
           alignItems: 'center',
-          width: '250px',
+          width: '300px',
           [theme.breakpoints.up('sm')]: {
-            width: '300px',
+            width: '400px',
           },
         }}
       >
@@ -224,7 +224,14 @@ export default function CourseFilter({
           withPortal
         />
 
-        <HorizontalRuleIcon sx={{ color: theme.palette.white.main }} />
+        <HorizontalRuleIcon
+          sx={{
+            color: theme.palette.white.main,
+            paddingLeft: '0.2em',
+            paddingRight: '0.2em',
+            opacity: 0.8,
+          }}
+        />
 
         <DatePicker
           fixedHeight
@@ -255,10 +262,10 @@ export default function CourseFilter({
         sx={{
           m: 1,
           mb: 3,
-          width: '250px',
+          width: '300px',
           boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.2)',
           [theme.breakpoints.up('sm')]: {
-            width: '300px',
+            width: '400px',
           },
           '& .MuiInputLabel-root': { color: theme.palette.white.main },
         }}

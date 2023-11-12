@@ -80,7 +80,7 @@ export default function CourseList({
         sx={{
           display: 'flex',
           flexDirection: 'row',
-          paddingTop: '10px',
+          paddingTop: '1em',
           alignItems: 'center',
           boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
         }}
@@ -92,7 +92,13 @@ export default function CourseList({
           <ViewHeadlineIcon style={{ color: palette.white.main }} />
         </ToggleButton>
       </ToggleButtonGroup>
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          paddingBottom: '1em',
+        }}
+      >
         <Typography
           variant="caption"
           style={{
