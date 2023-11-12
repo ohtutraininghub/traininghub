@@ -41,7 +41,7 @@
   },
   "EnrollHolder": {
     "confirmMessage": "You have enrolled for this course!",
-    "pastEnrollmentDeadline": "Enrollment has ended"
+    "pastEnrollmentDeadline": "Enrollment for this course has ended"
   },
   "CancelEnroll": {
     "pastCancellationDate": "The course starts soon. Contact the trainer if you want to cancel your enrollment.",

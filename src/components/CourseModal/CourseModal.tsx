@@ -7,6 +7,7 @@ import Typography from '@mui/material/Typography';
 import Card from '@mui/material/Card';
 import Chip from '@mui/material/Chip';
 import Box from '@mui/material/Box';
+import PriorityHighOutlinedIcon from '@mui/icons-material/PriorityHighOutlined';
 import EnrollHolder from './EnrollHolder';
 import EditButton from './EditButton';
 import LocalizedDateTime from '../LocalizedDateTime';
@@ -81,12 +82,24 @@ export default function CourseModal({
             endDate={course.endDate}
           />
         </Typography>
+
         {course.lastEnrollDate && (
-          <Typography sx={{ mb: 2 }}>
-            {t('CourseModal.enrollmentDeadlineHeader')}
-            <LocalizedDateTime variant="long" date={course.lastEnrollDate} />
-          </Typography>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'center',
+              mb: 2,
+            }}
+          >
+            <PriorityHighOutlinedIcon />
+            <Typography>
+              {t('CourseModal.enrollmentDeadlineHeader')}
+              <LocalizedDateTime variant="long" date={course.lastEnrollDate} />
+            </Typography>
+          </Box>
         )}
+
         <Box
           sx={{
             display: 'flex',
