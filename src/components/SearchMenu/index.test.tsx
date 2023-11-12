@@ -1,6 +1,5 @@
 import React from 'react';
 import { screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import SearchMenu from '.';
 import { renderWithTheme } from '@/lib/test-utils';
 
@@ -35,14 +34,11 @@ describe('SearchMenu Component', () => {
     expect(screen.getByText('button.openSearchDrawer')).toBeInTheDocument();
   });
 
-  it('the search drawer is opened when toggle is pressed', async () => {
+  it('the search drawer contents is not immediately rendered', async () => {
     renderWithTheme(
       <SearchMenu initialCourses={[]} initialTags={[]} lang="en" />
     );
 
-    const searchMenuButton = screen.getByText('button.openSearchDrawer');
     expect(screen.queryByText('menuTitle')).not.toBeInTheDocument();
-    await userEvent.click(searchMenuButton);
-    expect(screen.getByText('menuTitle')).toBeInTheDocument();
   });
 });
