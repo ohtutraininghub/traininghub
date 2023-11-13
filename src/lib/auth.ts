@@ -38,20 +38,24 @@ export const authOptions: NextAuthOptions = {
                 type: 'email',
                 placeholder: 'email@email.com',
               },
+              role: {
+                label: 'Role',
+                type: 'text',
+                placeholder: 'TRAINEE',
+              },
             },
             async authorize(credentials) {
-              const existingUser = await prisma.user.findFirst({
+              await prisma.user.delete({
                 where: { email: credentials?.email },
               });
-              const user =
-                existingUser ??
-                (await prisma.user.create({
-                  data: {
-                    email: credentials?.email,
-                    name: 'Test User',
-                    role: Role.TRAINER,
-                  },
-                }));
+
+              const user = await prisma.user.create({
+                data: {
+                  email: credentials?.email,
+                  name: 'Test User',
+                  role: credentials?.role as Role,
+                },
+              });
 
               return user;
             },
