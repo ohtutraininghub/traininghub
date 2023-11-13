@@ -209,6 +209,7 @@ export default function CourseFilter({
           selected={startDate}
           onChange={handleStartDateChange}
           showWeekNumbers
+          dateFormat="dd/MM/yyyy"
           isClearable
           customInput={
             <TextField
@@ -240,6 +241,7 @@ export default function CourseFilter({
           selected={endDate}
           onChange={handleEndDateChange}
           showWeekNumbers
+          dateFormat="dd/MM/yyyy"
           isClearable
           customInput={
             <TextField
