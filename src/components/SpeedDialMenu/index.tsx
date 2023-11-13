@@ -35,14 +35,16 @@ export const speedDialActions: speedDialAction[] = [
 
 export default function SpeedDialMenu() {
   const router = useRouter();
-  const { data: session } = useSession();
+  const { data: session, status } = useSession({ required: true });
+
+  if (status === 'loading') return null;
 
   const handleActionClick = (link: string) => {
     router.push(link);
   };
 
   const actions =
-    session?.user.role === Role.ADMIN
+    session.user.role === Role.ADMIN
       ? speedDialActions
       : speedDialActions.filter((action) => !action.link.startsWith('admin'));
 

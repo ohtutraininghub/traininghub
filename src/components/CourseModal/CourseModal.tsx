@@ -14,7 +14,8 @@ import LocalizedDateTime from '../LocalizedDateTime';
 import { hasCourseEditRights } from '@/lib/auth-utils';
 import { DictProps } from '@/lib/i18n';
 import { useTranslation } from '@/lib/i18n/client';
-import { useSession, signIn } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
+import Loading from '@/app/[lang]/loading';
 
 interface Props extends DictProps {
   course: CourseWithTagsAndStudentCount | undefined;
@@ -32,13 +33,13 @@ export default function CourseModal({
   description,
   editCourseLabel,
 }: Props) {
-  const { data: session } = useSession();
   const { t } = useTranslation(lang, 'components');
+  const { data: session, status } = useSession({ required: true });
 
   if (!course) return null;
 
-  if (!session) {
-    return signIn();
+  if (status === 'loading') {
+    return <Loading />;
   }
 
   const isUserEnrolled = usersEnrolledCourseIds.includes(course.id);
