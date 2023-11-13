@@ -53,6 +53,7 @@ export default function TagForm({ lang }: Props) {
               display: 'block',
               mt: 1,
             }}
+            data-testid="tagSubmitButton"
           >
             {t('TagForm.submit')}
           </Button>
