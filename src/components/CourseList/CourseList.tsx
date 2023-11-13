@@ -72,26 +72,27 @@ export default function CourseList({
         description={t('CourseModal.description')}
         editCourseLabel={t('EditButton.editCourse')}
       />
-      <ToggleButtonGroup
-        value={viewStyle}
-        exclusive
-        onChange={handleViewToggle}
-        aria-label="course view style"
-        sx={{
-          display: 'flex',
-          flexDirection: 'row',
-          paddingTop: '1em',
-          alignItems: 'center',
-          boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
-        }}
-      >
-        <ToggleButton value="grid" aria-label="grid view">
-          <WindowIcon style={{ color: palette.white.main }} />
-        </ToggleButton>
-        <ToggleButton value="list" aria-label="list view">
-          <ViewHeadlineIcon style={{ color: palette.white.main }} />
-        </ToggleButton>
-      </ToggleButtonGroup>
+      <div style={{ paddingTop: '1em' }}>
+        <ToggleButtonGroup
+          value={viewStyle}
+          exclusive
+          onChange={handleViewToggle}
+          aria-label="course view style"
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
+          }}
+        >
+          <ToggleButton value="grid" aria-label="grid view">
+            <WindowIcon style={{ color: palette.white.main }} />
+          </ToggleButton>
+          <ToggleButton value="list" aria-label="list view">
+            <ViewHeadlineIcon style={{ color: palette.white.main }} />
+          </ToggleButton>
+        </ToggleButtonGroup>
+      </div>
       <div
         style={{
           display: 'flex',
