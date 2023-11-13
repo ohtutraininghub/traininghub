@@ -2,11 +2,11 @@ import CourseList from '@/components/CourseList/CourseList';
 import { notFound } from 'next/navigation';
 import { getCourses, getEnrolledCourseIdsByUserId } from '@/lib/prisma/courses';
 import { getServerAuthSession } from '@/lib/auth';
-import CourseFilter from '@/components/CourseFilter/CourseFilter';
 import { prisma } from '@/lib/prisma/index';
 import { Locale } from '@/lib/i18n/i18n-config';
 import BackgroundContainer from '@/components/BackgroundContainer';
 import SpeedDialMenu from '@/components/SpeedDialMenu';
+import SearchMenu from '@/components/SearchMenu';
 import { isTrainerOrAdmin } from '@/lib/auth-utils';
 
 export const dynamic = 'force-dynamic';
@@ -15,7 +15,8 @@ type Props = {
   searchParams: {
     courseName?: string;
     courseTag?: string;
-    courseDates?: string;
+    startDate?: string;
+    endDate?: string;
     courseId?: string;
   };
   params: {
@@ -40,8 +41,12 @@ export default async function HomePage({ searchParams, params }: Props) {
 
   return (
     <BackgroundContainer>
+      <SearchMenu
+        initialCourses={courses}
+        initialTags={tags}
+        lang={params.lang}
+      />
       {isTrainerOrAdmin(session.user) && <SpeedDialMenu />}
-      <CourseFilter initialCourses={courses} initialTags={tags} />
       <CourseList
         lang={params.lang}
         courses={courses}
@@ -50,7 +55,8 @@ export default async function HomePage({ searchParams, params }: Props) {
         searchCourses={{
           courseName: searchParams.courseName,
           courseTag: searchParams.courseTag,
-          courseDates: searchParams.courseDates,
+          startDate: searchParams.startDate,
+          endDate: searchParams.endDate,
         }}
       />
     </BackgroundContainer>
