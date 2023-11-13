@@ -76,7 +76,20 @@ export default function CourseForm({
     */
 
     data.description = DOMPurify.sanitize(data.description, {
-      ALLOWED_TAGS: [''],
+      ALLOWED_TAGS: [
+        'p',
+        'h1',
+        'h2',
+        'h3',
+        'b',
+        'strong',
+        'em',
+        's',
+        'code',
+        'li',
+        'ul',
+        'ol',
+      ],
     });
     console.log(data);
     const responseJson = isEditMode

@@ -17,6 +17,7 @@ export const MenuBar = () => {
       <>
         <ButtonGroup sx={{ flexWrap: 'wrap' }}>
           <IconButton
+            data-testid="courseFormDescription"
             sx={{ color: 'black.main' }}
             onClick={() => editor.chain().focus().setParagraph().run()}
           >

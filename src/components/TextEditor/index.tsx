@@ -12,6 +12,8 @@ type TEditorProps = {
 const extensions = [StarterKit];
 
 const Tiptap = ({ value, onChange }: TEditorProps) => {
+  console.log(value);
+
   return (
     <>
       <Box

@@ -78,7 +78,7 @@ describe('Course Form New Course Tests', () => {
   it('Form is submitted with correct values', async () => {
     const inputValues = {
       name: 'New course',
-      description: 'A test course',
+      description: '<p></p>',
       startDate: '2053-09-13T16:43',
       endDate: '2053-10-13T18:50',
       maxStudents: '55',
@@ -93,7 +93,11 @@ describe('Course Form New Course Tests', () => {
     const submitButton = screen.getByTestId('courseFormSubmit');
 
     await userEvent.type(name, inputValues.name);
-    await userEvent.type(description, inputValues.description);
+
+    fireEvent.change(description, {
+      target: { value: inputValues.description },
+    });
+    fireEvent.click(description);
 
     fireEvent.change(startDate, { target: { value: inputValues.startDate } });
     fireEvent.change(endDate, { target: { value: inputValues.endDate } });
@@ -119,7 +123,7 @@ describe('Course Form Course Edit Tests', () => {
     const course = {
       id: '1234',
       name: 'New course',
-      description: 'A test course',
+      description: '',
       startDate: new Date(),
       endDate: new Date(),
       maxStudents: 55,
