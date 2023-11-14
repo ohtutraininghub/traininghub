@@ -4,6 +4,7 @@ import FormatBoldIcon from '@mui/icons-material/FormatBold';
 import FormatItalicIcon from '@mui/icons-material/FormatItalic';
 import UndoIcon from '@mui/icons-material/Undo';
 import RedoIcon from '@mui/icons-material/Redo';
+import LinkIcon from '@mui/icons-material/Link';
 import FormatStrikethroughIcon from '@mui/icons-material/FormatStrikethrough';
 import CodeIcon from '@mui/icons-material/Code';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
@@ -11,6 +12,18 @@ import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
 
 export const MenuBar = () => {
   const { editor } = useCurrentEditor();
+
+  const handleToggleLink = () => {
+    const url = window.prompt('Add a link in the form of www.host.com');
+
+    if (url && editor) {
+      editor
+        .chain()
+        .focus()
+        .toggleLink({ href: 'https://' + url })
+        .run();
+    }
+  };
 
   return (
     editor && (
@@ -49,6 +62,10 @@ export const MenuBar = () => {
             }
           >
             H3
+          </IconButton>
+
+          <IconButton onClick={handleToggleLink}>
+            <LinkIcon />
           </IconButton>
 
           <IconButton onClick={() => editor.chain().focus().toggleBold().run()}>

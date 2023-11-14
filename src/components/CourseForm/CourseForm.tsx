@@ -75,22 +75,7 @@ export default function CourseForm({
     To adjust the sanitizer, please refer to the documentation at https://github.com/cure53/DOMPurify/blob/main/README.md.
     */
 
-    data.description = DOMPurify.sanitize(data.description, {
-      ALLOWED_TAGS: [
-        'p',
-        'h1',
-        'h2',
-        'h3',
-        'b',
-        'strong',
-        'em',
-        's',
-        'code',
-        'li',
-        'ul',
-        'ol',
-      ],
-    });
+    data.description = DOMPurify.sanitize(data.description);
     console.log(data);
     const responseJson = isEditMode
       ? await update(`/api/course`, data)

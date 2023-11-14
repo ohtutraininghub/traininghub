@@ -2,6 +2,7 @@ import { EditorProvider } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import { MenuBar } from './MenuBar';
 import { Box } from '@mui/material';
+import Link from '@tiptap/extension-link';
 
 type TEditorProps = {
   value: string;
@@ -9,7 +10,7 @@ type TEditorProps = {
 };
 
 // define your extension array
-const extensions = [StarterKit];
+const extensions = [StarterKit, Link];
 
 const Tiptap = ({ value, onChange }: TEditorProps) => {
   console.log(value);
