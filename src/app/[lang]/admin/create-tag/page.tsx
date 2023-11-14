@@ -18,15 +18,18 @@ export default async function CreateTag({ params }: Props) {
   });
 
   return (
-    <>
-      <Typography variant="h3" component="h1">
-        {t('CreateTag.addNewTag')}
-      </Typography>
-      <TagForm lang={params.lang} />
-      <Typography variant="h5" component="h2">
-        {t('CreateTag.existingTags')}
+    <div
+      style={{
+        border: '1px solid lightGrey',
+        borderRadius: '5px',
+        padding: '1rem',
+      }}
+    >
+      <Typography sx={{ marginBottom: '2rem' }} variant="h4" component="h2">
+        {t('CreateTag.tagsLabel')}
       </Typography>
       <TagList lang={params.lang} tags={tags} />
-    </>
+      <TagForm lang={params.lang} />
+    </div>
   );
 }

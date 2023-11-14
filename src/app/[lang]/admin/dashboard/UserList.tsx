@@ -1,15 +1,17 @@
 'use client';
 
+import { useMessage } from '@/components/Providers/MessageProvider';
 import { SmallConfirmCard } from '@/components/SmallConfirmCard';
 import { DictProps } from '@/lib/i18n';
 import { useTranslation } from '@/lib/i18n/client';
 import { Users } from '@/lib/prisma/users';
 import { handleCommonErrors } from '@/lib/response/errorUtil';
 import { update } from '@/lib/response/fetchUtil';
+import { MessageType } from '@/lib/response/responseUtil';
 
 import {
+  Box,
   MenuItem,
-  Paper,
   Select,
   Table,
   TableBody,
@@ -17,7 +19,6 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Toolbar,
   Typography,
 } from '@mui/material';
 import { $Enums } from '@prisma/client';
@@ -28,8 +29,9 @@ interface Props extends DictProps {
   users: Users;
 }
 
-export default function EditUsers({ lang, users }: Props) {
+export default function UserList({ lang, users }: Props) {
   const { t } = useTranslation(lang, 'admin');
+  const { notify } = useMessage();
   const router = useRouter();
   const [userRoles, setUserRoles] = useState<$Enums.Role[]>(
     users.map((user) => user.role)
@@ -38,6 +40,12 @@ export default function EditUsers({ lang, users }: Props) {
   async function handleUserRoleChange(userId: string, newRole: $Enums.Role) {
     try {
       await update('/api/user', { userId, newRole });
+      router.refresh();
+      notify({
+        message: t('EditUsers.infoText'),
+        messageType: MessageType.INFO,
+        disableAutoHide: true,
+      });
     } catch (error) {
       return handleCommonErrors(error);
     }
@@ -51,10 +59,18 @@ export default function EditUsers({ lang, users }: Props) {
   ];
 
   return (
-    <Paper>
-      <Toolbar>
-        <Typography>{t('EditUsers.label')}</Typography>
-      </Toolbar>
+    <div
+      style={{
+        border: '1px solid lightGrey',
+        borderRadius: '5px',
+        padding: '1rem',
+      }}
+    >
+      <Box sx={{ paddingBottom: '1rem' }}>
+        <Typography variant="h4" component="h2">
+          {t('EditUsers.label')}
+        </Typography>
+      </Box>
 
       <TableContainer>
         <Table aria-label="user table">
@@ -91,10 +107,11 @@ export default function EditUsers({ lang, users }: Props) {
                 >
                   <Select
                     sx={{
-                      '& .MuiSelect-select': { padding: '0.5rem' },
+                      '& .MuiSelect-select': {
+                        padding: '0.5rem',
+                      },
                     }}
                     fullWidth
-                    // eslint-disable-next-line no-unused-vars
                     onChange={(event) => {
                       setUserRoles((prevRoles) =>
                         prevRoles.map((role, index) =>
@@ -108,7 +125,9 @@ export default function EditUsers({ lang, users }: Props) {
                   >
                     {Object.keys($Enums.Role).map((enumKey) => (
                       <MenuItem key={enumKey} value={enumKey}>
-                        <Typography>{enumKey.toLowerCase()}</Typography>
+                        <Typography sx={{ fontSize: '0.875rem' }}>
+                          {enumKey.toLowerCase()}
+                        </Typography>
                       </MenuItem>
                     ))}
                   </Select>
@@ -124,7 +143,6 @@ export default function EditUsers({ lang, users }: Props) {
                           user.id,
                           userRoles[userIndex]
                         );
-                        router.refresh();
                       }}
                     />
                   )}
@@ -134,6 +152,6 @@ export default function EditUsers({ lang, users }: Props) {
           </TableBody>
         </Table>
       </TableContainer>
-    </Paper>
+    </div>
   );
 }

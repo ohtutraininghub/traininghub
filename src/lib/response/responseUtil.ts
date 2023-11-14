@@ -7,6 +7,7 @@ export type MessageResponseType = {
   message: string;
   messageType: MessageType;
   statusCode?: StatusCodeType;
+  disableAutoHide?: boolean;
 };
 
 export type MessageWithoutTypeResponseType = Omit<

@@ -2,10 +2,11 @@
   "DashboardTitle": "Admin dashboard",
   "CreateTag": {
     "addNewTag": "Add new tag",
-    "existingTags": "Existing tags:"
+    "tagsLabel": "Tags"
   },
   "EditUsers": {
     "label": "Users",
+    "infoText": "Sign in again to apply changes to user roles",
     "tableHeaders": {
       "name": "Name",
       "email": "Email",

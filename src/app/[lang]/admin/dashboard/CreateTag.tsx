@@ -2,7 +2,6 @@ import TagForm from '@/components/TagForm';
 import TagList from '@/components/TagList';
 import Typography from '@mui/material/Typography';
 import { DictProps } from '@/lib/i18n';
-import { Paper } from '@mui/material';
 
 export const dynamic = 'force-dynamic';
 
@@ -12,27 +11,24 @@ type Tag = {
 };
 
 interface Props extends DictProps {
-  newTagLabel: string;
   existingTagLabel: string;
   tags: Tag[];
 }
 
-export default function CreateTag({
-  lang,
-  newTagLabel,
-  existingTagLabel,
-  tags,
-}: Props) {
+export default function CreateTag({ lang, existingTagLabel, tags }: Props) {
   return (
-    <Paper>
-      <Typography variant="h3" component="h1">
-        {newTagLabel}
-      </Typography>
-      <TagForm lang={lang} />
-      <Typography variant="h5" component="h2">
+    <div
+      style={{
+        border: '1px solid lightGrey',
+        borderRadius: '5px',
+        padding: '1rem',
+      }}
+    >
+      <Typography variant="h4" component="h2" sx={{ marginBottom: '2rem' }}>
         {existingTagLabel}
       </Typography>
       <TagList lang={lang} tags={tags} />
-    </Paper>
+      <TagForm lang={lang} />
+    </div>
   );
 }

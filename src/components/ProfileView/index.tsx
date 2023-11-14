@@ -8,7 +8,7 @@ import { Course, Role, User } from '@prisma/client';
 import { PropsWithChildren, useState } from 'react';
 import { useTheme } from '@mui/material/styles';
 import { useSession } from 'next-auth/react';
-import EditUsers from '@/app/[lang]/admin/dashboard/EditUsers';
+import EditUsers from '@/app/[lang]/admin/dashboard/UserList';
 
 export interface userDetails {
   name: string;

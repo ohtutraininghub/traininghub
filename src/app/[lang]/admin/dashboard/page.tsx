@@ -2,7 +2,7 @@ import CreateTag from './CreateTag';
 import { Locale } from '@/lib/i18n/i18n-config';
 import { prisma } from '@/lib/prisma';
 import { useTranslation } from '@/lib/i18n';
-import EditUsers from './EditUsers';
+import EditUsers from './UserList';
 import { Typography } from '@mui/material';
 import { getAllUsers } from '@/lib/prisma/users';
 
@@ -19,11 +19,12 @@ export default async function AdminDashboardPage({ params }: Props) {
   const users = await getAllUsers();
 
   return (
-    <div>
-      <Typography variant="h1">{t('DashboardTitle')}</Typography>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+      <Typography variant="h3" component="h1">
+        {t('DashboardTitle')}
+      </Typography>
       <CreateTag
-        existingTagLabel={t('CreateTag.existingTags')}
-        newTagLabel={t('CreateTag.addNewTag')}
+        existingTagLabel={t('CreateTag.tagsLabel')}
         tags={tags}
         lang={params.lang}
       />
