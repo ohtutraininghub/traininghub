@@ -58,7 +58,7 @@ const courseSchemaBase = z
         }
       ),
     lastEnrollDate: z.preprocess(
-      (value) => (value === '' || value === undefined ? null : value),
+      (value) => (!value ? null : value),
       z.coerce.date().nullable()
     ),
     endDate: z.string().min(1, 'End date is required').pipe(z.coerce.date()),
