@@ -43,12 +43,9 @@ export const formatDateRangeShort = (startDate: Date, endDate: Date) => {
     : `${startDateString} - ${endDateString}`;
 };
 
-export const isPastDeadline = (
-  dateToCheck: Date,
-  deadline: Date | null
-): boolean => {
+export const isPastDeadline = (deadline: Date | null): boolean => {
   if (deadline) {
-    return dateToCheck.getTime() > deadline.getTime();
+    return new Date().getTime() > deadline.getTime();
   }
   return false;
 };

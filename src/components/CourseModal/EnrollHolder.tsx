@@ -39,7 +39,7 @@ export default function EnrollHolder({
     return null;
   }
 
-  if (lastEnrollDate && isPastDeadline(new Date(), lastEnrollDate)) {
+  if (isPastDeadline(lastEnrollDate)) {
     return (
       <InfoBox
         infoText={t('EnrollHolder.pastEnrollmentDeadline')}
