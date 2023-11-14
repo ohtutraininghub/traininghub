@@ -34,6 +34,20 @@ const withRefine = <O extends CourseSchemaType, T extends z.ZodTypeDef, I>(
           'The last date to enroll cannot be after the end date of the course',
         path: ['lastEnrollDate'],
       }
+    )
+    .refine(
+      ({ endDate, lastCancelDate }) => {
+        // don't show error if course end date or last date to cancel is still empty
+        if (!endDate || !lastCancelDate) {
+          return true;
+        }
+        return lastCancelDate.getTime() < endDate.getTime();
+      },
+      {
+        message:
+          'The last date to cancel enrollment cannot be after the end date of the course',
+        path: ['lastEnrollDate'],
+      }
     );
 };
 
@@ -57,11 +71,15 @@ const courseSchemaBase = z
           message: 'Start date cannot be in the past',
         }
       ),
+    endDate: z.string().min(1, 'End date is required').pipe(z.coerce.date()),
     lastEnrollDate: z.preprocess(
       (value) => (!value ? null : value),
       z.coerce.date().nullable()
     ),
-    endDate: z.string().min(1, 'End date is required').pipe(z.coerce.date()),
+    lastCancelDate: z.preprocess(
+      (value) => (!value ? null : value),
+      z.coerce.date().nullable()
+    ),
     maxStudents: z.number().min(1, 'Max students is required'),
     tags: z.array(z.string().min(1, 'Tag name cannot be empty')),
   })
