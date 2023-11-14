@@ -74,9 +74,7 @@ export default function CourseForm({
     /* By default, the sanitizer accepts all HTML tags and excludes everything else. 
     To adjust the sanitizer, please refer to the documentation at https://github.com/cure53/DOMPurify/blob/main/README.md.
     */
-
     data.description = DOMPurify.sanitize(data.description);
-    console.log(data);
     const responseJson = isEditMode
       ? await update(`/api/course`, data)
       : await post('/api/course', data);
