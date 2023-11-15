@@ -20,7 +20,6 @@
     "_TEST CYPRESS SCRIPTS": "===",
     "cypress:build": "APP_ENV='test' next build",
     "cypress:start": "APP_ENV='test' next start",
-    "cypress:run": "cypress run --browser=chrome",
     "cypress:open": "./scripts/dev_test_cypress.sh",
     "_LINT SCRIPTS": "===",
     "lint:write": "next lint --fix",

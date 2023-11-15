@@ -78,12 +78,12 @@ jobs:
         run: npm ci
       - name: migrate database
         run: npx prisma migrate deploy
-      - name: build
-        run: npm run cypress:build
-      - name: start
-        run: npm run cypress:start
-      - name: test
-        run: npm run cypress:run
+      - name: cypress run
+        uses: cypress-io/github-action@v6
+        with:
+          build: npm run cypress:build
+          start: npm run cypress:start
+          browser: chrome
   deploy:
     runs-on: ubuntu-22.04
     environment: staging
