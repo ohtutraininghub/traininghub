@@ -9,6 +9,7 @@ describe('filterCourses function', () => {
       description: 'Learn Python programming.',
       startDate: new Date('2024-01-01'),
       endDate: new Date('2024-01-31'),
+      createdById: '1234321',
       maxStudents: 20,
       tags: [{ id: 'tag1', name: 'Programming' }],
     },
@@ -19,6 +20,7 @@ describe('filterCourses function', () => {
       description: 'Become a full-stack developer.',
       startDate: new Date('2023-11-12'),
       endDate: new Date('2023-11-28'),
+      createdById: '123432132',
       maxStudents: 15,
       tags: [{ id: 'tag2', name: 'Web Development' }],
     },
@@ -34,10 +36,18 @@ describe('filterCourses function', () => {
     expect(filtered).toEqual([courses[0]]);
   });
 
-  it('filters courses by courseDates', () => {
+  it('filters courses by startDate', () => {
     const filtered = filterCourses(courses, {
-      courseDates:
-        'Sun Nov 09 2023 00:00:00 GMT+0200 (Eastern European Standard Time)-Thu Nov 29 2023 00:00:00 GMT+0200 (Eastern European Standard Time)',
+      startDate:
+        'Sun Nov 15 2023 00:00:00 GMT+0200 (Eastern European Standard Time)',
+    });
+    expect(filtered).toEqual([courses[0]]);
+  });
+
+  it('filters courses by endDate', () => {
+    const filtered = filterCourses(courses, {
+      endDate:
+        'Sun Nov 29 2023 00:00:00 GMT+0200 (Eastern European Standard Time)',
     });
     expect(filtered).toEqual([courses[1]]);
   });

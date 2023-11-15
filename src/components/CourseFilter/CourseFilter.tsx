@@ -5,41 +5,52 @@ import {
   Box,
   Autocomplete,
   TextField,
-  Chip,
   InputLabel,
   MenuItem,
   Select,
+  FormControl,
+  ListItemText,
+  OutlinedInput,
+  Checkbox,
+  SelectChangeEvent,
+  Typography,
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import BackspaceIcon from '@mui/icons-material/Backspace';
 import { useCallback } from 'react';
 import { CourseWithTagsAndStudentCount } from '@/lib/prisma/courses';
 import { usePathname, useSearchParams, useRouter } from 'next/navigation';
 import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import { t } from 'i18next';
-import { Controller, useForm } from 'react-hook-form';
 import { Tag } from '@prisma/client';
+import { DictProps } from '@i18n/index';
+import { useTranslation } from '@i18n/client';
+import HorizontalRuleIcon from '@mui/icons-material/HorizontalRule';
+import 'react-datepicker/dist/react-datepicker.css';
+import './datepicker-custom.css';
 
-type CourseFilterProps = {
+interface CourseFilterProps extends DictProps {
   initialCourses: CourseWithTagsAndStudentCount[];
   initialTags: Tag[];
-};
+}
 
 export default function CourseFilter({
   initialCourses,
   initialTags,
+  lang,
 }: CourseFilterProps) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const { palette } = useTheme();
-  const { control } = useForm();
+  const theme = useTheme();
 
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
   const [courseName, setCourseName] = useState('');
+  const [tagField, setTagField] = useState<string[]>([]);
+
+  const { t } = useTranslation(lang, 'components', {
+    keyPrefix: 'CourseFilter',
+  });
 
   const createQueryString = useCallback(
     (name: string, value: string) => {
@@ -51,14 +62,11 @@ export default function CourseFilter({
     [searchParams]
   );
 
-  useEffect(() => {
-    const { courseName, courseTag, courseDates, courseId } = Object.fromEntries(
-      searchParams.entries()
-    );
-    if (!courseName && !courseTag && !courseDates && !courseId) {
-      handleClearSearch();
-    }
-  }, [searchParams]);
+  const deleteSearchParam = (name: string) => {
+    const params = new URLSearchParams(searchParams);
+    params.delete(name);
+    router.push(`${pathname}?${params.toString()}`);
+  };
 
   const handleNameChange = async (value: string | null) => {
     const searchTerm: string | null = value;
@@ -68,7 +76,14 @@ export default function CourseFilter({
     );
   };
 
-  const handleTagChange = async (tagList: string[]) => {
+  const handleTagChange = (
+    event: SelectChangeEvent<typeof tagField>,
+    tagList: string | string[]
+  ) => {
+    const {
+      target: { value },
+    } = event;
+    setTagField(typeof value === 'string' ? value.split(',') : value);
     const tagListQueryParam = createQueryString(
       'courseTag',
       tagList.toString()
@@ -76,186 +91,234 @@ export default function CourseFilter({
     router.push(pathname + '?' + tagListQueryParam);
   };
 
-  const handleDateChange = (range: [Date | null, Date | null]) => {
-    const [startDate, endDate] = range;
-    setStartDate(startDate);
-    setEndDate(endDate);
-
-    const dateRangeQueryParam =
-      startDate === null && endDate === null
-        ? createQueryString('courseDates', '')
-        : createQueryString('courseDates', startDate + '-' + endDate);
-    router.push(pathname + '?' + dateRangeQueryParam);
+  const handleStartDateChange = (date: Date | null) => {
+    setStartDate(date);
+    if (!date) {
+      return deleteSearchParam('startDate');
+    }
+    const param = createQueryString('startDate', date.toString());
+    return router.push(`${pathname}?${param}`);
   };
 
-  const handleClearSearch = async () => {
-    await handleNameChange(null);
-    handleDateChange([null, null]);
-    control._reset();
+  const handleEndDateChange = (date: Date | null) => {
+    setEndDate(date);
+    if (!date) {
+      return deleteSearchParam('endDate');
+    }
+    const param = createQueryString('endDate', date.toString());
+    return router.push(`${pathname}?${param}`);
+  };
+
+  const handleClearSearch = useCallback(async () => {
+    setCourseName('');
+    setStartDate(null);
+    setEndDate(null);
+    setTagField([]);
     router.replace(pathname);
-  };
+  }, [setCourseName, setStartDate, setEndDate, setTagField, router, pathname]);
 
-  const InputStyles = {
-    datepicker: {
-      width: '250px',
-      height: '55px',
-      fontSize: '16px',
-      paddingLeft: '10px',
-      verticalAlign: 'middle',
-    },
-  };
+  useEffect(() => {
+    const { courseName, courseTag, startDate, endDate, courseId } =
+      Object.fromEntries(searchParams.entries());
+    if (!courseName && !courseTag && !startDate && !endDate && !courseId) {
+      handleClearSearch();
+    }
+    if (courseName) {
+      setCourseName(courseName);
+    }
+    if (courseTag) {
+      const parsedTags = courseTag.split(',');
+      setTagField(parsedTags);
+    }
+    if (startDate) {
+      setStartDate(new Date(startDate));
+    }
+    if (endDate) {
+      setEndDate(new Date(endDate));
+    }
+  }, [searchParams, handleClearSearch]);
 
   return (
-    <>
-      <Box
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          padding: '16px',
-          flexWrap: 'wrap',
-          paddingBottom: '10px',
-        }}
-      >
-        <div>
-          <Autocomplete
-            value={courseName || null}
-            clearOnEscape
-            disablePortal
-            data-testid="search-autocomplete"
-            id="combo-box"
-            options={initialCourses.map((course) => course.name)}
-            renderOption={(props, option) => {
-              return (
-                <li {...props} key={option}>
-                  {option}
-                </li>
-              );
-            }}
-            sx={{
-              width: '250px',
-              marginRight: '20px',
-              '& .MuiAutocomplete-inputRoot': {
-                backgroundColor: palette.white.main,
-              },
-            }}
-            renderInput={(value) => (
-              <TextField {...value} label="Search by name" />
-            )}
-            onChange={(event, value) => {
-              handleNameChange(value);
-            }}
-          />
-        </div>
-        <DatePicker
-          fixedHeight
-          placeholderText="Search by dates"
-          minDate={new Date()}
-          selected={startDate}
-          onChange={handleDateChange}
-          startDate={startDate}
-          endDate={endDate}
-          selectsRange
-          showWeekNumbers
-          isClearable
-          customInput={<input style={InputStyles.datepicker} />}
-        />
-        <div>
-          <BackspaceIcon
-            onClick={() => handleClearSearch()}
-            sx={{
-              cursor: 'pointer',
-              width: '30px',
-              height: '30px',
-              paddingLeft: '10px',
-              color: palette.white.main,
-              transition: 'color 0.3s',
-              '&:hover': {
-                color: palette.secondary.main,
-              },
-            }}
-          />
-        </div>
-      </Box>
-      <Controller
-        name="tags"
-        control={control}
-        defaultValue={[]}
-        render={({ field }) => {
+    <Box
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        flexDirection: 'column',
+        padding: '16px',
+        flexWrap: 'wrap',
+        paddingBottom: '10px',
+      }}
+    >
+      {/* Start search by name field*/}
+
+      <Autocomplete
+        value={courseName || null}
+        clearOnEscape
+        noOptionsText={t('label.noMatches')}
+        data-testid="search-autocomplete"
+        id="combo-box"
+        options={initialCourses.map((course) => course.name)}
+        renderOption={(props, option) => {
           return (
-            <>
-              <InputLabel htmlFor="tagSelection">
-                {t('CourseForm.tags')}
-              </InputLabel>
-              <Select
-                {...field}
-                id="tagSelection"
-                multiple
-                onChange={(e) => {
-                  const selectedTags = e.target.value;
-                  field.onChange(selectedTags);
-                  handleTagChange(selectedTags);
-                }}
-                renderValue={(field) => (
-                  <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                    {field.map(
-                      (
-                        tag:
-                          | string
-                          | number
-                          | boolean
-                          | React.ReactElement<
-                              any,
-                              string | React.JSXElementConstructor<any>
-                            >
-                          | Iterable<React.ReactNode>
-                          | React.ReactPortal
-                          | React.PromiseLikeOfReactNode
-                          | null
-                          | undefined,
-                        idx: React.Key | null | undefined
-                      ) => (
-                        <Chip
-                          key={idx}
-                          label={tag}
-                          variant="outlined"
-                          sx={{
-                            backgroundColor: palette.surface.light,
-                            borderColor: palette.black.light,
-                          }}
-                        />
-                      )
-                    )}
-                  </Box>
-                )}
-              >
-                {initialTags.map((tag) => (
-                  <MenuItem
-                    key={tag.id}
-                    value={tag.name}
-                    divider
-                    sx={{
-                      '&.Mui-selected': {
-                        backgroundColor: palette.surface.main,
-                      },
-                      '&.Mui-selected.Mui-focusVisible': {
-                        backgroundColor: palette.surface.dark,
-                      },
-                      '&:hover': {
-                        backgroundColor: palette.surface.light,
-                      },
-                      '&.Mui-selected:hover': {
-                        backgroundColor: palette.surface.main,
-                      },
-                    }}
-                  >
-                    {tag.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </>
+            <li {...props} key={option}>
+              {option}
+            </li>
           );
         }}
+        sx={{
+          marginBottom: '10px',
+          width: '300px',
+          boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.2)',
+          [theme.breakpoints.up('sm')]: {
+            width: '400px',
+          },
+          '& .MuiAutocomplete-inputRoot': {
+            color: theme.palette.white.main,
+            backgroundColor: theme.palette.coverBlue.light,
+          },
+        }}
+        renderInput={(value) => (
+          <TextField
+            {...value}
+            label={t('label.courseName')}
+            sx={{
+              '& .MuiInputLabel-root': { color: theme.palette.white.main },
+            }}
+          />
+        )}
+        onChange={(event, value) => {
+          handleNameChange(value);
+        }}
       />
-    </>
+
+      {/* Start Date Pickers*/}
+
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          width: '300px',
+          [theme.breakpoints.up('sm')]: {
+            width: '400px',
+          },
+        }}
+      >
+        <DatePicker
+          fixedHeight
+          minDate={new Date()}
+          selected={startDate}
+          onChange={handleStartDateChange}
+          showWeekNumbers
+          dateFormat="dd/MM/yyyy"
+          isClearable
+          customInput={
+            <TextField
+              label={t('label.startDate')}
+              sx={{
+                '& .MuiInputLabel-root': { color: theme.palette.white.main },
+                '& .MuiOutlinedInput-input': {
+                  color: theme.palette.white.main,
+                },
+                boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.2)',
+              }}
+            />
+          }
+          withPortal
+        />
+
+        <HorizontalRuleIcon
+          sx={{
+            color: theme.palette.white.main,
+            paddingLeft: '0.2em',
+            paddingRight: '0.2em',
+            opacity: 0.8,
+          }}
+        />
+
+        <DatePicker
+          fixedHeight
+          minDate={startDate ? startDate : new Date()}
+          selected={endDate}
+          onChange={handleEndDateChange}
+          showWeekNumbers
+          dateFormat="dd/MM/yyyy"
+          isClearable
+          customInput={
+            <TextField
+              label={t('label.endDate')}
+              sx={{
+                '& .MuiInputLabel-root': { color: theme.palette.white.main },
+                '& .MuiOutlinedInput-input': {
+                  color: theme.palette.white.main,
+                },
+                boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.2)',
+              }}
+            />
+          }
+          withPortal
+        />
+      </Box>
+
+      {/* Start Tag Selector*/}
+
+      <FormControl
+        sx={{
+          m: 1,
+          mb: 3,
+          width: '300px',
+          boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.2)',
+          [theme.breakpoints.up('sm')]: {
+            width: '400px',
+          },
+          '& .MuiInputLabel-root': { color: theme.palette.white.main },
+        }}
+      >
+        <InputLabel id="tagSelection">{t('label.tag')}</InputLabel>
+        <Select
+          labelId="tagSelection"
+          id="tagSelection"
+          multiple
+          value={tagField}
+          onChange={(e) => {
+            const selectedTags = e.target.value;
+            handleTagChange(e, selectedTags);
+          }}
+          input={
+            <OutlinedInput
+              label="Tag"
+              sx={{
+                color: theme.palette.white.main,
+              }}
+            />
+          }
+          renderValue={(selected) => selected.join(', ')}
+        >
+          {initialTags.map((tag) => (
+            <MenuItem key={tag.id} value={tag.name}>
+              <Checkbox checked={tagField.indexOf(tag.name) > -1} />
+              <ListItemText primary={tag.name} />
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+
+      {/* Start clear search button*/}
+
+      <Typography
+        variant="body2"
+        onClick={() => handleClearSearch()}
+        sx={{
+          cursor: 'pointer',
+          paddingLeft: '10px',
+          color: theme.palette.primary.main,
+          transition: 'color 0.3s',
+          '&:hover': {
+            color: theme.palette.secondary.main,
+          },
+        }}
+      >
+        {t('button.clearSearch')}
+      </Typography>
+    </Box>
   );
 }
