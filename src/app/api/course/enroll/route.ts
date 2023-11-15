@@ -8,9 +8,7 @@ import {
   errorResponse,
 } from '@/lib/response/responseUtil';
 import { handleCommonErrors } from '@/lib/response/errorUtil';
-import { msUntilStart, isPastDeadline } from '@/lib/timedateutils';
-import { minCancelTimeMs } from '@/lib/zod/courses';
-
+import { isPastDeadline } from '@/lib/timedateutils';
 import { insertCourseToCalendar, deleteCourseFromCalendar } from '@/lib/google';
 
 export async function POST(request: NextRequest) {
@@ -127,7 +125,7 @@ export async function PUT(request: NextRequest) {
       });
     }
 
-    if (msUntilStart(course.startDate) < minCancelTimeMs) {
+    if (isPastDeadline(course.lastCancelDate)) {
       return errorResponse({
         message: 'No cancelling allowed after cancellation deadline',
         statusCode: StatusCodeType.UNPROCESSABLE_CONTENT,
