@@ -7,6 +7,7 @@ import { getServerSession } from 'next-auth/next';
 import { Adapter } from 'next-auth/adapters';
 import { updateGoogleAccount } from './prisma/account';
 import { Role } from '@prisma/client';
+import { isProduction } from './env-utils';
 
 const scopes =
   'openid ' +
@@ -28,7 +29,7 @@ export const authOptions: NextAuthOptions = {
         },
       },
     }),
-    ...(process.env.NODE_ENV !== 'production'
+    ...(!isProduction()
       ? [
           CredentialsProvider({
             name: 'Credentials',

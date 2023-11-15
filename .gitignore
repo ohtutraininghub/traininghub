@@ -39,3 +39,6 @@ next-env.d.ts
 
 # Env
 .env*
+
+# Cypress
+cypress/screenshots
