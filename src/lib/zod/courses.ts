@@ -46,7 +46,7 @@ const withRefine = <O extends CourseSchemaType, T extends z.ZodTypeDef, I>(
       {
         message:
           'The last date to cancel enrollment cannot be after the end date of the course',
-        path: ['lastEnrollDate'],
+        path: ['lastCancelDate'],
       }
     );
 };
