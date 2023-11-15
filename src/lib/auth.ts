@@ -45,9 +45,12 @@ export const authOptions: NextAuthOptions = {
               },
             },
             async authorize(credentials) {
-              await prisma.user.delete({
+              const existingUser = await prisma.user.findFirst({
                 where: { email: credentials?.email },
               });
+              if (existingUser) {
+                return existingUser;
+              }
 
               const user = await prisma.user.create({
                 data: {
