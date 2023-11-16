@@ -3,16 +3,17 @@ import StarterKit from '@tiptap/starter-kit';
 import { MenuBar } from './MenuBar';
 import { Box } from '@mui/material';
 import Link from '@tiptap/extension-link';
+import { DictProps } from '@/lib/i18n';
 
-type TEditorProps = {
+interface TEditorProps extends DictProps {
   value: string;
   onChange(_body: string): void;
-};
+}
 
 // define your extension array
 const extensions = [StarterKit, Link];
 
-const Tiptap = ({ value, onChange }: TEditorProps) => {
+const Tiptap = ({ lang, value, onChange }: TEditorProps) => {
   return (
     <>
       <Box
@@ -35,7 +36,7 @@ const Tiptap = ({ value, onChange }: TEditorProps) => {
         }}
       >
         <EditorProvider
-          slotBefore={<MenuBar />}
+          slotBefore={<MenuBar lang={lang} />}
           extensions={extensions}
           content={value}
           onUpdate={({ editor }) => onChange(editor.getHTML())}

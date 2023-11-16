@@ -1,4 +1,4 @@
-import { ButtonGroup, Divider, IconButton } from '@mui/material';
+import { ButtonGroup, Divider, IconButton, Tooltip } from '@mui/material';
 import { useCurrentEditor } from '@tiptap/react';
 import FormatBoldIcon from '@mui/icons-material/FormatBold';
 import FormatItalicIcon from '@mui/icons-material/FormatItalic';
@@ -10,12 +10,15 @@ import CodeIcon from '@mui/icons-material/Code';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
 import FormatClearIcon from '@mui/icons-material/FormatClear';
+import { DictProps } from '@/lib/i18n';
+import { useTranslation } from '@/lib/i18n/client';
 
-export const MenuBar = () => {
+export const MenuBar = ({ lang }: DictProps) => {
   const { editor } = useCurrentEditor();
+  const { t } = useTranslation(lang, 'components');
 
   const handleToggleLink = () => {
-    const url = window.prompt('Add a link in the form of www.host.com');
+    const url = window.prompt(t('TextEditor.linkPrompt'));
 
     if (url && editor) {
       editor
@@ -72,50 +75,44 @@ export const MenuBar = () => {
             flexItem
           />
 
-          <IconButton onClick={() => editor.chain().focus().toggleBold().run()}>
-            <FormatBoldIcon />
-          </IconButton>
+          <Tooltip title={t('TextEditor.Tooltip.bold')} arrow>
+            <IconButton
+              onClick={() => editor.chain().focus().toggleBold().run()}
+            >
+              <FormatBoldIcon />
+            </IconButton>
+          </Tooltip>
 
-          <IconButton
-            className={editor.isActive('italic') ? 'is-active' : ''}
-            onClick={() => editor.chain().focus().toggleItalic().run()}
-          >
-            <FormatItalicIcon />
-          </IconButton>
+          <Tooltip title={t('TextEditor.Tooltip.italic')} arrow>
+            <IconButton
+              className={editor.isActive('italic') ? 'is-active' : ''}
+              onClick={() => editor.chain().focus().toggleItalic().run()}
+            >
+              <FormatItalicIcon />
+            </IconButton>
+          </Tooltip>
 
-          <IconButton
-            onClick={() => editor.chain().focus().toggleStrike().run()}
-          >
-            <FormatStrikethroughIcon />
-          </IconButton>
+          <Tooltip title={t('TextEditor.Tooltip.strike')} arrow>
+            <IconButton
+              onClick={() => editor.chain().focus().toggleStrike().run()}
+            >
+              <FormatStrikethroughIcon />
+            </IconButton>
+          </Tooltip>
 
-          <IconButton onClick={() => editor.chain().focus().toggleCode().run()}>
-            <CodeIcon />
-          </IconButton>
+          <Tooltip title={t('TextEditor.Tooltip.code')} arrow>
+            <IconButton
+              onClick={() => editor.chain().focus().toggleCode().run()}
+            >
+              <CodeIcon />
+            </IconButton>
+          </Tooltip>
 
-          <IconButton onClick={handleToggleLink}>
-            <LinkIcon />
-          </IconButton>
-
-          <Divider
-            sx={{ mr: 1, ml: 1 }}
-            orientation="vertical"
-            variant="middle"
-            flexItem
-          />
-
-          <IconButton
-            onClick={() => editor.chain().focus().toggleBulletList().run()}
-          >
-            <FormatListBulletedIcon />
-          </IconButton>
-
-          <IconButton
-            sx={{ mr: 1 }}
-            onClick={() => editor.chain().focus().toggleOrderedList().run()}
-          >
-            <FormatListNumberedIcon />
-          </IconButton>
+          <Tooltip title={t('TextEditor.Tooltip.link')} arrow>
+            <IconButton onClick={handleToggleLink}>
+              <LinkIcon />
+            </IconButton>
+          </Tooltip>
 
           <Divider
             sx={{ mr: 1, ml: 1 }}
@@ -124,25 +121,59 @@ export const MenuBar = () => {
             flexItem
           />
 
-          <IconButton
-            onClick={() => editor.chain().focus().unsetAllMarks().run()}
-          >
-            <FormatClearIcon />
-          </IconButton>
+          <Tooltip title={t('TextEditor.Tooltip.bulletList')} arrow>
+            <IconButton
+              onClick={() => editor.chain().focus().toggleBulletList().run()}
+            >
+              <FormatListBulletedIcon />
+            </IconButton>
+          </Tooltip>
 
-          <IconButton
-            onClick={() => editor.commands.undo()}
-            disabled={!editor.can().chain().focus().undo().run()}
-          >
-            <UndoIcon />
-          </IconButton>
+          <Tooltip title={t('TextEditor.Tooltip.orderedList')} arrow>
+            <IconButton
+              sx={{ mr: 1 }}
+              onClick={() => editor.chain().focus().toggleOrderedList().run()}
+            >
+              <FormatListNumberedIcon />
+            </IconButton>
+          </Tooltip>
 
-          <IconButton
-            onClick={() => editor.commands.redo()}
-            disabled={!editor.can().chain().focus().redo().run()}
-          >
-            <RedoIcon />
-          </IconButton>
+          <Divider
+            sx={{ mr: 1, ml: 1 }}
+            orientation="vertical"
+            variant="middle"
+            flexItem
+          />
+
+          <Tooltip title={t('TextEditor.Tooltip.clearFormat')} arrow>
+            <IconButton
+              onClick={() => editor.chain().focus().unsetAllMarks().run()}
+            >
+              <FormatClearIcon />
+            </IconButton>
+          </Tooltip>
+
+          <Tooltip title={t('TextEditor.Tooltip.undo')} arrow>
+            <span>
+              <IconButton
+                onClick={() => editor.commands.undo()}
+                disabled={!editor.can().chain().focus().undo().run()}
+              >
+                <UndoIcon />
+              </IconButton>
+            </span>
+          </Tooltip>
+
+          <Tooltip title={t('TextEditor.Tooltip.redo')} arrow>
+            <span>
+              <IconButton
+                onClick={() => editor.commands.redo()}
+                disabled={!editor.can().chain().focus().redo().run()}
+              >
+                <RedoIcon />
+              </IconButton>
+            </span>
+          </Tooltip>
         </ButtonGroup>
         <Divider />
       </>

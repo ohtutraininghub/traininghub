@@ -59,5 +59,20 @@
   },
   "TagList": {
     "noTagsAdded": "No tags added"
+  },
+  "TextEditor": {
+    "Tooltip": {
+      "bold": "Bold (CTRL + B",
+      "italic": "Italic (CTRL + I)",
+      "strike": "Strikethrough",
+      "code": "Code (CTRL + E)",
+      "link": "Add link",
+      "bulletList": "Bullet list",
+      "clearFormat": "Clear formatting",
+      "orderedList": "Ordered list",
+      "undo": "Undo (CTRL + Z)",
+      "redo": "Redo (CTRL + Y)"
+    },
+    "linkPrompt": "Please enter the link as such 'www.example.com'"
   }
 }

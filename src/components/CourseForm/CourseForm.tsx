@@ -132,7 +132,7 @@ export default function CourseForm({
             control={control}
             defaultValue=""
             render={({ field: { onChange, value } }) => (
-              <RichTextEditor value={value} onChange={onChange} />
+              <RichTextEditor lang={lang} value={value} onChange={onChange} />
             )}
           />
           <FormFieldError error={errors.description} />
