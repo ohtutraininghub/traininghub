@@ -110,6 +110,7 @@ describe('Course Form New Course Tests', () => {
         maxStudents: Number(inputValues.maxStudents),
         startDate: new Date(inputValues.startDate),
         lastEnrollDate: null,
+        lastCancelDate: null,
       });
     });
   });
@@ -154,6 +155,7 @@ describe('Course Form New Course Tests', () => {
         maxStudents: Number(inputValues.maxStudents),
         startDate: new Date(inputValues.startDate),
         lastEnrollDate: new Date(inputValues.lastEnrollDate),
+        lastCancelDate: null,
       });
     });
   });
@@ -173,6 +175,7 @@ describe('Course Form Course Edit Tests', () => {
       startDate: courseStart,
       endDate: courseEnd,
       lastEnrollDate: oneDayBeforeStart,
+      lastCancelDate: oneDayBeforeStart,
       maxStudents: 55,
       tags: [],
     };
@@ -190,6 +193,9 @@ describe('Course Form Course Edit Tests', () => {
     const endDate = screen.getByTestId('courseFormEndDate') as HTMLInputElement;
     const lastEnrollDate = screen.getByTestId(
       'courseFormLastEnrollDate'
+    ) as HTMLInputElement;
+    const lastCancelDate = screen.getByTestId(
+      'courseFormLastCancelDate'
     ) as HTMLInputElement;
     const maxStudents = screen.getByTestId(
       'courseFormMaxStudents'
@@ -203,6 +209,9 @@ describe('Course Form Course Edit Tests', () => {
     expect(lastEnrollDate.value).toBe(
       dateToDateTimeLocal(course.lastEnrollDate)
     );
+    expect(lastCancelDate.value).toBe(
+      dateToDateTimeLocal(course.lastCancelDate)
+    );
   });
 
   it('Form is filled with course values in Edit Mode when lastEnrollDate is null', async () => {
@@ -214,6 +223,7 @@ describe('Course Form Course Edit Tests', () => {
       startDate: new Date(),
       endDate: new Date(),
       lastEnrollDate: null,
+      lastCancelDate: new Date(),
       maxStudents: 55,
       tags: [],
     };
@@ -232,6 +242,9 @@ describe('Course Form Course Edit Tests', () => {
     const lastEnrollDate = screen.getByTestId(
       'courseFormLastEnrollDate'
     ) as HTMLInputElement;
+    const lastCancelDate = screen.getByTestId(
+      'courseFormLastCancelDate'
+    ) as HTMLInputElement;
     const maxStudents = screen.getByTestId(
       'courseFormMaxStudents'
     ) as HTMLInputElement;
@@ -242,6 +255,9 @@ describe('Course Form Course Edit Tests', () => {
     expect(startDate.value).toBe(dateToDateTimeLocal(course.startDate));
     expect(endDate.value).toBe(dateToDateTimeLocal(course.endDate));
     expect(lastEnrollDate.value).toBe('');
+    expect(lastCancelDate.value).toBe(
+      dateToDateTimeLocal(course.lastCancelDate)
+    );
   });
 
   it('Form is submitted with correct values in Edit Mode', async () => {
@@ -253,6 +269,7 @@ describe('Course Form Course Edit Tests', () => {
       startDate: courseStart,
       endDate: courseEnd,
       lastEnrollDate: oneDayBeforeStart,
+      lastCancelDate: oneDayBeforeStart,
       maxStudents: 55,
       tags: [],
     };
@@ -269,6 +286,7 @@ describe('Course Form Course Edit Tests', () => {
         maxStudents: Number(course.maxStudents),
         startDate: new Date(course.startDate),
         lastEnrollDate: new Date(course.lastEnrollDate),
+        lastCancelDate: new Date(course.lastCancelDate),
       });
     });
   });
@@ -282,6 +300,7 @@ describe('Course Form Course Edit Tests', () => {
       startDate: new Date(Date.now() + 1000 * 60 * 60 * 24),
       endDate: new Date(Date.now() + 1000 * 60 * 60 * 24 * 2),
       lastEnrollDate: null,
+      lastCancelDate: new Date(Date.now() + 1000 * 60 * 60 * 12),
       maxStudents: 55,
       tags: [],
     };
@@ -294,10 +313,11 @@ describe('Course Form Course Edit Tests', () => {
     await waitFor(() => {
       expect(mockFetch).toBeCalledWith('/api/course', {
         ...course,
-        endDate: new Date(course.endDate),
-        maxStudents: Number(course.maxStudents),
         startDate: new Date(course.startDate),
+        endDate: new Date(course.endDate),
         lastEnrollDate: null,
+        lastCancelDate: new Date(course.lastCancelDate),
+        maxStudents: Number(course.maxStudents),
       });
     });
   });

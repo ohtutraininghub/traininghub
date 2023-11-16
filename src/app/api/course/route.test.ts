@@ -202,6 +202,7 @@ describe('Course API tests', () => {
       startDate: new Date(Date.now() + 1000 * 60 * 60 * 24),
       endDate: new Date(Date.now() + 1000 * 60 * 60 * 24 * 2),
       lastEnrollDate: new Date(Date.now() + 1000 * 60 * 60 * 24),
+      lastCancelDate: new Date(Date.now() + 1000 * 60 * 60 * 12),
       maxStudents: 200,
       createdById: testUser.id,
       tags: [],
@@ -212,6 +213,7 @@ describe('Course API tests', () => {
       startDate: courseDataWithDate.startDate.toString(),
       endDate: courseDataWithDate.endDate.toString(),
       lastEnrollDate: courseDataWithDate.lastEnrollDate.toString(),
+      lastCancelDate: courseDataWithDate.lastCancelDate.toString(),
     };
 
     it('Should return 404 when course does not exist in the db', async () => {
