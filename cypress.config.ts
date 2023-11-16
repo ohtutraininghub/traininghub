@@ -1,14 +1,15 @@
 import { defineConfig } from 'cypress';
+import { clearDatabase } from './src/lib/prisma';
 
 export default defineConfig({
   e2e: {
-    setupNodeEvents(on, config) {
-      return {
-        ...config,
-        browsers: config.browsers.filter(
-          (browser) => browser.name === 'chrome'
-        ),
-      };
+    setupNodeEvents(on) {
+      on('task', {
+        async clearDatabase() {
+          await clearDatabase();
+          return null;
+        },
+      });
     },
     video: false,
     viewportWidth: 1920,

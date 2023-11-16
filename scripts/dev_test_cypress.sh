@@ -22,7 +22,7 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
-npx cypress open $ARGS &
+dotenv -e .env.test -- npx cypress open $ARGS &
 dotenv -e .env.test -- npx next dev
 
 # When quit from watch "normally"

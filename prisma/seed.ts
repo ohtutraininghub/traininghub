@@ -54,14 +54,11 @@ const tagData = [
 async function main() {
   await clearDatabase();
 
-  await prisma.tag.deleteMany();
-  await prisma.course.deleteMany();
   const userFromDB = await prisma.user.findFirst();
   const user = userFromDB ?? (await prisma.user.create({ data: {} }));
 
   await prisma.tag.createMany({
     data: tagData,
-    skipDuplicates: true,
   });
 
   await Promise.all(
