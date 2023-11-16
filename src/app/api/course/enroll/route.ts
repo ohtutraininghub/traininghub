@@ -8,8 +8,9 @@ import {
   errorResponse,
 } from '@/lib/response/responseUtil';
 import { handleCommonErrors } from '@/lib/response/errorUtil';
-import { msUntilStart } from '@/lib/timedateutils';
+import { msUntilStart, isPastDeadline } from '@/lib/timedateutils';
 import { minCancelTimeMs } from '@/lib/zod/courses';
+
 import { insertCourseToCalendar, deleteCourseFromCalendar } from '@/lib/google';
 
 export async function POST(request: NextRequest) {
@@ -40,6 +41,13 @@ export async function POST(request: NextRequest) {
     if (course._count.students >= course.maxStudents) {
       return errorResponse({
         message: 'Course is already full!',
+        statusCode: StatusCodeType.UNPROCESSABLE_CONTENT,
+      });
+    }
+
+    if (isPastDeadline(course.lastEnrollDate)) {
+      return errorResponse({
+        message: 'No enrolling allowed after enrollment deadline',
         statusCode: StatusCodeType.UNPROCESSABLE_CONTENT,
       });
     }

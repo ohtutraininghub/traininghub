@@ -7,19 +7,34 @@ export const minCancelTimeMs = 48 * 60 * 60 * 1000; // 48 hours
 const withRefine = <O extends CourseSchemaType, T extends z.ZodTypeDef, I>(
   schema: z.ZodType<O, T, I>
 ) => {
-  return schema.refine(
-    ({ startDate, endDate }) => {
-      // don't show this error if either of the date fields is still empty
-      if (!startDate || !endDate) {
-        return true;
+  return schema
+    .refine(
+      ({ startDate, endDate }) => {
+        // don't show this error if either of the date fields is still empty
+        if (!startDate || !endDate) {
+          return true;
+        }
+        return startDate.getTime() <= endDate.getTime();
+      },
+      {
+        message: 'The end date cannot be before the start date',
+        path: ['endDate'],
       }
-      return startDate.getTime() <= endDate.getTime();
-    },
-    {
-      message: 'The end date cannot be before the start date',
-      path: ['endDate'],
-    }
-  );
+    )
+    .refine(
+      ({ endDate, lastEnrollDate }) => {
+        // don't show error if course end date or last date to enroll is still empty
+        if (!endDate || !lastEnrollDate) {
+          return true;
+        }
+        return lastEnrollDate.getTime() < endDate.getTime();
+      },
+      {
+        message:
+          'The last date to enroll cannot be after the end date of the course',
+        path: ['lastEnrollDate'],
+      }
+    );
 };
 
 const courseSchemaBase = z
@@ -42,6 +57,10 @@ const courseSchemaBase = z
           message: 'Start date cannot be in the past',
         }
       ),
+    lastEnrollDate: z.preprocess(
+      (value) => (!value ? null : value),
+      z.coerce.date().nullable()
+    ),
     endDate: z.string().min(1, 'End date is required').pipe(z.coerce.date()),
     maxStudents: z.number().min(1, 'Max students is required'),
     tags: z.array(z.string().min(1, 'Tag name cannot be empty')),

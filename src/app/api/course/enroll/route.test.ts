@@ -33,6 +33,20 @@ const startingSoonCourse = {
   createdById: testUser.id,
 };
 
+const startDateYesterday = new Date(Date.now() - 24 * 60 * 60 * 1000);
+const endDateTomorrow = new Date(Date.now() + 24 * 60 * 60 * 1000);
+
+const pastDeadlineToEnrollCourse = {
+  name: 'Git Fundamentals',
+  description:
+    'This course will walk you through the fundamentals of using Git for version control. You will learn how to create a local Git repository, commit files and push your changes to a remote repository. The course will introduce you to concepts like the working copy and the staging area and teach you how to organise you repository using tags and branches. You will learn how to make pull requests and merge branches, and tackle merge conflicts when they arise.',
+  startDate: startDateYesterday,
+  endDate: endDateTomorrow,
+  lastEnrollDate: startDateYesterday,
+  maxStudents: 8,
+  createdById: testUser.id,
+};
+
 const invalidCourseId = '123';
 
 beforeEach(async () => {
@@ -119,6 +133,22 @@ describe('Course enrollment API tests', () => {
       const data = await response.json();
 
       expect(data.message).toBe('Course is already full!');
+      expect(data.messageType).toBe(MessageType.ERROR);
+      expect(response.status).toBe(StatusCodeType.UNPROCESSABLE_CONTENT);
+    });
+
+    it('trying to enroll after enrollment deadline is not possible', async () => {
+      const existingCourse = await prisma.course.create({
+        data: pastDeadlineToEnrollCourse,
+      });
+
+      const req = mockPostRequest(existingCourse.id);
+      const response = await POST(req);
+      const data = await response.json();
+
+      expect(data.message).toBe(
+        'No enrolling allowed after enrollment deadline'
+      );
       expect(data.messageType).toBe(MessageType.ERROR);
       expect(response.status).toBe(StatusCodeType.UNPROCESSABLE_CONTENT);
     });

@@ -16,6 +16,7 @@
     "description": "Description",
     "startDate": "Start date",
     "endDate": "End date",
+    "lastEnrollDate": "Last date to enroll (optional)",
     "maxStudents": "Max students",
     "submit": "Submit",
     "tags": "Tags"
