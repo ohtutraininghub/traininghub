@@ -2,7 +2,7 @@ import CreateTag from './CreateTag';
 import { Locale } from '@/lib/i18n/i18n-config';
 import { prisma } from '@/lib/prisma';
 import { useTranslation } from '@/lib/i18n';
-import EditUsers from './UserList';
+import UserList from '@/components/UserList';
 import { Typography } from '@mui/material';
 import { getAllUsers } from '@/lib/prisma/users';
 
@@ -28,7 +28,7 @@ export default async function AdminDashboardPage({ params }: Props) {
         tags={tags}
         lang={params.lang}
       />
-      <EditUsers users={users} lang={params.lang} />
+      <UserList users={users} lang={params.lang} />
     </div>
   );
 }

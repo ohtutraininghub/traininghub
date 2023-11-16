@@ -8,7 +8,7 @@ import { Course, Role, User } from '@prisma/client';
 import { PropsWithChildren, useState } from 'react';
 import { useTheme } from '@mui/material/styles';
 import { useSession } from 'next-auth/react';
-import EditUsers from '@/app/[lang]/admin/dashboard/UserList';
+import UserList from '@/components/UserList';
 
 export interface userDetails {
   name: string;
@@ -99,7 +99,7 @@ export default function ProfileView({
           }}
         >
           {children}
-          <EditUsers users={users} lang="en" />
+          <UserList users={users} lang="en" />
         </div>
       )}
     </div>

@@ -32,7 +32,7 @@ describe('SpeedDial Menu', () => {
     const speedDial = screen.getByRole('button', { name: /SpeedDial menu/i });
     expect(speedDial).toBeInTheDocument();
 
-    const newTag = screen.getByTestId('add-tag');
+    const newTag = screen.getByTestId('dashboard');
     expect(newTag).toBeInTheDocument();
 
     const newCourse = screen.getByTestId('new-course');

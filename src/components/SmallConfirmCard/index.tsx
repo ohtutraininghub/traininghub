@@ -20,12 +20,12 @@ export function SmallConfirmCard({
   return (
     <Box display="flex">
       <Tooltip title={cancelTooltip}>
-        <IconButton onClick={() => onCancel()}>
+        <IconButton data-testid="cancel-button" onClick={() => onCancel()}>
           <ClearIcon aria-label="cancel" color="warning" />
         </IconButton>
       </Tooltip>
       <Tooltip title={confirmTooltip}>
-        <IconButton onClick={() => onSubmit()}>
+        <IconButton data-testid="confirm-button" onClick={() => onSubmit()}>
           <CheckIcon arial-label="confirm" color="success" />
         </IconButton>
       </Tooltip>
