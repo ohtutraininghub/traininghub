@@ -54,8 +54,7 @@ const tagData = [
 async function main() {
   await clearDatabase();
 
-  const userFromDB = await prisma.user.findFirst();
-  const user = userFromDB ?? (await prisma.user.create({ data: {} }));
+  const user = await prisma.user.create({ data: {} });
 
   await prisma.tag.createMany({
     data: tagData,
