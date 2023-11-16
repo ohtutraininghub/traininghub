@@ -82,6 +82,18 @@ const lastEnrollDateAfterEndCourse = {
   tags: [],
 };
 
+const lastCancelDateAfterEndCourse = {
+  name: 'Git Fundamentals',
+  description:
+    'This course introduces you to the basics of version control with Git.',
+  startDate: '2100-09-27T00:00:00Z',
+  endDate: '2100-09-28T00:00:00Z',
+  lastEnrollDate: '2100-09-26T00:00:00Z',
+  lastCancelDate: '2100-09-29T00:00:00Z',
+  maxStudents: 8,
+  tags: [],
+};
+
 const getTableLength = async () => {
   const allCourses = await prisma.course.findMany();
   return allCourses.length;
@@ -192,6 +204,19 @@ describe('Course API tests', () => {
       expect(tblLength).toBe(0);
       expect(response.status).toBe(StatusCodeType.BAD_REQUEST);
     });
+
+    it('fails if last cancel date is after the end of the course', async () => {
+      const req = mockPostRequest(lastCancelDateAfterEndCourse);
+      const response = await POST(req);
+      const data = await response.json();
+      expect(data.message).toContain(
+        'The last date to cancel enrollment cannot be after the end date of the course'
+      );
+      expect(data.messageType).toBe(MessageType.ERROR);
+      const tblLength = await getTableLength();
+      expect(tblLength).toBe(0);
+      expect(response.status).toBe(StatusCodeType.BAD_REQUEST);
+    });
   });
 
   describe('PUT', () => {
@@ -295,6 +320,36 @@ describe('Course API tests', () => {
       const data = await response.json();
       expect(data.message).toBe(
         'The last date to enroll cannot be after the end date of the course.'
+      );
+      expect(data.messageType).toBe(MessageType.ERROR);
+      expect(response.status).toBe(StatusCodeType.BAD_REQUEST);
+    });
+
+    it('Fails if last cancel date is updated to be after course has ended', async () => {
+      await prisma.course.create({
+        data: {
+          ...courseDataWithDate,
+          tags: {
+            connect: [],
+          },
+        },
+      });
+
+      const courseInDb = await prisma.course.findFirst();
+      const cancelAfterEndDate = new Date(
+        new Date(courseData.endDate).getTime() + 60 * 60 * 1000
+      );
+      const updatedCourse = {
+        ...courseData,
+        lastCancelDate: cancelAfterEndDate,
+        id: courseInDb?.id || null,
+      };
+
+      const req = mockUpdateRequest(updatedCourse);
+      const response = await PUT(req);
+      const data = await response.json();
+      expect(data.message).toBe(
+        'The last date to cancel enrollment cannot be after the end date of the course.'
       );
       expect(data.messageType).toBe(MessageType.ERROR);
       expect(response.status).toBe(StatusCodeType.BAD_REQUEST);
