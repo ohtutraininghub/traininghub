@@ -77,7 +77,9 @@ export const MenuBar = ({ lang }: DictProps) => {
 
           <Tooltip title={t('TextEditor.Tooltip.bold')} arrow>
             <IconButton
+              sx={editor.isActive('bold') ? { color: 'black.main' } : {}}
               onClick={() => editor.chain().focus().toggleBold().run()}
+              disabled={!editor.can().chain().focus().toggleBold().run()}
             >
               <FormatBoldIcon />
             </IconButton>
@@ -85,8 +87,9 @@ export const MenuBar = ({ lang }: DictProps) => {
 
           <Tooltip title={t('TextEditor.Tooltip.italic')} arrow>
             <IconButton
-              className={editor.isActive('italic') ? 'is-active' : ''}
+              sx={editor.isActive('italic') ? { color: 'black.main' } : {}}
               onClick={() => editor.chain().focus().toggleItalic().run()}
+              disabled={!editor.can().chain().focus().toggleItalic().run()}
             >
               <FormatItalicIcon />
             </IconButton>
@@ -94,7 +97,9 @@ export const MenuBar = ({ lang }: DictProps) => {
 
           <Tooltip title={t('TextEditor.Tooltip.strike')} arrow>
             <IconButton
+              sx={editor.isActive('strike') ? { color: 'black.main' } : {}}
               onClick={() => editor.chain().focus().toggleStrike().run()}
+              disabled={!editor.can().chain().focus().toggleStrike().run()}
             >
               <FormatStrikethroughIcon />
             </IconButton>
@@ -102,7 +107,9 @@ export const MenuBar = ({ lang }: DictProps) => {
 
           <Tooltip title={t('TextEditor.Tooltip.code')} arrow>
             <IconButton
+              sx={editor.isActive('code') ? { color: 'black.main' } : {}}
               onClick={() => editor.chain().focus().toggleCode().run()}
+              disabled={!editor.can().chain().focus().toggleCode().run()}
             >
               <CodeIcon />
             </IconButton>
@@ -123,6 +130,7 @@ export const MenuBar = ({ lang }: DictProps) => {
 
           <Tooltip title={t('TextEditor.Tooltip.bulletList')} arrow>
             <IconButton
+              sx={editor.isActive('bulletList') ? { color: 'black.main' } : {}}
               onClick={() => editor.chain().focus().toggleBulletList().run()}
             >
               <FormatListBulletedIcon />
@@ -131,7 +139,7 @@ export const MenuBar = ({ lang }: DictProps) => {
 
           <Tooltip title={t('TextEditor.Tooltip.orderedList')} arrow>
             <IconButton
-              sx={{ mr: 1 }}
+              sx={editor.isActive('orderedList') ? { color: 'black.main' } : {}}
               onClick={() => editor.chain().focus().toggleOrderedList().run()}
             >
               <FormatListNumberedIcon />
