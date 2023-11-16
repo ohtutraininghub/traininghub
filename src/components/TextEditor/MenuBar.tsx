@@ -9,6 +9,7 @@ import FormatStrikethroughIcon from '@mui/icons-material/FormatStrikethrough';
 import CodeIcon from '@mui/icons-material/Code';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
+import FormatClearIcon from '@mui/icons-material/FormatClear';
 
 export const MenuBar = () => {
   const { editor } = useCurrentEditor();
@@ -122,6 +123,12 @@ export const MenuBar = () => {
             variant="middle"
             flexItem
           />
+
+          <IconButton
+            onClick={() => editor.chain().focus().unsetAllMarks().run()}
+          >
+            <FormatClearIcon />
+          </IconButton>
 
           <IconButton
             onClick={() => editor.commands.undo()}
