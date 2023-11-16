@@ -56,7 +56,7 @@ export const MenuBar = () => {
           </IconButton>
 
           <IconButton
-            sx={{ color: 'black.main', mr: 1 }}
+            sx={{ color: 'black.main' }}
             onClick={() =>
               editor.chain().focus().toggleHeading({ level: 3 }).run()
             }
@@ -64,9 +64,12 @@ export const MenuBar = () => {
             H3
           </IconButton>
 
-          <IconButton onClick={handleToggleLink}>
-            <LinkIcon />
-          </IconButton>
+          <Divider
+            sx={{ mr: 1, ml: 1 }}
+            orientation="vertical"
+            variant="middle"
+            flexItem
+          />
 
           <IconButton onClick={() => editor.chain().focus().toggleBold().run()}>
             <FormatBoldIcon />
@@ -85,12 +88,20 @@ export const MenuBar = () => {
             <FormatStrikethroughIcon />
           </IconButton>
 
-          <IconButton
-            sx={{ mr: 1 }}
-            onClick={() => editor.chain().focus().toggleCode().run()}
-          >
+          <IconButton onClick={() => editor.chain().focus().toggleCode().run()}>
             <CodeIcon />
           </IconButton>
+
+          <IconButton onClick={handleToggleLink}>
+            <LinkIcon />
+          </IconButton>
+
+          <Divider
+            sx={{ mr: 1, ml: 1 }}
+            orientation="vertical"
+            variant="middle"
+            flexItem
+          />
 
           <IconButton
             onClick={() => editor.chain().focus().toggleBulletList().run()}
@@ -104,6 +115,13 @@ export const MenuBar = () => {
           >
             <FormatListNumberedIcon />
           </IconButton>
+
+          <Divider
+            sx={{ mr: 1, ml: 1 }}
+            orientation="vertical"
+            variant="middle"
+            flexItem
+          />
 
           <IconButton
             onClick={() => editor.commands.undo()}
