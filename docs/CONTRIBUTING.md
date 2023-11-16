@@ -117,6 +117,9 @@ Most importantly pull request should be linked to task or set of tasks.
   - No sensitive information in git or logs
 - Performance
   - Middleground between poorly optimized code and complex algorithms is usually good enough
+- Translation keys
+  - The code includes i18n keys instead of hardcoded strings
+  - The key naming follows the project's [Translation Key Naming Guide](./naming-translation-keys.md)
 
 ### Branching
 
