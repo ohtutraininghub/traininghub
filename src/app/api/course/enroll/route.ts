@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    if (course.lastEnrollDate && isPastDeadline(course.lastEnrollDate)) {
+    if (isPastDeadline(course.lastEnrollDate)) {
       return errorResponse({
         message: 'No enrolling allowed after enrollment deadline',
         statusCode: StatusCodeType.UNPROCESSABLE_CONTENT,
