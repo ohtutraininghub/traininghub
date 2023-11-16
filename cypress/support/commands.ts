@@ -1,20 +1,4 @@
-/* eslint-disable no-unused-vars */
-/// <reference types="cypress" />
-
-import { Role } from '@prisma/client';
-
-export {};
-
-declare global {
-  namespace Cypress {
-    interface Chainable {
-      getByDataTestId(selector: string): Chainable<JQuery<HTMLElement>>;
-      login(email: string, role: Role): Chainable<void>;
-    }
-  }
-}
-
-Cypress.Commands.add('getByDataTestId', (selector) => {
+Cypress.Commands.add('getCy', (selector) => {
   return cy.get(`[data-testid=${selector}]`);
 });
 
