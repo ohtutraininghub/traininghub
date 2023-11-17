@@ -1,4 +1,13 @@
-import { ButtonGroup, Divider, IconButton, Tooltip } from '@mui/material';
+import {
+  ButtonGroup,
+  Divider,
+  IconButton,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  Tooltip,
+  Typography,
+} from '@mui/material';
 import { useCurrentEditor } from '@tiptap/react';
 import FormatBoldIcon from '@mui/icons-material/FormatBold';
 import FormatItalicIcon from '@mui/icons-material/FormatItalic';
@@ -32,44 +41,72 @@ export const MenuBar = ({ lang }: DictProps) => {
     }
   };
 
+  const dropdownValue = () => {
+    if (!editor) return '';
+    if (editor.isActive('heading', { level: 1 })) {
+      return 'header1';
+    } else if (editor.isActive('heading', { level: 2 })) {
+      return 'header2';
+    } else if (editor.isActive('heading', { level: 3 })) {
+      return 'header3';
+    } else {
+      return 'paragraph';
+    }
+  };
+
+  const dropdownOnChange = (event: SelectChangeEvent) => {
+    if (!editor) return null;
+    switch (event.target.value) {
+      case 'paragraph':
+        editor.chain().focus().setParagraph().run();
+        break;
+      case 'header1':
+        editor.chain().focus().toggleHeading({ level: 1 }).run();
+        break;
+      case 'header2':
+        editor.chain().focus().toggleHeading({ level: 2 }).run();
+        break;
+      case 'header3':
+        editor.chain().focus().toggleHeading({ level: 3 }).run();
+        break;
+      default:
+        return null;
+    }
+  };
+
   return (
     editor && (
       <>
         <ButtonGroup sx={{ flexWrap: 'wrap' }}>
-          <IconButton
-            data-testid="courseFormDescription"
-            sx={{ color: 'black.main' }}
-            onClick={() => editor.chain().focus().setParagraph().run()}
+          <Select
+            sx={{ ml: 1, mb: -1, minWidth: 120 }}
+            size="small"
+            variant="standard"
+            value={dropdownValue()}
+            onChange={dropdownOnChange}
+            disableUnderline
           >
-            Paragraph
-          </IconButton>
-
-          <IconButton
-            sx={{ color: 'black.main' }}
-            onClick={() =>
-              editor.chain().focus().toggleHeading({ level: 1 }).run()
-            }
-          >
-            H1
-          </IconButton>
-
-          <IconButton
-            sx={{ color: 'black.main' }}
-            onClick={() =>
-              editor.chain().focus().toggleHeading({ level: 2 }).run()
-            }
-          >
-            H2
-          </IconButton>
-
-          <IconButton
-            sx={{ color: 'black.main' }}
-            onClick={() =>
-              editor.chain().focus().toggleHeading({ level: 3 }).run()
-            }
-          >
-            H3
-          </IconButton>
+            <MenuItem value={'header1'}>
+              <Typography variant="h6">
+                {t('TextEditor.Dropdown.header1')}
+              </Typography>
+            </MenuItem>
+            <MenuItem value={'header2'}>
+              <Typography variant="h6">
+                {t('TextEditor.Dropdown.header2')}
+              </Typography>
+            </MenuItem>
+            <MenuItem value={'header3'}>
+              <Typography variant="h6">
+                {t('TextEditor.Dropdown.header3')}
+              </Typography>
+            </MenuItem>
+            <MenuItem value={'paragraph'}>
+              <Typography variant="body1">
+                {t('TextEditor.Dropdown.paragraph')}
+              </Typography>
+            </MenuItem>
+          </Select>
 
           <Divider
             sx={{ mr: 1, ml: 1 }}

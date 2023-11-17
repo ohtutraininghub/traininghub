@@ -74,6 +74,12 @@
       "undo": "Undo (CTRL + Z)",
       "redo": "Redo (CTRL + Y)"
     },
+    "Dropdown": {
+      "header1": "Header 1",
+      "header2": "Header 2",
+      "header3": "Header 3",
+      "paragraph": "Text"
+    },
     "linkPrompt": "Please enter the link as such 'www.example.com'"
   }
 }
