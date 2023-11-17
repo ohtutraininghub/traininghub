@@ -65,6 +65,7 @@
       "bold": "Bold (CTRL + B",
       "italic": "Italic (CTRL + I)",
       "strike": "Strikethrough",
+      "underline": "Underline (CTRL + U)",
       "code": "Code (CTRL + E)",
       "link": "Add link",
       "bulletList": "Bullet list",

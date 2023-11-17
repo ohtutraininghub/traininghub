@@ -3,6 +3,7 @@ import StarterKit from '@tiptap/starter-kit';
 import { MenuBar } from './MenuBar';
 import { Box } from '@mui/material';
 import Link from '@tiptap/extension-link';
+import Underline from '@tiptap/extension-underline';
 import { DictProps } from '@/lib/i18n';
 
 interface TEditorProps extends DictProps {
@@ -11,7 +12,7 @@ interface TEditorProps extends DictProps {
 }
 
 // define your extension array
-const extensions = [StarterKit, Link];
+const extensions = [StarterKit, Link, Underline];
 
 const Tiptap = ({ lang, value, onChange }: TEditorProps) => {
   return (

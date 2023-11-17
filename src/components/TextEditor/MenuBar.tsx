@@ -10,12 +10,15 @@ import CodeIcon from '@mui/icons-material/Code';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
 import FormatClearIcon from '@mui/icons-material/FormatClear';
+import FormatUnderlinedIcon from '@mui/icons-material/FormatUnderlined';
 import { DictProps } from '@/lib/i18n';
 import { useTranslation } from '@/lib/i18n/client';
 
 export const MenuBar = ({ lang }: DictProps) => {
   const { editor } = useCurrentEditor();
   const { t } = useTranslation(lang, 'components');
+
+  const emphasize = { color: 'black.main' };
 
   const handleToggleLink = () => {
     const url = window.prompt(t('TextEditor.linkPrompt'));
@@ -77,7 +80,7 @@ export const MenuBar = ({ lang }: DictProps) => {
 
           <Tooltip title={t('TextEditor.Tooltip.bold')} arrow>
             <IconButton
-              sx={editor.isActive('bold') ? { color: 'black.main' } : {}}
+              sx={editor.isActive('bold') ? emphasize : {}}
               onClick={() => editor.chain().focus().toggleBold().run()}
               disabled={!editor.can().chain().focus().toggleBold().run()}
             >
@@ -87,7 +90,7 @@ export const MenuBar = ({ lang }: DictProps) => {
 
           <Tooltip title={t('TextEditor.Tooltip.italic')} arrow>
             <IconButton
-              sx={editor.isActive('italic') ? { color: 'black.main' } : {}}
+              sx={editor.isActive('italic') ? emphasize : {}}
               onClick={() => editor.chain().focus().toggleItalic().run()}
               disabled={!editor.can().chain().focus().toggleItalic().run()}
             >
@@ -97,7 +100,7 @@ export const MenuBar = ({ lang }: DictProps) => {
 
           <Tooltip title={t('TextEditor.Tooltip.strike')} arrow>
             <IconButton
-              sx={editor.isActive('strike') ? { color: 'black.main' } : {}}
+              sx={editor.isActive('strike') ? emphasize : {}}
               onClick={() => editor.chain().focus().toggleStrike().run()}
               disabled={!editor.can().chain().focus().toggleStrike().run()}
             >
@@ -105,9 +108,19 @@ export const MenuBar = ({ lang }: DictProps) => {
             </IconButton>
           </Tooltip>
 
+          <Tooltip title={t('TextEditor.Tooltip.underline')} arrow>
+            <IconButton
+              sx={editor.isActive('underline') ? emphasize : {}}
+              onClick={() => editor.chain().focus().toggleUnderline().run()}
+              disabled={!editor.can().chain().focus().toggleUnderline().run()}
+            >
+              <FormatUnderlinedIcon />
+            </IconButton>
+          </Tooltip>
+
           <Tooltip title={t('TextEditor.Tooltip.code')} arrow>
             <IconButton
-              sx={editor.isActive('code') ? { color: 'black.main' } : {}}
+              sx={editor.isActive('code') ? emphasize : {}}
               onClick={() => editor.chain().focus().toggleCode().run()}
               disabled={!editor.can().chain().focus().toggleCode().run()}
             >
@@ -130,7 +143,7 @@ export const MenuBar = ({ lang }: DictProps) => {
 
           <Tooltip title={t('TextEditor.Tooltip.bulletList')} arrow>
             <IconButton
-              sx={editor.isActive('bulletList') ? { color: 'black.main' } : {}}
+              sx={editor.isActive('bulletList') ? emphasize : {}}
               onClick={() => editor.chain().focus().toggleBulletList().run()}
             >
               <FormatListBulletedIcon />
@@ -139,7 +152,7 @@ export const MenuBar = ({ lang }: DictProps) => {
 
           <Tooltip title={t('TextEditor.Tooltip.orderedList')} arrow>
             <IconButton
-              sx={editor.isActive('orderedList') ? { color: 'black.main' } : {}}
+              sx={editor.isActive('orderedList') ? emphasize : {}}
               onClick={() => editor.chain().focus().toggleOrderedList().run()}
             >
               <FormatListNumberedIcon />

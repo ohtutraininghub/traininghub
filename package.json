@@ -51,6 +51,7 @@
     "@prisma/client": "^5.4.1",
     "@sentry/nextjs": "^7.73.0",
     "@tiptap/extension-link": "^2.1.12",
+    "@tiptap/extension-underline": "^2.1.12",
     "@tiptap/pm": "^2.1.12",
     "@tiptap/react": "^2.1.12",
     "@tiptap/starter-kit": "^2.1.12",
