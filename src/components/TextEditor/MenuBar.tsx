@@ -27,8 +27,6 @@ export const MenuBar = ({ lang }: DictProps) => {
   const { editor } = useCurrentEditor();
   const { t } = useTranslation(lang, 'components');
 
-  const emphasize = { color: 'black.main' };
-
   const handleToggleLink = () => {
     const url = window.prompt(t('TextEditor.linkPrompt'));
 
@@ -74,6 +72,23 @@ export const MenuBar = ({ lang }: DictProps) => {
     }
   };
 
+  const emphasize = { color: 'black.main' };
+
+  const menuItemSx = {
+    '&.Mui-selected': {
+      backgroundColor: 'surface.main',
+    },
+    '&.Mui-selected.Mui-focusVisible': {
+      backgroundColor: 'surface.dark',
+    },
+    '&:hover': {
+      backgroundColor: 'surface.light',
+    },
+    '&.Mui-selected:hover': {
+      backgroundColor: 'surface.main',
+    },
+  };
+
   return (
     editor && (
       <>
@@ -86,22 +101,22 @@ export const MenuBar = ({ lang }: DictProps) => {
             onChange={dropdownOnChange}
             disableUnderline
           >
-            <MenuItem value={'header1'}>
+            <MenuItem sx={menuItemSx} value={'header1'}>
               <Typography variant="h6">
                 {t('TextEditor.Dropdown.header1')}
               </Typography>
             </MenuItem>
-            <MenuItem value={'header2'}>
+            <MenuItem sx={menuItemSx} value={'header2'}>
               <Typography variant="h6">
                 {t('TextEditor.Dropdown.header2')}
               </Typography>
             </MenuItem>
-            <MenuItem value={'header3'}>
+            <MenuItem sx={menuItemSx} value={'header3'}>
               <Typography variant="h6">
                 {t('TextEditor.Dropdown.header3')}
               </Typography>
             </MenuItem>
-            <MenuItem value={'paragraph'}>
+            <MenuItem sx={menuItemSx} value={'paragraph'}>
               <Typography variant="body1">
                 {t('TextEditor.Dropdown.paragraph')}
               </Typography>
