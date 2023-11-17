@@ -10,7 +10,7 @@ import {
 import { handleCommonErrors } from '@/lib/response/errorUtil';
 import { msUntilStart } from '@/lib/timedateutils';
 import { minCancelTimeMs } from '@/lib/zod/courses';
-import { insertCourseToCalendar, deleteCourseFromCalendar } from '@/lib/google';
+import { deleteCourseFromCalendar } from '@/lib/google';
 
 export async function POST(request: NextRequest) {
   try {
@@ -76,7 +76,7 @@ export async function POST(request: NextRequest) {
     });
 
     // Insert course to external calendar
-    await insertCourseToCalendar(userId, course);
+    //await insertCourseToCalendar(userId, course);
 
     return successResponse({
       message: 'Enrolled succesfully!',

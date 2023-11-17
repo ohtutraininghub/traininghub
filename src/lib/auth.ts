@@ -6,11 +6,15 @@ import { getServerSession } from 'next-auth/next';
 import { Adapter } from 'next-auth/adapters';
 import { updateGoogleAccount } from './prisma/account';
 
+/**
+ * Base scopes granted on sign up
+ *
+ * Additional scopes can be requested via
+ */
 const scopes =
   'openid ' +
   'https://www.googleapis.com/auth/userinfo.email ' +
-  'https://www.googleapis.com/auth/userinfo.profile ' +
-  'https://www.googleapis.com/auth/calendar.events.owned ';
+  'https://www.googleapis.com/auth/userinfo.profile';
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -23,6 +27,7 @@ export const authOptions: NextAuthOptions = {
           access_type: 'offline',
           response_type: 'code',
           scope: scopes,
+          include_granted_scopes: true,
         },
       },
     }),
