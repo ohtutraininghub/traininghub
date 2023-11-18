@@ -7,18 +7,21 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useMessage } from '../Providers/MessageProvider';
 import { update } from '@/lib/response/fetchUtil';
-import { msUntilStart } from '@/lib/timedateutils';
-import { minCancelTimeMs } from '@/lib/zod/courses';
+import { isPastDeadline } from '@/lib/timedateutils';
 import { DictProps } from '@/lib/i18n';
 import { useTranslation } from '@i18n/client';
 import InfoBox from './InfoBox';
 
 interface Props extends DictProps {
   courseId: string;
-  startDate: Date;
+  lastCancelDate: Date | null;
 }
 
-export default function CancelEnroll({ courseId, startDate, lang }: Props) {
+export default function CancelEnroll({
+  courseId,
+  lastCancelDate,
+  lang,
+}: Props) {
   const { t } = useTranslation(lang, 'components');
   const router = useRouter();
   const [backdropOpen, setBackdropOpen] = useState(false);
@@ -30,11 +33,7 @@ export default function CancelEnroll({ courseId, startDate, lang }: Props) {
     router.refresh();
   };
 
-  const cancellingAllowed = (startDate: Date): boolean => {
-    return msUntilStart(startDate) > minCancelTimeMs;
-  };
-
-  if (!cancellingAllowed(startDate)) {
+  if (isPastDeadline(lastCancelDate)) {
     return (
       <InfoBox
         infoText={t('CancelEnroll.pastCancellationDate')}

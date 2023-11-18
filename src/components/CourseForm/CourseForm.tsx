@@ -64,6 +64,7 @@ export default function CourseForm({
             startDate: undefined,
             endDate: undefined,
             lastEnrollDate: undefined,
+            lastCancelDate: undefined,
             tags: courseData.tags.map((tag) => tag.name),
           }
         : { maxStudents: 10 }),
@@ -250,6 +251,25 @@ export default function CourseForm({
             }}
           />
           <FormFieldError error={errors.lastEnrollDate} />
+
+          <InputLabel htmlFor="courseFormLastCancelDate">
+            {t('CourseForm.lastCancelDate')}
+          </InputLabel>
+          <Input
+            {...register('lastCancelDate')}
+            defaultValue={
+              courseData && courseData.lastCancelDate
+                ? dateToDateTimeLocal(courseData.lastCancelDate)
+                : ''
+            }
+            id="courseFormLastCancelDate"
+            type="datetime-local"
+            error={!!errors.lastCancelDate}
+            inputProps={{
+              'data-testid': 'courseFormLastCancelDate',
+            }}
+          />
+          <FormFieldError error={errors.lastCancelDate} />
 
           <InputLabel htmlFor="courseFormMaxStudents">
             {t('CourseForm.maxStudents')}

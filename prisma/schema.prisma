@@ -39,6 +39,7 @@ model Course {
   startDate      DateTime
   endDate        DateTime
   lastEnrollDate DateTime?
+  lastCancelDate DateTime?
   maxStudents    Int
   students       User[]
   tags           Tag[]
