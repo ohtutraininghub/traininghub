@@ -12,6 +12,10 @@
       "email": "Email",
       "emailVerified": "Email Verified",
       "role": "Role"
+    },
+    "confirmCard": {
+      "confirm": "Confirm changes",
+      "cancel": "Cancel changes"
     }
   }
 }

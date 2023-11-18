@@ -18,7 +18,7 @@ export function SmallConfirmCard({
   onCancel,
 }: Props) {
   return (
-    <Box display="flex">
+    <Box display="flex" data-testid="small-confirm-card">
       <Tooltip title={cancelTooltip}>
         <IconButton data-testid="cancel-button" onClick={() => onCancel()}>
           <ClearIcon aria-label="cancel" color="warning" />

@@ -106,6 +106,7 @@ export default function UserList({ lang, users }: Props) {
                   sx={{ display: 'flex', minWidth: '210px' }}
                 >
                   <Select
+                    data-testid={`${user.id}-role-select`}
                     sx={{
                       '& .MuiSelect-select': {
                         padding: '0.5rem',
@@ -133,8 +134,8 @@ export default function UserList({ lang, users }: Props) {
                   </Select>
                   {user.role !== userRoles[userIndex] && (
                     <SmallConfirmCard
-                      confirmTooltip="Confirm changes"
-                      cancelTooltip="Cancel changes"
+                      confirmTooltip={t('EditUsers.confirmCard.confirm')}
+                      cancelTooltip={t('EditUsers.confirmCard.cancel')}
                       onCancel={() =>
                         setUserRoles(users.map((user) => user.role))
                       }
