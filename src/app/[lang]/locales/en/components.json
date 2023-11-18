@@ -106,7 +106,7 @@
       "header3": "Header 3",
       "paragraph": "Text"
     },
-    "linkPrompt": "Please enter the link as such 'www.example.com'"
+    "linkPrompt": "Please enter the link as such: https://www.example.com"
   },
   "UnauthorizedError": {
     "unauthorizedMessage": "You are not authorized to view this page",

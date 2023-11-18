@@ -31,11 +31,7 @@ export const MenuBar = ({ lang }: DictProps) => {
     const url = window.prompt(t('TextEditor.linkPrompt'));
 
     if (url && editor) {
-      editor
-        .chain()
-        .focus()
-        .toggleLink({ href: 'https://' + url })
-        .run();
+      editor.chain().focus().toggleLink({ href: url }).run();
     }
   };
 
