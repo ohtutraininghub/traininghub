@@ -1,7 +1,8 @@
-import { renderWithTheme } from '@/lib/test-utils';
-//import { screen } from '@testing-library/react';
-import UserList from '.';
 import { Users } from '@/lib/prisma/users';
+import { renderWithTheme } from '@/lib/test-utils';
+import '@testing-library/jest-dom';
+import { screen } from '@testing-library/react';
+import UserList from '.';
 
 const users: Users = [
   {
@@ -47,7 +48,7 @@ jest.mock('../Providers/MessageProvider', () => ({
   },
 }));
 
-var mockFetch = jest.fn((...args: any[]) =>
+const mockFetch = jest.fn((...args: any[]) =>
   Promise.resolve({
     json: () => Promise.resolve({ args: args }),
     ok: true,
@@ -73,5 +74,8 @@ jest.mock('../../lib/i18n/client', () => ({
 describe('User list', () => {
   it('renders all columns', () => {
     renderWithTheme(<UserList lang="en" users={users} />);
+
+    const nameColumn = screen.getByText('name');
+    expect(nameColumn).toBeInTheDocument();
   });
 });
