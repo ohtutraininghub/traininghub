@@ -19,12 +19,18 @@ const Tiptap = ({ lang, value, onChange }: TEditorProps) => {
     <>
       <Box
         sx={{
-          backgroundColor: 'surface.light',
+          backgroundColor: 'surface.main',
           border: 1,
           borderColor: 'surface.dark',
           borderRadius: 1,
           ':hover': {
             borderColor: 'black.main',
+          },
+          ':focus-within': {
+            borderColor: 'secondary.main',
+            outlineColor: 'secondary.main',
+            outlineStyle: 'solid',
+            outlineWidth: 1,
           },
           '.ProseMirror': {
             ml: 1,

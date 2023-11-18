@@ -117,6 +117,7 @@ export default function CourseForm({
           </InputLabel>
           <Input
             {...register('name')}
+            color="secondary"
             id="courseFormName"
             data-testid="courseFormName"
             error={!!errors.name}
@@ -150,6 +151,7 @@ export default function CourseForm({
                   <Select
                     {...field}
                     id="tagSelection"
+                    color="secondary"
                     multiple
                     renderValue={(field) => (
                       <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
@@ -200,6 +202,7 @@ export default function CourseForm({
           </InputLabel>
           <Input
             {...register('startDate')}
+            color="secondary"
             defaultValue={
               courseData ? dateToDateTimeLocal(courseData.startDate) : ''
             }
@@ -216,6 +219,7 @@ export default function CourseForm({
           </InputLabel>
           <Input
             {...register('endDate')}
+            color="secondary"
             defaultValue={
               courseData ? dateToDateTimeLocal(courseData.endDate) : ''
             }
@@ -234,6 +238,7 @@ export default function CourseForm({
             {...register('maxStudents', {
               setValueAs: (value) => Number(value),
             })}
+            color="secondary"
             id="courseFormMaxStudents"
             type="number"
             error={!!errors.maxStudents}

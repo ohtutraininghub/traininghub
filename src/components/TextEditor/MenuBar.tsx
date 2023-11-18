@@ -79,7 +79,7 @@ export const MenuBar = ({ lang }: DictProps) => {
       backgroundColor: 'surface.main',
     },
     '&.Mui-selected.Mui-focusVisible': {
-      backgroundColor: 'surface.dark',
+      backgroundColor: 'surface.main',
     },
     '&:hover': {
       backgroundColor: 'surface.light',
