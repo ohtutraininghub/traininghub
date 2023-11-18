@@ -75,7 +75,7 @@ describe('Course Form New Course Tests', () => {
     });
   });
 
-  it('Form is submitted with correct values when no last enroll date is given', async () => {
+  it('Form is submitted with correct values when no last enroll or cancel dates are given', async () => {
     const inputValues = {
       name: 'New course',
       description: 'A test course',
@@ -110,6 +110,7 @@ describe('Course Form New Course Tests', () => {
         maxStudents: Number(inputValues.maxStudents),
         startDate: new Date(inputValues.startDate),
         lastEnrollDate: null,
+        lastCancelDate: null,
       });
     });
   });
@@ -154,6 +155,52 @@ describe('Course Form New Course Tests', () => {
         maxStudents: Number(inputValues.maxStudents),
         startDate: new Date(inputValues.startDate),
         lastEnrollDate: new Date(inputValues.lastEnrollDate),
+        lastCancelDate: null,
+      });
+    });
+  });
+
+  it('Form is submitted with correct values when last cancel date is given', async () => {
+    const inputValues = {
+      name: 'New course',
+      description: 'A test course',
+      startDate: '2053-09-13T09:30',
+      endDate: '2053-10-13T17:30',
+      lastCancelDate: '2053-09-13T09:30',
+      maxStudents: '12',
+      tags: [],
+    };
+
+    const name = screen.getByTestId('courseFormName');
+    const description = screen.getByTestId('courseFormDescription');
+    const startDate = screen.getByTestId('courseFormStartDate');
+    const endDate = screen.getByTestId('courseFormEndDate');
+    const lastCancelDate = screen.getByTestId('courseFormLastCancelDate');
+    const maxStudents = screen.getByTestId('courseFormMaxStudents');
+    const submitButton = screen.getByTestId('courseFormSubmit');
+
+    await userEvent.type(name, inputValues.name);
+    await userEvent.type(description, inputValues.description);
+
+    fireEvent.change(startDate, { target: { value: inputValues.startDate } });
+    fireEvent.change(endDate, { target: { value: inputValues.endDate } });
+    fireEvent.change(lastCancelDate, {
+      target: { value: inputValues.lastCancelDate },
+    });
+
+    await userEvent.clear(maxStudents);
+    await userEvent.type(maxStudents, inputValues.maxStudents);
+
+    await userEvent.click(submitButton);
+
+    await waitFor(() => {
+      expect(mockFetch).toBeCalledWith('/api/course', {
+        ...inputValues,
+        endDate: new Date(inputValues.endDate),
+        maxStudents: Number(inputValues.maxStudents),
+        startDate: new Date(inputValues.startDate),
+        lastEnrollDate: null,
+        lastCancelDate: new Date(inputValues.lastCancelDate),
       });
     });
   });
@@ -173,6 +220,7 @@ describe('Course Form Course Edit Tests', () => {
       startDate: courseStart,
       endDate: courseEnd,
       lastEnrollDate: oneDayBeforeStart,
+      lastCancelDate: oneDayBeforeStart,
       maxStudents: 55,
       tags: [],
     };
@@ -190,6 +238,9 @@ describe('Course Form Course Edit Tests', () => {
     const endDate = screen.getByTestId('courseFormEndDate') as HTMLInputElement;
     const lastEnrollDate = screen.getByTestId(
       'courseFormLastEnrollDate'
+    ) as HTMLInputElement;
+    const lastCancelDate = screen.getByTestId(
+      'courseFormLastCancelDate'
     ) as HTMLInputElement;
     const maxStudents = screen.getByTestId(
       'courseFormMaxStudents'
@@ -203,9 +254,12 @@ describe('Course Form Course Edit Tests', () => {
     expect(lastEnrollDate.value).toBe(
       dateToDateTimeLocal(course.lastEnrollDate)
     );
+    expect(lastCancelDate.value).toBe(
+      dateToDateTimeLocal(course.lastCancelDate)
+    );
   });
 
-  it('Form is filled with course values in Edit Mode when lastEnrollDate is null', async () => {
+  it('Form is filled with course values in Edit Mode when last enroll and last cancel dates are null', async () => {
     const course = {
       id: '1234',
       createdById: '30',
@@ -214,6 +268,7 @@ describe('Course Form Course Edit Tests', () => {
       startDate: new Date(),
       endDate: new Date(),
       lastEnrollDate: null,
+      lastCancelDate: null,
       maxStudents: 55,
       tags: [],
     };
@@ -232,6 +287,9 @@ describe('Course Form Course Edit Tests', () => {
     const lastEnrollDate = screen.getByTestId(
       'courseFormLastEnrollDate'
     ) as HTMLInputElement;
+    const lastCancelDate = screen.getByTestId(
+      'courseFormLastCancelDate'
+    ) as HTMLInputElement;
     const maxStudents = screen.getByTestId(
       'courseFormMaxStudents'
     ) as HTMLInputElement;
@@ -242,6 +300,7 @@ describe('Course Form Course Edit Tests', () => {
     expect(startDate.value).toBe(dateToDateTimeLocal(course.startDate));
     expect(endDate.value).toBe(dateToDateTimeLocal(course.endDate));
     expect(lastEnrollDate.value).toBe('');
+    expect(lastCancelDate.value).toBe('');
   });
 
   it('Form is submitted with correct values in Edit Mode', async () => {
@@ -253,6 +312,7 @@ describe('Course Form Course Edit Tests', () => {
       startDate: courseStart,
       endDate: courseEnd,
       lastEnrollDate: oneDayBeforeStart,
+      lastCancelDate: oneDayBeforeStart,
       maxStudents: 55,
       tags: [],
     };
@@ -269,11 +329,12 @@ describe('Course Form Course Edit Tests', () => {
         maxStudents: Number(course.maxStudents),
         startDate: new Date(course.startDate),
         lastEnrollDate: new Date(course.lastEnrollDate),
+        lastCancelDate: new Date(course.lastCancelDate),
       });
     });
   });
 
-  it('Form is submitted with correct values in Edit Mode when last enroll date is null', async () => {
+  it('Form is submitted with correct values in Edit Mode when last enroll and last cancel dates are null', async () => {
     const course = {
       id: '1234',
       createdById: '30',
@@ -282,6 +343,7 @@ describe('Course Form Course Edit Tests', () => {
       startDate: new Date(Date.now() + 1000 * 60 * 60 * 24),
       endDate: new Date(Date.now() + 1000 * 60 * 60 * 24 * 2),
       lastEnrollDate: null,
+      lastCancelDate: null,
       maxStudents: 55,
       tags: [],
     };
@@ -294,10 +356,11 @@ describe('Course Form Course Edit Tests', () => {
     await waitFor(() => {
       expect(mockFetch).toBeCalledWith('/api/course', {
         ...course,
-        endDate: new Date(course.endDate),
-        maxStudents: Number(course.maxStudents),
         startDate: new Date(course.startDate),
+        endDate: new Date(course.endDate),
         lastEnrollDate: null,
+        lastCancelDate: null,
+        maxStudents: Number(course.maxStudents),
       });
     });
   });

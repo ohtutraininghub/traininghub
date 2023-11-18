@@ -43,8 +43,8 @@ describe('EnrollHolder component', () => {
         isUserEnrolled={false}
         courseId="123"
         isCourseFull={false}
-        startDate={new Date()}
         lastEnrollDate={null}
+        lastCancelDate={null}
         lang="en"
       />
     );
@@ -59,8 +59,8 @@ describe('EnrollHolder component', () => {
         isUserEnrolled={true}
         courseId="123"
         isCourseFull={false}
-        startDate={new Date()}
         lastEnrollDate={null}
+        lastCancelDate={null}
         lang="en"
       />
     );
@@ -77,8 +77,8 @@ describe('EnrollHolder component', () => {
         isUserEnrolled={false}
         courseId="123"
         isCourseFull={true}
-        startDate={new Date()}
         lastEnrollDate={null}
+        lastCancelDate={null}
         lang="en"
       />
     );
@@ -93,8 +93,8 @@ describe('EnrollHolder component', () => {
         isUserEnrolled={false}
         courseId="123"
         isCourseFull={false}
-        startDate={new Date()}
         lastEnrollDate={yesterday}
+        lastCancelDate={null}
         lang="en"
       />
     );

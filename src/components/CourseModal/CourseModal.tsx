@@ -156,8 +156,8 @@ export default function CourseModal({
               isUserEnrolled={isUserEnrolled}
               courseId={course.id}
               isCourseFull={isCourseFull}
-              startDate={course.startDate}
               lastEnrollDate={course.lastEnrollDate}
+              lastCancelDate={course.lastCancelDate}
             />
           </Box>
           <Box sx={{ flex: 1 }}></Box>

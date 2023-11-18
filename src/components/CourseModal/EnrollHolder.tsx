@@ -13,16 +13,16 @@ interface Props extends DictProps {
   isUserEnrolled: boolean;
   courseId: string;
   isCourseFull: boolean;
-  startDate: Date;
   lastEnrollDate: Date | null;
+  lastCancelDate: Date | null;
 }
 
 export default function EnrollHolder({
   isUserEnrolled,
   courseId,
   isCourseFull,
-  startDate,
   lastEnrollDate,
+  lastCancelDate,
   lang,
 }: Props) {
   const { t } = useTranslation(lang, 'components');
@@ -30,7 +30,11 @@ export default function EnrollHolder({
     return (
       <>
         <Typography>{t('EnrollHolder.confirmMessage')}</Typography>
-        <CancelEnroll courseId={courseId} startDate={startDate} lang={lang} />
+        <CancelEnroll
+          courseId={courseId}
+          lastCancelDate={lastCancelDate}
+          lang={lang}
+        />
       </>
     );
   }
