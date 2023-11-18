@@ -1,9 +1,7 @@
 'use client';
 
-import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import TimerOutlined from '@mui/icons-material/TimerOutlined';
-import Typography from '@mui/material/Typography';
 import { ConfirmCard } from '../ConfirmCard';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -13,6 +11,7 @@ import { msUntilStart } from '@/lib/timedateutils';
 import { minCancelTimeMs } from '@/lib/zod/courses';
 import { DictProps } from '@/lib/i18n';
 import { useTranslation } from '@i18n/client';
+import InfoBox from './InfoBox';
 
 interface Props extends DictProps {
   courseId: string;
@@ -37,21 +36,10 @@ export default function CancelEnroll({ courseId, startDate, lang }: Props) {
 
   if (!cancellingAllowed(startDate)) {
     return (
-      <Box
-        sx={{
-          display: 'flex',
-          flexFlow: 'row',
-          border: 1,
-          borderRadius: '8px',
-          mt: '1em',
-          p: '1em 1em 1em 0.5em',
-        }}
-      >
-        <TimerOutlined sx={{ flex: 1 }} />
-        <Typography variant="body2" sx={{ flex: 6 }}>
-          {t('CancelEnroll.pastCancellationDate')}
-        </Typography>
-      </Box>
+      <InfoBox
+        infoText={t('CancelEnroll.pastCancellationDate')}
+        Icon={TimerOutlined}
+      />
     );
   }
 

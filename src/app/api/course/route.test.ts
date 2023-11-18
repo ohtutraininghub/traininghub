@@ -1,4 +1,4 @@
-import { MessageType } from '@/lib/response/responseUtil';
+import { MessageType, StatusCodeType } from '@/lib/response/responseUtil';
 import { GET, POST, PUT } from './route';
 import { prisma, clearDatabase } from '@/lib/prisma';
 import { NextRequest } from 'next/server';
@@ -68,6 +68,17 @@ const startDateInThePastCourse = {
   startDate: '1900-09-27T00:00:00Z',
   endDate: '2100-09-28T00:00:00Z',
   maxStudents: 20,
+  tags: [],
+};
+
+const lastEnrollDateAfterEndCourse = {
+  name: 'Git Fundamentals',
+  description:
+    'This course introduces you to the basics of version control with Git.',
+  startDate: '2100-09-27T00:00:00Z',
+  endDate: '2100-09-28T00:00:00Z',
+  lastEnrollDate: '2100-09-29T00:00:00Z',
+  maxStudents: 8,
   tags: [],
 };
 
@@ -168,6 +179,19 @@ describe('Course API tests', () => {
       expect(tblLength).toBe(0);
       expect(response.status).toBe(400);
     });
+
+    it('fails if last enroll date is after the end of the course', async () => {
+      const req = mockPostRequest(lastEnrollDateAfterEndCourse);
+      const response = await POST(req);
+      const data = await response.json();
+      expect(data.message).toContain(
+        'The last date to enroll cannot be after the end date of the course'
+      );
+      expect(data.messageType).toBe(MessageType.ERROR);
+      const tblLength = await getTableLength();
+      expect(tblLength).toBe(0);
+      expect(response.status).toBe(StatusCodeType.BAD_REQUEST);
+    });
   });
 
   describe('PUT', () => {
@@ -177,6 +201,7 @@ describe('Course API tests', () => {
       description: 'Security by obscurity',
       startDate: new Date(Date.now() + 1000 * 60 * 60 * 24),
       endDate: new Date(Date.now() + 1000 * 60 * 60 * 24 * 2),
+      lastEnrollDate: new Date(Date.now() + 1000 * 60 * 60 * 24),
       maxStudents: 200,
       createdById: testUser.id,
       tags: [],
@@ -186,6 +211,7 @@ describe('Course API tests', () => {
       ...courseDataWithDate,
       startDate: courseDataWithDate.startDate.toString(),
       endDate: courseDataWithDate.endDate.toString(),
+      lastEnrollDate: courseDataWithDate.lastEnrollDate.toString(),
     };
 
     it('Should return 404 when course does not exist in the db', async () => {
@@ -240,6 +266,36 @@ describe('Course API tests', () => {
       updatedCourseInDb.tags.map((e) => {
         expect(['Unit Testing', 'Jest']).toContain(e.name);
       });
+    });
+
+    it('Fails if last enroll date is updated to be after course has ended', async () => {
+      await prisma.course.create({
+        data: {
+          ...courseDataWithDate,
+          tags: {
+            connect: [],
+          },
+        },
+      });
+
+      const courseInDb = await prisma.course.findFirst();
+      const enrollAfterEndDate = new Date(
+        new Date(courseData.endDate).getTime() + 60 * 60 * 1000
+      );
+      const updatedCourse = {
+        ...courseData,
+        lastEnrollDate: enrollAfterEndDate,
+        id: courseInDb?.id || null,
+      };
+
+      const req = mockUpdateRequest(updatedCourse);
+      const response = await PUT(req);
+      const data = await response.json();
+      expect(data.message).toBe(
+        'The last date to enroll cannot be after the end date of the course.'
+      );
+      expect(data.messageType).toBe(MessageType.ERROR);
+      expect(response.status).toBe(StatusCodeType.BAD_REQUEST);
     });
   });
 });

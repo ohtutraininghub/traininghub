@@ -33,17 +33,18 @@ model User {
 }
 
 model Course {
-  id          String     @id @default(cuid())
-  name        String
-  description String
-  startDate   DateTime
-  endDate     DateTime
-  maxStudents Int
-  students    User[]
-  tags        Tag[]
-  createdBy   User?      @relation(name: "createdCourses", references: [id], fields: [createdById])
-  createdById String
-  calendar    Calendar[]
+  id             String     @id @default(cuid())
+  name           String
+  description    String
+  startDate      DateTime
+  endDate        DateTime
+  lastEnrollDate DateTime?
+  maxStudents    Int
+  students       User[]
+  tags           Tag[]
+  createdBy      User?      @relation(name: "createdCourses", references: [id], fields: [createdById])
+  createdById    String
+  calendar       Calendar[]
 }
 
 model Calendar {
