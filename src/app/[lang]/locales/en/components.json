@@ -10,6 +10,7 @@
     "signOut": "Sign out"
   },
   "CourseModal": {
+    "enrollmentDeadlineHeader": "Note: Enrollment deadline ",
     "description": "Description",
     "enrolls": "Enrolls: {{studentCount}} / {{maxStudentCount}}"
   },
@@ -52,7 +53,8 @@
     "confirmEnroll": "Confirm enroll?"
   },
   "EnrollHolder": {
-    "confirmMessage": "You have enrolled for this course!"
+    "confirmMessage": "You have enrolled for this course!",
+    "pastEnrollmentDeadline": "Enrollment for this course has ended"
   },
   "CancelEnroll": {
     "pastCancellationDate": "The course starts soon. Contact the trainer if you want to cancel your enrollment.",
