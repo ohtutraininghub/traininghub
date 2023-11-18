@@ -11,7 +11,6 @@ interface TEditorProps extends DictProps {
   onChange(_body: string): void;
 }
 
-// define your extension array
 const extensions = [StarterKit, Link, Underline];
 
 const Tiptap = ({ lang, value, onChange }: TEditorProps) => {
@@ -48,9 +47,7 @@ const Tiptap = ({ lang, value, onChange }: TEditorProps) => {
           content={value}
           onUpdate={({ editor }) => onChange(editor.getHTML())}
         >
-          {/* <BubbleMenu>
-            <BubbleMenuOptions />
-          </BubbleMenu> */}
+          <></>
         </EditorProvider>
       </Box>
     </>

@@ -132,6 +132,7 @@ export const MenuBar = ({ lang }: DictProps) => {
 
           <Tooltip title={t('TextEditor.Tooltip.bold')} arrow>
             <IconButton
+              data-testid="courseFormBoldButton"
               sx={editor.isActive('bold') ? emphasize : {}}
               onClick={() => editor.chain().focus().toggleBold().run()}
               disabled={!editor.can().chain().focus().toggleBold().run()}
