@@ -1,3 +1,4 @@
+import DOMPurify from 'isomorphic-dompurify';
 import z from 'zod';
 
 // The minimum time in milliseconds to course start
@@ -25,7 +26,10 @@ const withRefine = <O extends CourseSchemaType, T extends z.ZodTypeDef, I>(
 const courseSchemaBase = z
   .object({
     name: z.string().min(1, 'Name is required'),
-    description: z.string().min(1, 'Description is required'),
+    description: z
+      .string()
+      .min(1, 'Description is required')
+      .transform((desc) => DOMPurify.sanitize(desc)),
     startDate: z
       .string()
       .min(1, 'Start date is required')

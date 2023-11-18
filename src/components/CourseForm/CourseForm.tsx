@@ -30,7 +30,6 @@ import { CourseWithTags } from '@/lib/prisma/courses';
 import { useTranslation } from '@i18n/client';
 import { DictProps } from '@i18n/index';
 import RichTextEditor from '@/components/TextEditor';
-import DOMPurify from 'isomorphic-dompurify';
 
 interface CourseFormProps extends DictProps {
   tags: Tag[];
@@ -71,10 +70,6 @@ export default function CourseForm({
   });
 
   const submitForm = async (data: FormType) => {
-    /* By default, the sanitizer accepts all HTML tags and excludes everything else. 
-    To adjust the sanitizer, please refer to the documentation at https://github.com/cure53/DOMPurify/blob/main/README.md.
-    */
-    data.description = DOMPurify.sanitize(data.description);
     const responseJson = isEditMode
       ? await update(`/api/course`, data)
       : await post('/api/course', data);
