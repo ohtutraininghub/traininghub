@@ -8,6 +8,8 @@ import SpeedDialAction from '@mui/material/SpeedDialAction';
 import StyleIcon from '@mui/icons-material/Style';
 import SchoolIcon from '@mui/icons-material/School';
 import { useRouter } from 'next/navigation';
+import { Role } from '@prisma/client';
+import { useSession } from 'next-auth/react';
 
 export interface speedDialAction {
   icon: React.JSX.Element;
@@ -33,10 +35,18 @@ export const speedDialActions: speedDialAction[] = [
 
 export default function SpeedDialMenu() {
   const router = useRouter();
+  const { data: session, status } = useSession({ required: true });
+
+  if (status === 'loading') return null;
 
   const handleActionClick = (link: string) => {
     router.push(link);
   };
+
+  const actions =
+    session.user.role === Role.ADMIN
+      ? speedDialActions
+      : speedDialActions.filter((action) => !action.link.startsWith('admin'));
 
   return (
     <Box
@@ -48,7 +58,7 @@ export default function SpeedDialMenu() {
       }}
     >
       <SpeedDial ariaLabel="SpeedDial menu" icon={<SpeedDialIcon />}>
-        {speedDialActions.map((action) => (
+        {actions.map((action) => (
           <SpeedDialAction
             key={action.name}
             icon={action.icon}

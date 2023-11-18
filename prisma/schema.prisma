@@ -12,28 +12,40 @@ datasource db {
   extensions = [citext]
 }
 
+enum Role {
+  ADMIN
+  TRAINEE
+  TRAINER
+}
+
 model User {
-  id            String     @id @default(cuid())
-  name          String?
-  email         String?    @unique
-  emailVerified DateTime?
-  image         String?
-  courses       Course[]
-  accounts      Account[]
-  sessions      Session[]
-  calendar      Calendar[]
+  id             String     @id @default(cuid())
+  name           String?
+  email          String?    @unique
+  emailVerified  DateTime?
+  image          String?
+  courses        Course[]
+  createdCourses Course[]   @relation(name: "createdCourses")
+  accounts       Account[]
+  sessions       Session[]
+  role           Role       @default(TRAINEE)
+  calendar       Calendar[]
 }
 
 model Course {
-  id          String     @id @default(cuid())
-  name        String
-  description String
-  startDate   DateTime
-  endDate     DateTime
-  maxStudents Int
-  students    User[]
-  tags        Tag[]
-  calendar    Calendar[]
+  id             String     @id @default(cuid())
+  name           String
+  description    String
+  startDate      DateTime
+  endDate        DateTime
+  lastEnrollDate DateTime?
+  lastCancelDate DateTime?
+  maxStudents    Int
+  students       User[]
+  tags           Tag[]
+  createdBy      User?      @relation(name: "createdCourses", references: [id], fields: [createdById])
+  createdById    String
+  calendar       Calendar[]
 }
 
 model Calendar {

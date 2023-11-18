@@ -3,7 +3,10 @@ import { POST, PUT } from './route';
 import { clearDatabase, prisma } from '@/lib/prisma';
 import { NextRequest } from 'next/server';
 import { createMocks } from 'node-mocks-http';
-import { minCancelTimeMs } from '@/lib/zod/courses';
+
+const testUser = {
+  id: 'cloeouh4x0000qiexq8tqzvh7',
+};
 
 const newCourse = {
   name: 'Git Fundamentals',
@@ -12,23 +15,34 @@ const newCourse = {
   startDate: '2100-01-01T00:00:00Z',
   endDate: '2100-01-02T00:00:00Z',
   maxStudents: 3,
+  createdById: testUser.id,
 };
 
-const startMsSoon = Date.now() + Math.round(minCancelTimeMs / 2);
-const startDateSoon = new Date(startMsSoon);
-const endDateSoon = new Date(startMsSoon + 24 * 60 * 60 * 1000); // 1 day course
+const dateYesterday = new Date(Date.now() - 24 * 60 * 60 * 1000);
+const dateTomorrow = new Date(Date.now() + 24 * 60 * 60 * 1000);
+const dateTomorrowEvening = new Date(Date.now() + 32 * 60 * 60 * 1000);
 
-const startingSoonCourse = {
+const pastDeadlineToEnrollCourse = {
   name: 'Git Fundamentals',
   description:
     'This course will walk you through the fundamentals of using Git for version control. You will learn how to create a local Git repository, commit files and push your changes to a remote repository. The course will introduce you to concepts like the working copy and the staging area and teach you how to organise you repository using tags and branches. You will learn how to make pull requests and merge branches, and tackle merge conflicts when they arise.',
-  startDate: startDateSoon,
-  endDate: endDateSoon,
+  startDate: dateYesterday,
+  endDate: dateTomorrow,
+  lastEnrollDate: dateYesterday,
   maxStudents: 8,
+  createdById: testUser.id,
 };
 
-const testUser = {
-  id: 'cloeouh4x0000qiexq8tqzvh7',
+const pastDeadlineToCancelCourse = {
+  name: 'Git Fundamentals',
+  description:
+    'This course will walk you through the fundamentals of using Git for version control. You will learn how to create a local Git repository, commit files and push your changes to a remote repository. The course will introduce you to concepts like the working copy and the staging area and teach you how to organise you repository using tags and branches. You will learn how to make pull requests and merge branches, and tackle merge conflicts when they arise.',
+  startDate: dateTomorrow,
+  endDate: dateTomorrowEvening,
+  lastEnrollDate: dateYesterday,
+  lastCancelDate: dateYesterday,
+  maxStudents: 8,
+  createdById: testUser.id,
 };
 
 const invalidCourseId = '123';
@@ -121,6 +135,22 @@ describe('Course enrollment API tests', () => {
       expect(response.status).toBe(StatusCodeType.UNPROCESSABLE_CONTENT);
     });
 
+    it('trying to enroll after enrollment deadline is not possible', async () => {
+      const existingCourse = await prisma.course.create({
+        data: pastDeadlineToEnrollCourse,
+      });
+
+      const req = mockPostRequest(existingCourse.id);
+      const response = await POST(req);
+      const data = await response.json();
+
+      expect(data.message).toBe(
+        'No enrolling allowed after enrollment deadline'
+      );
+      expect(data.messageType).toBe(MessageType.ERROR);
+      expect(response.status).toBe(StatusCodeType.UNPROCESSABLE_CONTENT);
+    });
+
     it('enrolling in a course already signed up for returns error message', async () => {
       const alreadyEnrolledCourse = await prisma.course.create({
         data: {
@@ -183,7 +213,7 @@ describe('Course enrollment API tests', () => {
     it('cancelling enrollment after cancellation deadline is not possible', async () => {
       const enrolledCourse = await prisma.course.create({
         data: {
-          ...startingSoonCourse,
+          ...pastDeadlineToCancelCourse,
           students: {
             connect: [{ id: testUser.id }],
           },

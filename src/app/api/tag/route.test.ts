@@ -3,6 +3,21 @@ import { NextRequest } from 'next/server';
 import { POST } from './route';
 import { clearDatabase, prisma } from '@/lib/prisma';
 import { MessageType, StatusCodeType } from '@/lib/response/responseUtil';
+import { Role } from '@prisma/client';
+
+const testUser = {
+  id: 'cloeouh4x0000qiexq8tqzvh7',
+};
+
+jest.mock('../../../lib/auth', () => ({
+  getServerAuthSession: async () =>
+    Promise.resolve({
+      user: {
+        id: testUser.id,
+        role: Role.ADMIN,
+      },
+    }),
+}));
 
 const existingTag = { name: 'Git' };
 const newTag = { name: 'Jenkins' };

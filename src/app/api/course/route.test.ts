@@ -1,12 +1,30 @@
-import { MessageType } from '@/lib/response/responseUtil';
+import { MessageType, StatusCodeType } from '@/lib/response/responseUtil';
 import { GET, POST, PUT } from './route';
 import { prisma, clearDatabase } from '@/lib/prisma';
 import { NextRequest } from 'next/server';
 import { createMocks } from 'node-mocks-http';
+import { Role } from '@prisma/client';
+
+const testUser = {
+  id: 'clo079ls3000108jsbdbsc8pv',
+};
 
 beforeEach(async () => {
   await clearDatabase();
+  await prisma.user.create({
+    data: { id: testUser.id },
+  });
 });
+
+jest.mock('../../../lib/auth', () => ({
+  getServerAuthSession: async () =>
+    Promise.resolve({
+      user: {
+        id: testUser.id,
+        role: Role.TRAINER,
+      },
+    }),
+}));
 
 const newCourse = {
   name: 'Python',
@@ -53,6 +71,29 @@ const startDateInThePastCourse = {
   tags: [],
 };
 
+const lastEnrollDateAfterEndCourse = {
+  name: 'Git Fundamentals',
+  description:
+    'This course introduces you to the basics of version control with Git.',
+  startDate: '2100-09-27T00:00:00Z',
+  endDate: '2100-09-28T00:00:00Z',
+  lastEnrollDate: '2100-09-29T00:00:00Z',
+  maxStudents: 8,
+  tags: [],
+};
+
+const lastCancelDateAfterEndCourse = {
+  name: 'Git Fundamentals',
+  description:
+    'This course introduces you to the basics of version control with Git.',
+  startDate: '2100-09-27T00:00:00Z',
+  endDate: '2100-09-28T00:00:00Z',
+  lastEnrollDate: '2100-09-26T00:00:00Z',
+  lastCancelDate: '2100-09-29T00:00:00Z',
+  maxStudents: 8,
+  tags: [],
+};
+
 const getTableLength = async () => {
   const allCourses = await prisma.course.findMany();
   return allCourses.length;
@@ -72,7 +113,7 @@ const mockUpdateRequest = (body: any) => {
   }).req;
 };
 
-describe('API', () => {
+describe('Course API tests', () => {
   describe('GET', () => {
     it('returns an empty list from the database at the beginning of the tests', async () => {
       const response = await GET();
@@ -150,6 +191,32 @@ describe('API', () => {
       expect(tblLength).toBe(0);
       expect(response.status).toBe(400);
     });
+
+    it('fails if last enroll date is after the end of the course', async () => {
+      const req = mockPostRequest(lastEnrollDateAfterEndCourse);
+      const response = await POST(req);
+      const data = await response.json();
+      expect(data.message).toContain(
+        'The last date to enroll cannot be after the end date of the course'
+      );
+      expect(data.messageType).toBe(MessageType.ERROR);
+      const tblLength = await getTableLength();
+      expect(tblLength).toBe(0);
+      expect(response.status).toBe(StatusCodeType.BAD_REQUEST);
+    });
+
+    it('fails if last cancel date is after the end of the course', async () => {
+      const req = mockPostRequest(lastCancelDateAfterEndCourse);
+      const response = await POST(req);
+      const data = await response.json();
+      expect(data.message).toContain(
+        'The last date to cancel enrollment cannot be after the end date of the course'
+      );
+      expect(data.messageType).toBe(MessageType.ERROR);
+      const tblLength = await getTableLength();
+      expect(tblLength).toBe(0);
+      expect(response.status).toBe(StatusCodeType.BAD_REQUEST);
+    });
   });
 
   describe('PUT', () => {
@@ -159,7 +226,10 @@ describe('API', () => {
       description: 'Security by obscurity',
       startDate: new Date(Date.now() + 1000 * 60 * 60 * 24),
       endDate: new Date(Date.now() + 1000 * 60 * 60 * 24 * 2),
+      lastEnrollDate: new Date(Date.now() + 1000 * 60 * 60 * 24),
+      lastCancelDate: new Date(Date.now() + 1000 * 60 * 60 * 12),
       maxStudents: 200,
+      createdById: testUser.id,
       tags: [],
     };
 
@@ -167,6 +237,8 @@ describe('API', () => {
       ...courseDataWithDate,
       startDate: courseDataWithDate.startDate.toString(),
       endDate: courseDataWithDate.endDate.toString(),
+      lastEnrollDate: courseDataWithDate.lastEnrollDate.toString(),
+      lastCancelDate: courseDataWithDate.lastCancelDate.toString(),
     };
 
     it('Should return 404 when course does not exist in the db', async () => {
@@ -221,6 +293,66 @@ describe('API', () => {
       updatedCourseInDb.tags.map((e) => {
         expect(['Unit Testing', 'Jest']).toContain(e.name);
       });
+    });
+
+    it('Fails if last enroll date is updated to be after course has ended', async () => {
+      await prisma.course.create({
+        data: {
+          ...courseDataWithDate,
+          tags: {
+            connect: [],
+          },
+        },
+      });
+
+      const courseInDb = await prisma.course.findFirst();
+      const enrollAfterEndDate = new Date(
+        new Date(courseData.endDate).getTime() + 60 * 60 * 1000
+      );
+      const updatedCourse = {
+        ...courseData,
+        lastEnrollDate: enrollAfterEndDate,
+        id: courseInDb?.id || null,
+      };
+
+      const req = mockUpdateRequest(updatedCourse);
+      const response = await PUT(req);
+      const data = await response.json();
+      expect(data.message).toBe(
+        'The last date to enroll cannot be after the end date of the course.'
+      );
+      expect(data.messageType).toBe(MessageType.ERROR);
+      expect(response.status).toBe(StatusCodeType.BAD_REQUEST);
+    });
+
+    it('Fails if last cancel date is updated to be after course has ended', async () => {
+      await prisma.course.create({
+        data: {
+          ...courseDataWithDate,
+          tags: {
+            connect: [],
+          },
+        },
+      });
+
+      const courseInDb = await prisma.course.findFirst();
+      const cancelAfterEndDate = new Date(
+        new Date(courseData.endDate).getTime() + 60 * 60 * 1000
+      );
+      const updatedCourse = {
+        ...courseData,
+        lastCancelDate: cancelAfterEndDate,
+        id: courseInDb?.id || null,
+      };
+
+      const req = mockUpdateRequest(updatedCourse);
+      const response = await PUT(req);
+      const data = await response.json();
+      expect(data.message).toBe(
+        'The last date to cancel enrollment cannot be after the end date of the course.'
+      );
+      expect(data.messageType).toBe(MessageType.ERROR);
+      expect(response.status).toBe(StatusCodeType.BAD_REQUEST);
     });
   });
 });

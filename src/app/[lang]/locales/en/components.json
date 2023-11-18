@@ -10,6 +10,7 @@
     "signOut": "Sign out"
   },
   "CourseModal": {
+    "enrollmentDeadlineHeader": "Note: Enrollment deadline ",
     "description": "Description",
     "enrolls": "Enrolls: {{studentCount}} / {{maxStudentCount}}"
   },
@@ -22,11 +23,24 @@
   },
   "CourseList": {
     "courses": "Courses",
+    "noCoursesToShow": "No courses found",
     "listControlLabel": "List",
     "gridControlLabel": "Grid"
   },
   "CourseCard": {
     "enrolls": "Enrolls: {{studentCount}} / {{maxStudentCount}}"
+  },
+  "CourseFilter": {
+    "button": {
+      "clearSearch": "Clear Search"
+    },
+    "label": {
+      "courseName": "Seach by name",
+      "endDate": "End date",
+      "noMatches": "No matches found",
+      "startDate": "Start date",
+      "tag": "Tag"
+    }
   },
   "CourseListView": {
     "enrolls": "Enrolls: {{studentCount}} / {{maxStudentCount}}"
@@ -39,7 +53,8 @@
     "confirmEnroll": "Confirm enroll?"
   },
   "EnrollHolder": {
-    "confirmMessage": "You have enrolled for this course!"
+    "confirmMessage": "You have enrolled for this course!",
+    "pastEnrollmentDeadline": "Enrollment for this course has ended"
   },
   "CancelEnroll": {
     "pastCancellationDate": "The course starts soon. Contact the trainer if you want to cancel your enrollment.",
@@ -53,6 +68,17 @@
     "viewProfile": "View profile",
     "signOut": "Sign out",
     "confirmSignOut": "Are you sure you want to sign out?"
+  },
+  "SearchMenu": {
+    "menuTitle": "Search for courses",
+    "filterInUse": "Showing filtered courses",
+    "tooltip": {
+      "collapseDrawer": "Close menu"
+    },
+    "button": {
+      "openSearchDrawer": "Search",
+      "clearSearch": "Clear Search"
+    }
   },
   "TagForm": {
     "submit": "Submit"
@@ -81,5 +107,9 @@
       "paragraph": "Text"
     },
     "linkPrompt": "Please enter the link as such 'www.example.com'"
+  },
+  "UnauthorizedError": {
+    "unauthorizedMessage": "You are not authorized to view this page",
+    "backToHome": "Back to home"
   }
 }

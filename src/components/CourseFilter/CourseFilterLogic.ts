@@ -3,22 +3,15 @@ CourseFilterLogic works in conjunction; e.g. if a courseName AND courseTag AND c
 to the user. If one of the contidions is not chosen, e.g. courseName being null, courses are filtered by the conjunction of courseTag AND courseDates etc.
 */
 
+import { CourseWithTagsAndStudentCount } from '@/lib/prisma/courses';
+
 export function filterCourses(
-  courses: ({
-    _count: { students: number };
-    tags: { id: string; name: string }[];
-  } & {
-    id: string;
-    name: string;
-    description: string;
-    startDate: Date;
-    endDate: Date;
-    maxStudents: number;
-  })[],
+  courses: CourseWithTagsAndStudentCount[],
   searchCourses: {
     courseName?: string | undefined;
     courseTag?: string | undefined;
-    courseDates?: string | undefined;
+    startDate?: string;
+    endDate?: string;
   }
 ) {
   let filteredCourses = [...courses];
@@ -38,19 +31,35 @@ export function filterCourses(
       )
     );
   }
-  if (searchCourses?.courseDates) {
-    const [start, end] = searchCourses.courseDates.split('-');
-    const startDate = new Date(start);
-    const endDate = new Date(end);
-    startDate.setDate(startDate.getDate() + 1);
-    endDate.setDate(endDate.getDate() + 1);
-    startDate.setUTCHours(0, 0, 0, 0);
-    endDate.setUTCHours(0, 0, 0, 0);
-    filteredCourses = filteredCourses.filter(
-      (course) =>
-        startDate <= new Date(course.startDate.setUTCHours(0, 0, 0, 0)) &&
-        new Date(course.endDate.setUTCHours(0, 0, 0, 0)) <= endDate
-    );
+
+  if (searchCourses.startDate || searchCourses.endDate) {
+    const startDate = searchCourses.startDate
+      ? new Date(searchCourses.startDate)
+      : undefined;
+    const endDate = searchCourses.endDate
+      ? new Date(searchCourses.endDate)
+      : undefined;
+
+    startDate?.setDate(startDate.getDate() + 1);
+    endDate?.setDate(endDate.getDate() + 1);
+    startDate?.setUTCHours(0, 0, 0, 0);
+    endDate?.setUTCHours(0, 0, 0, 0);
+
+    filteredCourses = filteredCourses.filter((course) => {
+      if (startDate && endDate) {
+        return (
+          startDate <= new Date(course.startDate.setUTCHours(0, 0, 0, 0)) &&
+          new Date(course.endDate.setUTCHours(0, 0, 0, 0)) <= endDate
+        );
+      }
+      if (startDate) {
+        return startDate <= new Date(course.startDate.setUTCHours(0, 0, 0, 0));
+      }
+      if (endDate) {
+        return new Date(course.endDate.setUTCHours(0, 0, 0, 0)) <= endDate;
+      }
+    });
   }
+
   return filteredCourses;
 }
