@@ -2,7 +2,6 @@
 
 import {
   Input,
-  TextField,
   InputLabel,
   Button,
   Box,
@@ -30,6 +29,7 @@ import { dateToDateTimeLocal } from '@/lib/timedateutils';
 import { CourseWithTags } from '@/lib/prisma/courses';
 import { useTranslation } from '@i18n/client';
 import { DictProps } from '@i18n/index';
+import RichTextEditor from '@/components/TextEditor';
 
 interface CourseFormProps extends DictProps {
   tags: Tag[];
@@ -114,6 +114,7 @@ export default function CourseForm({
           </InputLabel>
           <Input
             {...register('name')}
+            color="secondary"
             id="courseFormName"
             data-testid="courseFormName"
             error={!!errors.name}
@@ -124,19 +125,14 @@ export default function CourseForm({
           <InputLabel htmlFor="courseFormDescription">
             {t('CourseForm.description')}
           </InputLabel>
-          <TextField
-            {...register('description')}
-            id="courseFormDescription"
-            multiline
-            rows={10} // fixed row count to prevent re-render issue: [https://github.com/mui/material-ui/issues/33081]
-            error={!!errors.description}
-            autoComplete="off"
-            inputProps={{
-              'data-testid': 'courseFormDescription',
-              style: {
-                resize: 'block',
-              },
-            }}
+          <Controller
+            data-testid="courseFormDescription"
+            name="description"
+            control={control}
+            defaultValue=""
+            render={({ field: { onChange, value } }) => (
+              <RichTextEditor lang={lang} value={value} onChange={onChange} />
+            )}
           />
           <FormFieldError error={errors.description} />
 
@@ -153,6 +149,7 @@ export default function CourseForm({
                   <Select
                     {...field}
                     id="tagSelection"
+                    color="secondary"
                     multiple
                     renderValue={(field) => (
                       <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
@@ -198,12 +195,12 @@ export default function CourseForm({
               );
             }}
           />
-
           <InputLabel htmlFor="courseFormStartDate">
             {t('CourseForm.startDate')}
           </InputLabel>
           <Input
             {...register('startDate')}
+            color="secondary"
             defaultValue={
               courseData ? dateToDateTimeLocal(courseData.startDate) : ''
             }
@@ -215,12 +212,12 @@ export default function CourseForm({
             }}
           />
           <FormFieldError error={errors.startDate} />
-
           <InputLabel htmlFor="courseFormEndDate">
             {t('CourseForm.endDate')}
           </InputLabel>
           <Input
             {...register('endDate')}
+            color="secondary"
             defaultValue={
               courseData ? dateToDateTimeLocal(courseData.endDate) : ''
             }
@@ -238,6 +235,7 @@ export default function CourseForm({
           </InputLabel>
           <Input
             {...register('lastEnrollDate')}
+            color="secondary"
             defaultValue={
               courseData && courseData.lastEnrollDate
                 ? dateToDateTimeLocal(courseData.lastEnrollDate)
@@ -257,6 +255,7 @@ export default function CourseForm({
           </InputLabel>
           <Input
             {...register('lastCancelDate')}
+            color="secondary"
             defaultValue={
               courseData && courseData.lastCancelDate
                 ? dateToDateTimeLocal(courseData.lastCancelDate)
@@ -278,6 +277,7 @@ export default function CourseForm({
             {...register('maxStudents', {
               setValueAs: (value) => Number(value),
             })}
+            color="secondary"
             id="courseFormMaxStudents"
             type="number"
             error={!!errors.maxStudents}
@@ -287,7 +287,6 @@ export default function CourseForm({
             }}
           />
           <FormFieldError error={errors.maxStudents} />
-
           <Button
             type="submit"
             disabled={isSubmitting}
