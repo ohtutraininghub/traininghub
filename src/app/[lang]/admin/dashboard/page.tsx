@@ -6,6 +6,8 @@ import { Typography } from '@mui/material';
 import { getAllUsers } from '@/lib/prisma/users';
 import { getTags } from '@/lib/prisma/tags';
 
+export const dynamic = 'force-dynamic';
+
 interface Props {
   params: { lang: Locale };
 }
