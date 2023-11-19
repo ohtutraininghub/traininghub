@@ -24,4 +24,44 @@ describe('Course creation', () => {
     cy.contains(course.name).click();
     cy.contains(course.description);
   });
+
+  const requiredErrors = [
+    'Name is required',
+    'Description is required',
+    'Start date is required',
+    'End date is required',
+    'Max students is required',
+  ];
+
+  it('required errors should be displayed correctly', () => {
+    cy.login('trainer@test.com', 'TRAINER');
+    cy.visit('/course/create');
+    cy.wait(1500);
+    cy.getCy('courseFormMaxStudents').type('{backspace}{backspace}');
+    cy.getCy('courseFormSubmit').click();
+    requiredErrors.forEach((error) => cy.contains(error));
+  });
+
+  it('should not be possible for end date to be before start date', () => {
+    cy.login('trainer@test.com', 'TRAINER');
+    cy.visit('/course/create');
+    cy.getCy('courseFormStartDate').type('2030-06-01T08:30');
+    cy.getCy('courseFormEndDate').type('2030-05-01T08:30');
+    cy.getCy('courseFormSubmit').click();
+    cy.contains('The end date cannot be before the start date');
+  });
+
+  it('should not be possible for start date to be in the past', () => {
+    cy.login('trainer@test.com', 'TRAINER');
+    cy.visit('/course/create');
+    cy.getCy('courseFormStartDate').type('2020-06-01T08:30');
+    cy.getCy('courseFormSubmit').click();
+    cy.contains('Start date cannot be in the past');
+  });
+
+  it('should not be possible to access course creation page as a trainee', () => {
+    cy.login('trainee@test.com', 'TRAINEE');
+    cy.visit('/course/create');
+    cy.contains('You are not authorized to view this page');
+  });
 });
