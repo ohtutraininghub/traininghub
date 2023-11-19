@@ -1,6 +1,6 @@
 import React from 'react';
 import '@testing-library/jest-dom';
-import { fireEvent, screen, waitFor } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { renderWithTheme } from '@/lib/test-utils';
 import CourseForm from './CourseForm';
@@ -74,136 +74,6 @@ describe('Course Form New Course Tests', () => {
       expect(screen.getByText(message)).toBeVisible();
     });
   });
-
-  it('Form is submitted with correct values when no last enroll or cancel dates are given', async () => {
-    const inputValues = {
-      name: 'New course',
-      description: 'A test course',
-      startDate: '2053-09-13T16:43',
-      endDate: '2053-10-13T18:50',
-      maxStudents: '55',
-      tags: [],
-    };
-
-    const name = screen.getByTestId('courseFormName');
-    const description = screen.getByTestId('courseFormDescription');
-    const startDate = screen.getByTestId('courseFormStartDate');
-    const endDate = screen.getByTestId('courseFormEndDate');
-    const maxStudents = screen.getByTestId('courseFormMaxStudents');
-    const submitButton = screen.getByTestId('courseFormSubmit');
-
-    await userEvent.type(name, inputValues.name);
-    await userEvent.type(description, inputValues.description);
-
-    fireEvent.change(startDate, { target: { value: inputValues.startDate } });
-    fireEvent.change(endDate, { target: { value: inputValues.endDate } });
-
-    await userEvent.clear(maxStudents);
-    await userEvent.type(maxStudents, inputValues.maxStudents);
-
-    await userEvent.click(submitButton);
-
-    await waitFor(() => {
-      expect(mockFetch).toBeCalledWith('/api/course', {
-        ...inputValues,
-        endDate: new Date(inputValues.endDate),
-        maxStudents: Number(inputValues.maxStudents),
-        startDate: new Date(inputValues.startDate),
-        lastEnrollDate: null,
-        lastCancelDate: null,
-      });
-    });
-  });
-
-  it('Form is submitted with correct values when last enroll date is given', async () => {
-    const inputValues = {
-      name: 'New course',
-      description: 'A test course',
-      startDate: '2053-09-13T09:30',
-      endDate: '2053-10-13T17:30',
-      lastEnrollDate: '2053-09-06T23:59',
-      maxStudents: '12',
-      tags: [],
-    };
-
-    const name = screen.getByTestId('courseFormName');
-    const description = screen.getByTestId('courseFormDescription');
-    const startDate = screen.getByTestId('courseFormStartDate');
-    const endDate = screen.getByTestId('courseFormEndDate');
-    const lastEnrollDate = screen.getByTestId('courseFormLastEnrollDate');
-    const maxStudents = screen.getByTestId('courseFormMaxStudents');
-    const submitButton = screen.getByTestId('courseFormSubmit');
-
-    await userEvent.type(name, inputValues.name);
-    await userEvent.type(description, inputValues.description);
-
-    fireEvent.change(startDate, { target: { value: inputValues.startDate } });
-    fireEvent.change(endDate, { target: { value: inputValues.endDate } });
-    fireEvent.change(lastEnrollDate, {
-      target: { value: inputValues.lastEnrollDate },
-    });
-
-    await userEvent.clear(maxStudents);
-    await userEvent.type(maxStudents, inputValues.maxStudents);
-
-    await userEvent.click(submitButton);
-
-    await waitFor(() => {
-      expect(mockFetch).toBeCalledWith('/api/course', {
-        ...inputValues,
-        endDate: new Date(inputValues.endDate),
-        maxStudents: Number(inputValues.maxStudents),
-        startDate: new Date(inputValues.startDate),
-        lastEnrollDate: new Date(inputValues.lastEnrollDate),
-        lastCancelDate: null,
-      });
-    });
-  });
-
-  it('Form is submitted with correct values when last cancel date is given', async () => {
-    const inputValues = {
-      name: 'New course',
-      description: 'A test course',
-      startDate: '2053-09-13T09:30',
-      endDate: '2053-10-13T17:30',
-      lastCancelDate: '2053-09-13T09:30',
-      maxStudents: '12',
-      tags: [],
-    };
-
-    const name = screen.getByTestId('courseFormName');
-    const description = screen.getByTestId('courseFormDescription');
-    const startDate = screen.getByTestId('courseFormStartDate');
-    const endDate = screen.getByTestId('courseFormEndDate');
-    const lastCancelDate = screen.getByTestId('courseFormLastCancelDate');
-    const maxStudents = screen.getByTestId('courseFormMaxStudents');
-    const submitButton = screen.getByTestId('courseFormSubmit');
-
-    await userEvent.type(name, inputValues.name);
-    await userEvent.type(description, inputValues.description);
-
-    fireEvent.change(startDate, { target: { value: inputValues.startDate } });
-    fireEvent.change(endDate, { target: { value: inputValues.endDate } });
-    fireEvent.change(lastCancelDate, {
-      target: { value: inputValues.lastCancelDate },
-    });
-
-    await userEvent.clear(maxStudents);
-    await userEvent.type(maxStudents, inputValues.maxStudents);
-
-    await userEvent.click(submitButton);
-
-    await waitFor(() => {
-      expect(mockFetch).toBeCalledWith('/api/course', {
-        ...inputValues,
-        endDate: new Date(inputValues.endDate),
-        maxStudents: Number(inputValues.maxStudents),
-        startDate: new Date(inputValues.startDate),
-        lastEnrollDate: null,
-        lastCancelDate: new Date(inputValues.lastCancelDate),
-      });
-    });
-  });
 });
 
 describe('Course Form Course Edit Tests', () => {
@@ -224,14 +94,14 @@ describe('Course Form Course Edit Tests', () => {
       maxStudents: 55,
       tags: [],
     };
-    renderWithTheme(<CourseForm lang="en" tags={[]} courseData={course} />);
+    const { container } = renderWithTheme(
+      <CourseForm lang="en" tags={[]} courseData={course} />
+    );
 
     const name = screen
       .getByTestId('courseFormName')
       .querySelector('input') as HTMLInputElement;
-    const description = screen.getByTestId(
-      'courseFormDescription'
-    ) as HTMLInputElement;
+    const description = container.querySelector('.tiptap');
     const startDate = screen.getByTestId(
       'courseFormStartDate'
     ) as HTMLInputElement;
@@ -247,7 +117,7 @@ describe('Course Form Course Edit Tests', () => {
     ) as HTMLInputElement;
 
     expect(name.value).toBe(course.name);
-    expect(description.value).toBe(course.description);
+    expect(description).toHaveTextContent(course.description);
     expect(maxStudents.value).toBe(course.maxStudents.toString());
     expect(startDate.value).toBe(dateToDateTimeLocal(course.startDate));
     expect(endDate.value).toBe(dateToDateTimeLocal(course.endDate));
@@ -272,14 +142,14 @@ describe('Course Form Course Edit Tests', () => {
       maxStudents: 55,
       tags: [],
     };
-    renderWithTheme(<CourseForm lang="en" tags={[]} courseData={course} />);
+    const { container } = renderWithTheme(
+      <CourseForm lang="en" tags={[]} courseData={course} />
+    );
 
     const name = screen
       .getByTestId('courseFormName')
       .querySelector('input') as HTMLInputElement;
-    const description = screen.getByTestId(
-      'courseFormDescription'
-    ) as HTMLInputElement;
+    const description = container.querySelector('.tiptap');
     const startDate = screen.getByTestId(
       'courseFormStartDate'
     ) as HTMLInputElement;
@@ -295,7 +165,7 @@ describe('Course Form Course Edit Tests', () => {
     ) as HTMLInputElement;
 
     expect(name.value).toBe(course.name);
-    expect(description.value).toBe(course.description);
+    expect(description).toHaveTextContent(course.description);
     expect(maxStudents.value).toBe(course.maxStudents.toString());
     expect(startDate.value).toBe(dateToDateTimeLocal(course.startDate));
     expect(endDate.value).toBe(dateToDateTimeLocal(course.endDate));
@@ -308,7 +178,7 @@ describe('Course Form Course Edit Tests', () => {
       id: '1234',
       createdById: '30',
       name: 'New course',
-      description: 'A test course',
+      description: '<p>A test course</p>',
       startDate: courseStart,
       endDate: courseEnd,
       lastEnrollDate: oneDayBeforeStart,

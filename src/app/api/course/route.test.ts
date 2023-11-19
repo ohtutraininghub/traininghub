@@ -35,6 +35,15 @@ const newCourse = {
   tags: [],
 };
 
+const newCourseWithScript = {
+  name: 'Python',
+  description: 'Python fundamentals<script>alert("yeet")</script>',
+  startDate: '2100-09-27T00:00:00Z',
+  endDate: '2100-09-28T00:00:00Z',
+  maxStudents: 20,
+  tags: [],
+};
+
 const newCourseWithTags = {
   name: 'Testing with Jest',
   description: 'Third tag does not exist and relation should not be formed',
@@ -97,6 +106,10 @@ const lastCancelDateAfterEndCourse = {
 const getTableLength = async () => {
   const allCourses = await prisma.course.findMany();
   return allCourses.length;
+};
+
+const getFirstCourse = async () => {
+  return await prisma.course.findFirst();
 };
 
 const mockPostRequest = (body: any) => {
@@ -216,6 +229,19 @@ describe('Course API tests', () => {
       const tblLength = await getTableLength();
       expect(tblLength).toBe(0);
       expect(response.status).toBe(StatusCodeType.BAD_REQUEST);
+    });
+
+    it('sanitizes description on post', async () => {
+      const req = mockPostRequest(newCourseWithScript);
+      const response = await POST(req);
+      const data = await response.json();
+
+      expect(data.message).toBe('Course successfully created!');
+      expect(data.messageType).toBe(MessageType.SUCCESS);
+      expect(response.status).toBe(201);
+
+      const addedCourse = await getFirstCourse();
+      expect(addedCourse?.description).toBe('Python fundamentals');
     });
   });
 
