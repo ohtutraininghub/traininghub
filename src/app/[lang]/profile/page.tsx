@@ -7,7 +7,8 @@ import { notFound } from 'next/navigation';
 import { Locale } from '@i18n/i18n-config';
 import { useTranslation } from '@/lib/i18n';
 import { getAllUsers } from '@/lib/prisma/users';
-import CreateTag from '../admin/create-tag/page';
+import CreateTag from '../admin/dashboard/CreateTag';
+import { getTags } from '@/lib/prisma/tags';
 
 type Props = {
   searchParams: { courseId?: string };
@@ -16,7 +17,7 @@ type Props = {
 
 export default async function ProfilePage({ searchParams, params }: Props) {
   const session = await getServerAuthSession();
-  const { t } = await useTranslation(params.lang, 'components');
+  const { t } = await useTranslation(params.lang, ['components', 'admin']);
   const allUsers = await getAllUsers();
   const userData = await prisma.user.findUnique({
     where: {
@@ -36,6 +37,7 @@ export default async function ProfilePage({ searchParams, params }: Props) {
       },
     },
   });
+  const tags = await getTags();
 
   if (!userData) {
     notFound();
@@ -68,7 +70,11 @@ export default async function ProfilePage({ searchParams, params }: Props) {
         courses={userData?.courses ?? []}
         users={allUsers}
       >
-        <CreateTag params={params} />
+        <CreateTag
+          existingTagLabel={t('admin:CreateTag.tagsLabel')}
+          tags={tags}
+          lang={params.lang}
+        />
       </ProfileView>
     </Container>
   );
