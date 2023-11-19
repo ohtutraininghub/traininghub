@@ -10,7 +10,7 @@ describe('Cypress login', () => {
 
   it('should be possible to access tag creation page when logged in as admin', () => {
     cy.login('testuser@test.com', 'ADMIN');
-    cy.visit('/admin/create-tag');
+    cy.visit('/admin/dashboard');
     cy.getCy('tagSubmitButton').should('be.visible');
   });
 });
