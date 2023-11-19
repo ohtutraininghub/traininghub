@@ -81,7 +81,8 @@
     }
   },
   "TagForm": {
-    "submit": "Submit"
+    "submit": "Submit",
+    "label": "New tag"
   },
   "TagList": {
     "noTagsAdded": "No tags added"
