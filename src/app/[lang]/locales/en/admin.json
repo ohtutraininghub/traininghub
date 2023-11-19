@@ -6,7 +6,7 @@
   },
   "EditUsers": {
     "label": "Users",
-    "infoText": "Sign in again to apply changes to user roles",
+    "infoText": "Changes in user roles are applied when user signs in again",
     "tableHeaders": {
       "name": "Name",
       "email": "Email",
