@@ -51,7 +51,7 @@ const tagData = [
   { name: 'Testing' },
 ];
 
-async function main() {
+export async function main() {
   await clearDatabase();
 
   const user = await prisma.user.create({ data: {} });
