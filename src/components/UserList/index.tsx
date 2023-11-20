@@ -137,7 +137,11 @@ export default function UserList({ lang, users }: Props) {
                       confirmTooltip={t('EditUsers.confirmCard.confirm')}
                       cancelTooltip={t('EditUsers.confirmCard.cancel')}
                       onCancel={() =>
-                        setUserRoles(users.map((user) => user.role))
+                        setUserRoles((prevRoles) =>
+                          prevRoles.map((role, index) =>
+                            index === userIndex ? user.role : role
+                          )
+                        )
                       }
                       onSubmit={async () => {
                         await handleUserRoleChange(
