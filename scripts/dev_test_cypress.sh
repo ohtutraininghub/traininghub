@@ -22,8 +22,14 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
-dotenv -e .env.test -- npx cypress open $ARGS &
-dotenv -e .env.test -- npx next dev
+if [ "$ARGS" = "runMode" ]; then
+    dotenv -e .env.test -- npm run cypress:build
+    dotenv -e .env.test -- npx cypress run &
+    dotenv -e .env.test -- npm run cypress:start
+else
+    dotenv -e .env.test -- npx cypress open $ARGS &
+    dotenv -e .env.test -- npx next dev
+fi
 
 # When quit from watch "normally"
 docker compose -f docker-compose.test.yml down

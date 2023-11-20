@@ -81,10 +81,33 @@
     }
   },
   "TagForm": {
-    "submit": "Submit"
+    "submit": "Submit",
+    "label": "New tag"
   },
   "TagList": {
     "noTagsAdded": "No tags added"
+  },
+  "TextEditor": {
+    "Tooltip": {
+      "bold": "Bold (CTRL + B",
+      "italic": "Italic (CTRL + I)",
+      "strike": "Strikethrough",
+      "underline": "Underline (CTRL + U)",
+      "code": "Code (CTRL + E)",
+      "link": "Add link",
+      "bulletList": "Bullet list",
+      "clearFormat": "Clear formatting",
+      "orderedList": "Ordered list",
+      "undo": "Undo (CTRL + Z)",
+      "redo": "Redo (CTRL + Y)"
+    },
+    "Dropdown": {
+      "header1": "Header 1",
+      "header2": "Header 2",
+      "header3": "Header 3",
+      "paragraph": "Text"
+    },
+    "linkPrompt": "Please enter the link as such: https://www.example.com"
   },
   "UnauthorizedError": {
     "unauthorizedMessage": "You are not authorized to view this page",

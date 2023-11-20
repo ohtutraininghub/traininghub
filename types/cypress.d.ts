@@ -3,10 +3,6 @@
 
 import { Role } from '@prisma/client';
 
-enum Task {
-  clearDatabase,
-}
-
 declare global {
   namespace Cypress {
     interface Chainable {

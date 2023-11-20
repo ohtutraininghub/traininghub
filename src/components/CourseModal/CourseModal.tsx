@@ -132,7 +132,20 @@ export default function CourseModal({
             overflow: 'auto',
           }}
         >
-          <Typography>{course.description}</Typography>
+          <Typography
+            sx={{
+              a: {
+                color: 'surface.main',
+                ':visited': {
+                  color: 'surface.main',
+                },
+                ':hover': {
+                  color: 'secondary.light',
+                },
+              },
+            }}
+            dangerouslySetInnerHTML={{ __html: course.description }}
+          ></Typography>
         </pre>
         <Box
           sx={{

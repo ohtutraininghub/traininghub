@@ -20,6 +20,7 @@ export default function NotificationProvider({
     setMessage({
       message: data.message,
       messageType: data.messageType,
+      disableAutoHide: data?.disableAutoHide ?? false,
     });
   };
 
@@ -39,7 +40,7 @@ export default function NotificationProvider({
       {message && (
         <Snackbar
           open={message !== undefined}
-          autoHideDuration={5000}
+          autoHideDuration={message.disableAutoHide ? null : 5000}
           onClose={handleClose}
         >
           <Alert onClose={handleClose} severity={message.messageType}>
