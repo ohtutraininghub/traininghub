@@ -21,13 +21,12 @@ import { useTheme } from '@mui/material/styles';
 import { DictProps } from '@/lib/i18n';
 import { useTranslation } from '@i18n/client';
 import { useMediaQuery } from '@mui/material';
+import { useSession } from 'next-auth/react';
 
-export interface ProfileMenuProps extends DictProps {
-  name: string;
-  image: string;
-}
+export interface ProfileMenuProps extends DictProps {}
 
-export default function ProfileMenu({ name, image, lang }: ProfileMenuProps) {
+export default function ProfileMenu({ lang }: ProfileMenuProps) {
+  const { data: session, status } = useSession({ required: true });
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const [backdropOpen, setBackdropOpen] = useState(false);
@@ -43,6 +42,8 @@ export default function ProfileMenu({ name, image, lang }: ProfileMenuProps) {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  if (status === 'loading') return null;
 
   return (
     <>
@@ -85,8 +86,8 @@ export default function ProfileMenu({ name, image, lang }: ProfileMenuProps) {
               {t('profileTitle')}
             </Typography>
             <Avatar
-              src={image}
-              alt={name}
+              src={session.user.image}
+              alt={session.user.name}
               imgProps={{ referrerPolicy: 'no-referrer' }}
               style={{
                 width: '50px',
