@@ -7,8 +7,6 @@ import { renderWithTheme } from '@/lib/test-utils';
 import userEvent from '@testing-library/user-event';
 
 const testUser: ProfileMenuProps = {
-  name: 'Test User',
-  image: 'someimage.jpg',
   lang: 'en',
 };
 
@@ -19,6 +17,19 @@ jest.mock('../../lib/i18n/client', () => ({
       t: (str: string) => str,
       i18n: {
         changeLanguage: () => new Promise(() => {}),
+      },
+    };
+  },
+}));
+
+jest.mock('next-auth/react', () => ({
+  useSession: () => {
+    return {
+      data: {
+        user: {
+          name: 'Test User',
+          image: 'someimage.jpg',
+        },
       },
     };
   },
