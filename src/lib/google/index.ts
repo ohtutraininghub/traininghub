@@ -14,7 +14,7 @@ export const insertCourseToCalendar = async (
   userId: string,
   course: Course
 ) => {
-  //if (process.env.NODE_ENV !== 'production') {
+  //if (!isProduction()) {
   // Don't try to insert google calendar entries
   // in test or dev environment
   //  return;
