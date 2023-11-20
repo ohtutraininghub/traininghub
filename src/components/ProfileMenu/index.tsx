@@ -22,6 +22,7 @@ import { DictProps } from '@/lib/i18n';
 import { useTranslation } from '@i18n/client';
 import { useMediaQuery } from '@mui/material';
 import { useSession } from 'next-auth/react';
+import Loading from '@/app/[lang]/loading';
 
 export interface ProfileMenuProps extends DictProps {}
 
@@ -43,7 +44,9 @@ export default function ProfileMenu({ lang }: ProfileMenuProps) {
     setAnchorEl(null);
   };
 
-  if (status === 'loading') return null;
+  if (status === 'loading') {
+    return <Loading />;
+  }
 
   return (
     <>
