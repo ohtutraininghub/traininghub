@@ -4,9 +4,11 @@ import ProfileUserDetails from '@/components/ProfileView/ProfileUserDetails';
 import ProfileCourseList from '@/components/ProfileView/ProfileCourseList';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import { Course } from '@prisma/client';
-import { useState } from 'react';
+import { Course, Role, User } from '@prisma/client';
+import { PropsWithChildren, useState } from 'react';
 import { useTheme } from '@mui/material/styles';
+import { useSession } from 'next-auth/react';
+import UserList from '@/components/UserList';
 
 export interface userDetails {
   name: string;
@@ -14,18 +16,22 @@ export interface userDetails {
   image: string;
 }
 
-export interface ProfileViewProps {
+export interface ProfileViewProps extends PropsWithChildren {
   userDetails: userDetails;
   courses: Course[];
+  users: User[];
 }
 
 export default function ProfileView({
   userDetails,
   courses,
+  users,
+  children,
 }: ProfileViewProps) {
   const [selectedTab, setSelectedTab] = useState(0);
   const { palette } = useTheme();
   const currentDate = new Date();
+  const { data: session } = useSession();
 
   const handleChangeTab = (event: React.ChangeEvent<{}>, newValue: number) => {
     setSelectedTab(newValue);
@@ -53,6 +59,7 @@ export default function ProfileView({
       >
         <Tab label="My courses" />
         <Tab label="Additional information" />
+        {session?.user.role === Role.ADMIN && <Tab label="Admin dashboard" />}
       </Tabs>
 
       {selectedTab === 0 && (
@@ -81,6 +88,19 @@ export default function ProfileView({
             open={false}
           />
         </>
+      )}
+      {selectedTab === 2 && (
+        <div
+          style={{
+            marginTop: '2rem',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '2rem',
+          }}
+        >
+          {children}
+          <UserList users={users} lang="en" />
+        </div>
       )}
     </div>
   );

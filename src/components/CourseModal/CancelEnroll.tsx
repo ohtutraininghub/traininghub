@@ -1,25 +1,27 @@
 'use client';
 
-import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import TimerOutlined from '@mui/icons-material/TimerOutlined';
-import Typography from '@mui/material/Typography';
 import { ConfirmCard } from '../ConfirmCard';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useMessage } from '../Providers/MessageProvider';
 import { update } from '@/lib/response/fetchUtil';
-import { msUntilStart } from '@/lib/timedateutils';
-import { minCancelTimeMs } from '@/lib/zod/courses';
+import { isPastDeadline } from '@/lib/timedateutils';
 import { DictProps } from '@/lib/i18n';
 import { useTranslation } from '@i18n/client';
+import InfoBox from './InfoBox';
 
 interface Props extends DictProps {
   courseId: string;
-  startDate: Date;
+  lastCancelDate: Date | null;
 }
 
-export default function CancelEnroll({ courseId, startDate, lang }: Props) {
+export default function CancelEnroll({
+  courseId,
+  lastCancelDate,
+  lang,
+}: Props) {
   const { t } = useTranslation(lang, 'components');
   const router = useRouter();
   const [backdropOpen, setBackdropOpen] = useState(false);
@@ -31,27 +33,12 @@ export default function CancelEnroll({ courseId, startDate, lang }: Props) {
     router.refresh();
   };
 
-  const cancellingAllowed = (startDate: Date): boolean => {
-    return msUntilStart(startDate) > minCancelTimeMs;
-  };
-
-  if (!cancellingAllowed(startDate)) {
+  if (isPastDeadline(lastCancelDate)) {
     return (
-      <Box
-        sx={{
-          display: 'flex',
-          flexFlow: 'row',
-          border: 1,
-          borderRadius: '8px',
-          mt: '1em',
-          p: '1em 1em 1em 0.5em',
-        }}
-      >
-        <TimerOutlined sx={{ flex: 1 }} />
-        <Typography variant="body2" sx={{ flex: 6 }}>
-          {t('CancelEnroll.pastCancellationDate')}
-        </Typography>
-      </Box>
+      <InfoBox
+        infoText={t('CancelEnroll.pastCancellationDate')}
+        Icon={TimerOutlined}
+      />
     );
   }
 

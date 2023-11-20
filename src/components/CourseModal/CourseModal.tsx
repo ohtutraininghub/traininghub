@@ -7,11 +7,13 @@ import Typography from '@mui/material/Typography';
 import Card from '@mui/material/Card';
 import Chip from '@mui/material/Chip';
 import Box from '@mui/material/Box';
+import PriorityHighOutlinedIcon from '@mui/icons-material/PriorityHighOutlined';
 import EnrollHolder from './EnrollHolder';
 import EditButton from './EditButton';
 import LocalizedDateTime from '../LocalizedDateTime';
 import { hasCourseEditRights } from '@/lib/auth-utils';
 import { DictProps } from '@/lib/i18n';
+import { useTranslation } from '@/lib/i18n/client';
 import { useSession } from 'next-auth/react';
 import Loading from '@/app/[lang]/loading';
 
@@ -31,6 +33,7 @@ export default function CourseModal({
   description,
   editCourseLabel,
 }: Props) {
+  const { t } = useTranslation(lang, 'components');
   const { data: session, status } = useSession({ required: true });
 
   if (!course) return null;
@@ -81,6 +84,23 @@ export default function CourseModal({
           />
         </Typography>
 
+        {course.lastEnrollDate && (
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'center',
+              mb: 2,
+            }}
+          >
+            <PriorityHighOutlinedIcon />
+            <Typography>
+              {t('CourseModal.enrollmentDeadlineHeader')}
+              <LocalizedDateTime variant="long" date={course.lastEnrollDate} />
+            </Typography>
+          </Box>
+        )}
+
         <Box
           sx={{
             display: 'flex',
@@ -112,7 +132,20 @@ export default function CourseModal({
             overflow: 'auto',
           }}
         >
-          <Typography>{course.description}</Typography>
+          <Typography
+            sx={{
+              a: {
+                color: 'surface.main',
+                ':visited': {
+                  color: 'surface.main',
+                },
+                ':hover': {
+                  color: 'secondary.light',
+                },
+              },
+            }}
+            dangerouslySetInnerHTML={{ __html: course.description }}
+          ></Typography>
         </pre>
         <Box
           sx={{
@@ -136,7 +169,8 @@ export default function CourseModal({
               isUserEnrolled={isUserEnrolled}
               courseId={course.id}
               isCourseFull={isCourseFull}
-              startDate={course.startDate}
+              lastEnrollDate={course.lastEnrollDate}
+              lastCancelDate={course.lastCancelDate}
             />
           </Box>
           <Box sx={{ flex: 1 }}></Box>

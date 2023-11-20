@@ -5,19 +5,24 @@ import { useTranslation } from '@/lib/i18n/client';
 import EnrollButton from './EnrollButton';
 import CancelEnroll from './CancelEnroll';
 import Typography from '@mui/material/Typography';
+import BlockOutlinedIcon from '@mui/icons-material/BlockOutlined';
+import { isPastDeadline } from '@/lib/timedateutils';
+import InfoBox from './InfoBox';
 
 interface Props extends DictProps {
   isUserEnrolled: boolean;
   courseId: string;
   isCourseFull: boolean;
-  startDate: Date;
+  lastEnrollDate: Date | null;
+  lastCancelDate: Date | null;
 }
 
 export default function EnrollHolder({
   isUserEnrolled,
   courseId,
   isCourseFull,
-  startDate,
+  lastEnrollDate,
+  lastCancelDate,
   lang,
 }: Props) {
   const { t } = useTranslation(lang, 'components');
@@ -25,13 +30,26 @@ export default function EnrollHolder({
     return (
       <>
         <Typography>{t('EnrollHolder.confirmMessage')}</Typography>
-        <CancelEnroll courseId={courseId} startDate={startDate} lang={lang} />
+        <CancelEnroll
+          courseId={courseId}
+          lastCancelDate={lastCancelDate}
+          lang={lang}
+        />
       </>
     );
   }
 
   if (isCourseFull) {
     return null;
+  }
+
+  if (isPastDeadline(lastEnrollDate)) {
+    return (
+      <InfoBox
+        infoText={t('EnrollHolder.pastEnrollmentDeadline')}
+        Icon={BlockOutlinedIcon}
+      />
+    );
   }
 
   return <EnrollButton lang={lang} courseId={courseId} />;
