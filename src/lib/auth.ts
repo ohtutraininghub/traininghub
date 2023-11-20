@@ -1,10 +1,13 @@
 import type { NextAuthOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
+import CredentialsProvider from 'next-auth/providers/credentials';
 import { prisma } from './prisma';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import { getServerSession } from 'next-auth/next';
 import { Adapter } from 'next-auth/adapters';
 import { updateGoogleAccount } from './prisma/account';
+import { Role } from '@prisma/client';
+import { isProduction } from './env-utils';
 
 const scopes =
   'openid ' +
@@ -26,6 +29,43 @@ export const authOptions: NextAuthOptions = {
         },
       },
     }),
+    ...(!isProduction()
+      ? [
+          CredentialsProvider({
+            name: 'Credentials',
+            credentials: {
+              email: {
+                label: 'Email',
+                type: 'email',
+                placeholder: 'email@email.com',
+              },
+              role: {
+                label: 'Role',
+                type: 'text',
+                placeholder: 'TRAINEE',
+              },
+            },
+            async authorize(credentials) {
+              const existingUser = await prisma.user.findFirst({
+                where: { email: credentials?.email },
+              });
+              if (existingUser) {
+                return existingUser;
+              }
+
+              const user = await prisma.user.create({
+                data: {
+                  email: credentials?.email,
+                  name: 'Test User',
+                  role: credentials?.role as Role,
+                },
+              });
+
+              return user;
+            },
+          }),
+        ]
+      : []),
   ],
   adapter: PrismaAdapter(prisma) as Adapter,
   session: {

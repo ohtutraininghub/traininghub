@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import { isProduction } from '../env-utils';
 
 // Why like this?
 // https://www.prisma.io/docs/guides/other/troubleshooting-orm/help-articles/nextjs-prisma-client-dev-practices
@@ -22,7 +23,7 @@ if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
  * Used in test environment beforeEach hook to clear all data
  */
 export const clearDatabase = async () => {
-  if (process.env.NODE_ENV === 'production') {
+  if (isProduction()) {
     throw Error('Tried to call clear database in production, fix this');
   }
 

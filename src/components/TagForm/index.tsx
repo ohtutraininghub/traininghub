@@ -67,6 +67,7 @@ export default function TagForm({ lang }: Props) {
           disabled={isSubmitting}
           variant="contained"
           sx={{}}
+          data-testid="tagSubmitButton"
         >
           {t('TagForm.submit')}
         </Button>
