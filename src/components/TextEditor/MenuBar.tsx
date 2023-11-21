@@ -98,17 +98,17 @@ export const MenuBar = ({ lang }: DictProps) => {
             disableUnderline
           >
             <MenuItem sx={menuItemSx} value={'header1'}>
-              <Typography variant="h6">
+              <Typography variant="h4">
                 {t('TextEditor.Dropdown.header1')}
               </Typography>
             </MenuItem>
             <MenuItem sx={menuItemSx} value={'header2'}>
-              <Typography variant="h6">
+              <Typography variant="h4">
                 {t('TextEditor.Dropdown.header2')}
               </Typography>
             </MenuItem>
             <MenuItem sx={menuItemSx} value={'header3'}>
-              <Typography variant="h6">
+              <Typography variant="h4">
                 {t('TextEditor.Dropdown.header3')}
               </Typography>
             </MenuItem>

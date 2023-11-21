@@ -45,7 +45,7 @@ export default function ProfileUserDetails({
         }}
       />
       <Typography
-        variant="h5"
+        variant="h3"
         gutterBottom
         style={{ color: palette.white.main }}
       >
