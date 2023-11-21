@@ -69,6 +69,27 @@ let theme = createTheme({
       main: '#ffffff',
     },
   },
+  typography: {
+    htmlFontSize: 16, // root
+    h1: {
+      fontSize: '3rem', // 3 * 16 = 48
+    },
+    h2: {
+      fontSize: '2.125rem', // 2.125 * 16 = 34
+    },
+    h3: {
+      fontSize: '1.5rem', // 1.5 * 16 = 24
+    },
+    h4: {
+      fontSize: '1.25rem', // 1.25 * 26 = 20
+    },
+    h5: {
+      fontSize: '1.125rem', // 1.125 * 16 = 18
+    },
+    h6: {
+      fontSize: '1.075rem', // 1.075 * 16 = 17.2
+    },
+  },
   components: {
     MuiAppBar: {
       styleOverrides: {
