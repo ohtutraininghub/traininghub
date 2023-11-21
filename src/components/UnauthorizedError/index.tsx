@@ -22,7 +22,7 @@ export default function UnauthorizedError({ lang }: Props) {
         p: 10,
       }}
     >
-      <Typography variant="h4" sx={{ m: 4 }}>
+      <Typography variant="h2" sx={{ m: 4 }}>
         {t('UnauthorizedError.unauthorizedMessage')}
       </Typography>
       <Button variant="contained" onClick={() => router.push('/')}>

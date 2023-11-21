@@ -20,9 +20,7 @@ export default async function AdminDashboardPage({ params }: Props) {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-      <Typography variant="h3" component="h1">
-        {t('DashboardTitle')}
-      </Typography>
+      <Typography variant="h1">{t('DashboardTitle')}</Typography>
       <CreateTag
         existingTagLabel={t('CreateTag.tagsLabel')}
         tags={tags}
