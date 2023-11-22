@@ -1,10 +1,11 @@
 describe('Course creation', () => {
-  beforeEach(() => {
+  before(() => {
     cy.task('clearDatabase');
   });
 
   const course = {
     name: 'Kubernetes Fundamentals',
+    header: 'Learn Kubernetes',
     description:
       'Take your first steps in using Kubernetes for container orchestration. This course will introduce you to the basic concepts and building blocks of Kubernetes and the architecture of the system. Get ready to start you cloud native journey!',
     startDate: '2030-06-01T08:30',
@@ -15,14 +16,51 @@ describe('Course creation', () => {
   it('course creation should be successful when the input is valid ', () => {
     cy.login('trainer@test.com', 'TRAINER');
     cy.visit('/course/create');
+
     cy.getCy('courseFormName').type(course.name);
-    cy.getCy('courseFormDescription').type(course.description);
+    cy.getCy('textEditorTextSelect').click();
+    cy.getCy('textSelectorHeader1').click();
+    cy.get('.ProseMirror').type(`${course.header}{enter}`);
+
+    cy.getCy('textEditorTextSelect').click();
+    cy.getCy('textSelectorParagraph').click();
+    cy.get('.ProseMirror').type(course.description);
+
     cy.getCy('courseFormStartDate').type(course.startDate);
     cy.getCy('courseFormEndDate').type(course.endDate);
     cy.getCy('courseFormMaxStudents').clear().type(course.maxStudents);
     cy.getCy('courseFormSubmit').click();
     cy.contains(course.name).click();
+    cy.contains(course.name);
+    cy.contains(course.header);
+    cy.contains(course.maxStudents);
     cy.contains(course.description);
+  });
+
+  const updatedCourse = {
+    name: 'Kubernetes 2',
+    description: 'New description',
+    startDate: '2032-06-01T08:30',
+    endDate: '2032-07-01T08:30',
+    maxStudents: '120',
+  };
+
+  it('editing course with valid data should be successful', () => {
+    cy.login('trainer@test.com', 'TRAINER');
+    cy.contains(course.name).click();
+    cy.getCy('EditIcon').click();
+
+    cy.getCy('courseFormName').clear().type(updatedCourse.name);
+    cy.get('.ProseMirror').clear().type(updatedCourse.description);
+    cy.getCy('courseFormStartDate').type(updatedCourse.startDate);
+    cy.getCy('courseFormEndDate').type(updatedCourse.endDate);
+    cy.getCy('courseFormMaxStudents').clear().type(updatedCourse.maxStudents);
+    cy.getCy('courseFormSubmit').click();
+
+    cy.contains(updatedCourse.name).click();
+    cy.contains(updatedCourse.name);
+    cy.contains(updatedCourse.maxStudents);
+    cy.contains(updatedCourse.description);
   });
 
   const requiredErrors = [
@@ -36,8 +74,9 @@ describe('Course creation', () => {
   it('required errors should be displayed correctly', () => {
     cy.login('trainer@test.com', 'TRAINER');
     cy.visit('/course/create');
-    cy.wait(1500);
-    cy.getCy('courseFormMaxStudents').type('{backspace}{backspace}');
+    cy.getCy('courseFormMaxStudents')
+      .should('not.have.value', '')
+      .type('{backspace}{backspace}');
     cy.getCy('courseFormSubmit').click();
     requiredErrors.forEach((error) => cy.contains(error));
   });
