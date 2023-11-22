@@ -7,8 +7,11 @@ const course: CourseWithTagsAndStudentCount = {
   id: '22',
   name: 'Test course',
   description: 'A Test course',
+  createdById: '7',
   startDate: new Date(),
   endDate: new Date(),
+  lastEnrollDate: null,
+  lastCancelDate: null,
   maxStudents: 42,
   _count: {
     students: 0,
