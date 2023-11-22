@@ -96,8 +96,13 @@ export const MenuBar = ({ lang }: DictProps) => {
             value={dropdownValue()}
             onChange={dropdownOnChange}
             disableUnderline
+            data-testid="textEditorTextSelect"
           >
-            <MenuItem sx={menuItemSx} value={'header1'}>
+            <MenuItem
+              sx={menuItemSx}
+              value={'header1'}
+              data-testId="textSelectorHeader1"
+            >
               <Typography variant="h6">
                 {t('TextEditor.Dropdown.header1')}
               </Typography>
@@ -112,7 +117,11 @@ export const MenuBar = ({ lang }: DictProps) => {
                 {t('TextEditor.Dropdown.header3')}
               </Typography>
             </MenuItem>
-            <MenuItem sx={menuItemSx} value={'paragraph'}>
+            <MenuItem
+              sx={menuItemSx}
+              value={'paragraph'}
+              data-testId="textSelectorParagraph"
+            >
               <Typography variant="body1">
                 {t('TextEditor.Dropdown.paragraph')}
               </Typography>
