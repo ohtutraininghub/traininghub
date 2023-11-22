@@ -72,7 +72,6 @@ export const deleteCourseFromCalendar = async (
       async (error) =>
         await handleGoogleError(
           error,
-          false,
           userId,
           course.id,
           googleEntry.googleEventId
@@ -100,7 +99,7 @@ export const updateCourseToCalendars = async (course: Course) => {
       })
       .catch(
         async (error) =>
-          await handleGoogleError(error, true, user.userId, course.id, eventId)
+          await handleGoogleError(error, user.userId, course.id, eventId)
       );
   });
 };
@@ -140,33 +139,32 @@ const courseRequestBody = (course: Course) => {
 
 const handleGoogleError = async (
   error: any,
-  unblocking?: boolean,
   userId?: string,
   courseId?: string,
   eventId?: string
 ) => {
-  if (error.status === 403 && error.message === 'Insufficient Permission') {
+  if (error.message === 'Insufficient Permission') {
     // User hasn't granted permissions to access calendar
-    // -> Ignore error
+    if (userId && courseId && eventId) {
+      // Remove it from database also if its there
+      await deleteGoogleCalendarEntry(userId, courseId, eventId);
+    }
     return;
   }
 
-  if (
-    error.status === 410 &&
-    error.message === 'Resource has been deleted' &&
-    userId &&
-    courseId &&
-    eventId
-  ) {
-    // User has manually deleted resource. Remove it from database also
-    await deleteGoogleCalendarEntry(userId, courseId, eventId);
+  if (error.message === 'Resource has been deleted') {
+    // User has manually deleted event from calendar
+    if (userId && courseId && eventId) {
+      // Remove it from database also if its there
+      await deleteGoogleCalendarEntry(userId, courseId, eventId);
+    }
     return;
   }
 
-  if (unblocking) {
-    logHandledException(error);
-    return;
-  }
-
-  throw error;
+  // Silently log all google related errors to Sentry
+  // If there is error which is not needed in Sentry
+  // -> Make a handle for it above
+  // For example if the permissions have been revoked,
+  // we don't want the error in Sentry
+  logHandledException(error);
 };
