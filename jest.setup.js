@@ -26,4 +26,18 @@ class DragEventMock extends Event {
 }
 global.DragEvent = DragEventMock;
 
+// Suppress Prisma errors when running tests...
+const originalConsoleLog = console.log;
+
+jest.spyOn(console, 'log').mockImplementation((...args) => {
+  const logMessage = args.join(' ');
+  if (!logMessage.includes('prisma:error')) {
+    originalConsoleLog(...args);
+  }
+});
+
+afterAll(() => {
+  jest.restoreAllMocks();
+});
+
 dotenv.config({ path: '.env.test' });
