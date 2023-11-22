@@ -9,16 +9,17 @@ import {
   getUsersWithGoogleCalendar,
 } from '@/lib/prisma/calendar';
 import { logHandledException } from '@/lib/sentry';
+import { isProduction } from '../env-utils';
 
 export const insertCourseToCalendar = async (
   userId: string,
   course: Course
 ) => {
-  //if (!isProduction()) {
-  // Don't try to insert google calendar entries
-  // in test or dev environment
-  //  return;
-  //}
+  if (!isProduction()) {
+    // Don't try to insert google calendar entries
+    // in test or dev environment
+    return;
+  }
 
   const googleEntry = await findGoogleCalendarEntry(userId, course.id);
   if (googleEntry?.googleEventId) {

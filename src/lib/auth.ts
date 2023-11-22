@@ -12,7 +12,7 @@ import { isProduction } from './env-utils';
 /**
  * Base scopes granted on sign up
  *
- * Additional scopes can be requested via
+ * Additional scopes can be requested via new sign in flow
  */
 const scopes =
   'openid ' +
