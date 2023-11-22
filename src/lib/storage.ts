@@ -1,18 +1,31 @@
+/* eslint-disable no-unused-vars */
+
+type StorageTypeValue = {
+  'insert-to-calendar': boolean | undefined;
+};
+
 export enum StorageType {
-  // eslint-disable-next-line no-unused-vars
   INSERT_TO_CALENDAR = 'insert-to-calendar',
 }
 
 const hasStorage = () => typeof window !== 'undefined' && window.localStorage;
 
-export const setItem = (type: StorageType, value: string) => {
+export const setItem = <T extends keyof StorageTypeValue>(
+  type: StorageType,
+  value: StorageTypeValue[T]
+) => {
   if (!hasStorage()) return;
 
-  localStorage.setItem(type, value);
+  localStorage.setItem(type, JSON.stringify(value));
 };
 
-export const getItem = (type: StorageType) => {
+export const getItem = <T extends keyof StorageTypeValue>(
+  type: T
+): StorageTypeValue[T] => {
   if (!hasStorage()) return;
 
-  return localStorage.getItem(type);
+  const storedValue = localStorage.getItem(type);
+  if (!storedValue) return;
+
+  return JSON.parse(storedValue);
 };
