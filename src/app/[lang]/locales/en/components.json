@@ -112,5 +112,15 @@
   "UnauthorizedError": {
     "unauthorizedMessage": "You are not authorized to view this page",
     "backToHome": "Back to home"
+  },
+  "CalendarPrompt": {
+    "addPrompt": "Do you want to add this course to your Google calendar?",
+    "button": {
+      "yes": "Yes",
+      "no": "No"
+    },
+    "checkbox": {
+      "remember": "Remember my decision"
+    }
   }
 }

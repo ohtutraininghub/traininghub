@@ -103,7 +103,7 @@ export type CourseSchemaWithIdType = z.infer<typeof courseSchemaBaseWithId>;
 export const courseEnrollSchema = z
   .object({
     courseId: z.string().min(1, 'Course id is required'),
-    insertToCalendar: z.boolean(),
+    insertToCalendar: z.boolean().nullish(),
   })
   .strict();
 

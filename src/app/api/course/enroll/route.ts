@@ -86,7 +86,7 @@ export async function POST(request: NextRequest) {
     const hasCalendarPermissions = await hasGoogleCalendarScope(userId);
 
     if (insertToCalendar) {
-      if (hasCalendarPermissions) {
+      if (!hasCalendarPermissions) {
         return errorResponse({
           message: 'Can not insert calendar entry without calendar permissions',
           statusCode: StatusCodeType.UNPROCESSABLE_CONTENT,
