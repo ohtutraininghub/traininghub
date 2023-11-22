@@ -97,7 +97,7 @@ export default function CourseForm({
         }}
       >
         <Typography
-          variant="h4"
+          variant="h2"
           color={palette.black.main}
           textAlign="center"
           marginBottom={1}
