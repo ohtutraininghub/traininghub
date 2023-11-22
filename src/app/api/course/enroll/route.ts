@@ -9,14 +9,14 @@ import {
 } from '@/lib/response/responseUtil';
 import { handleCommonErrors } from '@/lib/response/errorUtil';
 import { isPastDeadline } from '@/lib/timedateutils';
-import { deleteCourseFromCalendar } from '@/lib/google';
+import { deleteCourseFromCalendar, insertCourseToCalendar } from '@/lib/google';
 
 export async function POST(request: NextRequest) {
   try {
     const session = await getServerAuthSession();
     const userId = session.user.id;
     const data = await request.json();
-    const courseId = courseEnrollSchema.parse(data);
+    const { courseId, insertToCalendar } = courseEnrollSchema.parse(data);
 
     const course = await prisma.course.findFirst({
       include: {
@@ -81,8 +81,10 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    // Insert course to external calendar
-    //await insertCourseToCalendar(userId, course);
+    if (insertToCalendar) {
+      // Insert course to external calendar
+      await insertCourseToCalendar(userId, course);
+    }
 
     return successResponse({
       message: 'Enrolled succesfully!',
@@ -98,7 +100,7 @@ export async function PUT(request: NextRequest) {
     const session = await getServerAuthSession();
     const userId = session.user.id;
     const data = await request.json();
-    const courseId = courseEnrollSchema.parse(data);
+    const { courseId } = courseEnrollSchema.parse(data);
 
     const course = await prisma.course.findFirst({
       where: { id: courseId },

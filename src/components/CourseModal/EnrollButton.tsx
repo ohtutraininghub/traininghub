@@ -24,10 +24,14 @@ export default function EnrollButton({ courseId, lang }: Props) {
   const { notify } = useMessage();
 
   const handleEnroll = async () => {
-    const responseJson = await post('/api/course/enroll', courseId);
+    const calendar = getItem(StorageType.INSERT_TO_CALENDAR) ?? 'false';
+
+    const responseJson = await post('/api/course/enroll', {
+      courseId: courseId,
+      insertToCalendar: calendar,
+    });
     notify(responseJson);
 
-    const calendar = getItem(StorageType.INSERT_TO_CALENDAR);
     if (calendar !== 'true' && calendar !== 'false') {
       setCalendarPromptOpen(true);
     } else {

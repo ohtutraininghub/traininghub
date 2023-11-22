@@ -20,6 +20,13 @@ export const insertCourseToCalendar = async (
   //  return;
   //}
 
+  const googleEntry = await findGoogleCalendarEntry(userId, course.id);
+  if (googleEntry?.googleEventId) {
+    // User doing sketchy stuff,
+    // simply skip since the entry is already there
+    return;
+  }
+
   const refreshTokenAuth = await getRefreshTokenAuth(userId);
   const calendar = googlecalendar({ version: 'v3', auth: refreshTokenAuth });
 
