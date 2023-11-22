@@ -15,7 +15,7 @@ export const hasGoogleCalendarScope = async (userId: string) => {
     select: { scope: true },
   });
 
-  return scopes?.scope?.includes(CALENDAR_SCOPE);
+  return scopes?.scope?.includes(CALENDAR_SCOPE) ?? false;
 };
 
 export const updateGoogleAccount = async (account: Account) => {

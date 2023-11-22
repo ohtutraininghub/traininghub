@@ -4,12 +4,15 @@ import { prisma } from '@/lib/prisma';
 import { getServerAuthSession } from '@/lib/auth';
 import {
   StatusCodeType,
+  MessageType,
   successResponse,
   errorResponse,
+  messageWithDataResponse,
 } from '@/lib/response/responseUtil';
 import { handleCommonErrors } from '@/lib/response/errorUtil';
 import { isPastDeadline } from '@/lib/timedateutils';
 import { deleteCourseFromCalendar, insertCourseToCalendar } from '@/lib/google';
+import { hasGoogleCalendarScope } from '@/lib/prisma/account';
 
 export async function POST(request: NextRequest) {
   try {
@@ -28,7 +31,6 @@ export async function POST(request: NextRequest) {
       },
       where: { id: courseId },
     });
-
     if (!course) {
       return errorResponse({
         message: 'Could not find course with given identifier!',
@@ -81,14 +83,25 @@ export async function POST(request: NextRequest) {
       },
     });
 
+    const hasCalendarPermissions = await hasGoogleCalendarScope(userId);
+
     if (insertToCalendar) {
+      if (hasCalendarPermissions) {
+        return errorResponse({
+          message: 'Can not insert calendar entry without calendar permissions',
+          statusCode: StatusCodeType.UNPROCESSABLE_CONTENT,
+        });
+      }
+
       // Insert course to external calendar
       await insertCourseToCalendar(userId, course);
     }
 
-    return successResponse({
+    return messageWithDataResponse({
       message: 'Enrolled succesfully!',
+      messageType: MessageType.SUCCESS,
       statusCode: StatusCodeType.CREATED,
+      data: hasCalendarPermissions,
     });
   } catch (error) {
     return handleCommonErrors(error);

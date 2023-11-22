@@ -24,19 +24,33 @@ export default function EnrollButton({ courseId, lang }: Props) {
   const { notify } = useMessage();
 
   const handleEnroll = async () => {
-    const calendar = getItem(StorageType.INSERT_TO_CALENDAR) ?? 'false';
+    const calendar = getItem(StorageType.INSERT_TO_CALENDAR);
 
     const responseJson = await post('/api/course/enroll', {
       courseId: courseId,
-      insertToCalendar: calendar,
+      insertToCalendar: calendar ?? 'false',
     });
     notify(responseJson);
 
-    if (calendar !== 'true' && calendar !== 'false') {
-      setCalendarPromptOpen(true);
-    } else {
+    if (calendar === 'false') {
+      // User has decided to not insert to calendar
       router.refresh();
+      return;
     }
+
+    if (calendar === undefined) {
+      // User requires prompt for calendar insert
+      setCalendarPromptOpen(true);
+
+      //const withDataJson = asResponseDataJson(responseJson);
+      //const hasPermissions = withDataJson?.data;
+
+      return;
+    }
+
+    // Calendar insert is true, so no actions is required
+    // Since post already inserted it to calendar
+    router.refresh();
   };
 
   const handleCalendar = async () => {
