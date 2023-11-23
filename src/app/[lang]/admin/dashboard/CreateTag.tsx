@@ -24,7 +24,7 @@ export default function CreateTag({ lang, existingTagLabel, tags }: Props) {
         padding: '1rem',
       }}
     >
-      <Typography variant="h4" component="h2" sx={{ marginBottom: '2rem' }}>
+      <Typography variant="h2" sx={{ marginBottom: '2rem' }}>
         {existingTagLabel}
       </Typography>
       <TagList lang={lang} tags={tags} />

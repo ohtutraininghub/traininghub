@@ -67,9 +67,7 @@ export default function UserList({ lang, users }: Props) {
       }}
     >
       <Box sx={{ paddingBottom: '1rem' }}>
-        <Typography variant="h4" component="h2">
-          {t('EditUsers.label')}
-        </Typography>
+        <Typography variant="h2">{t('EditUsers.label')}</Typography>
       </Box>
 
       <TableContainer>

@@ -96,7 +96,7 @@ export default function CourseModal({
         }}
       >
         <CourseModalCloseButton lang={lang} />
-        <Typography variant="h3">{course.name}</Typography>
+        <Typography variant="h1">{course.name}</Typography>
         <Typography sx={{ my: 2 }}>
           <LocalizedDateTime
             variant="range-long"
@@ -140,7 +140,7 @@ export default function CourseModal({
           ))}
         </Box>
 
-        <Typography variant="h6" sx={{ my: 2, color: 'white.main' }}>
+        <Typography variant="h4" sx={{ my: 2, color: 'white.main' }}>
           {description}
         </Typography>
 

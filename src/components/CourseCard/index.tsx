@@ -82,7 +82,7 @@ const CourseCard = ({ course, enrolls }: Props) => {
           }}
         >
           <Box>
-            <Typography variant="h5" m={2}>
+            <Typography variant="h3" m={2}>
               {course.name}
             </Typography>
           </Box>
