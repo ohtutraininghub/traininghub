@@ -95,6 +95,7 @@
       "underline": "Underline (CTRL + U)",
       "code": "Code (CTRL + E)",
       "link": "Add link",
+      "image": "Add image from URL",
       "bulletList": "Bullet list",
       "clearFormat": "Clear formatting",
       "orderedList": "Ordered list",
@@ -107,7 +108,8 @@
       "header3": "Header 3",
       "paragraph": "Text"
     },
-    "linkPrompt": "Please enter the link as such: https://www.example.com"
+    "linkPrompt": "Please enter the link as such: https://www.example.com",
+    "imagePrompt": "Please enter the image link as such: https://picsum.photos/200/300"
   },
   "UnauthorizedError": {
     "unauthorizedMessage": "You are not authorized to view this page",

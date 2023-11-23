@@ -20,6 +20,7 @@ import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
 import FormatClearIcon from '@mui/icons-material/FormatClear';
 import FormatUnderlinedIcon from '@mui/icons-material/FormatUnderlined';
+import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 import { DictProps } from '@/lib/i18n';
 import { useTranslation } from '@/lib/i18n/client';
 
@@ -32,6 +33,14 @@ export const MenuBar = ({ lang }: DictProps) => {
 
     if (url && editor) {
       editor.chain().focus().toggleLink({ href: url }).run();
+    }
+  };
+
+  const handleImageInsertion = () => {
+    const url = window.prompt(t('TextEditor.imagePrompt'));
+
+    if (url && editor) {
+      editor.chain().focus().setImage({ src: url }).run();
     }
   };
 
@@ -177,9 +186,22 @@ export const MenuBar = ({ lang }: DictProps) => {
             </IconButton>
           </Tooltip>
 
+          <Divider
+            sx={{ mr: 1, ml: 1 }}
+            orientation="vertical"
+            variant="middle"
+            flexItem
+          />
+
           <Tooltip title={t('TextEditor.Tooltip.link')} arrow>
             <IconButton onClick={handleToggleLink}>
               <LinkIcon />
+            </IconButton>
+          </Tooltip>
+
+          <Tooltip title={t('TextEditor.Tooltip.image')} arrow>
+            <IconButton onClick={handleImageInsertion}>
+              <InsertPhotoIcon />
             </IconButton>
           </Tooltip>
 

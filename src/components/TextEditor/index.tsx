@@ -4,6 +4,7 @@ import { MenuBar } from './MenuBar';
 import { Box } from '@mui/material';
 import Link from '@tiptap/extension-link';
 import Underline from '@tiptap/extension-underline';
+import Image from '@tiptap/extension-image';
 import { DictProps } from '@/lib/i18n';
 
 interface TEditorProps extends DictProps {
@@ -11,7 +12,12 @@ interface TEditorProps extends DictProps {
   onChange(_body: string): void;
 }
 
-const extensions = [StarterKit, Link, Underline];
+const extensions = [
+  StarterKit,
+  Link,
+  Underline,
+  Image.configure({ inline: true }),
+];
 
 const Tiptap = ({ lang, value, onChange }: TEditorProps) => {
   return (
