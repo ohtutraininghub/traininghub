@@ -62,6 +62,13 @@ export default function CourseModal({
     <Modal
       open
       onClose={(event, reason) => handleClick(event, reason)}
+      slotProps={{
+        backdrop: {
+          sx: {
+            backgroundColor: 'rgba(0, 0, 0, 0.75)',
+          },
+        },
+      }}
       sx={{
         display: 'flex',
         justifyContent: 'center',
