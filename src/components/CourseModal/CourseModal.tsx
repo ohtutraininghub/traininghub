@@ -16,6 +16,7 @@ import { DictProps } from '@/lib/i18n';
 import { useTranslation } from '@/lib/i18n/client';
 import { useSession } from 'next-auth/react';
 import Loading from '@/app/[lang]/loading';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 interface Props extends DictProps {
   course: CourseWithTagsAndStudentCount | undefined;
@@ -35,6 +36,9 @@ export default function CourseModal({
 }: Props) {
   const { t } = useTranslation(lang, 'components');
   const { data: session, status } = useSession({ required: true });
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
 
   if (!course) return null;
 
@@ -46,9 +50,18 @@ export default function CourseModal({
   const isCourseFull = course._count.students === course.maxStudents;
   const hasEditRights = hasCourseEditRights(session.user, course);
 
+  const handleClick = (event: object, reason: string) => {
+    if (reason === 'backdropClick') {
+      const params = new URLSearchParams(searchParams);
+      params.delete('courseId');
+      router.replace(`${pathname}?` + params);
+    }
+  };
+
   return (
     <Modal
       open
+      onClose={(event, reason) => handleClick(event, reason)}
       sx={{
         display: 'flex',
         justifyContent: 'center',
