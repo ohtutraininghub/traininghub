@@ -69,6 +69,45 @@ let theme = createTheme({
       main: '#ffffff',
     },
   },
+  typography: {
+    htmlFontSize: 16, // root
+    h1: {
+      fontSize: '3rem', // 3 * 16 = 48
+      fontWeight: 400,
+      lineHeight: 1.167,
+      letterSpacing: '0em',
+    },
+    h2: {
+      fontSize: '2.125rem', // 2.125 * 16 = 34
+      fontWeight: 400,
+      lineHeight: 1.235,
+      letterSpacing: '0.00735em',
+    },
+    h3: {
+      fontSize: '1.5rem', // 1.5 * 16 = 24
+      fontWeight: 400,
+      lineHeight: 1.167,
+      letterSpacing: '0em',
+    },
+    h4: {
+      fontSize: '1.25rem', // 1.25 * 26 = 20
+      fontWeight: 500,
+      lineHeight: 1.6,
+      letterSpacing: '0.0075em',
+    },
+    h5: {
+      fontSize: '1.125rem', // 1.125 * 16 = 18
+      fontWeight: 500,
+      lineHeight: 1.6,
+      letterSpacing: '0.0075em',
+    },
+    h6: {
+      fontSize: '1.075rem', // 1.075 * 16 = 17.2
+      fontWeight: 500,
+      lineHeight: 1.6,
+      letterSpacing: '0.0075em',
+    },
+  },
   components: {
     MuiAppBar: {
       styleOverrides: {
