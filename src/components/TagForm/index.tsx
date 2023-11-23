@@ -1,7 +1,13 @@
 'use client';
 
 import { TagSchemaType, tagSchema, maxTagLength } from '@/lib/zod/tags';
-import { TextField, Button, Box } from '@mui/material';
+import {
+  Button,
+  Box,
+  FormControl,
+  FormLabel,
+  OutlinedInput,
+} from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -36,28 +42,37 @@ export default function TagForm({ lang }: Props) {
   };
 
   return (
-    <>
-      <Box sx={{ mt: 1, mb: 4 }}>
-        <form onSubmit={handleSubmit(submitForm)}>
-          <TextField
-            label="Tag name"
-            {...register('name')}
-            inputProps={{ maxLength: maxTagLength + 1 }}
-          ></TextField>
-          <FormFieldError error={errors.name}></FormFieldError>
-          <Button
-            type="submit"
-            disabled={isSubmitting}
-            variant="contained"
-            sx={{
-              display: 'block',
-              mt: 1,
-            }}
-          >
-            {t('TagForm.submit')}
-          </Button>
-        </form>
+    <FormControl component="form" onSubmit={handleSubmit(submitForm)}>
+      <FormLabel
+        sx={{
+          marginBottom: '0.35rem',
+          fontWeight: 500,
+          color: '#000000',
+        }}
+      >
+        {`${t('TagForm.label')}:`}
+      </FormLabel>
+      <Box sx={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+        <OutlinedInput
+          placeholder="Tag name"
+          {...register('name')}
+          inputProps={{
+            maxLength: maxTagLength + 1,
+            sx: { padding: '0.75rem' },
+          }}
+        />
+
+        <Button
+          type="submit"
+          disabled={isSubmitting}
+          variant="contained"
+          sx={{}}
+          data-testid="tagSubmitButton"
+        >
+          {t('TagForm.submit')}
+        </Button>
       </Box>
-    </>
+      <FormFieldError error={errors.name} />
+    </FormControl>
   );
 }

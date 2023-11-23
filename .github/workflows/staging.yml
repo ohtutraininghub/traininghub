@@ -53,10 +53,50 @@ jobs:
         run: npx prisma migrate deploy
       - name: test
         run: npm run test:ci
+  cypress-test:
+    runs-on: ubuntu-22.04
+    environment: testing
+    needs: [test]
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_USER: ${{ secrets.DB_USERNAME }}
+          POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          POSTGRES_DB: ${{ secrets.DB_DATABASE }}
+        options: >-
+          --health-cmd pg_isready  --health-interval 10s  --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5433:5432
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
+      NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL }}
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: install
+        run: npm ci
+      - name: migrate database
+        run: npx prisma migrate deploy
+      - name: cypress run
+        uses: cypress-io/github-action@v6
+        with:
+          build: npm run cypress:build
+          start: npm run cypress:start
+          browser: chrome
+      - name: store screenshots
+        uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots
+          if-no-files-found: ignore
   deploy:
     runs-on: ubuntu-22.04
     environment: staging
-    needs: [test]
+    needs: [cypress-test]
     if: ${{ github.event_name == 'push' }}
     steps:
       - name: Checkout
