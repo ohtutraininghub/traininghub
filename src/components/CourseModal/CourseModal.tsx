@@ -85,6 +85,7 @@ export default function CourseModal({
           color: 'white.main',
           backgroundColor: 'secondary.main',
           textAlign: 'center',
+          outline: 0,
         }}
       >
         <CourseModalCloseButton lang={lang} />
