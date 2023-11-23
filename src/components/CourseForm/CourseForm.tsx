@@ -30,6 +30,7 @@ import { CourseWithTags } from '@/lib/prisma/courses';
 import { useTranslation } from '@i18n/client';
 import { DictProps } from '@i18n/index';
 import RichTextEditor from '@/components/TextEditor';
+import { useEffect, useState } from 'react';
 
 interface CourseFormProps extends DictProps {
   tags: Tag[];
@@ -55,6 +56,7 @@ export default function CourseForm({
     formState: { errors, isSubmitting },
     handleSubmit,
     reset,
+    setValue,
   } = useForm<FormType>({
     resolver: zodResolver(isEditMode ? courseSchemaWithId : courseSchema),
     defaultValues: {
@@ -71,7 +73,19 @@ export default function CourseForm({
     },
   });
 
+  const [lastEnrollDate, setLastEnrollDate] = useState<Date | ''>('');
+  const [lastCancelDate, setLastCancelDate] = useState<Date | ''>('');
+  const [endDate, setEndDate] = useState<Date | ''>('');
+
+  useEffect(() => {
+    setLastEnrollDate(endDate);
+    setLastCancelDate(endDate);
+    setValue('lastCancelDate', new Date(endDate));
+    setValue('lastEnrollDate', new Date(endDate));
+  }, [endDate, setValue]);
+
   const submitForm = async (data: FormType) => {
+    console.log(data);
     const responseJson = isEditMode
       ? await update(`/api/course`, data)
       : await post('/api/course', data);
@@ -218,9 +232,17 @@ export default function CourseForm({
           <Input
             {...register('endDate')}
             color="secondary"
-            defaultValue={
-              courseData ? dateToDateTimeLocal(courseData.endDate) : ''
+            value={
+              endDate
+                ? dateToDateTimeLocal(endDate)
+                : courseData && courseData.endDate
+                ? dateToDateTimeLocal(courseData.endDate)
+                : ''
             }
+            onChange={(e) => {
+              const endDateValue = e.target.value;
+              setEndDate(endDateValue !== '' ? new Date(endDateValue) : '');
+            }}
             id="courseFormEndDate"
             type="datetime-local"
             error={!!errors.endDate}
@@ -236,11 +258,19 @@ export default function CourseForm({
           <Input
             {...register('lastEnrollDate')}
             color="secondary"
-            defaultValue={
-              courseData && courseData.lastEnrollDate
+            value={
+              lastEnrollDate
+                ? dateToDateTimeLocal(lastEnrollDate)
+                : courseData && courseData.lastEnrollDate
                 ? dateToDateTimeLocal(courseData.lastEnrollDate)
                 : ''
             }
+            onChange={(e) => {
+              const selectedDate = e.target.value;
+              setLastEnrollDate(
+                selectedDate !== '' ? new Date(selectedDate) : ''
+              );
+            }}
             id="courseFormLastEnrollDate"
             type="datetime-local"
             error={!!errors.lastEnrollDate}
@@ -256,11 +286,19 @@ export default function CourseForm({
           <Input
             {...register('lastCancelDate')}
             color="secondary"
-            defaultValue={
-              courseData && courseData.lastCancelDate
+            value={
+              lastCancelDate
+                ? dateToDateTimeLocal(lastCancelDate)
+                : courseData && courseData.lastCancelDate
                 ? dateToDateTimeLocal(courseData.lastCancelDate)
                 : ''
             }
+            onChange={(e) => {
+              const selectedDate = e.target.value;
+              setLastCancelDate(
+                selectedDate !== '' ? new Date(selectedDate) : ''
+              );
+            }}
             id="courseFormLastCancelDate"
             type="datetime-local"
             error={!!errors.lastCancelDate}
