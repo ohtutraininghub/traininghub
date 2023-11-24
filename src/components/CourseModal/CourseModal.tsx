@@ -16,10 +16,13 @@ import { DictProps } from '@/lib/i18n';
 import { useTranslation } from '@/lib/i18n/client';
 import { useSession } from 'next-auth/react';
 import Loading from '@/app/[lang]/loading';
+import AttendeeList from '@/components/AttendeeList';
+import { UserNamesAndIds } from '@/lib/prisma/users';
 
 interface Props extends DictProps {
   course: CourseWithTagsAndStudentCount | undefined;
   usersEnrolledCourseIds: string[];
+  enrolledStudents: UserNamesAndIds | null;
   enrolls: string;
   description: string;
   editCourseLabel: string;
@@ -28,6 +31,7 @@ interface Props extends DictProps {
 export default function CourseModal({
   course,
   usersEnrolledCourseIds,
+  enrolledStudents,
   lang,
   enrolls,
   description,
@@ -63,7 +67,6 @@ export default function CourseModal({
           width: '1000px',
           height: '900px',
           maxWidth: '100%',
-          maxHeight: '100%',
           overflow: 'auto',
           overflowWrap: 'break-word',
           borderRadius: '10px',
@@ -129,7 +132,6 @@ export default function CourseModal({
             margin: 0,
             textAlign: 'start',
             paddingRight: '16px',
-            overflow: 'auto',
           }}
         >
           <Typography
@@ -175,6 +177,7 @@ export default function CourseModal({
           </Box>
           <Box sx={{ flex: 1 }}></Box>
         </Box>
+        <AttendeeList lang={lang} attendees={enrolledStudents} />
       </Card>
     </Modal>
   );

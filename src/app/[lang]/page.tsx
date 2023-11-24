@@ -8,6 +8,7 @@ import BackgroundContainer from '@/components/BackgroundContainer';
 import SpeedDialMenu from '@/components/SpeedDialMenu';
 import SearchMenu from '@/components/SearchMenu';
 import { isTrainerOrAdmin } from '@/lib/auth-utils';
+import { UserNamesAndIds, getStudentNamesByCourseId } from '@/lib/prisma/users';
 
 export const dynamic = 'force-dynamic';
 
@@ -29,8 +30,14 @@ export default async function HomePage({ searchParams, params }: Props) {
   const courses = await getCourses();
   const courseId = searchParams.courseId;
   const openedCourse = courses.find((course) => course.id === courseId);
+
   if (courseId && !openedCourse) {
     notFound();
+  }
+
+  let enrolledStudents: UserNamesAndIds | null = null;
+  if (isTrainerOrAdmin(session.user) && openedCourse) {
+    enrolledStudents = await getStudentNamesByCourseId(openedCourse.id);
   }
 
   const usersEnrolledCourseIds = await getEnrolledCourseIdsByUserId(
@@ -52,6 +59,7 @@ export default async function HomePage({ searchParams, params }: Props) {
         courses={courses}
         openedCourse={openedCourse}
         usersEnrolledCourseIds={usersEnrolledCourseIds}
+        enrolledStudents={enrolledStudents}
         searchCourses={{
           courseName: searchParams.courseName,
           courseTag: searchParams.courseTag,

@@ -1,4 +1,10 @@
 {
+  "AttendeeList": {
+    "header": {
+      "text": "Attendees"
+    },
+    "noAttendeesText": "No enrolled students"
+  },
   "NewCourseButton": {
     "actions": "Actions",
     "newCourse": "Add New Course"
