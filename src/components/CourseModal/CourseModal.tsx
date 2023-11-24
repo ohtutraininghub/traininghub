@@ -18,6 +18,7 @@ import { useSession } from 'next-auth/react';
 import Loading from '@/app/[lang]/loading';
 import AttendeeList from '@/components/AttendeeList';
 import { UserNamesAndIds } from '@/lib/prisma/users';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 interface Props extends DictProps {
   course: CourseWithTagsAndStudentCount | undefined;
@@ -39,6 +40,9 @@ export default function CourseModal({
 }: Props) {
   const { t } = useTranslation(lang, 'components');
   const { data: session, status } = useSession({ required: true });
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
 
   if (!course) return null;
 
@@ -50,9 +54,25 @@ export default function CourseModal({
   const isCourseFull = course._count.students === course.maxStudents;
   const hasEditRights = hasCourseEditRights(session.user, course);
 
+  const handleClick = (event: object, reason: string) => {
+    if (reason === 'backdropClick') {
+      const params = new URLSearchParams(searchParams);
+      params.delete('courseId');
+      router.replace(`${pathname}?` + params);
+    }
+  };
+
   return (
     <Modal
       open
+      onClose={(event, reason) => handleClick(event, reason)}
+      slotProps={{
+        backdrop: {
+          sx: {
+            backgroundColor: 'rgba(0, 0, 0, 0.75)',
+          },
+        },
+      }}
       sx={{
         display: 'flex',
         justifyContent: 'center',
@@ -75,6 +95,7 @@ export default function CourseModal({
           color: 'white.main',
           backgroundColor: 'secondary.main',
           textAlign: 'center',
+          outline: 0,
         }}
       >
         <CourseModalCloseButton lang={lang} />
