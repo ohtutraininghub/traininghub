@@ -23,10 +23,14 @@ import FormatUnderlinedIcon from '@mui/icons-material/FormatUnderlined';
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 import { DictProps } from '@/lib/i18n';
 import { useTranslation } from '@/lib/i18n/client';
+import { useState } from 'react';
+import { PromptWindow } from './urlPrompt';
 
 export const MenuBar = ({ lang }: DictProps) => {
   const { editor } = useCurrentEditor();
   const { t } = useTranslation(lang, 'components');
+  const [anchorElement, setAnchorElement] = useState<null | HTMLElement>(null);
+  const promptOpen = !!anchorElement;
 
   const handleToggleLink = () => {
     const url = window.prompt(t('TextEditor.linkPrompt'));
@@ -36,9 +40,12 @@ export const MenuBar = ({ lang }: DictProps) => {
     }
   };
 
-  const handleImageInsertion = () => {
-    const url = window.prompt(t('TextEditor.imagePrompt'));
+  const handlePromptOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorElement(anchorElement ? null : event.currentTarget);
+  };
 
+  const urlPromptCallback = (url: string | null) => {
+    setAnchorElement(null);
     if (url && editor) {
       editor.chain().focus().setImage({ src: url }).run();
     }
@@ -98,6 +105,12 @@ export const MenuBar = ({ lang }: DictProps) => {
     editor && (
       <>
         <ButtonGroup sx={{ flexWrap: 'wrap' }}>
+          <PromptWindow
+            open={promptOpen}
+            anchorElement={anchorElement}
+            callbackFn={urlPromptCallback}
+          />
+
           <Select
             sx={{ ml: 1, mb: -1, minWidth: 120 }}
             size="small"
@@ -200,7 +213,7 @@ export const MenuBar = ({ lang }: DictProps) => {
           </Tooltip>
 
           <Tooltip title={t('TextEditor.Tooltip.image')} arrow>
-            <IconButton onClick={handleImageInsertion}>
+            <IconButton onClick={handlePromptOpen}>
               <InsertPhotoIcon />
             </IconButton>
           </Tooltip>
