@@ -78,14 +78,32 @@ export default function CourseForm({
   const [endDate, setEndDate] = useState<Date | ''>('');
 
   useEffect(() => {
-    setLastEnrollDate(endDate);
-    setLastCancelDate(endDate);
-    setValue('lastCancelDate', new Date(endDate));
-    setValue('lastEnrollDate', new Date(endDate));
+    updateDates();
   }, [endDate, setValue]);
 
+  const updateDates = async () => {
+    if (endDate != '') {
+      setLastEnrollDate(endDate);
+      setLastCancelDate(endDate);
+      //@ts-ignore
+      setValue('lastCancelDate', dateToDateTimeLocal(endDate));
+      //@ts-ignore
+      setValue('lastEnrollDate', dateToDateTimeLocal(endDate));
+    }
+  };
+
+  const updateValue = (
+    newValue: Date | '',
+    currentValue: Date | undefined | '' | null
+  ) => {
+    return newValue
+      ? dateToDateTimeLocal(newValue)
+      : courseData && currentValue
+      ? dateToDateTimeLocal(currentValue)
+      : '';
+  };
+
   const submitForm = async (data: FormType) => {
-    console.log(data);
     const responseJson = isEditMode
       ? await update(`/api/course`, data)
       : await post('/api/course', data);
@@ -232,13 +250,7 @@ export default function CourseForm({
           <Input
             {...register('endDate')}
             color="secondary"
-            value={
-              endDate
-                ? dateToDateTimeLocal(endDate)
-                : courseData && courseData.endDate
-                ? dateToDateTimeLocal(courseData.endDate)
-                : ''
-            }
+            value={updateValue(endDate, courseData?.endDate)}
             onChange={(e) => {
               const endDateValue = e.target.value;
               setEndDate(endDateValue !== '' ? new Date(endDateValue) : '');
@@ -258,13 +270,7 @@ export default function CourseForm({
           <Input
             {...register('lastEnrollDate')}
             color="secondary"
-            value={
-              lastEnrollDate
-                ? dateToDateTimeLocal(lastEnrollDate)
-                : courseData && courseData.lastEnrollDate
-                ? dateToDateTimeLocal(courseData.lastEnrollDate)
-                : ''
-            }
+            value={updateValue(lastEnrollDate, courseData?.lastEnrollDate)}
             onChange={(e) => {
               const selectedDate = e.target.value;
               setLastEnrollDate(
@@ -286,13 +292,7 @@ export default function CourseForm({
           <Input
             {...register('lastCancelDate')}
             color="secondary"
-            value={
-              lastCancelDate
-                ? dateToDateTimeLocal(lastCancelDate)
-                : courseData && courseData.lastCancelDate
-                ? dateToDateTimeLocal(courseData.lastCancelDate)
-                : ''
-            }
+            value={updateValue(lastCancelDate, courseData?.lastEnrollDate)}
             onChange={(e) => {
               const selectedDate = e.target.value;
               setLastCancelDate(
