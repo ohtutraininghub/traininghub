@@ -292,7 +292,7 @@ export default function CourseForm({
           <Input
             {...register('lastCancelDate')}
             color="secondary"
-            value={updateValue(lastCancelDate, courseData?.lastEnrollDate)}
+            value={updateValue(lastCancelDate, courseData?.lastCancelDate)}
             onChange={(e) => {
               const selectedDate = e.target.value;
               setLastCancelDate(
