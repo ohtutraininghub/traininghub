@@ -334,7 +334,7 @@ describe('Course API tests', () => {
       const courseInDb = await prisma.course.findFirst();
       const enrollAfterEndDate = new Date(
         new Date(courseData.endDate).getTime() + 60 * 60 * 1000
-      );
+      ).toString();
       const updatedCourse = {
         ...courseData,
         lastEnrollDate: enrollAfterEndDate,
@@ -364,7 +364,7 @@ describe('Course API tests', () => {
       const courseInDb = await prisma.course.findFirst();
       const cancelAfterEndDate = new Date(
         new Date(courseData.endDate).getTime() + 60 * 60 * 1000
-      );
+      ).toString();
       const updatedCourse = {
         ...courseData,
         lastCancelDate: cancelAfterEndDate,
