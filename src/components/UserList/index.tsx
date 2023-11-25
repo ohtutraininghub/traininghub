@@ -18,24 +18,75 @@ import {
   TableCell,
   TableContainer,
   TableHead,
+  TablePagination,
   TableRow,
+  TableSortLabel,
   Typography,
 } from '@mui/material';
-import { $Enums } from '@prisma/client';
+import { $Enums, User } from '@prisma/client';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 interface Props extends DictProps {
   users: Users;
+}
+
+type Order = 'asc' | 'desc';
+
+type TableHeader = Exclude<keyof Users[number], 'image' | 'id'>;
+
+function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
+  if (b[orderBy] < a[orderBy]) {
+    return -1;
+  }
+  if (b[orderBy] > a[orderBy]) {
+    return 1;
+  }
+  return 0;
+}
+
+function getComparator<Key extends keyof any>(
+  order: Order,
+  orderBy: Key
+): (
+  // eslint-disable-next-line no-unused-vars
+  a: { [key in Key]: string | Date | null },
+  // eslint-disable-next-line no-unused-vars
+  b: { [key in Key]: string | Date | null }
+) => number {
+  return order === 'desc'
+    ? (a, b) => descendingComparator(a, b, orderBy)
+    : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
 export default function UserList({ lang, users }: Props) {
   const { t } = useTranslation(lang, 'admin');
   const { notify } = useMessage();
   const router = useRouter();
-  const [userRoles, setUserRoles] = useState<$Enums.Role[]>(
-    users.map((user) => user.role)
-  );
+
+  const [page, setPage] = useState(0);
+  const [visibleRowsPerPage, setVisibleRowsPerPage] = useState(5);
+  const [orderBy, setOrderBy] = useState<TableHeader>('name');
+  const [order, setOrder] = useState<Order>('asc');
+  // list of users used to keep track of user right changes before saving
+  const [tempUsers, setTempUsers] = useState<User[]>(users);
+
+  function handleRequestSort(
+    _event: React.MouseEvent<unknown>,
+    property: TableHeader
+  ) {
+    const isAsc = orderBy === property && order === 'asc';
+    setOrder(isAsc ? 'desc' : 'asc');
+    setOrderBy(property);
+  }
+
+  function handleChangePage(_event: unknown, newPage: number) {
+    setPage(newPage);
+  }
+
+  function handleChangeVisibleRows(event: React.ChangeEvent<HTMLInputElement>) {
+    setVisibleRowsPerPage(Number(event.target.value));
+  }
 
   async function handleUserRoleChange(userId: string, newRole: $Enums.Role) {
     try {
@@ -51,12 +102,27 @@ export default function UserList({ lang, users }: Props) {
     }
   }
 
-  const tableHeaders: Exclude<keyof Users[number], 'image' | 'id'>[] = [
+  const tableHeaders: TableHeader[] = [
     'name',
     'email',
     'emailVerified',
     'role',
   ];
+
+  const visibleUsers = useMemo(
+    () =>
+      users
+        .sort(getComparator(order, orderBy))
+        .slice(
+          page * visibleRowsPerPage,
+          page * visibleRowsPerPage + visibleRowsPerPage
+        ),
+    [order, orderBy, page, users, visibleRowsPerPage]
+  );
+
+  // Avoid a layout jump when reaching the last page with empty rows.
+  const emptyRows =
+    page > 0 ? Math.max(0, (1 + page) * visibleRowsPerPage - users.length) : 0;
 
   return (
     <div
@@ -78,16 +144,24 @@ export default function UserList({ lang, users }: Props) {
             <TableRow>
               {tableHeaders.map((headerKey) => (
                 <TableCell
+                  sortDirection={orderBy === headerKey ? 'asc' : 'desc'}
                   key={headerKey}
                   align={headerKey === 'emailVerified' ? 'center' : 'left'}
                 >
-                  {t(`EditUsers.tableHeaders.${headerKey}`)}
+                  <TableSortLabel
+                    onClick={(event) => handleRequestSort(event, headerKey)}
+                    direction={orderBy === headerKey ? order : 'asc'}
+                    active={orderBy === headerKey}
+                  >
+                    {' '}
+                    {t(`EditUsers.tableHeaders.${headerKey}`)}
+                  </TableSortLabel>
                 </TableCell>
               ))}
             </TableRow>
           </TableHead>
           <TableBody>
-            {users.map((user, userIndex) => (
+            {visibleUsers.map((user, userIndex) => (
               <TableRow key={user.id}>
                 <TableCell component="th" scope="row">
                   {user?.name ?? '-'}
@@ -114,15 +188,20 @@ export default function UserList({ lang, users }: Props) {
                     }}
                     fullWidth
                     onChange={(event) => {
-                      setUserRoles((prevRoles) =>
-                        prevRoles.map((role, index) =>
-                          index === userIndex
-                            ? (event.target.value as $Enums.Role)
-                            : role
+                      setTempUsers((prevUsers) =>
+                        prevUsers.map((prevUser, index) =>
+                          index === page * visibleRowsPerPage + userIndex
+                            ? {
+                                ...user,
+                                role: event.target.value as $Enums.Role,
+                              }
+                            : prevUser
                         )
                       );
                     }}
-                    value={userRoles[userIndex]}
+                    value={
+                      tempUsers[page * visibleRowsPerPage + userIndex].role
+                    }
                   >
                     {Object.keys($Enums.Role).map((enumKey) => (
                       <MenuItem key={enumKey} value={enumKey}>
@@ -132,21 +211,26 @@ export default function UserList({ lang, users }: Props) {
                       </MenuItem>
                     ))}
                   </Select>
-                  {user.role !== userRoles[userIndex] && (
+
+                  {user.role !==
+                    tempUsers.find((tempUser) => tempUser.id === user.id)
+                      ?.role && (
                     <SmallConfirmCard
                       confirmTooltip={t('EditUsers.confirmCard.confirm')}
                       cancelTooltip={t('EditUsers.confirmCard.cancel')}
                       onCancel={() =>
-                        setUserRoles((prevRoles) =>
-                          prevRoles.map((role, index) =>
-                            index === userIndex ? user.role : role
+                        setTempUsers((prevUsers) =>
+                          prevUsers.map((prevUser, index) =>
+                            index === page * visibleRowsPerPage + userIndex
+                              ? { ...user, role: user.role }
+                              : prevUser
                           )
                         )
                       }
                       onSubmit={async () => {
                         await handleUserRoleChange(
                           user.id,
-                          userRoles[userIndex]
+                          tempUsers[page * visibleRowsPerPage + userIndex].role
                         );
                       }}
                     />
@@ -154,9 +238,27 @@ export default function UserList({ lang, users }: Props) {
                 </TableCell>
               </TableRow>
             ))}
+            {emptyRows > 0 && (
+              <TableRow
+                style={{
+                  height: 72 * emptyRows, // 72 is the single row height
+                }}
+              >
+                <TableCell colSpan={6} />
+              </TableRow>
+            )}
           </TableBody>
         </Table>
       </TableContainer>
+      <TablePagination
+        rowsPerPageOptions={[5, 10, 25]}
+        component="div"
+        count={users.length}
+        rowsPerPage={visibleRowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeVisibleRows}
+      />
     </div>
   );
 }
