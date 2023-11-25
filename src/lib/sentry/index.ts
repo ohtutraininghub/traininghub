@@ -1,7 +1,11 @@
 import { captureException } from '@sentry/nextjs';
 
 /**
- * Only use case of this should be for example when looping through
- * list and you don't want to let one error break the whole loop.
+ * Used to capture exceptions which aren't critical for the whole operation.
+ * They can and should be handled whenever they appear to Sentry.
+ *
+ * As an example this is used with Google calendar functions. We don't
+ * want to throw 'Internal server error' because Google event edit failed.
+ * Instead just capture the error and fix/silence it, and let the enrollment pass properly.
  */
 export const logHandledException = (error: any) => captureException(error);
