@@ -106,6 +106,7 @@ export const MenuBar = ({ lang }: DictProps) => {
       <>
         <ButtonGroup sx={{ flexWrap: 'wrap' }}>
           <PromptWindow
+            lang={lang}
             open={promptOpen}
             anchorElement={anchorElement}
             callbackFn={urlPromptCallback}

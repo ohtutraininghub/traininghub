@@ -108,8 +108,13 @@
       "header3": "Header 3",
       "paragraph": "Text"
     },
-    "linkPrompt": "Please enter the link as such: https://www.example.com",
-    "imagePrompt": "Please enter the image link as such: https://picsum.photos/200/300"
+    "prompt": {
+      "mainLabel": "Please enter the URL",
+      "imageLabel": "Image URL",
+      "confirm": "OK",
+      "cancel": "Cancel"
+    },
+    "linkPrompt": "Please enter the link as such: https://www.example.com"
   },
   "UnauthorizedError": {
     "unauthorizedMessage": "You are not authorized to view this page",

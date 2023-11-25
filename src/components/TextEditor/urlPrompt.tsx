@@ -1,12 +1,14 @@
 import { Box, Button, Popper, TextField, Typography } from '@mui/material';
 import { ClickAwayListener } from '@mui/base/ClickAwayListener';
+import { useTranslation } from '@/lib/i18n/client';
+import { DictProps } from '@/lib/i18n';
 import { SyntheticEvent, useState } from 'react';
 
-type PromptWindowProps = {
+interface PromptWindowProps extends DictProps {
   open: boolean;
   anchorElement: null | HTMLElement;
   callbackFn: (_url: string | null) => void;
-};
+}
 
 type ClosePromptEvent = MouseEvent | TouchEvent | SyntheticEvent;
 
@@ -14,7 +16,9 @@ export const PromptWindow = ({
   open,
   anchorElement,
   callbackFn,
+  lang,
 }: PromptWindowProps) => {
+  const { t } = useTranslation(lang, 'components');
   const [userInput, setUserInput] = useState<string | null>(null);
 
   const handleSubmit = (event: SyntheticEvent) => {
@@ -36,6 +40,7 @@ export const PromptWindow = ({
           <Box
             flexWrap="wrap"
             sx={{
+              boxShadow: 2,
               backgroundColor: 'surface.main',
               p: 1.5,
               borderStyle: 'solid',
@@ -44,10 +49,12 @@ export const PromptWindow = ({
               borderRadius: 1,
             }}
           >
-            <Typography variant="h4">Please enter the URL</Typography>
+            <Typography variant="h4">
+              {t('TextEditor.prompt.mainLabel')}
+            </Typography>
             <TextField
               id="imageUrl"
-              label="Image URL"
+              label={t('TextEditor.prompt.imageLabel')}
               variant="outlined"
               size="small"
               color="secondary"
@@ -57,16 +64,19 @@ export const PromptWindow = ({
               sx={{ mb: 1 }}
             />
             <br />
-            <Button type="submit" color="secondary" onClick={handleSubmit}>
-              Apply
-            </Button>
-            <Button
-              sx={{ color: 'tertiary.main' }}
-              variant="text"
-              onClick={handleClose}
-            >
-              Close
-            </Button>
+            <Box display="flex" justifyContent="end">
+              <Button color="secondary" variant="text" onClick={handleClose}>
+                {t('TextEditor.prompt.cancel')}
+              </Button>
+              <Button
+                variant="contained"
+                type="submit"
+                color="secondary"
+                onClick={handleSubmit}
+              >
+                {t('TextEditor.prompt.confirm')}
+              </Button>
+            </Box>
           </Box>
         </Popper>
       </ClickAwayListener>
