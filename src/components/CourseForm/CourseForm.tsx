@@ -121,9 +121,9 @@ export default function CourseForm({
   ) => {
     return newValue
       ? //@ts-ignore
-        dateToDateTimeLocal(newValue)
+        dayjs(dateToDateTimeLocal(newValue))
       : courseData && currentValue
-      ? dateToDateTimeLocal(currentValue)
+      ? dayjs(dateToDateTimeLocal(currentValue))
       : null;
   };
 
@@ -259,11 +259,7 @@ export default function CourseForm({
             </InputLabel>
             <DateTimePicker
               {...register('startDate')}
-              value={
-                startDate === null
-                  ? startDate
-                  : dayjs(updateValue(startDate, courseData?.startDate))
-              }
+              value={updateValue(startDate, courseData?.startDate)}
               onChange={(value) => {
                 if (value === null) {
                   setStartDate(null);
@@ -297,11 +293,7 @@ export default function CourseForm({
             </InputLabel>
             <DateTimePicker
               {...register('endDate')}
-              value={
-                endDate === null
-                  ? endDate
-                  : dayjs(updateValue(endDate, courseData?.endDate))
-              }
+              value={updateValue(endDate, courseData?.endDate)}
               onChange={(value) => {
                 if (value === null) {
                   setEndDate(null);
@@ -337,13 +329,7 @@ export default function CourseForm({
             <DateTimePicker
               {...register('lastEnrollDate')}
               data-testid="courseFormLastEnrollDate"
-              value={
-                lastEnrollDate === null
-                  ? lastEnrollDate
-                  : dayjs(
-                      updateValue(lastEnrollDate, courseData?.lastEnrollDate)
-                    )
-              }
+              value={updateValue(lastEnrollDate, courseData?.lastEnrollDate)}
               onChange={(value) => {
                 if (value === null) {
                   setLastEnrollDate(null);
@@ -375,13 +361,7 @@ export default function CourseForm({
             </InputLabel>
             <DateTimePicker
               {...register('lastCancelDate')}
-              value={
-                lastCancelDate === null
-                  ? lastCancelDate
-                  : dayjs(
-                      updateValue(lastCancelDate, courseData?.lastCancelDate)
-                    )
-              }
+              value={updateValue(lastCancelDate, courseData?.lastCancelDate)}
               onChange={(value) => {
                 if (value === null) {
                   setLastCancelDate(null);
