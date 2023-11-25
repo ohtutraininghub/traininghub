@@ -56,7 +56,6 @@ export default function CourseForm({
     formState: { errors, isSubmitting },
     handleSubmit,
     reset,
-    setValue,
   } = useForm<FormType>({
     resolver: zodResolver(isEditMode ? courseSchemaWithId : courseSchema),
     defaultValues: {
@@ -75,26 +74,30 @@ export default function CourseForm({
 
   const [lastEnrollDate, setLastEnrollDate] = useState<Date | ''>('');
   const [lastCancelDate, setLastCancelDate] = useState<Date | ''>('');
-  const [endDate, setEndDate] = useState<Date | ''>('');
 
-  useEffect(() => {
-    updateDates();
-  }, [endDate, setValue]);
+  useEffect(() => {}, [lastEnrollDate, lastCancelDate]);
 
-  const updateDates = async () => {
-    if (endDate != '') {
-      setLastEnrollDate(endDate);
-      setLastCancelDate(endDate);
-      //@ts-ignore
-      setValue('lastCancelDate', dateToDateTimeLocal(endDate));
-      //@ts-ignore
-      setValue('lastEnrollDate', dateToDateTimeLocal(endDate));
-    }
+  const enrollDatehasData = (date: Date) => {
+    setLastEnrollDate(
+      lastEnrollDate === '' ? new Date(endOftheDay(date) || '') : new Date(date)
+    );
+  };
+
+  const cancellDatehasData = (date: Date) => {
+    setLastCancelDate(
+      lastCancelDate === '' ? new Date(endOftheDay(date) || '') : new Date(date)
+    );
+  };
+
+  const endOftheDay = (date: Date) => {
+    date.setHours(23);
+    date.setMinutes(59);
+    return date;
   };
 
   const updateValue = (
     newValue: Date | '',
-    currentValue: Date | undefined | '' | null
+    currentValue: Date | null | undefined
   ) => {
     return newValue
       ? dateToDateTimeLocal(newValue)
@@ -250,11 +253,9 @@ export default function CourseForm({
           <Input
             {...register('endDate')}
             color="secondary"
-            value={updateValue(endDate, courseData?.endDate)}
-            onChange={(e) => {
-              const endDateValue = e.target.value;
-              setEndDate(endDateValue !== '' ? new Date(endDateValue) : '');
-            }}
+            defaultValue={
+              courseData ? dateToDateTimeLocal(courseData.endDate) : ''
+            }
             id="courseFormEndDate"
             type="datetime-local"
             error={!!errors.endDate}
@@ -273,9 +274,9 @@ export default function CourseForm({
             value={updateValue(lastEnrollDate, courseData?.lastEnrollDate)}
             onChange={(e) => {
               const selectedDate = e.target.value;
-              setLastEnrollDate(
-                selectedDate !== '' ? new Date(selectedDate) : ''
-              );
+              selectedDate === ''
+                ? setLastEnrollDate('')
+                : enrollDatehasData(new Date(selectedDate));
             }}
             id="courseFormLastEnrollDate"
             type="datetime-local"
@@ -295,9 +296,9 @@ export default function CourseForm({
             value={updateValue(lastCancelDate, courseData?.lastCancelDate)}
             onChange={(e) => {
               const selectedDate = e.target.value;
-              setLastCancelDate(
-                selectedDate !== '' ? new Date(selectedDate) : ''
-              );
+              selectedDate === ''
+                ? setLastCancelDate('')
+                : cancellDatehasData(new Date(selectedDate));
             }}
             id="courseFormLastCancelDate"
             type="datetime-local"
