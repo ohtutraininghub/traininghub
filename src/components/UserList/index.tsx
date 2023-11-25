@@ -160,8 +160,9 @@ export default function UserList({ lang, users }: Props) {
         padding: '1rem',
       }}
     >
+
       <Box sx={{ display: 'flex', paddingBottom: '1rem' }}>
-        <Typography variant="h4" component="h2">
+        <Typography variant="h2">
           {t('EditUsers.label')}
         </Typography>
         <Tooltip

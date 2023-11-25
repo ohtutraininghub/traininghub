@@ -132,9 +132,8 @@ export default function CourseList({
           }}
         >
           <Typography
-            variant="h6"
+            variant="h4"
             style={{
-              fontWeight: 500,
               color: palette.white.main,
             }}
           >
