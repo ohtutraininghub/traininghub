@@ -76,23 +76,31 @@ export default function CourseForm({
     },
   });
 
-  const [startDate, setStartDate] = useState<Date | Dayjs | ''>('');
-  const [endDate, setEndDate] = useState<Date | Dayjs | ''>('');
-  const [lastEnrollDate, setLastEnrollDate] = useState<Date | Dayjs | ''>('');
-  const [lastCancelDate, setLastCancelDate] = useState<Date | Dayjs | ''>('');
+  const [startDate, setStartDate] = useState<Date | null>(null);
+  const [endDate, setEndDate] = useState<Date | null>(null);
+  const [lastEnrollDate, setLastEnrollDate] = useState<Date | null>(null);
+  const [lastCancelDate, setLastCancelDate] = useState<Date | null>(null);
 
-  useEffect(() => {}, [lastEnrollDate, lastCancelDate]);
+  useEffect(() => {
+    console.log(startDate);
+  }, [lastEnrollDate, lastCancelDate, startDate, endDate]);
 
   const enrollDatehasData = (date: Date) => {
     setLastEnrollDate(
-      lastEnrollDate === '' ? new Date(endOftheDay(date) || '') : new Date(date)
+      lastEnrollDate === null ? new Date(endOftheDay(date)) : new Date(date)
     );
+    //@ts-ignore
+    setValue('lastEnrollDate', dateToDateTimeLocal(date));
   };
 
   const cancellDatehasData = (date: Date) => {
     setLastCancelDate(
-      lastCancelDate === '' ? new Date(endOftheDay(date) || '') : new Date(date)
+      lastCancelDate === null
+        ? new Date(endOftheDay(date) || '')
+        : new Date(date)
     );
+    //@ts-ignore
+    setValue('lastCancelDate', dateToDateTimeLocal(date));
   };
 
   const endOftheDay = (date: Date) => {
@@ -101,8 +109,16 @@ export default function CourseForm({
     return date;
   };
 
+  const setCurrentTime = (date: Dayjs) => {
+    const currentDate = new Date();
+    const updatedDate = date.toDate();
+    updatedDate.setHours(currentDate.getHours());
+    updatedDate.setMinutes(currentDate.getMinutes());
+    return updatedDate;
+  };
+
   const updateValue = (
-    newValue: Date | Dayjs | '',
+    newValue: Date | Dayjs | '' | null,
     currentValue: Date | null | undefined
   ) => {
     return newValue
@@ -110,7 +126,7 @@ export default function CourseForm({
         dateToDateTimeLocal(newValue)
       : courseData && currentValue
       ? dateToDateTimeLocal(currentValue)
-      : '';
+      : null;
   };
 
   const submitForm = async (data: FormType) => {
@@ -241,16 +257,19 @@ export default function CourseForm({
               }}
             />
             <InputLabel htmlFor="courseFormStartDate">
-              {t('CourseForm.endDate')}
+              {t('CourseForm.startDate')}
             </InputLabel>
             <DateTimePicker
               {...register('startDate')}
               value={dayjs(updateValue(startDate, courseData?.startDate))}
               onChange={(value) => {
                 if (value === null) {
-                  setStartDate('');
+                  setStartDate(null);
+                  //@ts-ignore
+                  setValue('startDate', '');
                 } else {
-                  const selectedDate = dayjs(value).toDate();
+                  const currentTime = setCurrentTime(value);
+                  const selectedDate = dayjs(currentTime).toDate();
                   setStartDate(selectedDate);
                   //@ts-ignore
                   setValue('startDate', dateToDateTimeLocal(selectedDate));
@@ -279,9 +298,12 @@ export default function CourseForm({
               value={dayjs(updateValue(endDate, courseData?.endDate))}
               onChange={(value) => {
                 if (value === null) {
-                  setEndDate('');
+                  setEndDate(null);
+                  //@ts-ignore
+                  setValue('endDate', '');
                 } else {
-                  const selectedDate = dayjs(value).toDate();
+                  const currentTime = setCurrentTime(value);
+                  const selectedDate = dayjs(currentTime).toDate();
                   setEndDate(selectedDate);
                   //@ts-ignore
                   setValue('endDate', dateToDateTimeLocal(selectedDate));
@@ -314,12 +336,12 @@ export default function CourseForm({
               )}
               onChange={(value) => {
                 if (value === null) {
-                  setLastEnrollDate('');
+                  setLastEnrollDate(null);
+                  //@ts-ignore
+                  setValue('lastEnrollDate', '');
                 } else {
                   const selectedDate = dayjs(value).toDate();
-                  enrollDatehasData(new Date(selectedDate));
-                  //@ts-ignore
-                  setValue('lastEnrollDate', dateToDateTimeLocal(selectedDate));
+                  enrollDatehasData(selectedDate);
                 }
               }}
               timeSteps={{ minutes: 1 }}
@@ -348,12 +370,12 @@ export default function CourseForm({
               )}
               onChange={(value) => {
                 if (value === null) {
-                  setLastCancelDate('');
+                  setLastCancelDate(null);
+                  //@ts-ignore
+                  setValue('lastCancelDate', '');
                 } else {
                   const selectedDate = dayjs(value).toDate();
                   cancellDatehasData(new Date(selectedDate));
-                  //@ts-ignore
-                  setValue('lastCancelDate', dateToDateTimeLocal(selectedDate));
                 }
               }}
               timeSteps={{ minutes: 1 }}
