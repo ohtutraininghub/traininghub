@@ -1,11 +1,14 @@
 import { Box, Button, Popper, TextField, Typography } from '@mui/material';
-import { useState } from 'react';
+import { ClickAwayListener } from '@mui/base/ClickAwayListener';
+import { SyntheticEvent, useState } from 'react';
 
 type PromptWindowProps = {
   open: boolean;
   anchorElement: null | HTMLElement;
   callbackFn: (_url: string | null) => void;
 };
+
+type ClosePromptEvent = MouseEvent | TouchEvent | SyntheticEvent;
 
 export const PromptWindow = ({
   open,
@@ -14,14 +17,13 @@ export const PromptWindow = ({
 }: PromptWindowProps) => {
   const [userInput, setUserInput] = useState<string | null>(null);
 
-  const handleSubmit = (event: React.SyntheticEvent) => {
+  const handleSubmit = (event: SyntheticEvent) => {
     event.preventDefault();
-    console.log('Clicked Submit with: ', userInput);
     callbackFn(userInput);
     setUserInput(null);
   };
 
-  const handleClose = (event: React.SyntheticEvent) => {
+  const handleClose = (event: ClosePromptEvent) => {
     event.preventDefault();
     callbackFn(null);
     setUserInput(null);
@@ -29,12 +31,12 @@ export const PromptWindow = ({
 
   return (
     anchorElement && (
-      <>
+      <ClickAwayListener onClickAway={handleClose}>
         <Popper open={open} anchorEl={anchorElement}>
           <Box
             flexWrap="wrap"
             sx={{
-              backgroundColor: 'surface.light',
+              backgroundColor: 'surface.main',
               p: 1.5,
               borderStyle: 'solid',
               borderColor: 'black.main',
@@ -49,6 +51,8 @@ export const PromptWindow = ({
               variant="outlined"
               size="small"
               color="secondary"
+              autoComplete="false"
+              autoFocus
               onChange={(e) => setUserInput(e.target.value)}
               sx={{ mb: 1 }}
             />
@@ -65,7 +69,7 @@ export const PromptWindow = ({
             </Button>
           </Box>
         </Popper>
-      </>
+      </ClickAwayListener>
     )
   );
 };
