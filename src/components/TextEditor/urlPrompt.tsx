@@ -3,6 +3,7 @@ import { ClickAwayListener } from '@mui/base/ClickAwayListener';
 import { useTranslation } from '@/lib/i18n/client';
 import { DictProps } from '@/lib/i18n';
 import { SyntheticEvent, useState } from 'react';
+import { linkSchema } from '@/lib/zod/links';
 
 interface PromptWindowProps extends DictProps {
   open: boolean;
@@ -19,18 +20,35 @@ export const PromptWindow = ({
   lang,
 }: PromptWindowProps) => {
   const { t } = useTranslation(lang, 'components');
-  const [userInput, setUserInput] = useState<string | null>(null);
+  const [userInput, setUserInput] = useState<string>('');
+  const [errorMsg, setErrorMsg] = useState<string>('');
+
+  const validateLink = () => {
+    const parseResult = linkSchema.safeParse(userInput);
+    if (!parseResult.success) {
+      setErrorMsg(parseResult.error.format()._errors.toString());
+      return false;
+    }
+    return true;
+  };
+
+  const reset = () => {
+    setUserInput('');
+    setErrorMsg('');
+  };
 
   const handleSubmit = (event: SyntheticEvent) => {
     event.preventDefault();
-    callbackFn(userInput);
-    setUserInput(null);
+    if (validateLink()) {
+      callbackFn(userInput);
+      reset();
+    }
   };
 
   const handleClose = (event: ClosePromptEvent) => {
     event.preventDefault();
     callbackFn(null);
-    setUserInput(null);
+    reset();
   };
 
   return (
@@ -53,7 +71,9 @@ export const PromptWindow = ({
               {t('TextEditor.prompt.mainLabel')}
             </Typography>
             <TextField
-              id="imageUrl"
+              id="urlPrompt"
+              error={!!errorMsg}
+              helperText={errorMsg}
               label={t('TextEditor.prompt.imageLabel')}
               variant="outlined"
               size="small"
