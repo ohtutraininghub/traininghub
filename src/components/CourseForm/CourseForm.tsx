@@ -81,9 +81,7 @@ export default function CourseForm({
   const [lastEnrollDate, setLastEnrollDate] = useState<Date | null>(null);
   const [lastCancelDate, setLastCancelDate] = useState<Date | null>(null);
 
-  useEffect(() => {
-    console.log(startDate);
-  }, [lastEnrollDate, lastCancelDate, startDate, endDate]);
+  useEffect(() => {}, [lastEnrollDate, lastCancelDate, startDate, endDate]);
 
   const enrollDatehasData = (date: Date) => {
     setLastEnrollDate(
@@ -118,7 +116,7 @@ export default function CourseForm({
   };
 
   const updateValue = (
-    newValue: Date | Dayjs | '' | null,
+    newValue: Date | Dayjs | null,
     currentValue: Date | null | undefined
   ) => {
     return newValue
@@ -261,7 +259,11 @@ export default function CourseForm({
             </InputLabel>
             <DateTimePicker
               {...register('startDate')}
-              value={dayjs(updateValue(startDate, courseData?.startDate))}
+              value={
+                startDate === null
+                  ? startDate
+                  : dayjs(updateValue(startDate, courseData?.startDate))
+              }
               onChange={(value) => {
                 if (value === null) {
                   setStartDate(null);
@@ -295,7 +297,11 @@ export default function CourseForm({
             </InputLabel>
             <DateTimePicker
               {...register('endDate')}
-              value={dayjs(updateValue(endDate, courseData?.endDate))}
+              value={
+                endDate === null
+                  ? endDate
+                  : dayjs(updateValue(endDate, courseData?.endDate))
+              }
               onChange={(value) => {
                 if (value === null) {
                   setEndDate(null);
@@ -331,9 +337,13 @@ export default function CourseForm({
             <DateTimePicker
               {...register('lastEnrollDate')}
               data-testid="courseFormLastEnrollDate"
-              value={dayjs(
-                updateValue(lastEnrollDate, courseData?.lastEnrollDate)
-              )}
+              value={
+                lastEnrollDate === null
+                  ? lastEnrollDate
+                  : dayjs(
+                      updateValue(lastEnrollDate, courseData?.lastEnrollDate)
+                    )
+              }
               onChange={(value) => {
                 if (value === null) {
                   setLastEnrollDate(null);
@@ -365,9 +375,13 @@ export default function CourseForm({
             </InputLabel>
             <DateTimePicker
               {...register('lastCancelDate')}
-              value={dayjs(
-                updateValue(lastCancelDate, courseData?.lastCancelDate)
-              )}
+              value={
+                lastCancelDate === null
+                  ? lastCancelDate
+                  : dayjs(
+                      updateValue(lastCancelDate, courseData?.lastCancelDate)
+                    )
+              }
               onChange={(value) => {
                 if (value === null) {
                   setLastCancelDate(null);
