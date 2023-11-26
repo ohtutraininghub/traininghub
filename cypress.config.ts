@@ -1,5 +1,6 @@
 import { defineConfig } from 'cypress';
 import { clearDatabase } from './src/lib/prisma';
+import { main as seedDatabase } from './prisma/seed';
 
 export default defineConfig({
   e2e: {
@@ -7,6 +8,12 @@ export default defineConfig({
       on('task', {
         async clearDatabase() {
           await clearDatabase();
+          return null;
+        },
+      });
+      on('task', {
+        async seedDatabase() {
+          await seedDatabase();
           return null;
         },
       });

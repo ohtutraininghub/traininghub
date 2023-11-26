@@ -23,8 +23,8 @@ const courseData = [
     name: 'Robot Framework Fundamentals',
     description:
       'This course will teach you how to automate the acceptance testing of your software using Robot Framework, a generic, open-source, Python-based automation framework. You will get an introduction to how Robot Framework works and learn how to write tasks utilising keywords, all in an easily readable and human-friendly syntax.',
-    startDate: '2023-11-20T09:30:00.000Z',
-    endDate: '2023-11-22T16:30:00.000Z',
+    startDate: '2033-11-20T09:30:00.000Z',
+    endDate: '2033-11-22T16:30:00.000Z',
     maxStudents: 10,
     tags: ['Testing', 'Python', 'Robot Framework'],
   },
@@ -51,7 +51,7 @@ const tagData = [
   { name: 'Testing' },
 ];
 
-async function main() {
+export async function main() {
   await clearDatabase();
 
   const user = await prisma.user.create({ data: {} });

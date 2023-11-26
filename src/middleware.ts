@@ -7,7 +7,7 @@ const PUBLIC_FILE = /\.(.*)$/;
 
 export default withAuth(async function middleware(req) {
   const token = await getToken({ req });
-  const { pathname } = req.nextUrl;
+  const { pathname, search } = req.nextUrl;
 
   const isAuthenticated = !!token;
   if (!isAuthenticated) {
@@ -34,7 +34,9 @@ export default withAuth(async function middleware(req) {
       // The new URL is now /en/products
       return NextResponse.redirect(
         new URL(
-          `/${locale}${pathname.startsWith('/') ? '' : '/'}${pathname}`,
+          `/${locale}${pathname.startsWith('/') ? '' : '/'}${pathname}${
+            search ? `${search}` : ''
+          }`,
           req.url
         )
       );
