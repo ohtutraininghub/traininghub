@@ -84,7 +84,7 @@ describe('Course enrollment API tests', () => {
         data: newCourse,
       });
 
-      const req = mockPostRequest(existingCourse.id);
+      const req = mockPostRequest({ courseId: existingCourse.id });
       const response = await POST(req);
       const data = await response.json();
 
@@ -94,7 +94,7 @@ describe('Course enrollment API tests', () => {
     });
 
     it('enrolling in a course that does not exist throws error', async () => {
-      const req = mockPostRequest(invalidCourseId);
+      const req = mockPostRequest({ courseId: invalidCourseId });
       const response = await POST(req);
       const data = await response.json();
 
@@ -126,7 +126,7 @@ describe('Course enrollment API tests', () => {
         },
       });
 
-      const req = mockPostRequest(fullyBookedCourse.id);
+      const req = mockPostRequest({ courseId: fullyBookedCourse.id });
       const response = await POST(req);
       const data = await response.json();
 
@@ -140,7 +140,7 @@ describe('Course enrollment API tests', () => {
         data: pastDeadlineToEnrollCourse,
       });
 
-      const req = mockPostRequest(existingCourse.id);
+      const req = mockPostRequest({ courseId: existingCourse.id });
       const response = await POST(req);
       const data = await response.json();
 
@@ -161,7 +161,7 @@ describe('Course enrollment API tests', () => {
         },
       });
 
-      const req = mockPostRequest(alreadyEnrolledCourse.id);
+      const req = mockPostRequest({ courseId: alreadyEnrolledCourse.id });
       const response = await POST(req);
       const data = await response.json();
 
@@ -182,7 +182,7 @@ describe('Course enrollment API tests', () => {
         },
       });
 
-      const req = mockUpdateRequest(enrolledCourse.id);
+      const req = mockUpdateRequest({ courseId: enrolledCourse.id });
       const response = await PUT(req);
       const data = await response.json();
 
@@ -201,7 +201,7 @@ describe('Course enrollment API tests', () => {
         },
       });
 
-      const req = mockUpdateRequest(notEnrolledCourse.id);
+      const req = mockUpdateRequest({ courseId: notEnrolledCourse.id });
       const response = await PUT(req);
       const data = await response.json();
 
@@ -220,7 +220,7 @@ describe('Course enrollment API tests', () => {
         },
       });
 
-      const req = mockUpdateRequest(enrolledCourse.id);
+      const req = mockUpdateRequest({ courseId: enrolledCourse.id });
       const response = await PUT(req);
       const data = await response.json();
 

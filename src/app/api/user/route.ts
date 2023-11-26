@@ -10,10 +10,10 @@ import { isAdmin } from '@/lib/auth-utils';
 import { handleCommonErrors } from '@/lib/response/errorUtil';
 
 export async function PUT(request: NextRequest) {
-  const data = await request.json();
-  const { userId, newRole } = data;
-
   try {
+    const data = await request.json();
+    const { userId, newRole } = data;
+
     const { user } = await getServerAuthSession();
     if (!isAdmin(user)) {
       return errorResponse({

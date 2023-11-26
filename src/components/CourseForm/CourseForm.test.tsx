@@ -98,9 +98,7 @@ describe('Course Form Course Edit Tests', () => {
       <CourseForm lang="en" tags={[]} courseData={course} />
     );
 
-    const name = screen
-      .getByTestId('courseFormName')
-      .querySelector('input') as HTMLInputElement;
+    const name = screen.getByTestId('courseFormName') as HTMLInputElement;
     const description = container.querySelector('.tiptap');
     const startDate = screen.getByTestId(
       'courseFormStartDate'
@@ -146,9 +144,7 @@ describe('Course Form Course Edit Tests', () => {
       <CourseForm lang="en" tags={[]} courseData={course} />
     );
 
-    const name = screen
-      .getByTestId('courseFormName')
-      .querySelector('input') as HTMLInputElement;
+    const name = screen.getByTestId('courseFormName') as HTMLInputElement;
     const description = container.querySelector('.tiptap');
     const startDate = screen.getByTestId(
       'courseFormStartDate'
