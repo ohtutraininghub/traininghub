@@ -2,6 +2,7 @@
 
 import { CourseWithTagsAndStudentCount } from '@/lib/prisma/courses';
 import { CourseModalCloseButton } from '@/components/Buttons/Buttons';
+import AttendeeView from '@/components/AttendeeView';
 import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography';
 import Card from '@mui/material/Card';
@@ -16,7 +17,6 @@ import { DictProps } from '@/lib/i18n';
 import { useTranslation } from '@/lib/i18n/client';
 import { useSession } from 'next-auth/react';
 import Loading from '@/app/[lang]/loading';
-import AttendeeList from '@/components/AttendeeList';
 import { UserNamesAndIds } from '@/lib/prisma/users';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
@@ -198,7 +198,7 @@ export default function CourseModal({
           </Box>
           <Box sx={{ flex: 1 }}></Box>
         </Box>
-        <AttendeeList lang={lang} attendees={enrolledStudents} />
+        <AttendeeView lang={lang} attendees={enrolledStudents} />
       </Card>
     </Modal>
   );
