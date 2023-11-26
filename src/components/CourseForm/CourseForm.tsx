@@ -83,22 +83,24 @@ export default function CourseForm({
 
   useEffect(() => {}, [lastEnrollDate, lastCancelDate, startDate, endDate]);
 
-  const enrollDatehasData = (date: Date) => {
-    setLastEnrollDate(
-      lastEnrollDate === null ? new Date(endOftheDay(date)) : new Date(date)
+  const dateHasData = (date: Date, lastDate: string) => {
+    const setterFunction =
+      lastDate === 'lastEnrollDate'
+        ? setLastEnrollDate
+        : lastDate === 'lastCancelDate'
+        ? setLastCancelDate
+        : null;
+    const dayChooser =
+      lastDate === 'lastEnrollDate'
+        ? lastEnrollDate
+        : lastDate === 'lastCancelDate'
+        ? lastCancelDate
+        : null;
+    setterFunction?.(
+      dayChooser === null ? new Date(endOftheDay(date)) : new Date(date)
     );
     //@ts-ignore
-    setValue('lastEnrollDate', dateToDateTimeLocal(date));
-  };
-
-  const cancellDatehasData = (date: Date) => {
-    setLastCancelDate(
-      lastCancelDate === null
-        ? new Date(endOftheDay(date) || '')
-        : new Date(date)
-    );
-    //@ts-ignore
-    setValue('lastCancelDate', dateToDateTimeLocal(date));
+    setValue(lastDate, dateToDateTimeLocal(date));
   };
 
   const endOftheDay = (date: Date) => {
@@ -259,6 +261,7 @@ export default function CourseForm({
             </InputLabel>
             <DateTimePicker
               {...register('startDate')}
+              data-testid="courseFormStartDate"
               value={updateValue(startDate, courseData?.startDate)}
               onChange={(value) => {
                 if (value === null) {
@@ -337,7 +340,7 @@ export default function CourseForm({
                   setValue('lastEnrollDate', '');
                 } else {
                   const selectedDate = dayjs(value).toDate();
-                  enrollDatehasData(selectedDate);
+                  dateHasData(selectedDate, 'lastEnrollDate');
                 }
               }}
               timeSteps={{ minutes: 1 }}
@@ -369,7 +372,7 @@ export default function CourseForm({
                   setValue('lastCancelDate', '');
                 } else {
                   const selectedDate = dayjs(value).toDate();
-                  cancellDatehasData(new Date(selectedDate));
+                  dateHasData(selectedDate, 'lastCancelDate');
                 }
               }}
               timeSteps={{ minutes: 1 }}
