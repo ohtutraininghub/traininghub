@@ -264,16 +264,16 @@ export default function CourseForm({
               data-testid="courseFormStartDate"
               value={updateValue(startDate, courseData?.startDate)}
               onChange={(value) => {
-                if (value === null) {
-                  setStartDate(null);
-                  //@ts-ignore
-                  setValue('startDate', '');
-                } else {
+                if (value !== null && dayjs(value).isValid()) {
                   const currentTime = setCurrentTime(value);
                   const selectedDate = dayjs(currentTime).toDate();
                   setStartDate(selectedDate);
                   //@ts-ignore
                   setValue('startDate', dateToDateTimeLocal(selectedDate));
+                } else {
+                  setStartDate(null);
+                  //@ts-ignore
+                  setValue('startDate', '');
                 }
               }}
               timeSteps={{ minutes: 1 }}
@@ -298,16 +298,16 @@ export default function CourseForm({
               {...register('endDate')}
               value={updateValue(endDate, courseData?.endDate)}
               onChange={(value) => {
-                if (value === null) {
-                  setEndDate(null);
-                  //@ts-ignore
-                  setValue('endDate', '');
-                } else {
+                if (value !== null && dayjs(value).isValid()) {
                   const currentTime = setCurrentTime(value);
                   const selectedDate = dayjs(currentTime).toDate();
                   setEndDate(selectedDate);
                   //@ts-ignore
                   setValue('endDate', dateToDateTimeLocal(selectedDate));
+                } else {
+                  setEndDate(null);
+                  //@ts-ignore
+                  setValue('endDate', '');
                 }
               }}
               timeSteps={{ minutes: 1 }}
@@ -334,13 +334,13 @@ export default function CourseForm({
               data-testid="courseFormLastEnrollDate"
               value={updateValue(lastEnrollDate, courseData?.lastEnrollDate)}
               onChange={(value) => {
-                if (value === null) {
+                if (value !== null && dayjs(value).isValid()) {
+                  const selectedDate = dayjs(value).toDate();
+                  dateHasData(selectedDate, 'lastEnrollDate');
+                } else {
                   setLastEnrollDate(null);
                   //@ts-ignore
                   setValue('lastEnrollDate', '');
-                } else {
-                  const selectedDate = dayjs(value).toDate();
-                  dateHasData(selectedDate, 'lastEnrollDate');
                 }
               }}
               timeSteps={{ minutes: 1 }}
@@ -366,13 +366,13 @@ export default function CourseForm({
               {...register('lastCancelDate')}
               value={updateValue(lastCancelDate, courseData?.lastCancelDate)}
               onChange={(value) => {
-                if (value === null) {
+                if (value !== null && dayjs(value).isValid()) {
+                  const selectedDate = dayjs(value).toDate();
+                  dateHasData(selectedDate, 'lastCancelDate');
+                } else {
                   setLastCancelDate(null);
                   //@ts-ignore
                   setValue('lastCancelDate', '');
-                } else {
-                  const selectedDate = dayjs(value).toDate();
-                  dateHasData(selectedDate, 'lastCancelDate');
                 }
               }}
               timeSteps={{ minutes: 1 }}
