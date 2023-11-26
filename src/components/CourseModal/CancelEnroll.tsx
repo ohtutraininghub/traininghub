@@ -50,6 +50,7 @@ export default function CancelEnroll({
         onClick={() => {
           setBackdropOpen(true);
         }}
+        data-testid="cancelEnrollButton"
       >
         {t('CancelEnroll.cancelEnrollment')}
       </Button>

@@ -87,6 +87,7 @@ export default function EnrollButton({ courseId, lang }: Props) {
         onClick={() => {
           setBackdropOpen(true);
         }}
+        data-testid="enrollButton"
       >
         {t('EnrollButton.enroll')}
       </Button>

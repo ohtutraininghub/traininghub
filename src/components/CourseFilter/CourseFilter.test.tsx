@@ -1,7 +1,8 @@
 import { filterCourses } from '@/components/CourseFilter/CourseFilterLogic';
+import { CourseWithTagsAndStudentCount } from '@/lib/prisma/courses';
 
 describe('filterCourses function', () => {
-  const courses = [
+  const courses: CourseWithTagsAndStudentCount[] = [
     {
       _count: { students: 10 },
       id: '1',
@@ -9,6 +10,8 @@ describe('filterCourses function', () => {
       description: 'Learn Python programming.',
       startDate: new Date('2024-01-01'),
       endDate: new Date('2024-01-31'),
+      lastEnrollDate: null,
+      lastCancelDate: null,
       createdById: '1234321',
       maxStudents: 20,
       tags: [{ id: 'tag1', name: 'Programming' }],
@@ -20,6 +23,8 @@ describe('filterCourses function', () => {
       description: 'Become a full-stack developer.',
       startDate: new Date('2023-11-12'),
       endDate: new Date('2023-11-28'),
+      lastEnrollDate: null,
+      lastCancelDate: null,
       createdById: '123432132',
       maxStudents: 15,
       tags: [{ id: 'tag2', name: 'Web Development' }],
