@@ -2,19 +2,19 @@ import { Box, Button, Popper, TextField, Typography } from '@mui/material';
 import { ClickAwayListener } from '@mui/base/ClickAwayListener';
 import { useTranslation } from '@/lib/i18n/client';
 import { DictProps } from '@/lib/i18n';
-import { SyntheticEvent, useState } from 'react';
+import { SyntheticEvent, useEffect, useState } from 'react';
 import { linkSchema } from '@/lib/zod/links';
 
 export type AnchorWithContext = {
   element: HTMLElement;
   state: 'link' | 'image';
-  text?: string;
+  text: string;
 };
 
 export type CallbackObj = {
   state: AnchorWithContext['state'];
   url: string;
-  text?: string;
+  text: string;
 };
 interface PromptWindowProps extends DictProps {
   open: boolean;
@@ -39,6 +39,10 @@ export const PromptWindow = ({
   const [userInput, setUserInput] = useState<string>('');
   const [displayText, setDisplayText] = useState<string>('');
   const [errorMsg, setErrorMsg] = useState<string>('');
+
+  useEffect(() => {
+    anchorObj && setDisplayText(anchorObj.text);
+  }, [anchorObj]);
 
   const validateLink = () => {
     const parseResult = linkSchema.safeParse(userInput);

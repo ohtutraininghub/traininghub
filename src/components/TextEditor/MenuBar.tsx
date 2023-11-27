@@ -57,7 +57,7 @@ export const MenuBar = ({ lang }: DictProps) => {
     const obj: AnchorWithContext = {
       element: event.currentTarget,
       state: event.currentTarget.id === 'addLinkButton' ? 'link' : 'image',
-      text: selection,
+      text: selection ? selection : '',
     };
     setAnchorObj(anchorObj ? null : obj);
   };
@@ -69,7 +69,11 @@ export const MenuBar = ({ lang }: DictProps) => {
       if (props.state === 'image') {
         editor.chain().focus().setImage({ src: props.url }).run();
       } else if (props.state === 'link') {
-        props.text && replaceTextSelection(props.text);
+        if (!props.text) {
+          replaceTextSelection(props.url);
+        } else {
+          replaceTextSelection(props.text);
+        }
         editor.chain().focus().toggleLink({ href: props.url }).run();
       }
     }
