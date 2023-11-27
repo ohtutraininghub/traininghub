@@ -280,7 +280,7 @@ export default function CourseForm({
               slotProps={{
                 textField: { variant: 'outlined' },
                 actionBar: {
-                  actions: ['accept', 'clear'],
+                  actions: ['accept', 'cancel', 'today', 'clear'],
                 },
               }}
               //@ts-ignore
@@ -314,7 +314,7 @@ export default function CourseForm({
               slotProps={{
                 textField: { variant: 'outlined' },
                 actionBar: {
-                  actions: ['accept', 'clear'],
+                  actions: ['accept', 'cancel', 'today', 'clear'],
                 },
               }}
               //@ts-ignore
@@ -347,7 +347,7 @@ export default function CourseForm({
               slotProps={{
                 textField: { variant: 'outlined' },
                 actionBar: {
-                  actions: ['accept', 'clear'],
+                  actions: ['accept', 'cancel', 'today', 'clear'],
                 },
               }}
               //@ts-ignore
@@ -379,7 +379,7 @@ export default function CourseForm({
               slotProps={{
                 textField: { variant: 'outlined' },
                 actionBar: {
-                  actions: ['accept', 'clear'],
+                  actions: ['accept', 'cancel', 'today', 'clear'],
                 },
               }}
               //@ts-ignore
