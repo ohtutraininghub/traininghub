@@ -8,6 +8,7 @@ describe('Course enrollment', () => {
     cy.contains('Robot Framework Fundamentals').click();
     cy.getCy('enrollButton').click();
     cy.getCy('confirmCardConfirm').filter(':visible').click();
+    cy.getCy('calendarPromptDecline').click();
     cy.contains('You have enrolled for this course!');
 
     cy.getCy('cancelEnrollButton').click();
