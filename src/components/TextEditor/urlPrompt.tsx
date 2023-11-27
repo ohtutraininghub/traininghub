@@ -57,7 +57,6 @@ export const PromptWindow = ({
 
   const handleSubmit = (event: SyntheticEvent) => {
     event.preventDefault();
-    console.log(anchorObj);
     if (anchorObj && validateLink()) {
       callbackFn({
         state: anchorObj.state,

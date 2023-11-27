@@ -14,7 +14,7 @@ interface TEditorProps extends DictProps {
 
 const extensions = [
   StarterKit,
-  Link,
+  Link.extend({ inclusive: false }),
   Underline,
   Image.configure({ inline: true }),
 ];
