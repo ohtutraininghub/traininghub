@@ -28,7 +28,9 @@ export default function CancelEnroll({
   const { notify } = useMessage();
 
   const handleCancelEnroll = async () => {
-    const responseJson = await update('/api/course/enroll', courseId);
+    const responseJson = await update('/api/course/enroll', {
+      courseId: courseId,
+    });
     notify(responseJson);
     router.refresh();
   };
@@ -48,6 +50,7 @@ export default function CancelEnroll({
         onClick={() => {
           setBackdropOpen(true);
         }}
+        data-testid="cancelEnrollButton"
       >
         {t('CancelEnroll.cancelEnrollment')}
       </Button>

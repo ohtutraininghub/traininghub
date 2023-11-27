@@ -9,11 +9,15 @@ import { updateGoogleAccount } from './prisma/account';
 import { Role } from '@prisma/client';
 import { isProduction } from './env-utils';
 
+/**
+ * Base scopes granted on sign up
+ *
+ * Additional scopes can be requested via new sign in flow
+ */
 const scopes =
   'openid ' +
   'https://www.googleapis.com/auth/userinfo.email ' +
-  'https://www.googleapis.com/auth/userinfo.profile ' +
-  'https://www.googleapis.com/auth/calendar.events.owned ';
+  'https://www.googleapis.com/auth/userinfo.profile';
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -26,6 +30,7 @@ export const authOptions: NextAuthOptions = {
           access_type: 'offline',
           response_type: 'code',
           scope: scopes,
+          include_granted_scopes: true,
         },
       },
     }),

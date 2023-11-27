@@ -81,7 +81,11 @@ export function ConfirmCard({
           <Button variant="outlined" onClick={() => setBackdropOpen(false)}>
             {t('ConfirmCard.cancel')}
           </Button>
-          <Button variant="contained" onClick={handleClick}>
+          <Button
+            variant="contained"
+            data-testid="confirmCardConfirm"
+            onClick={handleClick}
+          >
             {t('ConfirmCard.confirm')}
           </Button>
         </Box>
