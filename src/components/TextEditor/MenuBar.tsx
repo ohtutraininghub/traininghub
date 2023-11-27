@@ -25,6 +25,7 @@ import { DictProps } from '@/lib/i18n';
 import { useTranslation } from '@/lib/i18n/client';
 import { useState } from 'react';
 import { PromptWindow, type AnchorWithContext, CallbackObj } from './urlPrompt';
+import { TextSelection } from '@tiptap/pm/state';
 
 export const MenuBar = ({ lang }: DictProps) => {
   const { editor } = useCurrentEditor();
@@ -37,6 +38,18 @@ export const MenuBar = ({ lang }: DictProps) => {
     const { view, state } = editor;
     const { from, to } = view.state.selection;
     return state.doc.textBetween(from, to, '');
+  };
+
+  const replaceTextSelection = (newText: string): void => {
+    if (!editor) return;
+    const { state, dispatch } = editor.view;
+    const { selection, tr } = state;
+    const { from, to } = selection;
+    dispatch(
+      tr
+        .insertText(newText, from, to)
+        .setSelection(TextSelection.create(tr.doc, from, from + newText.length))
+    );
   };
 
   const handlePromptOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -56,11 +69,8 @@ export const MenuBar = ({ lang }: DictProps) => {
       if (props.state === 'image') {
         editor.chain().focus().setImage({ src: props.url }).run();
       } else if (props.state === 'link') {
-        editor
-          .chain()
-          .focus()
-          .toggleLink({ href: props.url, target: props.text })
-          .run();
+        props.text && replaceTextSelection(props.text);
+        editor.chain().focus().toggleLink({ href: props.url }).run();
       }
     }
   };
