@@ -1,21 +1,21 @@
 {
-  "DashboardTitle": "Admin dashboard",
   "CreateTag": {
     "addNewTag": "Add new tag",
     "tagsLabel": "Tags"
   },
+  "DashboardTitle": "Admin dashboard",
   "EditUsers": {
-    "label": "Users",
+    "confirmCard": {
+      "cancel": "Cancel changes",
+      "confirm": "Confirm changes"
+    },
     "infoText": "Changes in user roles are applied when user signs in again",
+    "label": "Users",
     "tableHeaders": {
-      "name": "Name",
       "email": "Email",
       "emailVerified": "Email Verified",
+      "name": "Name",
       "role": "Role"
-    },
-    "confirmCard": {
-      "confirm": "Confirm changes",
-      "cancel": "Cancel changes"
     }
   }
 }

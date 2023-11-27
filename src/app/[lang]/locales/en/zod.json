@@ -1,27 +1,27 @@
 {
-  "endDateCannotBeBeforeStartDate": "The end date cannot be before the start date",
-  "lastEnrollDateCannotBeAfterEndDate": "The last date to enroll cannot be after the end date of the course",
-  "lastCancelEnrollDateCannotBeAfterEndDate": "The last date to cancel enrollment cannot be after the end date of the course",
-  "startDateCannotBeInThePast": "Start date cannot be in the past",
   "consecutiveSpacesNotAllowed": "Consecutive spaces are not allowed",
-  "tagNameRequired": "A tag name is required",
-  "maximumLengthForTagIs": "The maximum length for a tag is {{maxTagLength}} characters",
+  "courseId": "Course Id",
+  "description": "Description",
+  "endDate": "End date",
+  "endDateCannotBeBeforeStartDate": "The end date cannot be before the start date",
   "errors": {
     "too_small": {
-      "string": {
+      "number": {
         "inclusive": "{{path}} is required"
       },
-      "number": {
+      "string": {
         "inclusive": "{{path}} is required"
       }
     }
   },
-  "description": "Description",
+  "id": "Id",
+  "lastCancelEnrollDateCannotBeAfterEndDate": "The last date to cancel enrollment cannot be after the end date of the course",
+  "lastEnrollDateCannotBeAfterEndDate": "The last date to enroll cannot be after the end date of the course",
+  "maxStudents": "Max students",
+  "maximumLengthForTagIs": "The maximum length for a tag is {{maxTagLength}} characters",
   "name": "Name",
   "startDate": "Start date",
-  "endDate": "End date",
-  "maxStudents": "Max students",
-  "tags": "Tag name",
-  "id": "Id",
-  "courseId": "Course Id"
+  "startDateCannotBeInThePast": "Start date cannot be in the past",
+  "tagNameRequired": "A tag name is required",
+  "tags": "Tag name"
 }

@@ -1,31 +1,22 @@
 {
-  "NewCourseButton": {
-    "actions": "Actions",
-    "newCourse": "Add New Course"
+  "CalendarPrompt": {
+    "addPrompt": "Do you want to add this course to your Google calendar?",
+    "button": {
+      "no": "No",
+      "yes": "Yes"
+    },
+    "checkbox": {
+      "remember": "Remember my decision"
+    }
   },
-  "NewTagButton": {
-    "newTag": "Add New Tag"
-  },
-  "SignOutButton": {
-    "signOut": "Sign out"
-  },
-  "CourseModal": {
-    "enrollmentDeadlineHeader": "Note: Enrollment deadline ",
-    "description": "Description",
-    "enrolls": "Enrolls: {{studentCount}} / {{maxStudentCount}}"
-  },
-  "CourseModalCloseButton": {
-    "close": "Close"
+  "CancelEnroll": {
+    "cancelEnrollment": "Cancel enrollment",
+    "confirmCancellation": "Are you sure you want to unenroll from the course?",
+    "pastCancellationDate": "The course starts soon. Contact the trainer if you want to cancel your enrollment."
   },
   "ConfirmCard": {
     "cancel": "Cancel",
     "confirm": "Confirm"
-  },
-  "CourseList": {
-    "courses": "Courses",
-    "noCoursesToShow": "No courses found",
-    "listControlLabel": "List",
-    "gridControlLabel": "Grid"
   },
   "CourseCard": {
     "enrolls": "Enrolls: {{studentCount}} / {{maxStudentCount}}"
@@ -42,85 +33,94 @@
       "tag": "Tag"
     }
   },
+  "CourseList": {
+    "courses": "Courses",
+    "gridControlLabel": "Grid",
+    "listControlLabel": "List",
+    "noCoursesToShow": "No courses found"
+  },
   "CourseListView": {
     "enrolls": "Enrolls: {{studentCount}} / {{maxStudentCount}}"
+  },
+  "CourseModal": {
+    "description": "Description",
+    "enrollmentDeadlineHeader": "Note: Enrollment deadline ",
+    "enrolls": "Enrolls: {{studentCount}} / {{maxStudentCount}}"
+  },
+  "CourseModalCloseButton": {
+    "close": "Close"
   },
   "EditButton": {
     "editCourse": "Edit course"
   },
   "EnrollButton": {
-    "enroll": "Enroll",
-    "confirmEnroll": "Confirm enroll?"
+    "confirmEnroll": "Confirm enroll?",
+    "enroll": "Enroll"
   },
   "EnrollHolder": {
     "confirmMessage": "You have enrolled for this course!",
     "pastEnrollmentDeadline": "Enrollment for this course has ended"
   },
-  "CancelEnroll": {
-    "pastCancellationDate": "The course starts soon. Contact the trainer if you want to cancel your enrollment.",
-    "cancelEnrollment": "Cancel enrollment",
-    "confirmCancellation": "Are you sure you want to unenroll from the course?"
+  "NewCourseButton": {
+    "actions": "Actions",
+    "newCourse": "Add New Course"
+  },
+  "NewTagButton": {
+    "newTag": "Add New Tag"
   },
   "ProfileMenu": {
-    "profileTitle": "Profile",
-    "menuTooltip": "User profile",
+    "confirmSignOut": "Are you sure you want to sign out?",
     "home": "Home",
-    "viewProfile": "View profile",
+    "menuTooltip": "User profile",
+    "profileTitle": "Profile",
     "signOut": "Sign out",
-    "confirmSignOut": "Are you sure you want to sign out?"
+    "viewProfile": "View profile"
   },
   "SearchMenu": {
-    "menuTitle": "Search for courses",
+    "button": {
+      "clearSearch": "Clear Search",
+      "openSearchDrawer": "Search"
+    },
     "filterInUse": "Showing filtered courses",
+    "menuTitle": "Search for courses",
     "tooltip": {
       "collapseDrawer": "Close menu"
-    },
-    "button": {
-      "openSearchDrawer": "Search",
-      "clearSearch": "Clear Search"
     }
   },
+  "SignOutButton": {
+    "signOut": "Sign out"
+  },
   "TagForm": {
-    "submit": "Submit",
-    "label": "New tag"
+    "label": "New tag",
+    "submit": "Submit"
   },
   "TagList": {
     "noTagsAdded": "No tags added"
   },
   "TextEditor": {
-    "Tooltip": {
-      "bold": "Bold (CTRL + B",
-      "italic": "Italic (CTRL + I)",
-      "strike": "Strikethrough",
-      "underline": "Underline (CTRL + U)",
-      "code": "Code (CTRL + E)",
-      "link": "Add link",
-      "bulletList": "Bullet list",
-      "clearFormat": "Clear formatting",
-      "orderedList": "Ordered list",
-      "undo": "Undo (CTRL + Z)",
-      "redo": "Redo (CTRL + Y)"
-    },
     "Dropdown": {
       "header1": "Header 1",
       "header2": "Header 2",
       "header3": "Header 3",
       "paragraph": "Text"
     },
+    "Tooltip": {
+      "bold": "Bold (CTRL + B",
+      "bulletList": "Bullet list",
+      "clearFormat": "Clear formatting",
+      "code": "Code (CTRL + E)",
+      "italic": "Italic (CTRL + I)",
+      "link": "Add link",
+      "orderedList": "Ordered list",
+      "redo": "Redo (CTRL + Y)",
+      "strike": "Strikethrough",
+      "underline": "Underline (CTRL + U)",
+      "undo": "Undo (CTRL + Z)"
+    },
     "linkPrompt": "Please enter the link as such: https://www.example.com"
   },
   "UnauthorizedError": {
-    "unauthorizedMessage": "You are not authorized to view this page",
-    "backToHome": "Back to home"
-  },
-  "CalendarPrompt": {
-    "addPrompt": "Do you want to add this course to your Google calendar?",
-    "button": {
-      "yes": "Yes",
-      "no": "No"
-    },
-    "checkbox": {
-      "remember": "Remember my decision"
-    }
+    "backToHome": "Back to home",
+    "unauthorizedMessage": "You are not authorized to view this page"
   }
 }
