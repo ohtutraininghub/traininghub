@@ -109,12 +109,13 @@
       "paragraph": "Text"
     },
     "prompt": {
-      "mainLabel": "Please enter the URL",
-      "imageLabel": "Image URL",
+      "mainImageLabel": "Insert an image",
+      "mainLinkLabel": "Insert a link",
+      "urlLabel": "URL",
+      "displayTextLabel": "Display Text",
       "confirm": "OK",
       "cancel": "Cancel"
-    },
-    "linkPrompt": "Please enter the link as such: https://www.example.com"
+    }
   },
   "UnauthorizedError": {
     "unauthorizedMessage": "You are not authorized to view this page",

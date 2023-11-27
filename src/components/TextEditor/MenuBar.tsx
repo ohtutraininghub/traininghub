@@ -24,30 +24,44 @@ import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 import { DictProps } from '@/lib/i18n';
 import { useTranslation } from '@/lib/i18n/client';
 import { useState } from 'react';
-import { PromptWindow } from './urlPrompt';
+import { PromptWindow, type AnchorWithContext, CallbackObj } from './urlPrompt';
 
 export const MenuBar = ({ lang }: DictProps) => {
   const { editor } = useCurrentEditor();
   const { t } = useTranslation(lang, 'components');
-  const [anchorElement, setAnchorElement] = useState<null | HTMLElement>(null);
-  const promptOpen = !!anchorElement;
+  const [anchorObj, setAnchorObj] = useState<null | AnchorWithContext>(null);
+  const promptOpen = !!anchorObj;
 
-  const handleToggleLink = () => {
-    const url = window.prompt(t('TextEditor.linkPrompt'));
-
-    if (url && editor) {
-      editor.chain().focus().toggleLink({ href: url }).run();
-    }
+  const getTextSelection = () => {
+    if (!editor) return undefined;
+    const { view, state } = editor;
+    const { from, to } = view.state.selection;
+    return state.doc.textBetween(from, to, '');
   };
 
   const handlePromptOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElement(anchorElement ? null : event.currentTarget);
+    const selection = getTextSelection();
+    const obj: AnchorWithContext = {
+      element: event.currentTarget,
+      state: event.currentTarget.id === 'addLinkButton' ? 'link' : 'image',
+      text: selection,
+    };
+    setAnchorObj(anchorObj ? null : obj);
   };
 
-  const urlPromptCallback = (url: string | null) => {
-    setAnchorElement(null);
-    if (url && editor) {
-      editor.chain().focus().setImage({ src: url }).run();
+  const urlPromptCallback = (props: CallbackObj | null) => {
+    setAnchorObj(null);
+    if (!props) return;
+    if (props.url && editor) {
+      if (props.state === 'image') {
+        editor.chain().focus().setImage({ src: props.url }).run();
+      } else if (props.state === 'link') {
+        editor
+          .chain()
+          .focus()
+          .toggleLink({ href: props.url, target: props.text })
+          .run();
+      }
     }
   };
 
@@ -108,7 +122,7 @@ export const MenuBar = ({ lang }: DictProps) => {
           <PromptWindow
             lang={lang}
             open={promptOpen}
-            anchorElement={anchorElement}
+            anchorObj={anchorObj}
             callbackFn={urlPromptCallback}
           />
 
@@ -208,13 +222,13 @@ export const MenuBar = ({ lang }: DictProps) => {
           />
 
           <Tooltip title={t('TextEditor.Tooltip.link')} arrow>
-            <IconButton onClick={handleToggleLink}>
+            <IconButton id="addLinkButton" onClick={handlePromptOpen}>
               <LinkIcon />
             </IconButton>
           </Tooltip>
 
           <Tooltip title={t('TextEditor.Tooltip.image')} arrow>
-            <IconButton onClick={handlePromptOpen}>
+            <IconButton id="addImageButton" onClick={handlePromptOpen}>
               <InsertPhotoIcon />
             </IconButton>
           </Tooltip>

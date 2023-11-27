@@ -5,22 +5,39 @@ import { DictProps } from '@/lib/i18n';
 import { SyntheticEvent, useState } from 'react';
 import { linkSchema } from '@/lib/zod/links';
 
+export type AnchorWithContext = {
+  element: HTMLElement;
+  state: 'link' | 'image';
+  text?: string;
+};
+
+export type CallbackObj = {
+  state: AnchorWithContext['state'];
+  url: string;
+  text?: string;
+};
 interface PromptWindowProps extends DictProps {
   open: boolean;
-  anchorElement: null | HTMLElement;
-  callbackFn: (_url: string | null) => void;
+  anchorObj: null | AnchorWithContext;
+  callbackFn: (_props: CallbackObj | null) => void;
 }
 
 type ClosePromptEvent = MouseEvent | TouchEvent | SyntheticEvent;
 
+/**
+ * Call anywhere within the parent component
+ *
+ * Will render to where HTMLElement in anchorObj points
+ */
 export const PromptWindow = ({
   open,
-  anchorElement,
+  anchorObj,
   callbackFn,
   lang,
 }: PromptWindowProps) => {
   const { t } = useTranslation(lang, 'components');
   const [userInput, setUserInput] = useState<string>('');
+  const [displayText, setDisplayText] = useState<string>('');
   const [errorMsg, setErrorMsg] = useState<string>('');
 
   const validateLink = () => {
@@ -35,12 +52,18 @@ export const PromptWindow = ({
   const reset = () => {
     setUserInput('');
     setErrorMsg('');
+    setDisplayText('');
   };
 
   const handleSubmit = (event: SyntheticEvent) => {
     event.preventDefault();
-    if (validateLink()) {
-      callbackFn(userInput);
+    console.log(anchorObj);
+    if (anchorObj && validateLink()) {
+      callbackFn({
+        state: anchorObj.state,
+        url: userInput,
+        text: displayText,
+      });
       reset();
     }
   };
@@ -52,9 +75,9 @@ export const PromptWindow = ({
   };
 
   return (
-    anchorElement && (
+    anchorObj && (
       <ClickAwayListener onClickAway={handleClose}>
-        <Popper open={open} anchorEl={anchorElement}>
+        <Popper open={open} anchorEl={anchorObj.element}>
           <Box
             flexWrap="wrap"
             sx={{
@@ -68,13 +91,15 @@ export const PromptWindow = ({
             }}
           >
             <Typography variant="h4">
-              {t('TextEditor.prompt.mainLabel')}
+              {anchorObj.state === 'image'
+                ? t('TextEditor.prompt.mainImageLabel')
+                : t('TextEditor.prompt.mainLinkLabel')}
             </Typography>
             <TextField
               id="urlPrompt"
               error={!!errorMsg}
               helperText={errorMsg}
-              label={t('TextEditor.prompt.imageLabel')}
+              label={t('TextEditor.prompt.urlLabel')}
               variant="outlined"
               size="small"
               color="secondary"
@@ -83,6 +108,21 @@ export const PromptWindow = ({
               onChange={(e) => setUserInput(e.target.value)}
               sx={{ mb: 1 }}
             />
+            {anchorObj.state === 'link' && (
+              <>
+                <br />
+                <TextField
+                  id="linkText"
+                  label={t('TextEditor.prompt.displayTextLabel')}
+                  variant="outlined"
+                  size="small"
+                  color="secondary"
+                  defaultValue={anchorObj.text}
+                  sx={{ mt: 1, mb: 1 }}
+                  onChange={(e) => setDisplayText(e.target.value)}
+                />
+              </>
+            )}
             <br />
             <Box display="flex" justifyContent="end">
               <Button color="secondary" variant="text" onClick={handleClose}>
