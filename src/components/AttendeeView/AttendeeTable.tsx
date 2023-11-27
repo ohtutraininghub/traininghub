@@ -78,12 +78,14 @@ export default function AttendeeTable({ attendees, noAttendeesText }: Props) {
           <TableRow>
             <TablePagination
               rowsPerPageOptions={[5, 10, 25, 100]}
-              component="div"
               count={attendees.length}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}
               onRowsPerPageChange={handleChangeRowsPerPage}
+              sx={{
+                borderBottom: 'none',
+              }}
             />
           </TableRow>
         </TableFooter>
