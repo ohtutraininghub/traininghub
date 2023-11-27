@@ -28,6 +28,7 @@ export default function BackToTopToggle() {
   return (
     <Zoom in={showButton} timeout={200}>
       <Fab
+        data-testid="backToTopToggle"
         size="small"
         variant="circular"
         onClick={handleScrollToTop}
