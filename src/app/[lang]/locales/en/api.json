@@ -1,0 +1,31 @@
+{
+  "Enrolls": {
+    "courseIsFull": "Course is already full!",
+    "noEnrollingAfterDeadline": "No enrolling allowed after enrollment deadline",
+    "noCancellingAfterDeadline": "No cancelling allowed after cancellation deadline",
+    "youHaveAlreadyEnrolled": "You have already enrolled!",
+    "enrollmentSuccessfull": "Enrolled succesfully!",
+    "enrollmentCanceled": "Your enrollment was canceled"
+  },
+  "Tags": {
+    "tagCreated": "Tag \"{{name}}\" succesfully created!",
+    "duplicateError": "Failed to create tag. Tag \"{{name}}\" already exists."
+  },
+  "Courses": {
+    "idMissing": "Course id param missing!",
+    "addedToCalendar": "Added course to calendar!",
+    "courseUpdated": "Course successfully updated!",
+    "courseCreated": "Course successfully created!"
+  },
+  "Users": {
+    "roleChanged": "User access role succesfully changed!"
+  },
+  "Calendar": {
+    "noPermissionsToInsertEntry": "Can not insert calendar entry without calendar permissions"
+  },
+  "Common": {
+    "notEnrolledError": "You have not enrolled to this course",
+    "forbidden": "Forbidden",
+    "courseNotFound": "Course by given id was not found!"
+  }
+}
