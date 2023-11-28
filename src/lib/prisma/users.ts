@@ -7,7 +7,7 @@ export async function getAllUsers() {
 }
 
 export async function getStudentNamesByCourseId(courseId: string) {
-  const attendees = await prisma.user.findMany({
+  const students = await prisma.user.findMany({
     where: {
       courses: {
         some: {
@@ -19,8 +19,8 @@ export async function getStudentNamesByCourseId(courseId: string) {
       name: 'asc',
     },
   });
-  return attendees.flatMap((attendee) =>
-    attendee.name ? { name: attendee.name, userId: attendee.id } : []
+  return students.flatMap((student) =>
+    student.name ? { name: student.name, userId: student.id } : []
   );
 }
 
