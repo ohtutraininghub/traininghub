@@ -280,7 +280,10 @@ export default function CourseForm({
               }}
               timeSteps={{ minutes: 1 }}
               slotProps={{
-                textField: { variant: 'outlined' },
+                textField: {
+                  inputProps: { 'data-testid': 'courseFormStartDate' },
+                  variant: 'outlined',
+                },
                 actionBar: {
                   actions: ['accept', 'cancel', 'today', 'clear'],
                 },
@@ -288,9 +291,6 @@ export default function CourseForm({
               //@ts-ignore
               id="courseFormStartDate"
               error={!!errors.startDate}
-              inputProps={{
-                'data-testid': 'courseFormStartDate',
-              }}
             />
             <FormFieldError error={errors.startDate} />
             <InputLabel htmlFor="courseFormEndDate">
@@ -314,7 +314,10 @@ export default function CourseForm({
               }}
               timeSteps={{ minutes: 1 }}
               slotProps={{
-                textField: { variant: 'outlined' },
+                textField: {
+                  inputProps: { 'data-testid': 'courseFormEndDate' },
+                  variant: 'outlined',
+                },
                 actionBar: {
                   actions: ['accept', 'cancel', 'today', 'clear'],
                 },
@@ -322,9 +325,6 @@ export default function CourseForm({
               //@ts-ignore
               id="courseFormEndDate"
               error={!!errors.endDate}
-              inputProps={{
-                'data-testid': 'courseFormEndDate',
-              }}
             />
             <FormFieldError error={errors.endDate} />
 
@@ -347,7 +347,10 @@ export default function CourseForm({
               }}
               timeSteps={{ minutes: 1 }}
               slotProps={{
-                textField: { variant: 'outlined' },
+                textField: {
+                  inputProps: { 'data-testid': 'courseFormLastEnrollDate' },
+                  variant: 'outlined',
+                },
                 actionBar: {
                   actions: ['accept', 'cancel', 'today', 'clear'],
                 },
@@ -355,9 +358,6 @@ export default function CourseForm({
               //@ts-ignore
               id="courseFormLastEnrollDate"
               error={!!errors.lastEnrollDate}
-              inputProps={{
-                'data-testid': 'courseFormLastEnrollDate',
-              }}
             />
             <FormFieldError error={errors.lastEnrollDate} />
 
@@ -379,7 +379,10 @@ export default function CourseForm({
               }}
               timeSteps={{ minutes: 1 }}
               slotProps={{
-                textField: { variant: 'outlined' },
+                textField: {
+                  inputProps: { 'data-testid': 'courseFormLastCancelDate' },
+                  variant: 'outlined',
+                },
                 actionBar: {
                   actions: ['accept', 'cancel', 'today', 'clear'],
                 },
@@ -387,9 +390,6 @@ export default function CourseForm({
               //@ts-ignore
               id="courseFormLastCancelDate"
               error={!!errors.lastEnrollDate}
-              inputProps={{
-                'data-testid': 'courseFormLastCancelDate',
-              }}
             />
             <FormFieldError error={errors.lastCancelDate} />
 
