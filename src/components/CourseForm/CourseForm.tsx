@@ -178,6 +178,9 @@ export default function CourseForm({
               data-testid="courseFormName"
               error={!!errors.name}
               autoComplete="off"
+              inputProps={{
+                'data-testid': 'courseFormName',
+              }}
             />
             <FormFieldError error={errors.name} />
 
