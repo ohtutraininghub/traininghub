@@ -27,7 +27,7 @@ describe('User list', () => {
     cy.login('admin@test.com', 'ADMIN');
 
     // Intercepting the session request to get the user ID
-    cy.intercept('GET', 'http://localhost:3000/api/auth/session').as('getUser');
+    cy.intercept('GET', `/api/auth/session`).as('getUser');
 
     // Wait for the intercepted request to complete
     cy.wait('@getUser').then((interception) => {
