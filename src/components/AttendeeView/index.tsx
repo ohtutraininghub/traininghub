@@ -20,7 +20,15 @@ export default function AttendeeView({ lang, attendees }: Props) {
   if (!attendees) return null;
 
   return (
-    <Accordion elevation={0}>
+    <Accordion
+      elevation={0}
+      defaultExpanded={true}
+      sx={{
+        '&:before': {
+          display: 'none',
+        },
+      }}
+    >
       <AccordionSummary
         expandIcon={<ExpandMoreIcon sx={{ color: 'white.main' }} />}
         sx={{
