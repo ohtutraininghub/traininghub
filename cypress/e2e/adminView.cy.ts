@@ -54,12 +54,18 @@ describe('User list', () => {
     cy.getCy('small-confirm-card').should('be.visible');
   });
 
-  it.only('keeps old role if cancel button is pressed', () => {
+  it('keeps old role if cancel button is pressed', () => {
     cy.getCy(`${userId}-role-select`).click();
     cy.get('[data-value="TRAINEE"]').click();
     cy.getCy('cancel-button').click();
     cy.getCy('small-confirm-card').should('not.exist');
     cy.getCy(`${userId}-role-select`).find('p').should('contain', 'admin');
   });
-  it('updates role when confirm button is pressed');
+  it.only('updates role when confirm button is pressed', () => {
+    cy.getCy(`${userId}-role-select`).click();
+    cy.get('[data-value="TRAINEE"]').click();
+    cy.getCy('confirm-button').click();
+    cy.getCy('small-confirm-card').should('not.exist');
+    cy.getCy(`${userId}-role-select`).find('p').should('contain', 'trainee');
+  });
 });
