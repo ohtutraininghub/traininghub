@@ -139,10 +139,18 @@ export function CalendarPrompt({
               {t('CalendarPrompt.checkbox.remember')}
             </Typography>
           </Box>
-          <Button variant="outlined" onClick={() => handleNoClick()}>
+          <Button
+            data-testid="calendarPromptDecline"
+            variant="outlined"
+            onClick={() => handleNoClick()}
+          >
             {t('CalendarPrompt.button.no')}
           </Button>
-          <Button variant="contained" onClick={() => handleYesClick()}>
+          <Button
+            data-testid="calendarPromptAccept"
+            variant="contained"
+            onClick={() => handleYesClick()}
+          >
             {t('CalendarPrompt.button.yes')}
           </Button>
         </Box>
