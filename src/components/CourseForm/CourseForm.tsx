@@ -270,9 +270,9 @@ export default function CourseForm({
                   ? dayjs(setCurrentTime(value)).toDate()
                   : null;
                 setStartDate(selectedDate);
-                //@ts-ignore
                 setValue(
                   'startDate',
+                  //@ts-ignore
                   isValidDate ? dateToDateTimeLocal(selectedDate) : ''
                 );
               }}
@@ -302,9 +302,10 @@ export default function CourseForm({
                   ? dayjs(setCurrentTime(value)).toDate()
                   : null;
                 setEndDate(selectedDate);
-                //@ts-ignore
+
                 setValue(
                   'endDate',
+                  //@ts-ignore
                   isValidDate ? dateToDateTimeLocal(selectedDate) : ''
                 );
               }}
