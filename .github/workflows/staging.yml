@@ -86,6 +86,7 @@ jobs:
           build: npm run cypress:build
           start: npm run cypress:start
           browser: chrome
+          config: baseUrl=${{ secrets.NEXTAUTH_URL }}
       - name: store screenshots
         uses: actions/upload-artifact@v3
         if: failure()
