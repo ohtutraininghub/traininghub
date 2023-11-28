@@ -263,7 +263,6 @@ export default function CourseForm({
             </InputLabel>
             <DateTimePicker
               {...register('startDate')}
-              data-testid="courseFormStartDate"
               value={updateValue(startDate, courseData?.startDate)}
               onChange={(value) => {
                 if (value !== null && dayjs(value).isValid()) {
@@ -333,7 +332,6 @@ export default function CourseForm({
             </InputLabel>
             <DateTimePicker
               {...register('lastEnrollDate')}
-              data-testid="courseFormLastEnrollDate"
               value={updateValue(lastEnrollDate, courseData?.lastEnrollDate)}
               onChange={(value) => {
                 if (value !== null && dayjs(value).isValid()) {
