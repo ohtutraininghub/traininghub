@@ -61,7 +61,8 @@ describe('User list', () => {
     cy.getCy('small-confirm-card').should('not.exist');
     cy.getCy(`${userId}-role-select`).find('p').should('contain', 'admin');
   });
-  it.only('updates role when confirm button is pressed', () => {
+
+  it('updates role when confirm button is pressed', () => {
     cy.getCy(`${userId}-role-select`).click();
     cy.get('[data-value="TRAINEE"]').click();
     cy.getCy('confirm-button').click();
