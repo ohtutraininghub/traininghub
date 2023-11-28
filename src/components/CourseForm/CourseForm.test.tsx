@@ -49,6 +49,24 @@ jest.mock('../../lib/i18n/client', () => ({
   },
 }));
 
+const formatDateTimePickerReturnValue = (date: Date) => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  const seconds = String(date.getSeconds()).padStart(2, '0');
+  const milliseconds = String(date.getMilliseconds()).padStart(3, '0');
+
+  return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.${milliseconds}`;
+};
+
+const formatExpectedValue = (date: Date) => {
+  date.setSeconds(0);
+  date.setMilliseconds(0);
+  return date;
+};
+
 const requiredErrors = [
   'Name is required',
   'Description is required',
@@ -117,14 +135,18 @@ describe('Course Form Course Edit Tests', () => {
     expect(name.value).toBe(course.name);
     expect(description).toHaveTextContent(course.description);
     expect(maxStudents.value).toBe(course.maxStudents.toString());
-    expect(startDate.value).toBe(dateToDateTimeLocal(course.startDate));
-    expect(endDate.value).toBe(dateToDateTimeLocal(course.endDate));
-    expect(lastEnrollDate.value).toBe(
-      dateToDateTimeLocal(course.lastEnrollDate)
+    expect(formatDateTimePickerReturnValue(new Date(startDate.value))).toBe(
+      dateToDateTimeLocal(formatExpectedValue(course.startDate))
     );
-    expect(lastCancelDate.value).toBe(
-      dateToDateTimeLocal(course.lastCancelDate)
+    expect(formatDateTimePickerReturnValue(new Date(endDate.value))).toBe(
+      dateToDateTimeLocal(formatExpectedValue(course.endDate))
     );
+    expect(
+      formatDateTimePickerReturnValue(new Date(lastEnrollDate.value))
+    ).toBe(dateToDateTimeLocal(formatExpectedValue(course.lastEnrollDate)));
+    expect(
+      formatDateTimePickerReturnValue(new Date(lastCancelDate.value))
+    ).toBe(dateToDateTimeLocal(formatExpectedValue(course.lastCancelDate)));
   });
 
   it('Form is filled with course values in Edit Mode when last enroll and last cancel dates are null', async () => {
@@ -163,8 +185,12 @@ describe('Course Form Course Edit Tests', () => {
     expect(name.value).toBe(course.name);
     expect(description).toHaveTextContent(course.description);
     expect(maxStudents.value).toBe(course.maxStudents.toString());
-    expect(startDate.value).toBe(dateToDateTimeLocal(course.startDate));
-    expect(endDate.value).toBe(dateToDateTimeLocal(course.endDate));
+    expect(formatDateTimePickerReturnValue(new Date(startDate.value))).toBe(
+      dateToDateTimeLocal(formatExpectedValue(course.startDate))
+    );
+    expect(formatDateTimePickerReturnValue(new Date(endDate.value))).toBe(
+      dateToDateTimeLocal(formatExpectedValue(course.endDate))
+    );
     expect(lastEnrollDate.value).toBe('');
     expect(lastCancelDate.value).toBe('');
   });
@@ -206,8 +232,12 @@ describe('Course Form Course Edit Tests', () => {
       createdById: '30',
       name: 'New course',
       description: 'A test course',
-      startDate: new Date(Date.now() + 1000 * 60 * 60 * 24),
-      endDate: new Date(Date.now() + 1000 * 60 * 60 * 24 * 2),
+      startDate: formatExpectedValue(
+        new Date(Date.now() + 1000 * 60 * 60 * 24)
+      ),
+      endDate: formatExpectedValue(
+        new Date(Date.now() + 1000 * 60 * 60 * 24 * 2)
+      ),
       lastEnrollDate: null,
       lastCancelDate: null,
       maxStudents: 55,

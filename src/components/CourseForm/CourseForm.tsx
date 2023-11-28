@@ -144,7 +144,7 @@ export default function CourseForm({
   };
 
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
+    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={lang}>
       <Container>
         <Box
           sx={{
@@ -265,31 +265,29 @@ export default function CourseForm({
               {...register('startDate')}
               value={updateValue(startDate, courseData?.startDate)}
               onChange={(value) => {
-                if (value !== null && dayjs(value).isValid()) {
-                  const currentTime = setCurrentTime(value);
-                  const selectedDate = dayjs(currentTime).toDate();
-                  setStartDate(selectedDate);
-                  //@ts-ignore
-                  setValue('startDate', dateToDateTimeLocal(selectedDate));
-                } else {
-                  setStartDate(null);
-                  //@ts-ignore
-                  setValue('startDate', '');
-                }
+                const isValidDate = value !== null && dayjs(value).isValid();
+                const selectedDate = isValidDate
+                  ? dayjs(setCurrentTime(value)).toDate()
+                  : null;
+                setStartDate(selectedDate);
+                //@ts-ignore
+                setValue(
+                  'startDate',
+                  isValidDate ? dateToDateTimeLocal(selectedDate) : ''
+                );
               }}
               timeSteps={{ minutes: 1 }}
               slotProps={{
                 textField: {
+                  id: 'courseFormStartDate',
                   inputProps: { 'data-testid': 'courseFormStartDate' },
                   variant: 'outlined',
+                  error: !!errors.startDate,
                 },
                 actionBar: {
                   actions: ['accept', 'cancel', 'today', 'clear'],
                 },
               }}
-              //@ts-ignore
-              id="courseFormStartDate"
-              error={!!errors.startDate}
             />
             <FormFieldError error={errors.startDate} />
             <InputLabel htmlFor="courseFormEndDate">
@@ -299,31 +297,31 @@ export default function CourseForm({
               {...register('endDate')}
               value={updateValue(endDate, courseData?.endDate)}
               onChange={(value) => {
-                if (value !== null && dayjs(value).isValid()) {
-                  const currentTime = setCurrentTime(value);
-                  const selectedDate = dayjs(currentTime).toDate();
-                  setEndDate(selectedDate);
-                  //@ts-ignore
-                  setValue('endDate', dateToDateTimeLocal(selectedDate));
-                } else {
-                  setEndDate(null);
-                  //@ts-ignore
-                  setValue('endDate', '');
-                }
+                const isValidDate = value !== null && dayjs(value).isValid();
+                const selectedDate = isValidDate
+                  ? dayjs(setCurrentTime(value)).toDate()
+                  : null;
+                setEndDate(selectedDate);
+                //@ts-ignore
+                setValue(
+                  'endDate',
+                  isValidDate ? dateToDateTimeLocal(selectedDate) : ''
+                );
               }}
               timeSteps={{ minutes: 1 }}
               slotProps={{
                 textField: {
-                  inputProps: { 'data-testid': 'courseFormEndDate' },
+                  inputProps: {
+                    id: 'courseFormEndDate',
+                    'data-testid': 'courseFormEndDate',
+                  },
                   variant: 'outlined',
+                  error: !!errors.endDate,
                 },
                 actionBar: {
                   actions: ['accept', 'cancel', 'today', 'clear'],
                 },
               }}
-              //@ts-ignore
-              id="courseFormEndDate"
-              error={!!errors.endDate}
             />
             <FormFieldError error={errors.endDate} />
 
@@ -346,16 +344,17 @@ export default function CourseForm({
               timeSteps={{ minutes: 1 }}
               slotProps={{
                 textField: {
-                  inputProps: { 'data-testid': 'courseFormLastEnrollDate' },
+                  inputProps: {
+                    id: 'courseFormLastEnrollDate',
+                    'data-testid': 'courseFormLastEnrollDate',
+                  },
                   variant: 'outlined',
+                  error: !!errors.lastEnrollDate,
                 },
                 actionBar: {
                   actions: ['accept', 'cancel', 'today', 'clear'],
                 },
               }}
-              //@ts-ignore
-              id="courseFormLastEnrollDate"
-              error={!!errors.lastEnrollDate}
             />
             <FormFieldError error={errors.lastEnrollDate} />
 
@@ -378,16 +377,17 @@ export default function CourseForm({
               timeSteps={{ minutes: 1 }}
               slotProps={{
                 textField: {
-                  inputProps: { 'data-testid': 'courseFormLastCancelDate' },
+                  inputProps: {
+                    id: 'courseFormLastCancelDate',
+                    'data-testid': 'courseFormLastCancelDate',
+                  },
                   variant: 'outlined',
+                  error: !!errors.lastEnrollDate,
                 },
                 actionBar: {
                   actions: ['accept', 'cancel', 'today', 'clear'],
                 },
               }}
-              //@ts-ignore
-              id="courseFormLastCancelDate"
-              error={!!errors.lastEnrollDate}
             />
             <FormFieldError error={errors.lastCancelDate} />
 
