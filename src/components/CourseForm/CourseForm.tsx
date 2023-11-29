@@ -129,6 +129,34 @@ export default function CourseForm({
       : null;
   };
 
+  const validateCompulsory = (date: Dayjs | null, compulsoryDay: string) => {
+    let setterFunction =
+      compulsoryDay === 'startDate' ? setStartDate : setEndDate;
+    const isValidDate = date !== null && dayjs(date).isValid();
+    const selectedDate = isValidDate
+      ? dayjs(setCurrentTime(date)).toDate()
+      : null;
+    setterFunction(selectedDate);
+    //@ts-ignore
+    setValue(
+      compulsoryDay,
+      isValidDate ? dateToDateTimeLocal(dayjs(selectedDate)) : ''
+    );
+  };
+
+  const validateOptional = (date: Date | null, lastDay: string) => {
+    let setterFunction =
+      lastDay === 'lastCancelDay' ? setLastCancelDate : setLastEnrollDate;
+    if (date !== null && dayjs(date).isValid()) {
+      const selectedDate = dayjs(date).toDate();
+      dateHasData(selectedDate, lastDay);
+    } else {
+      setterFunction(null);
+      //@ts-ignore
+      setValue(lastDay, '');
+    }
+  };
+
   const submitForm = async (data: FormType) => {
     const responseJson = isEditMode
       ? await update(`/api/course`, data)
@@ -144,137 +172,127 @@ export default function CourseForm({
   };
 
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={lang}>
-      <Container>
-        <Box
-          sx={{
-            p: 4,
-            mb: 4,
-            borderRadius: 2,
-            backgroundColor: palette.surface.main,
-            boxShadow: 8,
-          }}
+    <Container>
+      <Box
+        sx={{
+          p: 4,
+          mb: 4,
+          borderRadius: 2,
+          backgroundColor: palette.surface.main,
+          boxShadow: 8,
+        }}
+      >
+        <Typography
+          variant="h2"
+          color={palette.black.main}
+          textAlign="center"
+          marginBottom={1}
         >
-          <Typography
-            variant="h2"
-            color={palette.black.main}
-            textAlign="center"
-            marginBottom={1}
-          >
-            {!isEditMode ? 'Add New Course' : 'Edit Course Details'}
-          </Typography>
-          <form
-            id="courseForm"
-            style={{ display: 'flex', flexDirection: 'column', gap: 10 }}
-            onSubmit={handleSubmit(submitForm)}
-          >
-            <InputLabel htmlFor="courseFormName">
-              {t('CourseForm.name')}
-            </InputLabel>
-            <Input
-              {...register('name')}
-              color="secondary"
-              id="courseFormName"
-              error={!!errors.name}
-              autoComplete="off"
-              inputProps={{
-                'data-testid': 'courseFormName',
-              }}
-            />
-            <FormFieldError error={errors.name} />
+          {!isEditMode ? 'Add New Course' : 'Edit Course Details'}
+        </Typography>
+        <form
+          id="courseForm"
+          style={{ display: 'flex', flexDirection: 'column', gap: 10 }}
+          onSubmit={handleSubmit(submitForm)}
+        >
+          <InputLabel htmlFor="courseFormName">
+            {t('CourseForm.name')}
+          </InputLabel>
+          <Input
+            {...register('name')}
+            color="secondary"
+            id="courseFormName"
+            error={!!errors.name}
+            autoComplete="off"
+            inputProps={{
+              'data-testid': 'courseFormName',
+            }}
+          />
+          <FormFieldError error={errors.name} />
 
-            <InputLabel htmlFor="courseFormDescription">
-              {t('CourseForm.description')}
-            </InputLabel>
-            <Controller
-              data-testid="courseFormDescription"
-              name="description"
-              control={control}
-              defaultValue=""
-              render={({ field: { onChange, value } }) => (
-                <RichTextEditor lang={lang} value={value} onChange={onChange} />
-              )}
-            />
-            <FormFieldError error={errors.description} />
+          <InputLabel htmlFor="courseFormDescription">
+            {t('CourseForm.description')}
+          </InputLabel>
+          <Controller
+            data-testid="courseFormDescription"
+            name="description"
+            control={control}
+            defaultValue=""
+            render={({ field: { onChange, value } }) => (
+              <RichTextEditor lang={lang} value={value} onChange={onChange} />
+            )}
+          />
+          <FormFieldError error={errors.description} />
 
-            <Controller
-              name="tags"
-              control={control}
-              defaultValue={[]}
-              render={({ field }) => {
-                return (
-                  <>
-                    <InputLabel htmlFor="tagSelection">
-                      {t('CourseForm.tags')}
-                    </InputLabel>
-                    <Select
-                      {...field}
-                      id="tagSelection"
-                      color="secondary"
-                      multiple
-                      renderValue={(field) => (
-                        <Box
-                          sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}
-                        >
-                          {field.map((tag, idx) => (
-                            <Chip
-                              key={idx}
-                              label={tag}
-                              variant="outlined"
-                              sx={{
-                                backgroundColor: palette.surface.light,
-                                borderColor: palette.black.light,
-                              }}
-                            />
-                          ))}
-                        </Box>
-                      )}
-                    >
-                      {tags.map((tag) => (
-                        <MenuItem
-                          key={tag.id}
-                          value={tag.name}
-                          divider
-                          sx={{
-                            '&.Mui-selected': {
-                              backgroundColor: palette.surface.main,
-                            },
-                            '&.Mui-selected.Mui-focusVisible': {
-                              backgroundColor: palette.surface.dark,
-                            },
-                            '&:hover': {
+          <Controller
+            name="tags"
+            control={control}
+            defaultValue={[]}
+            render={({ field }) => {
+              return (
+                <>
+                  <InputLabel htmlFor="tagSelection">
+                    {t('CourseForm.tags')}
+                  </InputLabel>
+                  <Select
+                    {...field}
+                    id="tagSelection"
+                    color="secondary"
+                    multiple
+                    renderValue={(field) => (
+                      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                        {field.map((tag, idx) => (
+                          <Chip
+                            key={idx}
+                            label={tag}
+                            variant="outlined"
+                            sx={{
                               backgroundColor: palette.surface.light,
-                            },
-                            '&.Mui-selected:hover': {
-                              backgroundColor: palette.surface.main,
-                            },
-                          }}
-                        >
-                          {tag.name}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </>
-                );
-              }}
-            />
+                              borderColor: palette.black.light,
+                            }}
+                          />
+                        ))}
+                      </Box>
+                    )}
+                  >
+                    {tags.map((tag) => (
+                      <MenuItem
+                        key={tag.id}
+                        value={tag.name}
+                        divider
+                        sx={{
+                          '&.Mui-selected': {
+                            backgroundColor: palette.surface.main,
+                          },
+                          '&.Mui-selected.Mui-focusVisible': {
+                            backgroundColor: palette.surface.dark,
+                          },
+                          '&:hover': {
+                            backgroundColor: palette.surface.light,
+                          },
+                          '&.Mui-selected:hover': {
+                            backgroundColor: palette.surface.main,
+                          },
+                        }}
+                      >
+                        {tag.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </>
+              );
+            }}
+          />
+          <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={lang}>
             <InputLabel htmlFor="courseFormStartDate">
               {t('CourseForm.startDate')}
             </InputLabel>
+
             <DateTimePicker
               {...register('startDate')}
               value={updateValue(startDate, courseData?.startDate)}
               onChange={(value) => {
-                const isValidDate = value !== null && dayjs(value).isValid();
-                const selectedDate = isValidDate
-                  ? dayjs(setCurrentTime(value)).toDate()
-                  : null;
-                setStartDate(selectedDate);
-                setValue(
-                  'startDate',
-                  //@ts-ignore
-                  isValidDate ? dateToDateTimeLocal(selectedDate) : ''
-                );
+                validateCompulsory(value, 'startDate');
               }}
               timeSteps={{ minutes: 1 }}
               slotProps={{
@@ -297,23 +315,13 @@ export default function CourseForm({
               {...register('endDate')}
               value={updateValue(endDate, courseData?.endDate)}
               onChange={(value) => {
-                const isValidDate = value !== null && dayjs(value).isValid();
-                const selectedDate = isValidDate
-                  ? dayjs(setCurrentTime(value)).toDate()
-                  : null;
-                setEndDate(selectedDate);
-
-                setValue(
-                  'endDate',
-                  //@ts-ignore
-                  isValidDate ? dateToDateTimeLocal(selectedDate) : ''
-                );
+                validateCompulsory(value, 'endDate');
               }}
               timeSteps={{ minutes: 1 }}
               slotProps={{
                 textField: {
+                  id: 'courseFormEndDate',
                   inputProps: {
-                    id: 'courseFormEndDate',
                     'data-testid': 'courseFormEndDate',
                   },
                   variant: 'outlined',
@@ -333,20 +341,13 @@ export default function CourseForm({
               {...register('lastEnrollDate')}
               value={updateValue(lastEnrollDate, courseData?.lastEnrollDate)}
               onChange={(value) => {
-                if (value !== null && dayjs(value).isValid()) {
-                  const selectedDate = dayjs(value).toDate();
-                  dateHasData(selectedDate, 'lastEnrollDate');
-                } else {
-                  setLastEnrollDate(null);
-                  //@ts-ignore
-                  setValue('lastEnrollDate', '');
-                }
+                validateOptional(dayjs(value).toDate(), 'lastEnrollDate');
               }}
               timeSteps={{ minutes: 1 }}
               slotProps={{
                 textField: {
+                  id: 'courseFormLastEnrollDate',
                   inputProps: {
-                    id: 'courseFormLastEnrollDate',
                     'data-testid': 'courseFormLastEnrollDate',
                   },
                   variant: 'outlined',
@@ -366,20 +367,13 @@ export default function CourseForm({
               {...register('lastCancelDate')}
               value={updateValue(lastCancelDate, courseData?.lastCancelDate)}
               onChange={(value) => {
-                if (value !== null && dayjs(value).isValid()) {
-                  const selectedDate = dayjs(value).toDate();
-                  dateHasData(selectedDate, 'lastCancelDate');
-                } else {
-                  setLastCancelDate(null);
-                  //@ts-ignore
-                  setValue('lastCancelDate', '');
-                }
+                validateOptional(dayjs(value).toDate(), 'lastCancelDate');
               }}
               timeSteps={{ minutes: 1 }}
               slotProps={{
                 textField: {
+                  id: 'courseFormLastCancelDate',
                   inputProps: {
-                    id: 'courseFormLastCancelDate',
                     'data-testid': 'courseFormLastCancelDate',
                   },
                   variant: 'outlined',
@@ -391,44 +385,43 @@ export default function CourseForm({
               }}
             />
             <FormFieldError error={errors.lastCancelDate} />
-
-            <InputLabel htmlFor="courseFormMaxStudents">
-              {t('CourseForm.maxStudents')}
-            </InputLabel>
-            <Input
-              {...register('maxStudents', {
-                setValueAs: (value) => Number(value),
-              })}
-              color="secondary"
-              id="courseFormMaxStudents"
-              type="number"
-              error={!!errors.maxStudents}
-              inputProps={{
-                min: 1,
-                'data-testid': 'courseFormMaxStudents',
-              }}
-            />
-            <FormFieldError error={errors.maxStudents} />
-            <Button
-              type="submit"
-              disabled={isSubmitting}
-              sx={{
-                display: 'block',
-                margin: 'auto',
-                mt: 2,
-                color: palette.white.main,
-                backgroundColor: palette.secondary.main,
-                '&:hover': {
-                  backgroundColor: palette.secondary.light,
-                },
-              }}
-              data-testid="courseFormSubmit"
-            >
-              {isEditMode ? 'Update' : 'Submit'}
-            </Button>
-          </form>
-        </Box>
-      </Container>
-    </LocalizationProvider>
+          </LocalizationProvider>
+          <InputLabel htmlFor="courseFormMaxStudents">
+            {t('CourseForm.maxStudents')}
+          </InputLabel>
+          <Input
+            {...register('maxStudents', {
+              setValueAs: (value) => Number(value),
+            })}
+            color="secondary"
+            id="courseFormMaxStudents"
+            type="number"
+            error={!!errors.maxStudents}
+            inputProps={{
+              min: 1,
+              'data-testid': 'courseFormMaxStudents',
+            }}
+          />
+          <FormFieldError error={errors.maxStudents} />
+          <Button
+            type="submit"
+            disabled={isSubmitting}
+            sx={{
+              display: 'block',
+              margin: 'auto',
+              mt: 2,
+              color: palette.white.main,
+              backgroundColor: palette.secondary.main,
+              '&:hover': {
+                backgroundColor: palette.secondary.light,
+              },
+            }}
+            data-testid="courseFormSubmit"
+          >
+            {isEditMode ? 'Update' : 'Submit'}
+          </Button>
+        </form>
+      </Box>
+    </Container>
   );
 }
