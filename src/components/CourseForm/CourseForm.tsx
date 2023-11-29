@@ -137,9 +137,11 @@ export default function CourseForm({
       ? dayjs(setCurrentTime(date)).toDate()
       : null;
     setterFunction(selectedDate);
-    //@ts-ignore
+
     setValue(
+      //@ts-ignore
       compulsoryDay,
+      //@ts-ignore
       isValidDate ? dateToDateTimeLocal(dayjs(selectedDate)) : ''
     );
   };
