@@ -28,7 +28,7 @@ const withRefine = <O extends CourseSchemaType, T extends z.ZodTypeDef, I>(
         if (!endDate || !lastEnrollDate) {
           return true;
         }
-        return lastEnrollDate.getTime() <= endDate.getTime();
+        return lastEnrollDate.getTime() < endDate.getTime();
       },
       {
         message:
@@ -42,7 +42,7 @@ const withRefine = <O extends CourseSchemaType, T extends z.ZodTypeDef, I>(
         if (!endDate || !lastCancelDate) {
           return true;
         }
-        return lastCancelDate.getTime() <= endDate.getTime();
+        return lastCancelDate.getTime() < endDate.getTime();
       },
       {
         message:
