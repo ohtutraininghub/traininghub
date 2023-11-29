@@ -294,7 +294,7 @@ export default function CourseForm({
                 textField: {
                   id: 'courseFormStartDate',
                   inputProps: {
-                    readOnly: true,
+                    id: 'courseFormStartDate',
                     'data-testid': 'courseFormStartDate',
                   },
                   variant: 'outlined',
@@ -320,7 +320,6 @@ export default function CourseForm({
                 textField: {
                   id: 'courseFormEndDate',
                   inputProps: {
-                    readOnly: true,
                     'data-testid': 'courseFormEndDate',
                   },
                   variant: 'outlined',
@@ -347,7 +346,6 @@ export default function CourseForm({
                 textField: {
                   id: 'courseFormLastEnrollDate',
                   inputProps: {
-                    readOnly: true,
                     'data-testid': 'courseFormLastEnrollDate',
                   },
                   variant: 'outlined',
@@ -374,7 +372,6 @@ export default function CourseForm({
                 textField: {
                   id: 'courseFormLastCancelDate',
                   inputProps: {
-                    readOnly: true,
                     'data-testid': 'courseFormLastCancelDate',
                   },
                   variant: 'outlined',
