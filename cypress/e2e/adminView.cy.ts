@@ -24,6 +24,7 @@ describe('User list', () => {
 
   beforeEach(() => {
     cy.task('clearDatabase');
+    cy.task('seedUsers');
     cy.login('admin@test.com', 'ADMIN');
 
     // Intercepting the session request to get the user ID
@@ -42,7 +43,9 @@ describe('User list', () => {
     cy.getCy('dashboard').click();
   });
 
-  it('displays logged user', () => {
+  it.only('displays logged user when searched', () => {
+    cy.getCy('filter-button').click();
+    cy.getCy('filter-input-Name').type('test user');
     cy.get('tbody>tr>th').contains('Test User');
     cy.get('tbody>tr>th').contains('admin@test.com');
     cy.get('tbody>tr>th').contains('admin');

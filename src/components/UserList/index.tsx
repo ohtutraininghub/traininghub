@@ -170,6 +170,7 @@ export default function UserList({ lang, users }: Props) {
           }
         >
           <IconButton
+            data-testId="filter-button"
             sx={{ marginLeft: 'auto' }}
             onClick={() => {
               setDisplayFilterRow((prev) => !prev);
@@ -222,6 +223,11 @@ export default function UserList({ lang, users }: Props) {
                             padding: '0.35rem',
                             fontSize: '0.75rem',
                           },
+                        }}
+                        inputProps={{
+                          'data-testId': `filter-input-${t(
+                            `EditUsers.tableHeaders.${headerKey}`
+                          )}`,
                         }}
                         placeholder={t(`EditUsers.tableHeaders.${headerKey}`)}
                       />
