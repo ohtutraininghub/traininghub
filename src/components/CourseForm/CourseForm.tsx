@@ -83,7 +83,7 @@ export default function CourseForm({
 
   useEffect(() => {}, [lastEnrollDate, lastCancelDate, startDate, endDate]);
 
-  const dateHasData = (date: Date, lastDate: string) => {
+  const dateHasData = (date: Date, lastDate: any) => {
     const setterFunction =
       lastDate === 'lastEnrollDate'
         ? setLastEnrollDate
@@ -99,7 +99,6 @@ export default function CourseForm({
     setterFunction?.(
       dayChooser === null ? new Date(endOftheDay(date)) : new Date(date)
     );
-    //@ts-ignore
     setValue(lastDate, dateToDateTimeLocal(date));
   };
 
@@ -118,35 +117,30 @@ export default function CourseForm({
   };
 
   const updateValue = (
-    newValue: Date | Dayjs | null,
+    newValue: any,
     currentValue: Date | null | undefined
   ) => {
     return newValue
-      ? //@ts-ignore
-        dayjs(dateToDateTimeLocal(newValue))
+      ? dayjs(dateToDateTimeLocal(newValue))
       : courseData && currentValue
       ? dayjs(dateToDateTimeLocal(currentValue))
       : null;
   };
 
-  const validateCompulsory = (date: Dayjs | null, compulsoryDay: string) => {
+  const validateCompulsory = (date: Dayjs | null, compulsoryDay: any) => {
     let setterFunction =
       compulsoryDay === 'startDate' ? setStartDate : setEndDate;
     const isValidDate = date !== null && dayjs(date).isValid();
-    const selectedDate = isValidDate
-      ? dayjs(setCurrentTime(date)).toDate()
-      : null;
+    let selectedDate: any;
+    selectedDate = isValidDate ? dayjs(setCurrentTime(date)).toDate() : null;
     setterFunction(selectedDate);
-
     setValue(
-      //@ts-ignore
       compulsoryDay,
-      //@ts-ignore
-      isValidDate ? dateToDateTimeLocal(dayjs(selectedDate)) : ''
+      isValidDate ? dateToDateTimeLocal(selectedDate) : ''
     );
   };
 
-  const validateOptional = (date: Date | null, lastDay: string) => {
+  const validateOptional = (date: Dayjs | null, lastDay: any) => {
     let setterFunction =
       lastDay === 'lastCancelDay' ? setLastCancelDate : setLastEnrollDate;
     if (date !== null && dayjs(date).isValid()) {
@@ -154,7 +148,6 @@ export default function CourseForm({
       dateHasData(selectedDate, lastDay);
     } else {
       setterFunction(null);
-      //@ts-ignore
       setValue(lastDay, '');
     }
   };
@@ -300,7 +293,10 @@ export default function CourseForm({
               slotProps={{
                 textField: {
                   id: 'courseFormStartDate',
-                  inputProps: { 'data-testid': 'courseFormStartDate' },
+                  inputProps: {
+                    readOnly: true,
+                    'data-testid': 'courseFormStartDate',
+                  },
                   variant: 'outlined',
                   error: !!errors.startDate,
                 },
@@ -324,6 +320,7 @@ export default function CourseForm({
                 textField: {
                   id: 'courseFormEndDate',
                   inputProps: {
+                    readOnly: true,
                     'data-testid': 'courseFormEndDate',
                   },
                   variant: 'outlined',
@@ -343,13 +340,14 @@ export default function CourseForm({
               {...register('lastEnrollDate')}
               value={updateValue(lastEnrollDate, courseData?.lastEnrollDate)}
               onChange={(value) => {
-                validateOptional(dayjs(value).toDate(), 'lastEnrollDate');
+                validateOptional(value, 'lastEnrollDate');
               }}
               timeSteps={{ minutes: 1 }}
               slotProps={{
                 textField: {
                   id: 'courseFormLastEnrollDate',
                   inputProps: {
+                    readOnly: true,
                     'data-testid': 'courseFormLastEnrollDate',
                   },
                   variant: 'outlined',
@@ -369,13 +367,14 @@ export default function CourseForm({
               {...register('lastCancelDate')}
               value={updateValue(lastCancelDate, courseData?.lastCancelDate)}
               onChange={(value) => {
-                validateOptional(dayjs(value).toDate(), 'lastCancelDate');
+                validateOptional(value, 'lastCancelDate');
               }}
               timeSteps={{ minutes: 1 }}
               slotProps={{
                 textField: {
                   id: 'courseFormLastCancelDate',
                   inputProps: {
+                    readOnly: true,
                     'data-testid': 'courseFormLastCancelDate',
                   },
                   variant: 'outlined',
