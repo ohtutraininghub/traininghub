@@ -17,7 +17,7 @@ import { translator } from '@/lib/i18n';
 
 export async function POST(request: NextRequest) {
   try {
-    const { t } = await translator('en', 'api');
+    const { t } = await translator('api');
     const session = await getServerAuthSession();
     const userId = session.user.id;
     const data = await request.json();
@@ -112,7 +112,7 @@ export async function POST(request: NextRequest) {
 
 export async function PUT(request: NextRequest) {
   try {
-    const { t } = await translator('en', 'api');
+    const { t } = await translator('api');
     const session = await getServerAuthSession();
     const userId = session.user.id;
     const data = await request.json();

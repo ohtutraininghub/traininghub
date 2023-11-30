@@ -17,7 +17,7 @@ type Props = {
 
 export default async function ProfilePage({ searchParams, params }: Props) {
   const session = await getServerAuthSession();
-  const { t } = await translator(params.lang, ['components', 'admin']);
+  const { t } = await translator(['components', 'admin']);
   const allUsers = await getAllUsers();
   const userData = await prisma.user.findUnique({
     where: {

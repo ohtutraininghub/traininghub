@@ -14,6 +14,8 @@ import {
 import { initReactI18next } from 'react-i18next/initReactI18next';
 import { FallbackNs } from 'react-i18next';
 import resourcesToBackend from 'i18next-resources-to-backend';
+import { cookies } from 'next/headers';
+import z from 'zod';
 
 export interface DictProps {
   lang: Locale;
@@ -61,11 +63,14 @@ const initI18next = async (lng: Locale, ns?: NameSpace | NameSpace[]) => {
 export async function translator<
   Ns extends FlatNamespace,
   KPrefix extends KeyPrefix<FallbackNs<Ns>> = undefined,
->(lng: Locale, ns?: Ns | Ns[], options: { keyPrefix?: KPrefix } = {}) {
-  const i18nextInstance = await initI18next(lng, ns);
+>(ns?: Ns | Ns[], options: { keyPrefix?: KPrefix } = {}) {
+  const locale = cookies().get('NEXT_LOCALE')?.value;
+  const result = z.enum(i18n.locales).safeParse(locale);
+  const language = result.success ? result.data : i18n.defaultLocale;
+  const i18nextInstance = await initI18next(language, ns);
   return {
     t: i18nextInstance.getFixedT(
-      lng,
+      language,
       Array.isArray(ns) ? ns[0] : ns,
       options.keyPrefix
     ),

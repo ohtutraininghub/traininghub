@@ -12,7 +12,7 @@ import { translator } from '@/lib/i18n';
 
 export async function PUT(request: NextRequest) {
   try {
-    const { t } = await translator('en', 'api');
+    const { t } = await translator('api');
     const data = await request.json();
     const { userId, newRole } = data;
 

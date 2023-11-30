@@ -13,7 +13,7 @@ interface Props {
 }
 
 export default async function AdminDashboardPage({ params }: Props) {
-  const { t } = await translator(params.lang, 'admin');
+  const { t } = await translator('admin');
   const tags = await getTags();
 
   const users = await getAllUsers();

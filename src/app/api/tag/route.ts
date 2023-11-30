@@ -14,7 +14,7 @@ import { translator } from '@/lib/i18n';
 
 export async function POST(request: NextRequest) {
   let newTag: TagSchemaType | undefined;
-  const { t } = await translator('en', 'api');
+  const { t } = await translator('api');
   try {
     const { user } = await getServerAuthSession();
     if (!isAdmin(user)) {

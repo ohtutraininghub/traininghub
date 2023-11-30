@@ -9,8 +9,8 @@ interface TagListProps extends DictProps {
   tags: TagPrismaType[];
 }
 
-export default async function TagList({ tags, lang }: TagListProps) {
-  const { t } = await translator(lang, 'components');
+export default async function TagList({ tags }: TagListProps) {
+  const { t } = await translator('components');
 
   if (tags.length == 0) {
     return (

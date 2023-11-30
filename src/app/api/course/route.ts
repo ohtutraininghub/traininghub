@@ -25,7 +25,7 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
-    const { t } = await translator('en', 'api');
+    const { t } = await translator('api');
     const { user } = await getServerAuthSession();
     if (!isTrainerOrAdmin(user)) {
       return errorResponse({
@@ -57,7 +57,7 @@ export async function POST(request: NextRequest) {
 
 export async function PUT(request: NextRequest) {
   try {
-    const { t } = await translator('en', 'api');
+    const { t } = await translator('api');
     const { user } = await getServerAuthSession();
     const body = courseSchemaWithId.parse(await request.json());
     const parsedTags = await parseTags(body.tags);

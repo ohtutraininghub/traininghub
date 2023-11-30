@@ -30,7 +30,7 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-  const { t } = await translator('en', 'api');
+  const { t } = await translator('api');
   const { searchParams } = new URL(request.url);
   const courseId = searchParams.get('courseId');
 
@@ -48,7 +48,7 @@ export async function POST(request: NextRequest) {
 }
 
 const commonBody = async (courseId: string | null) => {
-  const { t } = await translator('en', 'api');
+  const { t } = await translator('api');
 
   if (!courseId) {
     return errorResponse({
