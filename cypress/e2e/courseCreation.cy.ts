@@ -25,9 +25,8 @@ describe('Course creation', () => {
     cy.getCy('textEditorTextSelect').click();
     cy.getCy('textSelectorParagraph').click();
     cy.get('.ProseMirror').type(course.description);
-
-    cy.getCy('courseFormStartDate').type(course.startDate);
-    cy.getCy('courseFormEndDate').type(course.endDate);
+    cy.chooseDatePicker('courseFormStartDate', course.startDate);
+    cy.chooseDatePicker('courseFormEndDate', course.endDate);
     cy.getCy('courseFormMaxStudents').clear().type(course.maxStudents);
     cy.getCy('courseFormSubmit').click();
     cy.contains(course.name).click();
@@ -52,8 +51,8 @@ describe('Course creation', () => {
 
     cy.getCy('courseFormName').clear().type(updatedCourse.name);
     cy.get('.ProseMirror').clear().type(updatedCourse.description);
-    cy.getCy('courseFormStartDate').type(updatedCourse.startDate);
-    cy.getCy('courseFormEndDate').type(updatedCourse.endDate);
+    cy.chooseDatePicker('courseFormStartDate', updatedCourse.startDate);
+    cy.chooseDatePicker('courseFormEndDate', updatedCourse.endDate);
     cy.getCy('courseFormMaxStudents').clear().type(updatedCourse.maxStudents);
     cy.getCy('courseFormSubmit').click();
 
@@ -84,8 +83,8 @@ describe('Course creation', () => {
   it('should not be possible for end date to be before start date', () => {
     cy.login('trainer@test.com', 'TRAINER');
     cy.visit('/course/create');
-    cy.getCy('courseFormStartDate').type('06-01-2030-T08:30PM');
-    cy.getCy('courseFormEndDate').type('05-01-2030-T08:30PM');
+    cy.chooseDatePicker('courseFormStartDate', '06-01-2030-T08:30PM');
+    cy.chooseDatePicker('courseFormEndDate', '05-01-2030-T08:30PM');
     cy.getCy('courseFormSubmit').click();
     cy.contains('The end date cannot be before the start date');
   });
@@ -93,7 +92,7 @@ describe('Course creation', () => {
   it('should not be possible for start date to be in the past', () => {
     cy.login('trainer@test.com', 'TRAINER');
     cy.visit('/course/create');
-    cy.getCy('courseFormStartDate').type('06-01-2020-T08:30PM');
+    cy.chooseDatePicker('courseFormStartDate', '06-01-2020-T08:30PM');
     cy.getCy('courseFormSubmit').click();
     cy.contains('Start date cannot be in the past');
   });
@@ -101,8 +100,8 @@ describe('Course creation', () => {
   it('should not be possible for last enroll date to be after the end date', () => {
     cy.login('trainer@test.com', 'TRAINER');
     cy.visit('/course/create');
-    cy.getCy('courseFormEndDate').type('06-01-2050-T01:00AM');
-    cy.getCy('courseFormLastEnrollDate').type('06-02-2050-T01:00AM');
+    cy.chooseDatePicker('courseFormEndDate', '06-01-2050-T01:00AM');
+    cy.chooseDatePicker('courseFormLastEnrollDate', '06-02-2050-T01:00AM');
     cy.getCy('courseFormSubmit').click();
     cy.contains(
       'The last date to enroll cannot be after the end date of the course'
@@ -112,8 +111,8 @@ describe('Course creation', () => {
   it('should not be possible for last cancel date to be after the end date', () => {
     cy.login('trainer@test.com', 'TRAINER');
     cy.visit('/course/create');
-    cy.getCy('courseFormEndDate').type('06-01-2050-T01:00AM');
-    cy.getCy('courseFormLastCancelDate').type('06-02-2050-T01:00AM');
+    cy.chooseDatePicker('courseFormEndDate', '06-01-2050-T01:00AM');
+    cy.chooseDatePicker('courseFormLastCancelDate', '06-02-2050-T01:00AM');
     cy.getCy('courseFormSubmit').click();
     cy.contains(
       'The last date to cancel enrollment cannot be after the end date of the course'
