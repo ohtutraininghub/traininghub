@@ -225,7 +225,7 @@ export default function UserList({ lang, users }: Props) {
                           },
                         }}
                         inputProps={{
-                          'data-testId': `filter-input-${t(
+                          'data-testid': `filter-input-${t(
                             `EditUsers.tableHeaders.${headerKey}`
                           )}`,
                         }}
