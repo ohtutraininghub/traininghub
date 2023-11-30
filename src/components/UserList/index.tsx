@@ -170,7 +170,7 @@ export default function UserList({ lang, users }: Props) {
           }
         >
           <IconButton
-            data-testId="filter-button"
+            data-testid="filter-button"
             sx={{ marginLeft: 'auto' }}
             onClick={() => {
               setDisplayFilterRow((prev) => !prev);
