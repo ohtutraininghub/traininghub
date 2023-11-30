@@ -97,6 +97,7 @@ export default function CourseModal({
           width: '1000px',
           height: '900px',
           maxWidth: '100%',
+          maxHeight: '100%',
           overflow: 'auto',
           overflowWrap: 'break-word',
           borderRadius: '10px',
@@ -186,13 +187,14 @@ export default function CourseModal({
         )}
 
         {courseView == 'details' && (
-          <Box>
+          <>
             <pre
               style={{
                 whiteSpace: 'pre-wrap',
                 margin: 0,
                 textAlign: 'start',
                 paddingRight: '16px',
+                overflow: 'auto',
               }}
             >
               <Typography
@@ -239,7 +241,7 @@ export default function CourseModal({
               </Box>
               <Box sx={{ flex: 1 }}></Box>
             </Box>
-          </Box>
+          </>
         )}
       </Card>
     </Modal>
