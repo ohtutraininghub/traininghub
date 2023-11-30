@@ -32,14 +32,26 @@ export default function TrainerTools({
           <ToggleButton
             value="details"
             aria-label="course details"
-            sx={{ width: '72px' }}
+            sx={{
+              width: '72px',
+              '&.Mui-selected, &.Mui-selected:hover': {
+                color: 'secondary.contrastText',
+                backgroundColor: 'secondary.dark',
+              },
+            }}
           >
             <TextSnippetIcon sx={{ color: 'white.main' }} />
           </ToggleButton>
           <ToggleButton
             value="attendees"
             aria-label="attendees list"
-            sx={{ width: '72px' }}
+            sx={{
+              width: '72px',
+              '&.Mui-selected, &.Mui-selected:hover': {
+                color: 'secondary.contrastText',
+                backgroundColor: 'secondary.dark',
+              },
+            }}
           >
             <PeopleIcon sx={{ color: 'white.main' }} />
           </ToggleButton>
