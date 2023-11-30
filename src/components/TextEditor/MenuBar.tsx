@@ -21,6 +21,10 @@ import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
 import FormatClearIcon from '@mui/icons-material/FormatClear';
 import FormatUnderlinedIcon from '@mui/icons-material/FormatUnderlined';
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
+import FormatAlignLeftIcon from '@mui/icons-material/FormatAlignLeft';
+import FormatAlignRightIcon from '@mui/icons-material/FormatAlignRight';
+import FormatAlignCenterIcon from '@mui/icons-material/FormatAlignCenter';
+import FormatAlignJustifyIcon from '@mui/icons-material/FormatAlignJustify';
 import { DictProps } from '@/lib/i18n';
 import { useTranslation } from '@/lib/i18n/client';
 import { useState } from 'react';
@@ -244,6 +248,49 @@ export const MenuBar = ({ lang }: DictProps) => {
           <Tooltip title={t('TextEditor.Tooltip.image')} arrow>
             <IconButton id="addImageButton" onClick={handlePromptOpen}>
               <InsertPhotoIcon />
+            </IconButton>
+          </Tooltip>
+
+          <Divider
+            sx={{ mr: 1, ml: 1 }}
+            orientation="vertical"
+            variant="middle"
+            flexItem
+          />
+
+          <Tooltip title={t('TextEditor.Tooltip.alignLeft')} arrow>
+            <IconButton
+              onClick={() => editor.chain().focus().setTextAlign('left').run()}
+            >
+              <FormatAlignLeftIcon />
+            </IconButton>
+          </Tooltip>
+
+          <Tooltip title={t('TextEditor.Tooltip.alignCenter')} arrow>
+            <IconButton
+              onClick={() =>
+                editor.chain().focus().setTextAlign('center').run()
+              }
+            >
+              <FormatAlignCenterIcon />
+            </IconButton>
+          </Tooltip>
+
+          <Tooltip title={t('TextEditor.Tooltip.alignRight')} arrow>
+            <IconButton
+              onClick={() => editor.chain().focus().setTextAlign('right').run()}
+            >
+              <FormatAlignRightIcon />
+            </IconButton>
+          </Tooltip>
+
+          <Tooltip title={t('TextEditor.Tooltip.alignJustify')} arrow>
+            <IconButton
+              onClick={() =>
+                editor.chain().focus().setTextAlign('justify').run()
+              }
+            >
+              <FormatAlignJustifyIcon />
             </IconButton>
           </Tooltip>
 

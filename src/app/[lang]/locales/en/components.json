@@ -89,6 +89,10 @@
   },
   "TextEditor": {
     "Tooltip": {
+      "alignLeft": "Align left",
+      "alignCenter": "Center",
+      "alignRight": "Align right",
+      "alignJustify": "Justify",
       "bold": "Bold (CTRL + B",
       "italic": "Italic (CTRL + I)",
       "strike": "Strikethrough",

@@ -1,10 +1,11 @@
-import { EditorProvider } from '@tiptap/react';
+import { EditorProvider, mergeAttributes } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import { MenuBar } from './MenuBar';
 import { Box } from '@mui/material';
 import Link from '@tiptap/extension-link';
 import Underline from '@tiptap/extension-underline';
 import Image from '@tiptap/extension-image';
+import TextAlign from '@tiptap/extension-text-align';
 import { DictProps } from '@/lib/i18n';
 
 interface TEditorProps extends DictProps {
@@ -16,7 +17,25 @@ const extensions = [
   StarterKit,
   Link.extend({ inclusive: false }),
   Underline,
-  Image.configure({ inline: true }),
+  Image.extend({
+    addOptions() {
+      return {
+        ...this.parent?.(),
+        sizes: ['left', 'right', 'block', 'inline'],
+      };
+    },
+    renderHTML({ HTMLAttributes }) {
+      const { style } = HTMLAttributes;
+      return [
+        'figure',
+        { style },
+        ['img', mergeAttributes(this.options.HTMLAttributes, HTMLAttributes)],
+      ];
+    },
+  }),
+  TextAlign.configure({
+    types: ['heading', 'paragraph', 'image'],
+  }),
 ];
 
 const Tiptap = ({ lang, value, onChange }: TEditorProps) => {
