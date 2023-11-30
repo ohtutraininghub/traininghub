@@ -35,7 +35,7 @@
       "clearSearch": "Clear Search"
     },
     "label": {
-      "courseName": "Seach by name",
+      "courseName": "Search by name",
       "endDate": "End date",
       "noMatches": "No matches found",
       "startDate": "Start date",
@@ -124,5 +124,15 @@
   "UnauthorizedError": {
     "unauthorizedMessage": "You are not authorized to view this page",
     "backToHome": "Back to home"
+  },
+  "CalendarPrompt": {
+    "addPrompt": "Do you want to add this course to your Google calendar?",
+    "button": {
+      "yes": "Yes",
+      "no": "No"
+    },
+    "checkbox": {
+      "remember": "Remember my decision"
+    }
   }
 }

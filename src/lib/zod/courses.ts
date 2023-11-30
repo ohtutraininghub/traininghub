@@ -76,14 +76,16 @@ const courseSchemaBase = z
         }
       ),
     endDate: z.string().min(1, 'End date is required').pipe(z.coerce.date()),
-    lastEnrollDate: z.preprocess(
-      (value) => (!value ? null : value),
-      z.coerce.date().nullable()
-    ),
-    lastCancelDate: z.preprocess(
-      (value) => (!value ? null : value),
-      z.coerce.date().nullable()
-    ),
+    lastEnrollDate: z
+      .string()
+      .nullish()
+      .transform((value) => (value ? value : null))
+      .pipe(z.coerce.date().nullable()),
+    lastCancelDate: z
+      .string()
+      .nullish()
+      .transform((value) => (value ? value : null))
+      .pipe(z.coerce.date().nullable()),
     maxStudents: z.number().min(1, 'Max students is required'),
     tags: z.array(z.string().min(1, 'Tag name cannot be empty')),
   })
@@ -100,8 +102,11 @@ export const courseSchemaWithId = withRefine(courseSchemaBaseWithId);
 export type CourseSchemaType = z.infer<typeof courseSchemaBase>;
 export type CourseSchemaWithIdType = z.infer<typeof courseSchemaBaseWithId>;
 
-export const courseEnrollSchema = z.string(
-  z.string().min(1, 'Course id is required')
-);
+export const courseEnrollSchema = z
+  .object({
+    courseId: z.string().min(1, 'Course id is required'),
+    insertToCalendar: z.boolean().nullish(),
+  })
+  .strict();
 
 export type CourseEnrollSchemaType = z.infer<typeof courseEnrollSchema>;

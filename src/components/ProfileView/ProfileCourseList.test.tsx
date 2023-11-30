@@ -8,18 +8,24 @@ import userEvent from '@testing-library/user-event';
 const testCourses: Course[] = [
   {
     id: '123456789',
+    createdById: '7',
     name: 'Introduction to something',
     description: 'Once upon time there was a fox with a box',
     startDate: new Date('2000-01-12T15:00'),
     endDate: new Date('2001-05-12T15:00'),
+    lastEnrollDate: null,
+    lastCancelDate: null,
     maxStudents: 10,
   },
   {
     id: '223456789',
+    createdById: '7',
     name: 'Advanced stuff',
     description: 'And inside the box there was a fox',
     startDate: new Date('2050-01-12T15:00'),
     endDate: new Date('2051-05-12T15:00'),
+    lastEnrollDate: null,
+    lastCancelDate: null,
     maxStudents: 10,
   },
 ];

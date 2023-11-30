@@ -10,7 +10,7 @@ export const get = async (url: RequestInfo | URL) => {
   return responseAsJson;
 };
 
-export const post = async (url: RequestInfo | URL, data: any) => {
+export const post = async (url: RequestInfo | URL, data?: any) => {
   return await commonBody(url, data, 'POST');
 };
 
