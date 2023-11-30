@@ -2,8 +2,8 @@
 
 import { CourseWithTagsAndStudentCount } from '@/lib/prisma/courses';
 import { CourseModalCloseButton } from '@/components/Buttons/Buttons';
-import AttendeeView from '@/components/AttendeeView';
 import Modal from '@mui/material/Modal';
+import AttendeeView from '@/components/AttendeeView';
 import Typography from '@mui/material/Typography';
 import Card from '@mui/material/Card';
 import Chip from '@mui/material/Chip';
@@ -19,13 +19,15 @@ import { useSession } from 'next-auth/react';
 import Loading from '@/app/[lang]/loading';
 import { UserNamesAndIds } from '@/lib/prisma/users';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useState } from 'react';
+import TrainerTools from './TrainerTools';
+import { isTrainerOrAdmin } from '@/lib/auth-utils';
 
 interface Props extends DictProps {
   course: CourseWithTagsAndStudentCount | undefined;
   usersEnrolledCourseIds: string[];
   enrolledStudents: UserNamesAndIds | null;
   enrolls: string;
-  description: string;
   editCourseLabel: string;
 }
 
@@ -35,7 +37,6 @@ export default function CourseModal({
   enrolledStudents,
   lang,
   enrolls,
-  description,
   editCourseLabel,
 }: Props) {
   const { t } = useTranslation(lang, 'components');
@@ -43,6 +44,7 @@ export default function CourseModal({
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
+  const [courseView, setCourseView] = useState<string | null>('details');
 
   if (!course) return null;
 
@@ -52,6 +54,7 @@ export default function CourseModal({
 
   const isUserEnrolled = usersEnrolledCourseIds.includes(course.id);
   const isCourseFull = course._count.students === course.maxStudents;
+  const hasRightToViewStudents = isTrainerOrAdmin(session.user);
   const hasEditRights = hasCourseEditRights(session.user, course);
 
   const handleClick = (event: object, reason: string) => {
@@ -60,6 +63,13 @@ export default function CourseModal({
       params.delete('courseId');
       router.replace(`${pathname}?` + params);
     }
+  };
+
+  const handleCourseViewToggle = (
+    event: React.MouseEvent<HTMLElement>,
+    newView: string | null
+  ) => {
+    setCourseView(newView);
   };
 
   return (
@@ -98,7 +108,32 @@ export default function CourseModal({
           outline: 0,
         }}
       >
-        <CourseModalCloseButton lang={lang} />
+        {hasRightToViewStudents && (
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: '1fr 1fr 1fr',
+              marginBottom: '1rem',
+            }}
+          >
+            <div style={{ gridColumnStart: 2 }}>
+              <TrainerTools
+                courseView={courseView}
+                handleCourseViewToggle={handleCourseViewToggle}
+                viewCourseDetailsLabel={t(
+                  'CourseModal.button.viewCourseDetailsLabel'
+                )}
+                viewEnrolledStudentsLabel={t(
+                  'CourseModal.button.viewEnrolledStudentsLabel'
+                )}
+              />
+            </div>
+            <div style={{ justifySelf: 'end' }}>
+              <CourseModalCloseButton lang={lang} />
+            </div>
+          </div>
+        )}
+
         <Typography variant="h1">{course.name}</Typography>
         <Typography sx={{ my: 2 }}>
           <LocalizedDateTime
@@ -143,62 +178,69 @@ export default function CourseModal({
           ))}
         </Box>
 
-        <Typography variant="h4" sx={{ my: 2, color: 'white.main' }}>
-          {description}
-        </Typography>
-
-        <pre
-          style={{
-            whiteSpace: 'pre-wrap',
-            margin: 0,
-            textAlign: 'start',
-            paddingRight: '16px',
-          }}
-        >
-          <Typography
-            sx={{
-              a: {
-                color: 'surface.main',
-                ':visited': {
-                  color: 'surface.main',
-                },
-                ':hover': {
-                  color: 'secondary.light',
-                },
-              },
-            }}
-            dangerouslySetInnerHTML={{ __html: course.description }}
-          ></Typography>
-        </pre>
-        <Box
-          sx={{
-            mt: 'auto',
-            pt: 3,
-            display: 'flex',
-            flexDirection: { xs: 'column-reverse', sm: 'row' },
-            alignItems: { xs: 'center', sm: 'flex-end' },
-            gap: 1,
-          }}
-        >
-          <EditButton
-            editCourseLabel={editCourseLabel}
-            courseId={course.id}
-            hidden={!hasEditRights}
+        {courseView == 'attendees' && (
+          <AttendeeView
+            attendees={enrolledStudents}
+            noAttendeesText={t('AttendeeList.noAttendeesText')}
           />
-          <Box sx={{ flex: 1 }}>
-            <Typography sx={{ mb: 1 }}>{enrolls}</Typography>
-            <EnrollHolder
-              lang={lang}
-              isUserEnrolled={isUserEnrolled}
-              courseId={course.id}
-              isCourseFull={isCourseFull}
-              lastEnrollDate={course.lastEnrollDate}
-              lastCancelDate={course.lastCancelDate}
-            />
+        )}
+
+        {courseView == 'details' && (
+          <Box>
+            <pre
+              style={{
+                whiteSpace: 'pre-wrap',
+                margin: 0,
+                textAlign: 'start',
+                paddingRight: '16px',
+              }}
+            >
+              <Typography
+                sx={{
+                  a: {
+                    color: 'surface.main',
+                    ':visited': {
+                      color: 'surface.main',
+                    },
+                    ':hover': {
+                      color: 'secondary.light',
+                    },
+                  },
+                }}
+                dangerouslySetInnerHTML={{ __html: course.description }}
+              ></Typography>
+            </pre>
+
+            <Box
+              sx={{
+                mt: 'auto',
+                pt: 3,
+                display: 'flex',
+                flexDirection: { xs: 'column-reverse', sm: 'row' },
+                alignItems: { xs: 'center', sm: 'flex-end' },
+                gap: 1,
+              }}
+            >
+              <EditButton
+                editCourseLabel={editCourseLabel}
+                courseId={course.id}
+                hidden={!hasEditRights}
+              />
+              <Box sx={{ flex: 1 }}>
+                <Typography sx={{ mb: 1 }}>{enrolls}</Typography>
+                <EnrollHolder
+                  lang={lang}
+                  isUserEnrolled={isUserEnrolled}
+                  courseId={course.id}
+                  isCourseFull={isCourseFull}
+                  lastEnrollDate={course.lastEnrollDate}
+                  lastCancelDate={course.lastCancelDate}
+                />
+              </Box>
+              <Box sx={{ flex: 1 }}></Box>
+            </Box>
           </Box>
-          <Box sx={{ flex: 1 }}></Box>
-        </Box>
-        <AttendeeView lang={lang} attendees={enrolledStudents} />
+        )}
       </Card>
     </Modal>
   );

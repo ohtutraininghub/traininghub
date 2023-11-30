@@ -16,8 +16,11 @@
     "signOut": "Sign out"
   },
   "CourseModal": {
+    "button": {
+      "viewCourseDetailsLabel": "Details",
+      "viewEnrolledStudentsLabel": "Students"
+    },
     "enrollmentDeadlineHeader": "Note: Enrollment deadline ",
-    "description": "Description",
     "enrolls": "Enrolls: {{studentCount}} / {{maxStudentCount}}"
   },
   "CourseModalCloseButton": {

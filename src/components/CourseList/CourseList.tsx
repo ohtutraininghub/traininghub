@@ -73,7 +73,6 @@ export default function CourseList({
           studentCount: openedCourse?._count.students,
           maxStudentCount: openedCourse?.maxStudents,
         })}
-        description={t('CourseModal.description')}
         editCourseLabel={t('EditButton.editCourse')}
       />
       <div style={{ paddingTop: '1em' }}>
