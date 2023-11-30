@@ -155,7 +155,7 @@ export const MenuBar = ({ lang }: DictProps) => {
             <MenuItem
               sx={menuItemSx}
               value={'header1'}
-              data-testId="textSelectorHeader1"
+              data-testid="textSelectorHeader1"
             >
               <Typography variant="h4">
                 {t('TextEditor.Dropdown.header1')}
@@ -174,7 +174,7 @@ export const MenuBar = ({ lang }: DictProps) => {
             <MenuItem
               sx={menuItemSx}
               value={'paragraph'}
-              data-testId="textSelectorParagraph"
+              data-testid="textSelectorParagraph"
             >
               <Typography variant="body1">
                 {t('TextEditor.Dropdown.paragraph')}
