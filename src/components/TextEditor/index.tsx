@@ -60,6 +60,7 @@ const Tiptap = ({ lang, value, onChange }: TEditorProps) => {
             ml: 1,
             mr: 1,
             mt: -1,
+            overflowX: 'auto',
           },
           '.ProseMirror:focus': {
             outline: 'none',
