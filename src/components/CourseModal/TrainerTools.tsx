@@ -22,7 +22,7 @@ export default function TrainerTools({
 }: Props) {
   return (
     <>
-      <div>
+      <div data-testid="trainer-tools">
         <ToggleButtonGroup
           value={courseView}
           exclusive
