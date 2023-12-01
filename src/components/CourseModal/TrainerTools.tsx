@@ -36,7 +36,7 @@ export default function TrainerTools({
               width: '72px',
               '&.Mui-selected, &.Mui-selected:hover': {
                 color: 'secondary.contrastText',
-                backgroundColor: 'secondary.dark',
+                backgroundColor: 'coverBlue.dark',
               },
             }}
           >
@@ -49,7 +49,7 @@ export default function TrainerTools({
               width: '72px',
               '&.Mui-selected, &.Mui-selected:hover': {
                 color: 'secondary.contrastText',
-                backgroundColor: 'secondary.dark',
+                backgroundColor: 'coverBlue.dark',
               },
             }}
           >
