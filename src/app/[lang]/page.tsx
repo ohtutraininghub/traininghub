@@ -9,6 +9,7 @@ import SpeedDialMenu from '@/components/SpeedDialMenu';
 import SearchMenu from '@/components/SearchMenu';
 import { isTrainerOrAdmin } from '@/lib/auth-utils';
 import { UserNamesAndIds, getStudentNamesByCourseId } from '@/lib/prisma/users';
+import BackToTopToggle from '@/components/BackToTopToggle';
 
 export const dynamic = 'force-dynamic';
 
@@ -67,6 +68,7 @@ export default async function HomePage({ searchParams, params }: Props) {
           endDate: searchParams.endDate,
         }}
       />
+      <BackToTopToggle />
     </BackgroundContainer>
   );
 }
