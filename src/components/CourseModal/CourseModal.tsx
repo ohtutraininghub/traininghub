@@ -19,7 +19,7 @@ import { useSession } from 'next-auth/react';
 import Loading from '@/app/[lang]/loading';
 import { UserNamesAndIds } from '@/lib/prisma/users';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import TrainerTools from './TrainerTools';
 import { isTrainerOrAdmin } from '@/lib/auth-utils';
 
@@ -45,6 +45,11 @@ export default function CourseModal({
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const [courseView, setCourseView] = useState<string | null>('details');
+
+  //Reset view to course description when modal is opened/closed
+  useEffect(() => {
+    setCourseView('details');
+  }, [course?.id]);
 
   if (!course) return null;
 
