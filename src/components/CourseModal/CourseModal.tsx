@@ -196,7 +196,7 @@ export default function CourseModal({
             <pre
               style={{
                 whiteSpace: 'pre-wrap',
-                margin: 0,
+                margin: '1em 0 0 0',
                 textAlign: 'start',
                 paddingRight: '16px',
                 overflow: 'auto',
