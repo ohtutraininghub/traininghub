@@ -113,8 +113,8 @@
       "paragraph": "Text"
     },
     "prompt": {
-      "mainImageLabel": "Insert an image",
-      "mainLinkLabel": "Insert a link",
+      "mainImageLabel": "Insert image",
+      "mainLinkLabel": "Insert link",
       "urlLabel": "URL",
       "displayTextLabel": "Display Text",
       "confirm": "OK",

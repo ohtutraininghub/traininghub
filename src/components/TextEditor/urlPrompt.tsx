@@ -86,7 +86,7 @@ export const PromptWindow = ({
             sx={{
               boxShadow: 2,
               backgroundColor: 'surface.main',
-              p: 1.5,
+              p: 2,
               borderStyle: 'solid',
               borderColor: 'black.main',
               borderWidth: 1,
@@ -109,7 +109,7 @@ export const PromptWindow = ({
               autoComplete="false"
               autoFocus
               onChange={(e) => setUserInput(e.target.value)}
-              sx={{ mb: 1 }}
+              sx={{ mt: 2.5, mb: 2.5 }}
             />
             {anchorObj.state === 'link' && (
               <>
@@ -121,7 +121,7 @@ export const PromptWindow = ({
                   size="small"
                   color="secondary"
                   defaultValue={anchorObj.text}
-                  sx={{ mt: 1, mb: 1 }}
+                  sx={{ mb: 2.5 }}
                   onChange={(e) => setDisplayText(e.target.value)}
                 />
               </>
