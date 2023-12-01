@@ -13,27 +13,39 @@ Cypress.Commands.add('setDate', (element, value, day, hours, minutes) => {
   cy.wrap(element).click();
   if (value === 'currentMonth') {
     cy.contains(day).click();
-    cy.get(`[aria-label="${hours} hours"]`).click();
-    cy.get(`[aria-label="${minutes} minutes"]`).click();
-    cy.get('[aria-label="PM"]').click();
+    cy.get(`[aria-label="${hours} hours"]`)
+      .invoke('css', 'pointer-events', 'auto')
+      .click();
+    cy.get(`[aria-label="${minutes} minutes"]`)
+      .invoke('css', 'pointer-events', 'auto')
+      .click();
+    cy.get('[aria-label="PM"]').invoke('css', 'pointer-events', 'auto').click();
     cy.contains('OK').click();
   }
 
   if (value === 'nextMonth') {
     cy.get('[aria-label="Next month"]').click();
     cy.contains(day).click();
-    cy.get(`[aria-label="${hours} hours"]`).click();
-    cy.get(`[aria-label="${minutes} minutes"]`).click();
-    cy.get('[aria-label="PM"]').click();
+    cy.get(`[aria-label="${hours} hours"]`)
+      .invoke('css', 'pointer-events', 'auto')
+      .click();
+    cy.get(`[aria-label="${minutes} minutes"]`)
+      .invoke('css', 'pointer-events', 'auto')
+      .click();
+    cy.get('[aria-label="PM"]').invoke('css', 'pointer-events', 'auto').click();
     cy.contains('OK').click();
   }
 
   if (value === 'previousMonth') {
     cy.get('[aria-label="Previous month"]').click();
     cy.contains(day).click();
-    cy.get(`[aria-label="${hours} hours"]`).click();
-    cy.get(`[aria-label="${minutes} minutes"]`).click();
-    cy.get('[aria-label="PM"]').click();
+    cy.get(`[aria-label="${hours} hours"]`)
+      .invoke('css', 'pointer-events', 'auto')
+      .click();
+    cy.get(`[aria-label="${minutes} minutes"]`)
+      .invoke('css', 'pointer-events', 'auto')
+      .click();
+    cy.get('[aria-label="PM"]').invoke('css', 'pointer-events', 'auto').click();
     cy.contains('OK').click();
   }
 });

@@ -28,7 +28,7 @@ describe('Course creation', () => {
       index === 0
         ? cy.setDate($el, 'currentMonth', 26, 3, 1)
         : index === 1
-        ? cy.setDate($el, 'nextMonth', 26, 3, 1)
+        ? cy.setDate($el, 'nextMonth', 25, 3, 1)
         : null;
     });
     cy.getCy('courseFormMaxStudents').clear().type(course.maxStudents);
@@ -57,7 +57,7 @@ describe('Course creation', () => {
       index === 0
         ? cy.setDate($el, 'currentMonth', 27, 4, 1)
         : index === 1
-        ? cy.setDate($el, 'nextMonth', 26, 3, 1)
+        ? cy.setDate($el, 'nextMonth', 20, 3, 1)
         : null;
     });
     cy.getCy('courseFormMaxStudents').clear().type(updatedCourse.maxStudents);
