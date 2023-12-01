@@ -3,7 +3,7 @@
 import { CourseWithTagsAndStudentCount } from '@/lib/prisma/courses';
 import { CourseModalCloseButton } from '@/components/Buttons/Buttons';
 import Modal from '@mui/material/Modal';
-import AttendeeView from '@/components/AttendeeView';
+import AttendeeTable from '@/components/AttendeeTable';
 import Typography from '@mui/material/Typography';
 import Card from '@mui/material/Card';
 import Chip from '@mui/material/Chip';
@@ -185,7 +185,7 @@ export default function CourseModal({
         </Box>
 
         {courseView == 'attendees' && (
-          <AttendeeView
+          <AttendeeTable
             attendees={enrolledStudents}
             noAttendeesText={t('AttendeeList.noAttendeesText')}
           />
