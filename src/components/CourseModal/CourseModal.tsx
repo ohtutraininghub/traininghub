@@ -109,14 +109,14 @@ export default function CourseModal({
           outline: 0,
         }}
       >
-        {hasRightToViewStudents && (
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: '1fr 1fr 1fr',
-              marginBottom: '1rem',
-            }}
-          >
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: '1fr 1fr 1fr',
+            marginBottom: '1rem',
+          }}
+        >
+          {hasRightToViewStudents && (
             <div style={{ gridColumnStart: 2 }}>
               <TrainerTools
                 courseView={courseView}
@@ -129,11 +129,11 @@ export default function CourseModal({
                 )}
               />
             </div>
-            <div style={{ justifySelf: 'end' }}>
-              <CourseModalCloseButton lang={lang} />
-            </div>
+          )}
+          <div style={{ gridColumnStart: 3, justifySelf: 'end' }}>
+            <CourseModalCloseButton lang={lang} />
           </div>
-        )}
+        </div>
 
         <Typography variant="h1">{course.name}</Typography>
         <Typography sx={{ my: 2 }}>
