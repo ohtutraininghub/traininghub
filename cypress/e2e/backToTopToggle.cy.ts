@@ -4,8 +4,6 @@ describe('BackToTopToggle button', () => {
     header: 'Learn Kubernetes',
     description:
       'Take your first steps in using Kubernetes for container orchestration. This course will introduce you to the basic concepts and building blocks of Kubernetes and the architecture of the system. Get ready to start you cloud native journey!',
-    startDate: '2030-06-01T08:30',
-    endDate: '2030-07-01T08:30',
     maxStudents: '100',
   };
 
@@ -26,9 +24,13 @@ describe('BackToTopToggle button', () => {
     cy.getCy('textEditorTextSelect').click();
     cy.getCy('textSelectorParagraph').click();
     cy.get('.ProseMirror').type(course.description);
-
-    cy.getCy('courseFormStartDate').type(course.startDate);
-    cy.getCy('courseFormEndDate').type(course.endDate);
+    cy.get('[aria-label="Choose date"]').each(($el, index) => {
+      index === 0
+        ? cy.setDate($el, 'currentMonth', 27, 4, 1)
+        : index === 1
+        ? cy.setDate($el, 'nextMonth', 26, 3, 1)
+        : null;
+    });
     cy.getCy('courseFormMaxStudents').clear().type(course.maxStudents);
     cy.getCy('courseFormSubmit').click();
     // view at top, button should not be visible
