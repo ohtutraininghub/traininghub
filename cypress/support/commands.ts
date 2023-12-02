@@ -10,30 +10,30 @@ Cypress.Commands.add('login', (email, role) => {
 
 Cypress.Commands.add('setDate', (element, value, day, hours, minutes) => {
   cy.wait(2000);
-  cy.wrap(element).click().invoke('css', 'pointer-events: auto');
-  if (value === 'currentMonth') {
-    cy.contains(day).click();
+  cy.wrap(element).click().invoke('css', 'pointer-events', 'auto');
+  const selectDate = (day) => cy.contains(day).click();
+  const selectTime = (hours, minutes) => {
     cy.get(`[aria-label="${hours} hours"]`).click();
     cy.get(`[aria-label="${minutes} minutes"]`).click();
     cy.get('[aria-label="PM"]').click();
     cy.contains('OK').click();
-  }
+  };
+  switch (value) {
+    case 'currentMonth':
+      selectDate(day);
+      selectTime(hours, minutes);
+      break;
 
-  if (value === 'nextMonth') {
-    cy.get('[aria-label="Next month"]').click();
-    cy.contains(day).click();
-    cy.get(`[aria-label="${hours} hours"]`).click();
-    cy.get(`[aria-label="${minutes} minutes"]`).click();
-    cy.get('[aria-label="PM"]').click();
-    cy.contains('OK').click();
-  }
+    case 'nextMonth':
+      cy.get('[aria-label="Next month"]').click();
+      selectDate(day);
+      selectTime(hours, minutes);
+      break;
 
-  if (value === 'previousMonth') {
-    cy.get('[aria-label="Previous month"]').click();
-    cy.contains(day).click();
-    cy.get(`[aria-label="${hours} hours"]`).click();
-    cy.get(`[aria-label="${minutes} minutes"]`).click();
-    cy.get('[aria-label="PM"]').click();
-    cy.contains('OK').click();
+    case 'previousMonth':
+      cy.get('[aria-label="Previous month"]').click();
+      selectDate(day);
+      selectTime(hours, minutes);
+      break;
   }
 });
