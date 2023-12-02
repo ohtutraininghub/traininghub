@@ -7,6 +7,10 @@ describe('BackToTopToggle button', () => {
     maxStudents: '100',
   };
 
+  beforeEach(() => {
+    cy.task('seedDatabase');
+  });
+
   it('does not initially show backToTopToggle component', () => {
     cy.login('testuser@test.com', 'TRAINER');
     cy.getCy('backToTopToggle').should('not.be.visible');

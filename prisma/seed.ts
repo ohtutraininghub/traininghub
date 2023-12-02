@@ -1,3 +1,4 @@
+import { User } from '@prisma/client';
 import { clearDatabase, prisma } from '../src/lib/prisma';
 
 const courseData = [
@@ -50,6 +51,93 @@ const tagData = [
   { name: 'Robot Framework' },
   { name: 'Testing' },
 ];
+
+const userData: User[] = [
+  {
+    id: '123001',
+    name: 'John Doe',
+    email: 'john.doe@example.com',
+    emailVerified: null,
+    image: 'https://example.com/johndoe.jpg',
+    role: 'ADMIN',
+  },
+  {
+    id: '123002',
+    name: 'Alice Smith',
+    email: 'alice.smith@example.com',
+    emailVerified: null,
+    image: 'https://example.com/alicesmith.jpg',
+    role: 'ADMIN',
+  },
+  {
+    id: '123003',
+    name: 'Bob Johnson',
+    email: 'bob.johnson@example.com',
+    emailVerified: null,
+    image: 'https://example.com/bobjohnson.jpg',
+    role: 'TRAINEE',
+  },
+  {
+    id: '123004',
+    name: 'Emily Davis',
+    email: 'emily.davis@example.com',
+    emailVerified: null,
+    image: 'https://example.com/emilydavis.jpg',
+    role: 'TRAINER',
+  },
+  {
+    id: '123005',
+    name: 'Chris Miller',
+    email: 'chris.miller@example.com',
+    emailVerified: null,
+    image: 'https://example.com/chrismiller.jpg',
+    role: 'ADMIN',
+  },
+  {
+    id: '123006',
+    name: 'Sophia White',
+    email: 'sophia.white@example.com',
+    emailVerified: null,
+    image: 'https://example.com/sophiawhite.jpg',
+    role: 'TRAINER',
+  },
+  {
+    id: '123007',
+    name: 'Daniel Brown',
+    email: 'daniel.brown@example.com',
+    emailVerified: null,
+    image: 'https://example.com/danielbrown.jpg',
+    role: 'ADMIN',
+  },
+  {
+    id: '123008',
+    name: 'Olivia Taylor',
+    email: 'olivia.taylor@example.com',
+    emailVerified: null,
+    image: 'https://example.com/oliviataylor.jpg',
+    role: 'TRAINER',
+  },
+  {
+    id: '123009',
+    name: 'Michael Wilson',
+    email: 'michael.wilson@example.com',
+    emailVerified: null,
+    image: 'https://example.com/michaelwilson.jpg',
+    role: 'TRAINER',
+  },
+  {
+    id: '123010',
+    name: 'Ella Moore',
+    email: 'ella.moore@example.com',
+    emailVerified: null,
+    image: 'https://example.com/ellamoore.jpg',
+    role: 'TRAINEE',
+  },
+];
+
+export async function seedUsers() {
+  await prisma.user.createMany({ data: userData });
+}
 
 export async function main() {
   await clearDatabase();

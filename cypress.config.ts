@@ -1,6 +1,6 @@
 import { defineConfig } from 'cypress';
 import { clearDatabase } from './src/lib/prisma';
-import { main as seedDatabase } from './prisma/seed';
+import { main as seedDatabase, seedUsers } from './prisma/seed';
 
 export default defineConfig({
   e2e: {
@@ -14,6 +14,12 @@ export default defineConfig({
       on('task', {
         async seedDatabase() {
           await seedDatabase();
+          return null;
+        },
+      });
+      on('task', {
+        async seedUsers() {
+          await seedUsers();
           return null;
         },
       });
