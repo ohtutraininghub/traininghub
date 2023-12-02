@@ -10,30 +10,30 @@ Cypress.Commands.add('login', (email, role) => {
 
 Cypress.Commands.add('setDate', (element, value, day, hours, minutes) => {
   cy.wait(2000);
-  cy.wrap(element).click();
+  cy.wrap(element).click().invoke('css', 'pointer-events', 'auto');
   if (value === 'currentMonth') {
-    cy.contains(day).click({ force: true });
-    cy.get(`[aria-label="${hours} hours"]`).click({ force: true });
-    cy.get(`[aria-label="${minutes} minutes"]`).click({ force: true });
-    cy.get('[aria-label="PM"]').click({ force: true });
-    cy.contains('OK').click({ force: true });
+    cy.contains(day).click();
+    cy.get(`[aria-label="${hours} hours"]`).click();
+    cy.get(`[aria-label="${minutes} minutes"]`).click();
+    cy.get('[aria-label="PM"]').click();
+    cy.contains('OK').click();
   }
 
   if (value === 'nextMonth') {
-    cy.get('[aria-label="Next month"]').click({ force: true });
-    cy.contains(day).click({ force: true });
+    cy.get('[aria-label="Next month"]').click();
+    cy.contains(day).click();
     cy.get(`[aria-label="${hours} hours"]`).click();
     cy.get(`[aria-label="${minutes} minutes"]`).click();
-    cy.get('[aria-label="PM"]').click({ force: true });
-    cy.contains('OK').click({ force: true });
+    cy.get('[aria-label="PM"]').click();
+    cy.contains('OK').click();
   }
 
   if (value === 'previousMonth') {
-    cy.get('[aria-label="Previous month"]').click({ force: true });
-    cy.contains(day).click({ force: true });
-    cy.get(`[aria-label="${hours} hours"]`).click({ force: true });
-    cy.get(`[aria-label="${minutes} minutes"]`).click({ force: true });
-    cy.get('[aria-label="PM"]').click({ force: true });
-    cy.contains('OK').click({ force: true });
+    cy.get('[aria-label="Previous month"]').click();
+    cy.contains(day).click();
+    cy.get(`[aria-label="${hours} hours"]`).click();
+    cy.get(`[aria-label="${minutes} minutes"]`).click();
+    cy.get('[aria-label="PM"]').click();
+    cy.contains('OK').click();
   }
 });
