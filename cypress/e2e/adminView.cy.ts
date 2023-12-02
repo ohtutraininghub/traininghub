@@ -20,30 +20,25 @@ describe('Admin view', () => {
 });
 
 describe('User list', () => {
-  let userId: string;
-
   beforeEach(() => {
+    // Intercepting the session request to get the user ID
+    cy.intercept('GET', `/api/auth/session`).as('getUser');
+
     cy.task('clearDatabase');
     cy.task('seedUsers');
     cy.login('admin@test.com', 'ADMIN');
 
-    // Intercepting the session request to get the user ID
-    cy.intercept('GET', `/api/auth/session`).as('getUser');
-
     // Wait for the intercepted request to complete
     cy.wait('@getUser').then((interception) => {
-      userId = interception.response.body.user.id;
+      cy.wrap(interception.response.body.user.id).as('userId');
     });
-
-    // Use cy.wrap to ensure the userId is correctly resolved
-    cy.wrap(userId).as('userId');
 
     // Visit the dashboard after login
     cy.get('[aria-label^="SpeedDial"]').click();
     cy.getCy('dashboard').click();
   });
 
-  it.only('displays logged user when searched', () => {
+  it('displays logged user when searched', () => {
     cy.getCy('filter-button').click();
     cy.getCy('filter-input-Name').type('test user');
     cy.get('tbody>tr>th').contains('Test User');
@@ -52,24 +47,40 @@ describe('User list', () => {
   });
 
   it('displays confim card when another role is selected', () => {
-    cy.getCy(`${userId}-role-select`).click();
+    cy.getCy('filter-button').click();
+    cy.getCy('filter-input-Name').type('test user');
+    cy.get('@userId').then((userId) => {
+      cy.getCy(`${userId}-role-select`).click();
+    });
     cy.get('[data-value="TRAINEE"]').click();
     cy.getCy('small-confirm-card').should('be.visible');
   });
 
   it('keeps old role if cancel button is pressed', () => {
-    cy.getCy(`${userId}-role-select`).click();
+    cy.getCy('filter-button').click();
+    cy.getCy('filter-input-Name').type('test user');
+    cy.get('@userId').then((userId) => {
+      cy.getCy(`${userId}-role-select`).click();
+    });
     cy.get('[data-value="TRAINEE"]').click();
     cy.getCy('cancel-button').click();
     cy.getCy('small-confirm-card').should('not.exist');
-    cy.getCy(`${userId}-role-select`).find('p').should('contain', 'admin');
+    cy.get('@userId').then((userId) => {
+      cy.getCy(`${userId}-role-select`).find('p').should('contain', 'admin');
+    });
   });
 
   it('updates role when confirm button is pressed', () => {
-    cy.getCy(`${userId}-role-select`).click();
+    cy.getCy('filter-button').click();
+    cy.getCy('filter-input-Name').type('test user');
+    cy.get('@userId').then((userId) => {
+      cy.getCy(`${userId}-role-select`).click();
+    });
     cy.get('[data-value="TRAINEE"]').click();
     cy.getCy('confirm-button').click();
     cy.getCy('small-confirm-card').should('not.exist');
-    cy.getCy(`${userId}-role-select`).find('p').should('contain', 'trainee');
+    cy.get('@userId').then((userId) => {
+      cy.getCy(`${userId}-role-select`).find('p').should('contain', 'trainee');
+    });
   });
 });
