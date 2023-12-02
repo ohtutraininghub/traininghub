@@ -30,9 +30,9 @@ describe('BackToTopToggle button', () => {
     cy.get('.ProseMirror').type(course.description);
     cy.get('[aria-label="Choose date"]').each(($el, index) => {
       index === 0
-        ? cy.setDate($el, 'currentMonth', 27, 4, 1)
+        ? cy.setDate($el, 'currentMonth', 27)
         : index === 1
-        ? cy.setDate($el, 'nextMonth', 26, 3, 1)
+        ? cy.setDate($el, 'nextMonth', 26)
         : null;
     });
     cy.getCy('courseFormMaxStudents').clear().type(course.maxStudents);

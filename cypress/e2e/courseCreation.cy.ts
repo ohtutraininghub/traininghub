@@ -26,9 +26,9 @@ describe('Course creation', () => {
 
     cy.get('[aria-label="Choose date"]').each(($el, index) => {
       index === 0
-        ? cy.setDate($el, 'currentMonth', 26, 3, 1)
+        ? cy.setDate($el, 'currentMonth', 26)
         : index === 1
-        ? cy.setDate($el, 'nextMonth', 25, 3, 1)
+        ? cy.setDate($el, 'nextMonth', 25)
         : null;
     });
     cy.getCy('courseFormMaxStudents').clear().type(course.maxStudents);
@@ -55,9 +55,9 @@ describe('Course creation', () => {
     cy.get('.ProseMirror').clear().type(updatedCourse.description);
     cy.get('[aria-label="Choose date"]').each(($el, index) => {
       index === 0
-        ? cy.setDate($el, 'currentMonth', 27, 4, 1)
+        ? cy.setDate($el, 'currentMonth', 27)
         : index === 1
-        ? cy.setDate($el, 'nextMonth', 20, 3, 1)
+        ? cy.setDate($el, 'nextMonth', 20)
         : null;
     });
     cy.getCy('courseFormMaxStudents').clear().type(updatedCourse.maxStudents);
@@ -92,9 +92,9 @@ describe('Course creation', () => {
     cy.visit('/course/create');
     cy.get('[aria-label="Choose date"]').each(($el, index) => {
       index === 1
-        ? cy.setDate($el, 'currentMonth', 29, 4, 1)
+        ? cy.setDate($el, 'currentMonth', 29)
         : index === 0
-        ? cy.setDate($el, 'nextMonth', 28, 3, 1)
+        ? cy.setDate($el, 'nextMonth', 28)
         : null;
     });
     cy.getCy('courseFormSubmit').click();
@@ -105,7 +105,7 @@ describe('Course creation', () => {
     cy.login('trainer@test.com', 'TRAINER');
     cy.visit('/course/create');
     cy.get('[aria-label="Choose date"]').each(($el, index) => {
-      index === 0 ? cy.setDate($el, 'previousMonth', 27, 5, 1) : null;
+      index === 0 ? cy.setDate($el, 'previousMonth', 27) : null;
     });
     cy.getCy('courseFormSubmit').click();
     cy.contains('Start date cannot be in the past');
@@ -116,9 +116,9 @@ describe('Course creation', () => {
     cy.visit('/course/create');
     cy.get('[aria-label="Choose date"]').each(($el, index) => {
       index === 1
-        ? cy.setDate($el, 'currentMonth', 27, 4, 1)
+        ? cy.setDate($el, 'currentMonth', 27)
         : index === 2
-        ? cy.setDate($el, 'nextMonth', 26, 3, 1)
+        ? cy.setDate($el, 'nextMonth', 26)
         : null;
     });
     cy.getCy('courseFormSubmit').click();
@@ -132,9 +132,9 @@ describe('Course creation', () => {
     cy.visit('/course/create');
     cy.get('[aria-label="Choose date"]').each(($el, index) => {
       index === 1
-        ? cy.setDate($el, 'currentMonth', 27, 4, 1)
+        ? cy.setDate($el, 'currentMonth', 27)
         : index === 3
-        ? cy.setDate($el, 'nextMonth', 26, 3, 1)
+        ? cy.setDate($el, 'nextMonth', 26)
         : null;
     });
     cy.getCy('courseFormSubmit').click();
