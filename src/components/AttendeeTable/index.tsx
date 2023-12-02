@@ -51,7 +51,7 @@ export default function AttendeeTable({ attendees, noAttendeesText }: Props) {
 
   return (
     <Paper sx={{ my: 2 }}>
-      <TableContainer>
+      <TableContainer data-testid="enrolled-students-table">
         <Table aria-label="enrolled students table">
           <TableHead>
             <TableRow>

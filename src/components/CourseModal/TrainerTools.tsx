@@ -30,6 +30,7 @@ export default function TrainerTools({
           aria-label="course view"
         >
           <ToggleButton
+            data-testid="toggle-course-details"
             value="details"
             aria-label="course details"
             sx={{
@@ -43,6 +44,7 @@ export default function TrainerTools({
             <TextSnippetIcon sx={{ color: 'white.main' }} />
           </ToggleButton>
           <ToggleButton
+            data-testid="toggle-attendees-list"
             value="attendees"
             aria-label="attendees list"
             sx={{
