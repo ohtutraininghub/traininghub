@@ -10,7 +10,7 @@ Cypress.Commands.add('login', (email, role) => {
 
 Cypress.Commands.add('setDate', (element, value, day, hours, minutes) => {
   cy.wait(2000);
-  cy.wrap(element).click().invoke('css', 'pointer-events', 'auto');
+  cy.wrap(element).click().invoke('css', 'pointer-events: auto');
   if (value === 'currentMonth') {
     cy.contains(day).click();
     cy.get(`[aria-label="${hours} hours"]`).click();
