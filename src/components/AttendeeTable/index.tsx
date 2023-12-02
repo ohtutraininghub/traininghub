@@ -51,8 +51,10 @@ export default function AttendeeTable({ attendees, noAttendeesText }: Props) {
 
   return (
     <Paper sx={{ my: 2 }}>
-      <TableContainer data-testid="enrolled-students-table">
-        <Table aria-label="enrolled students table">
+      <TableContainer data-testid="enrolled-students-table" sx={{backgroundColor: "coverBlue.dark"}}>
+        <Table aria-label="enrolled students table" sx={{"& .MuiTableCell-root, .MuiSvgIcon-root, .MuiButtonBase-root": {
+          color: "white.main",
+    }}}>
           <TableHead>
             <TableRow>
               <TableCell>Name</TableCell>
