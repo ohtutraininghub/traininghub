@@ -7,12 +7,15 @@
   "EditUsers": {
     "label": "Users",
     "infoText": "Changes in user roles are applied when user signs in again",
+    "filterToggleLabel": "Show filter row",
+    "filterHideLabel": "Hide filter row",
     "tableHeaders": {
       "name": "Name",
       "email": "Email",
       "emailVerified": "Email Verified",
       "role": "Role"
     },
+    "searchTooltip": "Filter table with {{headerValue}}",
     "confirmCard": {
       "confirm": "Confirm changes",
       "cancel": "Cancel changes"
