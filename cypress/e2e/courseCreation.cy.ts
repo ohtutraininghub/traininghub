@@ -53,6 +53,7 @@ describe('Course creation', () => {
 
     cy.getCy('courseFormName').clear().type(updatedCourse.name);
     cy.get('.ProseMirror').clear().type(updatedCourse.description);
+    cy.get('[aria-label="Choose date"]').should('be.visible');
     cy.get('[aria-label="Choose date"]').each(($el, index) => {
       index === 0
         ? cy.setDate($el, 'currentMonth', 27)
@@ -90,6 +91,7 @@ describe('Course creation', () => {
   it('should not be possible for end date to be before start date', () => {
     cy.login('trainer@test.com', 'TRAINER');
     cy.visit('/course/create');
+    cy.get('[aria-label="Choose date"]').should('be.visible');
     cy.get('[aria-label="Choose date"]').each(($el, index) => {
       index === 1
         ? cy.setDate($el, 'currentMonth', 29)
@@ -104,6 +106,7 @@ describe('Course creation', () => {
   it('should not be possible for start date to be in the past', () => {
     cy.login('trainer@test.com', 'TRAINER');
     cy.visit('/course/create');
+    cy.get('[aria-label="Choose date"]').should('be.visible');
     cy.get('[aria-label="Choose date"]').each(($el, index) => {
       index === 0 ? cy.setDate($el, 'previousMonth', 27) : null;
     });
@@ -114,6 +117,7 @@ describe('Course creation', () => {
   it('should not be possible for last enroll date to be after the end date', () => {
     cy.login('trainer@test.com', 'TRAINER');
     cy.visit('/course/create');
+    cy.get('[aria-label="Choose date"]').should('be.visible');
     cy.get('[aria-label="Choose date"]').each(($el, index) => {
       index === 1
         ? cy.setDate($el, 'currentMonth', 27)
@@ -130,6 +134,7 @@ describe('Course creation', () => {
   it('should not be possible for last cancel date to be after the end date', () => {
     cy.login('trainer@test.com', 'TRAINER');
     cy.visit('/course/create');
+    cy.get('[aria-label="Choose date"]').should('be.visible');
     cy.get('[aria-label="Choose date"]').each(($el, index) => {
       index === 1
         ? cy.setDate($el, 'currentMonth', 27)
