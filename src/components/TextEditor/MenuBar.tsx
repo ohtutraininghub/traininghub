@@ -1,11 +1,9 @@
 import {
   ButtonGroup,
   Divider,
-  IconButton,
   MenuItem,
   Select,
   SelectChangeEvent,
-  Tooltip,
   Typography,
 } from '@mui/material';
 import { useCurrentEditor } from '@tiptap/react';
@@ -20,18 +18,67 @@ import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
 import FormatClearIcon from '@mui/icons-material/FormatClear';
 import FormatUnderlinedIcon from '@mui/icons-material/FormatUnderlined';
+import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
+import FormatAlignLeftIcon from '@mui/icons-material/FormatAlignLeft';
+import FormatAlignRightIcon from '@mui/icons-material/FormatAlignRight';
+import FormatAlignCenterIcon from '@mui/icons-material/FormatAlignCenter';
+import FormatAlignJustifyIcon from '@mui/icons-material/FormatAlignJustify';
 import { DictProps } from '@/lib/i18n';
 import { useTranslation } from '@/lib/i18n/client';
+import { useState } from 'react';
+import { PromptWindow, type AnchorWithContext, CallbackObj } from './urlPrompt';
+import { TextSelection } from '@tiptap/pm/state';
+import { ClickHandler, MenuBarItem } from './MenuBarItem';
 
 export const MenuBar = ({ lang }: DictProps) => {
   const { editor } = useCurrentEditor();
   const { t } = useTranslation(lang, 'components');
+  const [anchorObj, setAnchorObj] = useState<null | AnchorWithContext>(null);
+  const promptOpen = !!anchorObj;
 
-  const handleToggleLink = () => {
-    const url = window.prompt(t('TextEditor.linkPrompt'));
+  const getTextSelection = () => {
+    if (!editor) return undefined;
+    const { view, state } = editor;
+    const { from, to } = view.state.selection;
+    return state.doc.textBetween(from, to, '');
+  };
 
-    if (url && editor) {
-      editor.chain().focus().toggleLink({ href: url }).run();
+  const replaceTextSelection = (newText: string): void => {
+    if (!editor) return;
+    const { state, dispatch } = editor.view;
+    const { selection, tr } = state;
+    const { from, to } = selection;
+    dispatch(
+      tr
+        .insertText(newText, from, to)
+        .setSelection(TextSelection.create(tr.doc, from, from + newText.length))
+    );
+  };
+
+  const handlePromptOpen = (event: React.MouseEvent<HTMLElement>) => {
+    const selection = getTextSelection();
+    const obj: AnchorWithContext = {
+      element: event.currentTarget,
+      state: event.currentTarget.id === 'addLinkButton' ? 'link' : 'image',
+      text: selection ? selection : '',
+    };
+    setAnchorObj(anchorObj ? null : obj);
+  };
+
+  const urlPromptCallback = (props: CallbackObj | null) => {
+    setAnchorObj(null);
+    if (!props) return;
+    if (props.url && editor) {
+      if (props.state === 'image') {
+        editor.chain().focus().setImage({ src: props.url }).run();
+      } else if (props.state === 'link') {
+        if (!props.text) {
+          replaceTextSelection(props.url);
+        } else {
+          replaceTextSelection(props.text);
+        }
+        editor.chain().focus().toggleLink({ href: props.url }).run();
+      }
     }
   };
 
@@ -89,6 +136,13 @@ export const MenuBar = ({ lang }: DictProps) => {
     editor && (
       <>
         <ButtonGroup sx={{ flexWrap: 'wrap' }}>
+          <PromptWindow
+            lang={lang}
+            open={promptOpen}
+            anchorObj={anchorObj}
+            callbackFn={urlPromptCallback}
+          />
+
           <Select
             sx={{ ml: 1, mb: -1, minWidth: 120 }}
             size="small"
@@ -101,7 +155,7 @@ export const MenuBar = ({ lang }: DictProps) => {
             <MenuItem
               sx={menuItemSx}
               value={'header1'}
-              data-testId="textSelectorHeader1"
+              data-testid="textSelectorHeader1"
             >
               <Typography variant="h4">
                 {t('TextEditor.Dropdown.header1')}
@@ -120,7 +174,7 @@ export const MenuBar = ({ lang }: DictProps) => {
             <MenuItem
               sx={menuItemSx}
               value={'paragraph'}
-              data-testId="textSelectorParagraph"
+              data-testid="textSelectorParagraph"
             >
               <Typography variant="body1">
                 {t('TextEditor.Dropdown.paragraph')}
@@ -135,62 +189,45 @@ export const MenuBar = ({ lang }: DictProps) => {
             flexItem
           />
 
-          <Tooltip title={t('TextEditor.Tooltip.bold')} arrow>
-            <IconButton
-              data-testid="courseFormBoldButton"
-              sx={editor.isActive('bold') ? emphasize : {}}
-              onClick={() => editor.chain().focus().toggleBold().run()}
-              disabled={!editor.can().chain().focus().toggleBold().run()}
-            >
-              <FormatBoldIcon />
-            </IconButton>
-          </Tooltip>
+          <MenuBarItem
+            tooltip={t('TextEditor.Tooltip.bold')}
+            onClick={() => editor.chain().focus().toggleBold().run()}
+            disabled={!editor.can().chain().focus().toggleBold().run()}
+            sx={editor.isActive('bold') ? emphasize : {}}
+            icon={<FormatBoldIcon />}
+          />
 
-          <Tooltip title={t('TextEditor.Tooltip.italic')} arrow>
-            <IconButton
-              sx={editor.isActive('italic') ? emphasize : {}}
-              onClick={() => editor.chain().focus().toggleItalic().run()}
-              disabled={!editor.can().chain().focus().toggleItalic().run()}
-            >
-              <FormatItalicIcon />
-            </IconButton>
-          </Tooltip>
+          <MenuBarItem
+            tooltip={t('TextEditor.Tooltip.italic')}
+            onClick={() => editor.chain().focus().toggleItalic().run()}
+            disabled={!editor.can().chain().focus().toggleItalic().run()}
+            sx={editor.isActive('italic') ? emphasize : {}}
+            icon={<FormatItalicIcon />}
+          />
 
-          <Tooltip title={t('TextEditor.Tooltip.strike')} arrow>
-            <IconButton
-              sx={editor.isActive('strike') ? emphasize : {}}
-              onClick={() => editor.chain().focus().toggleStrike().run()}
-              disabled={!editor.can().chain().focus().toggleStrike().run()}
-            >
-              <FormatStrikethroughIcon />
-            </IconButton>
-          </Tooltip>
+          <MenuBarItem
+            tooltip={t('TextEditor.Tooltip.strike')}
+            onClick={() => editor.chain().focus().toggleStrike().run()}
+            disabled={!editor.can().chain().focus().toggleStrike().run()}
+            sx={editor.isActive('strike') ? emphasize : {}}
+            icon={<FormatStrikethroughIcon />}
+          />
 
-          <Tooltip title={t('TextEditor.Tooltip.underline')} arrow>
-            <IconButton
-              sx={editor.isActive('underline') ? emphasize : {}}
-              onClick={() => editor.chain().focus().toggleUnderline().run()}
-              disabled={!editor.can().chain().focus().toggleUnderline().run()}
-            >
-              <FormatUnderlinedIcon />
-            </IconButton>
-          </Tooltip>
+          <MenuBarItem
+            tooltip={t('TextEditor.Tooltip.underline')}
+            sx={editor.isActive('underline') ? emphasize : {}}
+            onClick={() => editor.chain().focus().toggleUnderline().run()}
+            disabled={!editor.can().chain().focus().toggleUnderline().run()}
+            icon={<FormatUnderlinedIcon />}
+          />
 
-          <Tooltip title={t('TextEditor.Tooltip.code')} arrow>
-            <IconButton
-              sx={editor.isActive('code') ? emphasize : {}}
-              onClick={() => editor.chain().focus().toggleCode().run()}
-              disabled={!editor.can().chain().focus().toggleCode().run()}
-            >
-              <CodeIcon />
-            </IconButton>
-          </Tooltip>
-
-          <Tooltip title={t('TextEditor.Tooltip.link')} arrow>
-            <IconButton onClick={handleToggleLink}>
-              <LinkIcon />
-            </IconButton>
-          </Tooltip>
+          <MenuBarItem
+            tooltip={t('TextEditor.Tooltip.code')}
+            sx={editor.isActive('code') ? emphasize : {}}
+            onClick={() => editor.chain().focus().toggleCode().run()}
+            disabled={!editor.can().chain().focus().toggleCode().run()}
+            icon={<CodeIcon />}
+          />
 
           <Divider
             sx={{ mr: 1, ml: 1 }}
@@ -199,23 +236,21 @@ export const MenuBar = ({ lang }: DictProps) => {
             flexItem
           />
 
-          <Tooltip title={t('TextEditor.Tooltip.bulletList')} arrow>
-            <IconButton
-              sx={editor.isActive('bulletList') ? emphasize : {}}
-              onClick={() => editor.chain().focus().toggleBulletList().run()}
-            >
-              <FormatListBulletedIcon />
-            </IconButton>
-          </Tooltip>
+          <MenuBarItem
+            tooltip={t('TextEditor.Tooltip.link')}
+            sx={editor.isActive('link') ? emphasize : {}}
+            id="addLinkButton"
+            onClick={handlePromptOpen as ClickHandler}
+            icon={<LinkIcon />}
+          />
 
-          <Tooltip title={t('TextEditor.Tooltip.orderedList')} arrow>
-            <IconButton
-              sx={editor.isActive('orderedList') ? emphasize : {}}
-              onClick={() => editor.chain().focus().toggleOrderedList().run()}
-            >
-              <FormatListNumberedIcon />
-            </IconButton>
-          </Tooltip>
+          <MenuBarItem
+            tooltip={t('TextEditor.Tooltip.image')}
+            sx={editor.isActive('image') ? emphasize : {}}
+            id="addImageButton"
+            onClick={handlePromptOpen as ClickHandler}
+            icon={<InsertPhotoIcon />}
+          />
 
           <Divider
             sx={{ mr: 1, ml: 1 }}
@@ -224,35 +259,92 @@ export const MenuBar = ({ lang }: DictProps) => {
             flexItem
           />
 
-          <Tooltip title={t('TextEditor.Tooltip.clearFormat')} arrow>
-            <IconButton
-              onClick={() => editor.chain().focus().unsetAllMarks().run()}
-            >
-              <FormatClearIcon />
-            </IconButton>
-          </Tooltip>
+          <MenuBarItem
+            tooltip={t('TextEditor.Tooltip.alignLeft')}
+            sx={editor.isActive({ textAlign: 'left' }) ? emphasize : {}}
+            onClick={() => editor.chain().focus().setTextAlign('left').run()}
+            disabled={!editor.can().chain().focus().setTextAlign('left').run()}
+            icon={<FormatAlignLeftIcon />}
+          />
 
-          <Tooltip title={t('TextEditor.Tooltip.undo')} arrow>
-            <span>
-              <IconButton
-                onClick={() => editor.commands.undo()}
-                disabled={!editor.can().chain().focus().undo().run()}
-              >
-                <UndoIcon />
-              </IconButton>
-            </span>
-          </Tooltip>
+          <MenuBarItem
+            tooltip={t('TextEditor.Tooltip.alignCenter')}
+            sx={editor.isActive({ textAlign: 'center' }) ? emphasize : {}}
+            onClick={() => editor.chain().focus().setTextAlign('center').run()}
+            disabled={
+              !editor.can().chain().focus().setTextAlign('center').run()
+            }
+            icon={<FormatAlignCenterIcon />}
+          />
 
-          <Tooltip title={t('TextEditor.Tooltip.redo')} arrow>
-            <span>
-              <IconButton
-                onClick={() => editor.commands.redo()}
-                disabled={!editor.can().chain().focus().redo().run()}
-              >
-                <RedoIcon />
-              </IconButton>
-            </span>
-          </Tooltip>
+          <MenuBarItem
+            tooltip={t('TextEditor.Tooltip.alignRight')}
+            sx={editor.isActive({ textAlign: 'right' }) ? emphasize : {}}
+            onClick={() => editor.chain().focus().setTextAlign('right').run()}
+            disabled={!editor.can().chain().focus().setTextAlign('right').run()}
+            icon={<FormatAlignRightIcon />}
+          />
+
+          <MenuBarItem
+            tooltip={t('TextEditor.Tooltip.alignJustify')}
+            sx={editor.isActive({ textAlign: 'justify' }) ? emphasize : {}}
+            onClick={() => editor.chain().focus().setTextAlign('justify').run()}
+            disabled={
+              !editor.can().chain().focus().setTextAlign('justify').run()
+            }
+            icon={<FormatAlignJustifyIcon />}
+          />
+
+          <Divider
+            sx={{ mr: 1, ml: 1 }}
+            orientation="vertical"
+            variant="middle"
+            flexItem
+          />
+
+          <MenuBarItem
+            tooltip={t('TextEditor.Tooltip.bulletList')}
+            sx={editor.isActive('bulletList') ? emphasize : {}}
+            onClick={() => editor.chain().focus().toggleBulletList().run()}
+            disabled={!editor.can().chain().focus().toggleBulletList().run()}
+            icon={<FormatListBulletedIcon />}
+          />
+
+          <MenuBarItem
+            tooltip={t('TextEditor.Tooltip.orderedList')}
+            sx={editor.isActive('orderedList') ? emphasize : {}}
+            onClick={() => editor.chain().focus().toggleOrderedList().run()}
+            disabled={!editor.can().chain().focus().toggleOrderedList().run()}
+            icon={<FormatListNumberedIcon />}
+          />
+
+          <Divider
+            sx={{ mr: 1, ml: 1 }}
+            orientation="vertical"
+            variant="middle"
+            flexItem
+          />
+
+          <MenuBarItem
+            tooltip={t('TextEditor.Tooltip.clearFormat')}
+            onClick={() => editor.chain().focus().unsetAllMarks().run()}
+            disabled={!editor.can().chain().focus().unsetAllMarks().run()}
+            icon={<FormatClearIcon />}
+          />
+
+          <MenuBarItem
+            tooltip={t('TextEditor.Tooltip.undo')}
+            onClick={() => editor.commands.undo()}
+            disabled={!editor.can().chain().focus().undo().run()}
+            icon={<UndoIcon />}
+          />
+
+          <MenuBarItem
+            tooltip={t('TextEditor.Tooltip.redo')}
+            onClick={() => editor.commands.redo()}
+            disabled={!editor.can().chain().focus().redo().run()}
+            icon={<RedoIcon />}
+          />
         </ButtonGroup>
         <Divider />
       </>
