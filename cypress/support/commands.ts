@@ -10,7 +10,7 @@ Cypress.Commands.add('login', (email, role) => {
 
 Cypress.Commands.add('setDate', (element, value, day) => {
   cy.wait(2000);
-  cy.wrap(element).click().invoke('css', 'pointer-events', 'auto');
+  cy.wrap(element).click();
   const selectDate = (day) => cy.contains(day).click();
   switch (value) {
     case 'currentMonth':
