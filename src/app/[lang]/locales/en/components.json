@@ -98,12 +98,17 @@
   },
   "TextEditor": {
     "Tooltip": {
+      "alignLeft": "Align left",
+      "alignCenter": "Center",
+      "alignRight": "Align right",
+      "alignJustify": "Justify",
       "bold": "Bold (CTRL + B",
       "italic": "Italic (CTRL + I)",
       "strike": "Strikethrough",
       "underline": "Underline (CTRL + U)",
       "code": "Code (CTRL + E)",
       "link": "Add link",
+      "image": "Add image from URL",
       "bulletList": "Bullet list",
       "clearFormat": "Clear formatting",
       "orderedList": "Ordered list",
@@ -116,7 +121,14 @@
       "header3": "Header 3",
       "paragraph": "Text"
     },
-    "linkPrompt": "Please enter the link as such: https://www.example.com"
+    "prompt": {
+      "mainImageLabel": "Insert image",
+      "mainLinkLabel": "Insert link",
+      "urlLabel": "URL",
+      "displayTextLabel": "Display Text",
+      "confirm": "OK",
+      "cancel": "Cancel"
+    }
   },
   "UnauthorizedError": {
     "unauthorizedMessage": "You are not authorized to view this page",
