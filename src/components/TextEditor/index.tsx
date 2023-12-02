@@ -4,14 +4,24 @@ import { MenuBar } from './MenuBar';
 import { Box } from '@mui/material';
 import Link from '@tiptap/extension-link';
 import Underline from '@tiptap/extension-underline';
+import TextAlign from '@tiptap/extension-text-align';
 import { DictProps } from '@/lib/i18n';
+import ResizableImageExtension from './ResizeExtension';
 
 interface TEditorProps extends DictProps {
   value: string;
   onChange(_body: string): void;
 }
 
-const extensions = [StarterKit, Link, Underline];
+const extensions = [
+  StarterKit,
+  Link.extend({ inclusive: false }),
+  Underline,
+  ResizableImageExtension,
+  TextAlign.configure({
+    types: ['heading', 'paragraph'],
+  }),
+];
 
 const Tiptap = ({ lang, value, onChange }: TEditorProps) => {
   return (
@@ -35,6 +45,7 @@ const Tiptap = ({ lang, value, onChange }: TEditorProps) => {
             ml: 1,
             mr: 1,
             mt: -1,
+            overflowX: 'auto',
           },
           '.ProseMirror:focus': {
             outline: 'none',

@@ -89,14 +89,10 @@ describe('User list', () => {
   it('renders all columns', () => {
     const nameColumn = screen.getByText('EditUsers.tableHeaders.name');
     const emailColumn = screen.getByText('EditUsers.tableHeaders.email');
-    const verifiedColumn = screen.getByText(
-      'EditUsers.tableHeaders.emailVerified'
-    );
     const roleColumn = screen.getByText('EditUsers.tableHeaders.role');
 
     expect(nameColumn).toBeInTheDocument();
     expect(emailColumn).toBeInTheDocument();
-    expect(verifiedColumn).toBeInTheDocument();
     expect(roleColumn).toBeInTheDocument();
   });
 

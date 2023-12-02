@@ -98,29 +98,42 @@
     "noTagsAdded": "No tags added"
   },
   "TextEditor": {
+    "Tooltip": {
+      "alignLeft": "Align left",
+      "alignCenter": "Center",
+      "alignRight": "Align right",
+      "alignJustify": "Justify",
+      "bold": "Bold (CTRL + B",
+      "italic": "Italic (CTRL + I)",
+      "strike": "Strikethrough",
+      "underline": "Underline (CTRL + U)",
+      "code": "Code (CTRL + E)",
+      "link": "Add link",
+      "image": "Add image from URL",
+      "bulletList": "Bullet list",
+      "clearFormat": "Clear formatting",
+      "orderedList": "Ordered list",
+      "undo": "Undo (CTRL + Z)",
+      "redo": "Redo (CTRL + Y)"
+    },
     "Dropdown": {
       "header1": "Header 1",
       "header2": "Header 2",
       "header3": "Header 3",
       "paragraph": "Text"
     },
-    "Tooltip": {
-      "bold": "Bold (CTRL + B",
-      "bulletList": "Bullet list",
-      "clearFormat": "Clear formatting",
-      "code": "Code (CTRL + E)",
-      "italic": "Italic (CTRL + I)",
-      "link": "Add link",
-      "orderedList": "Ordered list",
-      "redo": "Redo (CTRL + Y)",
-      "strike": "Strikethrough",
-      "underline": "Underline (CTRL + U)",
-      "undo": "Undo (CTRL + Z)"
-    },
     "linkPrompt": "Please enter the link as such: https://www.example.com"
+    "prompt": {
+      "mainImageLabel": "Insert image",
+      "mainLinkLabel": "Insert link",
+      "urlLabel": "URL",
+      "displayTextLabel": "Display Text",
+      "confirm": "OK",
+      "cancel": "Cancel"
+    },
   },
   "UnauthorizedError": {
     "backToHome": "Back to home",
     "unauthorizedMessage": "You are not authorized to view this page"
-  }
+  },
 }
