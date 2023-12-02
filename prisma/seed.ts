@@ -1,12 +1,21 @@
+import { Role } from '@prisma/client';
 import { clearDatabase, prisma } from '../src/lib/prisma';
+
+const traineeUser = {
+  name: 'Taylor Trainee',
+  email: 'taylor@traininghub.org',
+  emailVerified: null,
+  image: '',
+  role: Role.TRAINEE,
+};
 
 const courseData = [
   {
     name: 'Git Fundamentals',
     description:
       'This course will walk you through the fundamentals of using Git for version control. You will learn how to create a local Git repository, commit files and push your changes to a remote repository. The course will introduce you to concepts like the working copy and the staging area and teach you how to organise you repository using tags and branches. You will learn how to make pull requests and merge branches, and tackle merge conflicts when they arise.',
-    startDate: '2023-10-02T09:30:00.000Z',
-    endDate: '2023-10-02T16:30:00.000Z',
+    startDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+    endDate: new Date(Date.now() + 8 * 24 * 60 * 60 * 1000),
     maxStudents: 12,
     tags: ['Git'],
   },
@@ -14,8 +23,8 @@ const courseData = [
     name: 'Jenkins Fundamentals',
     description:
       'Learn how to automate building, testing and deploying your code using Jenkins, a popular open-source server for setting up continuous integration and continuous delivery pipelines. During this two-day course you will get a lot of hands-on experience in Jenkins basics like setting up a Jenkins server, choosing and installing Jenkins plugins and building a Jenkins CI/CD pipeline.',
-    startDate: '2023-12-04T09:30:00.000Z',
-    endDate: '2023-12-05T16:30:00.000Z',
+    startDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+    endDate: new Date(Date.now() + 32 * 24 * 60 * 60 * 1000),
     maxStudents: 8,
     tags: ['CI/CD', 'Jenkins'],
   },
@@ -23,8 +32,8 @@ const courseData = [
     name: 'Robot Framework Fundamentals',
     description:
       'This course will teach you how to automate the acceptance testing of your software using Robot Framework, a generic, open-source, Python-based automation framework. You will get an introduction to how Robot Framework works and learn how to write tasks utilising keywords, all in an easily readable and human-friendly syntax.',
-    startDate: '2033-11-20T09:30:00.000Z',
-    endDate: '2033-11-22T16:30:00.000Z',
+    startDate: new Date(Date.now() + 180 * 24 * 60 * 60 * 1000),
+    endDate: new Date(Date.now() + 183 * 32 * 60 * 60 * 1000),
     maxStudents: 10,
     tags: ['Testing', 'Python', 'Robot Framework'],
   },
@@ -32,8 +41,8 @@ const courseData = [
     name: 'Kubernetes Fundamentals',
     description:
       'Take your first steps in using Kubernetes for container orchestration. This course will introduce you to the basic concepts and building blocks of Kubernetes and the architecture of the system. Get ready to start you cloud native journey!',
-    startDate: '2024-01-08T09:30:00.000Z',
-    endDate: '2024-01-08T16:30:00.000Z',
+    startDate: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000),
+    endDate: new Date(Date.now() + 365 * 32 * 60 * 60 * 1000),
     maxStudents: 15,
     tags: ['Kubernetes', 'Docker', 'CI/CD'],
   },
@@ -55,6 +64,7 @@ export async function main() {
   await clearDatabase();
 
   const user = await prisma.user.create({ data: {} });
+  const trainee = await prisma.user.create({ data: traineeUser });
 
   await prisma.tag.createMany({
     data: tagData,
@@ -70,6 +80,11 @@ export async function main() {
           endDate: course.endDate,
           maxStudents: course.maxStudents,
           createdById: user.id,
+          students: {
+            connect: {
+              id: trainee.id,
+            },
+          },
           tags: {
             connect: course.tags.map((tag) => ({ name: tag })),
           },
