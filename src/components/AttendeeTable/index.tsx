@@ -32,7 +32,10 @@ export default function AttendeeTable({ attendees, noAttendeesText }: Props) {
     );
   }
 
-  const handleChangePage = (_event: MouseEvent<HTMLButtonElement, MouseEvent> | null, newPage: number) => {
+  const handleChangePage = (
+    _event: MouseEvent<HTMLButtonElement, MouseEvent> | null,
+    newPage: number
+  ) => {
     setPage(newPage);
   };
 
@@ -51,10 +54,18 @@ export default function AttendeeTable({ attendees, noAttendeesText }: Props) {
 
   return (
     <Paper sx={{ my: 2 }}>
-      <TableContainer data-testid="enrolled-students-table" sx={{backgroundColor: "coverBlue.dark"}}>
-        <Table aria-label="enrolled students table" sx={{"& .MuiTableCell-root, .MuiSvgIcon-root, .MuiButtonBase-root": {
-          color: "white.main",
-    }}}>
+      <TableContainer
+        data-testid="enrolled-students-table"
+        sx={{ backgroundColor: 'coverBlue.dark' }}
+      >
+        <Table
+          aria-label="enrolled students table"
+          sx={{
+            '& .MuiTableCell-root, .MuiSvgIcon-root, .MuiButtonBase-root': {
+              color: 'white.main',
+            },
+          }}
+        >
           <TableHead>
             <TableRow>
               <TableCell>Name</TableCell>
