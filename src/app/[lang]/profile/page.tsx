@@ -69,7 +69,6 @@ export default async function ProfilePage({ searchParams, params }: Props) {
           studentCount: openedCourse?._count.students,
           maxStudentCount: openedCourse?.maxStudents,
         })}
-        description={t('CourseModal.description')}
         editCourseLabel={t('EditButton.editCourse')}
       />
       <ProfileView
