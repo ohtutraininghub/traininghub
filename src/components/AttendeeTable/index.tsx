@@ -32,7 +32,7 @@ export default function AttendeeTable({ attendees, noAttendeesText }: Props) {
     );
   }
 
-  const handleChangePage = (event: unknown, newPage: number) => {
+  const handleChangePage = (_event: MouseEvent<HTMLButtonElement, MouseEvent> | null, newPage: number) => {
     setPage(newPage);
   };
 
