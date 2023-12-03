@@ -1,4 +1,10 @@
 {
+  "AttendeeList": {
+    "header": {
+      "text": "Attendees"
+    },
+    "noAttendeesText": "No enrolled students"
+  },
   "CalendarPrompt": {
     "addPrompt": "Do you want to add this course to your Google calendar?",
     "button": {
@@ -10,12 +16,9 @@
     }
   },
   "CancelEnroll": {
-    "AttendeeList": {
-      "header": {
-        "text": "Attendees"
-      },
-      "noAttendeesText": "No enrolled students"
-    }
+    "cancelEnrollment": "Cancel enrollment",
+    "confirmCancellation": "Are you sure you want to unenroll from the course?",
+    "pastCancellationDate": "The course starts soon. Contact the trainer if you want to cancel your enrollment."
   },
   "ConfirmCard": {
     "cancel": "Cancel",
@@ -45,7 +48,6 @@
   "CourseListView": {
     "enrolls": "Enrolls: {{studentCount}} / {{maxStudentCount}}"
   },
-
   "CourseModal": {
     "button": {
       "viewCourseDetailsLabel": "Details",
@@ -142,8 +144,5 @@
   "UnauthorizedError": {
     "backToHome": "Back to home",
     "unauthorizedMessage": "You are not authorized to view this page"
-  },
-  "cancelEnrollment": "Cancel enrollment",
-  "confirmCancellation": "Are you sure you want to unenroll from the course?",
-  "pastCancellationDate": "The course starts soon. Contact the trainer if you want to cancel your enrollment."
+  }
 }
