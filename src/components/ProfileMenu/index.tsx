@@ -70,7 +70,7 @@ export default function ProfileMenu({ lang }: ProfileMenuProps) {
           <IconButton
             data-testid="avatarIconButton"
             size="small"
-            sx={{ ml: 2, paddingTop: '15px' }}
+            sx={{ ml: 2, padding: '0.5rem', borderRadius: 0 }}
             aria-controls={open ? 'account-menu' : undefined}
             aria-haspopup="true"
             aria-expanded={open ? 'true' : undefined}
@@ -93,8 +93,8 @@ export default function ProfileMenu({ lang }: ProfileMenuProps) {
               alt={session.user.name}
               imgProps={{ referrerPolicy: 'no-referrer' }}
               style={{
-                width: '50px',
-                height: '50px',
+                width: '45px',
+                height: '45px',
                 boxShadow: '0px 2px 3px rgba(0, 0, 0, 0.2)',
                 border: '2px solid white',
                 marginRight: '20px',
