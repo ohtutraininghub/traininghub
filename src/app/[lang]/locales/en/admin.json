@@ -9,20 +9,17 @@
       "cancel": "Cancel changes",
       "confirm": "Confirm changes"
     },
+    "failedToUpdateUser": "Failed to update user",
+    "filterHideLabel": "Hide filter row",
+    "filterToggleLabel": "Show filter row",
     "infoText": "Changes in user roles are applied when user signs in again",
     "label": "Users",
-    "filterToggleLabel": "Show filter row",
-    "filterHideLabel": "Hide filter row",
+    "searchTooltip": "Filter table with {{headerValue}}",
     "tableHeaders": {
       "email": "Email",
       "emailVerified": "Email Verified",
       "name": "Name",
       "role": "Role"
-    },
-    "searchTooltip": "Filter table with {{headerValue}}",
-    "confirmCard": {
-      "confirm": "Confirm changes",
-      "cancel": "Cancel changes"
     }
   }
 }
