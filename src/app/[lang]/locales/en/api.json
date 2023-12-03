@@ -5,7 +5,8 @@
   "Common": {
     "courseNotFound": "Course by given id was not found!",
     "forbidden": "Forbidden",
-    "notEnrolledError": "You have not enrolled to this course"
+    "notEnrolledError": "You have not enrolled to this course",
+    "unprocessableContent": "Unprocessable content"
   },
   "Courses": {
     "addedToCalendar": "Added course to calendar!",

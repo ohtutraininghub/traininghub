@@ -51,7 +51,7 @@ export async function POST(request: NextRequest) {
       statusCode: StatusCodeType.CREATED,
     });
   } catch (error) {
-    return handleCommonErrors(error);
+    return await handleCommonErrors(error);
   }
 }
 
@@ -97,6 +97,6 @@ export async function PUT(request: NextRequest) {
       statusCode: StatusCodeType.OK,
     });
   } catch (error) {
-    return handleCommonErrors(error);
+    return await handleCommonErrors(error);
   }
 }

@@ -34,6 +34,6 @@ export async function PUT(request: NextRequest) {
       statusCode: StatusCodeType.OK,
     });
   } catch (error: unknown) {
-    return handleCommonErrors(error);
+    return await handleCommonErrors(error);
   }
 }

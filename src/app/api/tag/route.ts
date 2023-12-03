@@ -42,6 +42,6 @@ export async function POST(request: NextRequest) {
         statusCode: StatusCodeType.UNPROCESSABLE_CONTENT,
       });
     }
-    return handleCommonErrors(error);
+    return await handleCommonErrors(error);
   }
 }

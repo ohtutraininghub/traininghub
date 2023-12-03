@@ -44,6 +44,7 @@ export function getOptions(
     resources: {
       en: {
         zod,
+        api,
       },
     },
   };

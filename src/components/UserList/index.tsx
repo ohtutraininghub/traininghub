@@ -140,7 +140,7 @@ export default function UserList({ lang, users }: Props) {
         disableAutoHide: true,
       });
     } catch (error) {
-      return handleCommonErrors(error);
+      return await handleCommonErrors(error);
     }
   }
 
