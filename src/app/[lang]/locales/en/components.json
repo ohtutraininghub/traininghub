@@ -10,130 +10,141 @@
     }
   },
   "CancelEnroll": {
+    "AttendeeList": {
+      "header": {
+        "text": "Attendees"
+      },
+      "noAttendeesText": "No enrolled students"
+    },
+
+    "ConfirmCard": {
+      "cancel": "Cancel",
+      "confirm": "Confirm"
+    },
+    "CourseCard": {
+      "enrolls": "Enrolls: {{studentCount}} / {{maxStudentCount}}"
+    },
+    "CourseFilter": {
+      "button": {
+        "clearSearch": "Clear Search"
+      },
+      "label": {
+        "courseName": "Search by name",
+        "endDate": "End date",
+        "noMatches": "No matches found",
+        "startDate": "Start date",
+        "tag": "Tag"
+      }
+    },
+    "CourseList": {
+      "courses": "Courses",
+      "gridControlLabel": "Grid",
+      "listControlLabel": "List",
+      "noCoursesToShow": "No courses found"
+    },
+    "CourseListView": {
+      "enrolls": "Enrolls: {{studentCount}} / {{maxStudentCount}}"
+    },
+
+    "CourseModal": {
+      "button": {
+        "viewCourseDetailsLabel": "Details",
+        "viewEnrolledStudentsLabel": "Students"
+      },
+      "enrollmentDeadlineHeader": "Note: Enrollment deadline ",
+      "enrolls": "Enrolls: {{studentCount}} / {{maxStudentCount}}"
+    },
+    "CourseModalCloseButton": {
+      "close": "Close"
+    },
+    "EditButton": {
+      "editCourse": "Edit course"
+    },
+    "EnrollButton": {
+      "confirmEnroll": "Confirm enroll?",
+      "enroll": "Enroll"
+    },
+    "EnrollHolder": {
+      "confirmMessage": "You have enrolled for this course!",
+      "pastEnrollmentDeadline": "Enrollment for this course has ended"
+    },
+    "NewCourseButton": {
+      "actions": "Actions",
+      "newCourse": "Add New Course"
+    },
+    "NewTagButton": {
+      "newTag": "Add New Tag"
+    },
+    "ProfileMenu": {
+      "confirmSignOut": "Are you sure you want to sign out?",
+      "home": "Home",
+      "menuTooltip": "User profile",
+      "profileTitle": "Profile",
+      "signOut": "Sign out",
+      "viewProfile": "View profile"
+    },
+    "SearchMenu": {
+      "button": {
+        "clearSearch": "Clear Search",
+        "openSearchDrawer": "Search"
+      },
+      "filterInUse": "Showing filtered courses",
+      "menuTitle": "Search for courses",
+      "tooltip": {
+        "collapseDrawer": "Close menu"
+      }
+    },
+    "SignOutButton": {
+      "signOut": "Sign out"
+    },
+    "TagForm": {
+      "label": "New tag",
+      "submit": "Submit"
+    },
+    "TagList": {
+      "noTagsAdded": "No tags added"
+    },
+    "TextEditor": {
+      "Dropdown": {
+        "header1": "Header 1",
+        "header2": "Header 2",
+        "header3": "Header 3",
+        "paragraph": "Text"
+      },
+      "Tooltip": {
+        "alignCenter": "Center",
+        "alignJustify": "Justify",
+        "alignLeft": "Align left",
+        "alignRight": "Align right",
+        "bold": "Bold (CTRL + B",
+        "bulletList": "Bullet list",
+        "clearFormat": "Clear formatting",
+        "code": "Code (CTRL + E)",
+        "image": "Add image from URL",
+        "italic": "Italic (CTRL + I)",
+        "link": "Add link",
+        "orderedList": "Ordered list",
+        "redo": "Redo (CTRL + Y)",
+        "strike": "Strikethrough",
+        "underline": "Underline (CTRL + U)",
+        "undo": "Undo (CTRL + Z)"
+      },
+      "linkPrompt": "Please enter the link as such: https://www.example.com",
+      "prompt": {
+        "cancel": "Cancel",
+        "confirm": "OK",
+        "displayTextLabel": "Display Text",
+        "mainImageLabel": "Insert image",
+        "mainLinkLabel": "Insert link",
+        "urlLabel": "URL"
+      }
+    },
+    "UnauthorizedError": {
+      "backToHome": "Back to home",
+      "unauthorizedMessage": "You are not authorized to view this page"
+    },
     "cancelEnrollment": "Cancel enrollment",
     "confirmCancellation": "Are you sure you want to unenroll from the course?",
     "pastCancellationDate": "The course starts soon. Contact the trainer if you want to cancel your enrollment."
-  },
-  "ConfirmCard": {
-    "cancel": "Cancel",
-    "confirm": "Confirm"
-  },
-  "CourseCard": {
-    "enrolls": "Enrolls: {{studentCount}} / {{maxStudentCount}}"
-  },
-  "CourseFilter": {
-    "button": {
-      "clearSearch": "Clear Search"
-    },
-    "label": {
-      "courseName": "Search by name",
-      "endDate": "End date",
-      "noMatches": "No matches found",
-      "startDate": "Start date",
-      "tag": "Tag"
-    }
-  },
-  "CourseList": {
-    "courses": "Courses",
-    "gridControlLabel": "Grid",
-    "listControlLabel": "List",
-    "noCoursesToShow": "No courses found"
-  },
-  "CourseListView": {
-    "enrolls": "Enrolls: {{studentCount}} / {{maxStudentCount}}"
-  },
-  "CourseModal": {
-    "description": "Description",
-    "enrollmentDeadlineHeader": "Note: Enrollment deadline ",
-    "enrolls": "Enrolls: {{studentCount}} / {{maxStudentCount}}"
-  },
-  "CourseModalCloseButton": {
-    "close": "Close"
-  },
-  "EditButton": {
-    "editCourse": "Edit course"
-  },
-  "EnrollButton": {
-    "confirmEnroll": "Confirm enroll?",
-    "enroll": "Enroll"
-  },
-  "EnrollHolder": {
-    "confirmMessage": "You have enrolled for this course!",
-    "pastEnrollmentDeadline": "Enrollment for this course has ended"
-  },
-  "NewCourseButton": {
-    "actions": "Actions",
-    "newCourse": "Add New Course"
-  },
-  "NewTagButton": {
-    "newTag": "Add New Tag"
-  },
-  "ProfileMenu": {
-    "confirmSignOut": "Are you sure you want to sign out?",
-    "home": "Home",
-    "menuTooltip": "User profile",
-    "profileTitle": "Profile",
-    "signOut": "Sign out",
-    "viewProfile": "View profile"
-  },
-  "SearchMenu": {
-    "button": {
-      "clearSearch": "Clear Search",
-      "openSearchDrawer": "Search"
-    },
-    "filterInUse": "Showing filtered courses",
-    "menuTitle": "Search for courses",
-    "tooltip": {
-      "collapseDrawer": "Close menu"
-    }
-  },
-  "SignOutButton": {
-    "signOut": "Sign out"
-  },
-  "TagForm": {
-    "label": "New tag",
-    "submit": "Submit"
-  },
-  "TagList": {
-    "noTagsAdded": "No tags added"
-  },
-  "TextEditor": {
-    "Dropdown": {
-      "header1": "Header 1",
-      "header2": "Header 2",
-      "header3": "Header 3",
-      "paragraph": "Text"
-    },
-    "Tooltip": {
-      "alignCenter": "Center",
-      "alignJustify": "Justify",
-      "alignLeft": "Align left",
-      "alignRight": "Align right",
-      "bold": "Bold (CTRL + B",
-      "bulletList": "Bullet list",
-      "clearFormat": "Clear formatting",
-      "code": "Code (CTRL + E)",
-      "image": "Add image from URL",
-      "italic": "Italic (CTRL + I)",
-      "link": "Add link",
-      "orderedList": "Ordered list",
-      "redo": "Redo (CTRL + Y)",
-      "strike": "Strikethrough",
-      "underline": "Underline (CTRL + U)",
-      "undo": "Undo (CTRL + Z)"
-    },
-    "linkPrompt": "Please enter the link as such: https://www.example.com",
-    "prompt": {
-      "cancel": "Cancel",
-      "confirm": "OK",
-      "displayTextLabel": "Display Text",
-      "mainImageLabel": "Insert image",
-      "mainLinkLabel": "Insert link",
-      "urlLabel": "URL"
-    }
-  },
-  "UnauthorizedError": {
-    "backToHome": "Back to home",
-    "unauthorizedMessage": "You are not authorized to view this page"
   }
 }
