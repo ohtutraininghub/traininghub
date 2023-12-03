@@ -1,0 +1,34 @@
+# To get started with Dependabot version updates, you'll need to specify which
+# package ecosystems to update and where the package manifests are located.
+# Please see the documentation for all configuration options:
+# https://docs.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
+
+# Dependabot raises a maximum of five pull requests to start bringing dependencies up to the latest version.
+# If you merge some of these first pull requests before the next scheduled update, remaining pull requests will be opened on the next update, up to that maximum.
+
+# Directories are specified relative to the root of the repository except for github-actions which is by default /.github/workflows.
+
+version: 2
+updates:
+  - package-ecosystem: 'npm'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+    commit-message:
+      prefix: 'Npm package update '
+
+  - package-ecosystem: 'github-actions'
+    directory: '/'
+    schedule:
+      interval: 'monthly'
+    commit-message:
+      prefix: 'Github actions update '
+      include: 'scope'
+
+  - package-ecosystem: 'docker'
+    directory: '/'
+    schedule:
+      interval: 'monthly'
+    commit-message:
+      prefix: 'Docker update '
+      include: 'scope'
