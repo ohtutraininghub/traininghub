@@ -1,4 +1,10 @@
 {
+  "AttendeeList": {
+    "header": {
+      "text": "Attendees"
+    },
+    "noAttendeesText": "No enrolled students"
+  },
   "NewCourseButton": {
     "actions": "Actions",
     "newCourse": "Add New Course"
@@ -10,8 +16,11 @@
     "signOut": "Sign out"
   },
   "CourseModal": {
+    "button": {
+      "viewCourseDetailsLabel": "Details",
+      "viewEnrolledStudentsLabel": "Students"
+    },
     "enrollmentDeadlineHeader": "Note: Enrollment deadline ",
-    "description": "Description",
     "enrolls": "Enrolls: {{studentCount}} / {{maxStudentCount}}"
   },
   "CourseModalCloseButton": {
