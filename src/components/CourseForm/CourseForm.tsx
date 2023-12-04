@@ -104,11 +104,15 @@ export default function CourseForm({
           marginBottom={1}
         >
           {!isEditMode ? 'Add New Course' : 'Edit Course Details'}
-          {isEditMode ? (
-            <StyledTooltip lang={lang} title={t('Tooltip.editCourse')} />
-          ) : (
-            <StyledTooltip lang={lang} title={t('Tooltip.createCourse')} />
-          )}
+          <StyledTooltip
+            lang={lang}
+            data-testid={
+              isEditMode ? 'tooltipCreateCourse' : 'tooltipEditCourse'
+            }
+            title={
+              isEditMode ? t('Tooltip.createCourse') : t('Tooltip.editCourse')
+            }
+          />
         </Typography>
         <form
           id="courseForm"
@@ -132,7 +136,11 @@ export default function CourseForm({
 
           <InputLabel htmlFor="courseFormDescription">
             {t('CourseForm.description')}
-            <StyledTooltip lang={lang} title={t('Tooltip.courseDescription')} />
+            <StyledTooltip
+              testid="tooltipCourseDescription"
+              lang={lang}
+              title={t('Tooltip.courseDescription')}
+            />
           </InputLabel>
           <Controller
             data-testid="courseFormDescription"
@@ -154,7 +162,11 @@ export default function CourseForm({
                 <>
                   <InputLabel htmlFor="tagSelection">
                     {t('CourseForm.tags')}
-                    <StyledTooltip lang={lang} title={t('Tooltip.tags')} />
+                    <StyledTooltip
+                      data-testid="tooltipTags"
+                      lang={lang}
+                      title={t('Tooltip.tags')}
+                    />
                   </InputLabel>
                   <Select
                     {...field}
@@ -207,7 +219,11 @@ export default function CourseForm({
           />
           <InputLabel htmlFor="courseFormStartDate">
             {t('CourseForm.startDate')}
-            <StyledTooltip lang={lang} title={t('Tooltip.startDate')} />
+            <StyledTooltip
+              data-testid="tooltipStartDate"
+              lang={lang}
+              title={t('Tooltip.startDate')}
+            />
           </InputLabel>
           <Input
             {...register('startDate')}
@@ -225,7 +241,11 @@ export default function CourseForm({
           <FormFieldError error={errors.startDate} />
           <InputLabel htmlFor="courseFormEndDate">
             {t('CourseForm.endDate')}
-            <StyledTooltip lang={lang} title={t('Tooltip.endDate')} />
+            <StyledTooltip
+              data-testid="tooltipEndDate"
+              lang={lang}
+              title={t('Tooltip.endDate')}
+            />
           </InputLabel>
           <Input
             {...register('endDate')}
@@ -244,7 +264,11 @@ export default function CourseForm({
 
           <InputLabel htmlFor="courseFormLastEnrollDate">
             {t('CourseForm.lastEnrollDate')}
-            <StyledTooltip lang={lang} title={t('Tooltip.lastEnrollDate')} />
+            <StyledTooltip
+              data-testid="tooltipLastEnrollDate"
+              lang={lang}
+              title={t('Tooltip.lastEnrollDate')}
+            />
           </InputLabel>
           <Input
             {...register('lastEnrollDate')}
@@ -265,7 +289,11 @@ export default function CourseForm({
 
           <InputLabel htmlFor="courseFormLastCancelDate">
             {t('CourseForm.lastCancelDate')}
-            <StyledTooltip lang={lang} title={t('Tooltip.lastCancelDate')} />
+            <StyledTooltip
+              data-testid="tooltipLastCancelDate"
+              lang={lang}
+              title={t('Tooltip.lastCancelDate')}
+            />
           </InputLabel>
           <Input
             {...register('lastCancelDate')}
@@ -286,7 +314,11 @@ export default function CourseForm({
 
           <InputLabel htmlFor="courseFormMaxStudents">
             {t('CourseForm.maxStudents')}
-            <StyledTooltip lang={lang} title={t('Tooltip.maxStudents')} />
+            <StyledTooltip
+              data-testid="maxStudents"
+              lang={lang}
+              title={t('Tooltip.maxStudents')}
+            />
           </InputLabel>
           <Input
             {...register('maxStudents', {

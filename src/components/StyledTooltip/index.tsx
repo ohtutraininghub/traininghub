@@ -13,12 +13,14 @@ interface StyledTooltipProps extends DictProps {
   title: string;
   arrow?: boolean;
   placement?: TooltipProps['placement'];
+  testid?: string;
 }
 
 export default function StyledTooltip({
   title,
   arrow = true,
   placement = 'bottom-start',
+  testid,
   lang,
 }: StyledTooltipProps): JSX.Element {
   const theme = useTheme();
@@ -34,6 +36,7 @@ export default function StyledTooltip({
             flexDirection: 'column',
             alignItems: 'flex-start',
           }}
+          data-testid="closeTooltip"
         >
           <LightbulbIcon
             fontSize="small"
@@ -83,6 +86,7 @@ export default function StyledTooltip({
         }}
       >
         <InfoOutlinedIcon
+          data-testid={testid}
           fontSize="small"
           style={{ marginLeft: '5px', marginRight: '5px', marginBottom: '2px' }}
         />
