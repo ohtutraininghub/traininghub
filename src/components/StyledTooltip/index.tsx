@@ -14,6 +14,7 @@ export default function StyledTooltip({
   title,
 }: StyledTooltipProps): JSX.Element {
   const theme = useTheme();
+  const [show, setShow] = React.useState(false);
 
   return (
     <Tooltip
@@ -29,7 +30,12 @@ export default function StyledTooltip({
           <div
             style={{ display: 'flex', marginTop: '8px', marginLeft: 'auto' }}
           >
-            <Button variant="text" color="primary" size="small">
+            <Button
+              variant="text"
+              color="primary"
+              size="small"
+              onClick={() => setShow(false)}
+            >
               Got it
             </Button>
           </div>
@@ -42,13 +48,16 @@ export default function StyledTooltip({
         tooltip: {
           sx: {
             bgcolor: alpha(theme.palette.coverBlue.light, 0.92),
-            boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)',
+            boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.6)',
             '& .MuiTooltip-arrow': {
               color: alpha(theme.palette.coverBlue.light, 0.92),
             },
           },
         },
       }}
+      open={show}
+      onOpen={() => setShow(true)}
+      onClose={() => setShow(false)}
     >
       <div
         style={{
