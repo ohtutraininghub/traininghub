@@ -104,6 +104,17 @@ export default function CourseForm({
           marginBottom={1}
         >
           {!isEditMode ? 'Add New Course' : 'Edit Course Details'}
+          {isEditMode ? (
+            <StyledTooltip
+              lang={lang}
+              title="This form allows you to modify the course details. After making the desired updates, remember to save the changes by clicking the 'Update' button at the bottom. Your modifications will be published instantly."
+            />
+          ) : (
+            <StyledTooltip
+              lang={lang}
+              title="This form is used to create a new course. Fill in the necessary details, and once you're done, click the 'Submit' button at the bottom to publish the course. Some fields are optional. See the tooltips for details."
+            />
+          )}
         </Typography>
         <form
           id="courseForm"
@@ -128,9 +139,8 @@ export default function CourseForm({
           <InputLabel htmlFor="courseFormDescription">
             {t('CourseForm.description')}
             <StyledTooltip
-              placement="bottom"
               lang={lang}
-              title="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur volutpat ex sapien, ac interdum metus ornare eu. Ut imperdiet nisl id enim tempus, vitae molestie ante condimentum. Suspendisse maximus urna lectus. Donec ligula justo, feugiat in dui ac, accumsan mattis ex."
+              title="The course description is visible to all users upon opening the course details page. Utilize the online text editor for formatting. Hover over buttons for tooltips on each functionality."
             />
           </InputLabel>
           <Controller
@@ -153,6 +163,10 @@ export default function CourseForm({
                 <>
                   <InputLabel htmlFor="tagSelection">
                     {t('CourseForm.tags')}
+                    <StyledTooltip
+                      lang={lang}
+                      title="Tags help organize courses. Choose relevant tags to improve course categorization, making it easier for users to discover interesting content quickly. Feel free to select any number of tags from the dropdown menu."
+                    />
                   </InputLabel>
                   <Select
                     {...field}
@@ -205,6 +219,10 @@ export default function CourseForm({
           />
           <InputLabel htmlFor="courseFormStartDate">
             {t('CourseForm.startDate')}
+            <StyledTooltip
+              lang={lang}
+              title="Start date indicates when the course begins. It's a required field. The date cannot be in the past."
+            />
           </InputLabel>
           <Input
             {...register('startDate')}
@@ -222,6 +240,10 @@ export default function CourseForm({
           <FormFieldError error={errors.startDate} />
           <InputLabel htmlFor="courseFormEndDate">
             {t('CourseForm.endDate')}
+            <StyledTooltip
+              lang={lang}
+              title="The end date signifies the completion of the course. This is a mandatory field. Courses are displayed in the course listings for all users until their end date."
+            />
           </InputLabel>
           <Input
             {...register('endDate')}
@@ -240,6 +262,10 @@ export default function CourseForm({
 
           <InputLabel htmlFor="courseFormLastEnrollDate">
             {t('CourseForm.lastEnrollDate')}
+            <StyledTooltip
+              lang={lang}
+              title="Last date to enroll is an optional field. If specified, it indicates the final date for students to enroll in the course."
+            />
           </InputLabel>
           <Input
             {...register('lastEnrollDate')}
@@ -260,6 +286,10 @@ export default function CourseForm({
 
           <InputLabel htmlFor="courseFormLastCancelDate">
             {t('CourseForm.lastCancelDate')}
+            <StyledTooltip
+              lang={lang}
+              title="Last date to enroll is an optional field. If specified, it indicates the final date for students to enroll in the course."
+            />
           </InputLabel>
           <Input
             {...register('lastCancelDate')}
@@ -280,6 +310,10 @@ export default function CourseForm({
 
           <InputLabel htmlFor="courseFormMaxStudents">
             {t('CourseForm.maxStudents')}
+            <StyledTooltip
+              lang={lang}
+              title="The maximum number of students allowed in the course. This is a mandatory field. Once this maximum capacity is reached, enrollment will be closed. You have the flexibility to edit this field later to increase the course capacity."
+            />
           </InputLabel>
           <Input
             {...register('maxStudents', {

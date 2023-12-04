@@ -7,6 +7,7 @@ import { alpha } from '@mui/system';
 import { useTheme } from '@mui/material/styles';
 import { useTranslation } from '@i18n/client';
 import { DictProps } from '@i18n/index';
+import LightbulbIcon from '@mui/icons-material/Lightbulb';
 
 interface StyledTooltipProps extends DictProps {
   title: string;
@@ -34,7 +35,13 @@ export default function StyledTooltip({
             alignItems: 'flex-start',
           }}
         >
-          <span>{title}</span>
+          <LightbulbIcon
+            fontSize="small"
+            style={{
+              marginTop: '0.5em',
+            }}
+          />
+          <span style={{ marginTop: '1em' }}>{title}</span>
           <div
             style={{ display: 'flex', marginTop: '8px', marginLeft: 'auto' }}
           >
