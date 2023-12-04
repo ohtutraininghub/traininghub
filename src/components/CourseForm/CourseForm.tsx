@@ -105,15 +105,9 @@ export default function CourseForm({
         >
           {!isEditMode ? 'Add New Course' : 'Edit Course Details'}
           {isEditMode ? (
-            <StyledTooltip
-              lang={lang}
-              title="This form allows you to modify the course details. After making the desired updates, remember to save the changes by clicking the 'Update' button at the bottom. Your modifications will be published instantly."
-            />
+            <StyledTooltip lang={lang} title={t('Tooltip.editCourse')} />
           ) : (
-            <StyledTooltip
-              lang={lang}
-              title="This form is used to create a new course. Fill in the necessary details, and once you're done, click the 'Submit' button at the bottom to publish the course. Some fields are optional. See the tooltips for details."
-            />
+            <StyledTooltip lang={lang} title={t('Tooltip.createCourse')} />
           )}
         </Typography>
         <form
@@ -138,10 +132,7 @@ export default function CourseForm({
 
           <InputLabel htmlFor="courseFormDescription">
             {t('CourseForm.description')}
-            <StyledTooltip
-              lang={lang}
-              title="The course description is visible to all users upon opening the course details page. Utilize the online text editor for formatting. Hover over buttons for tooltips on each functionality."
-            />
+            <StyledTooltip lang={lang} title={t('Tooltip.courseDescription')} />
           </InputLabel>
           <Controller
             data-testid="courseFormDescription"
@@ -163,10 +154,7 @@ export default function CourseForm({
                 <>
                   <InputLabel htmlFor="tagSelection">
                     {t('CourseForm.tags')}
-                    <StyledTooltip
-                      lang={lang}
-                      title="Tags help organize courses. Choose relevant tags to improve course categorization, making it easier for users to discover interesting content quickly. Feel free to select any number of tags from the dropdown menu."
-                    />
+                    <StyledTooltip lang={lang} title={t('Tooltip.tags')} />
                   </InputLabel>
                   <Select
                     {...field}
@@ -219,10 +207,7 @@ export default function CourseForm({
           />
           <InputLabel htmlFor="courseFormStartDate">
             {t('CourseForm.startDate')}
-            <StyledTooltip
-              lang={lang}
-              title="Start date indicates when the course begins. It's a required field. The date cannot be in the past."
-            />
+            <StyledTooltip lang={lang} title={t('Tooltip.startDate')} />
           </InputLabel>
           <Input
             {...register('startDate')}
@@ -240,10 +225,7 @@ export default function CourseForm({
           <FormFieldError error={errors.startDate} />
           <InputLabel htmlFor="courseFormEndDate">
             {t('CourseForm.endDate')}
-            <StyledTooltip
-              lang={lang}
-              title="The end date signifies the completion of the course. This is a mandatory field. Courses are displayed in the course listings for all users until their end date."
-            />
+            <StyledTooltip lang={lang} title={t('Tooltip.endDate')} />
           </InputLabel>
           <Input
             {...register('endDate')}
@@ -262,10 +244,7 @@ export default function CourseForm({
 
           <InputLabel htmlFor="courseFormLastEnrollDate">
             {t('CourseForm.lastEnrollDate')}
-            <StyledTooltip
-              lang={lang}
-              title="Last date to enroll is an optional field. If specified, it indicates the final date for students to enroll in the course."
-            />
+            <StyledTooltip lang={lang} title={t('Tooltip.lastEnrollDate')} />
           </InputLabel>
           <Input
             {...register('lastEnrollDate')}
@@ -286,10 +265,7 @@ export default function CourseForm({
 
           <InputLabel htmlFor="courseFormLastCancelDate">
             {t('CourseForm.lastCancelDate')}
-            <StyledTooltip
-              lang={lang}
-              title="Last date to enroll is an optional field. If specified, it indicates the final date for students to enroll in the course."
-            />
+            <StyledTooltip lang={lang} title={t('Tooltip.lastCancelDate')} />
           </InputLabel>
           <Input
             {...register('lastCancelDate')}
@@ -310,10 +286,7 @@ export default function CourseForm({
 
           <InputLabel htmlFor="courseFormMaxStudents">
             {t('CourseForm.maxStudents')}
-            <StyledTooltip
-              lang={lang}
-              title="The maximum number of students allowed in the course. This is a mandatory field. Once this maximum capacity is reached, enrollment will be closed. You have the flexibility to edit this field later to increase the course capacity."
-            />
+            <StyledTooltip lang={lang} title={t('Tooltip.maxStudents')} />
           </InputLabel>
           <Input
             {...register('maxStudents', {
