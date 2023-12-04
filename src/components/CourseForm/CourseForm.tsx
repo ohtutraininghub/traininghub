@@ -30,6 +30,7 @@ import { CourseWithTags } from '@/lib/prisma/courses';
 import { useTranslation } from '@i18n/client';
 import { DictProps } from '@i18n/index';
 import RichTextEditor from '@/components/TextEditor';
+import StyledTooltip from '@/components/StyledTooltip';
 
 interface CourseFormProps extends DictProps {
   tags: Tag[];
@@ -126,6 +127,7 @@ export default function CourseForm({
 
           <InputLabel htmlFor="courseFormDescription">
             {t('CourseForm.description')}
+            <StyledTooltip title="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur volutpat ex sapien, ac interdum metus ornare eu. Ut imperdiet nisl id enim tempus, vitae molestie ante condimentum. Suspendisse maximus urna lectus. Donec ligula justo, feugiat in dui ac, accumsan mattis ex." />
           </InputLabel>
           <Controller
             data-testid="courseFormDescription"
