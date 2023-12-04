@@ -5,8 +5,10 @@ import { Button, Grow, Tooltip, TooltipProps } from '@mui/material';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { alpha } from '@mui/system';
 import { useTheme } from '@mui/material/styles';
+import { useTranslation } from '@i18n/client';
+import { DictProps } from '@i18n/index';
 
-interface StyledTooltipProps {
+interface StyledTooltipProps extends DictProps {
   title: string;
   arrow?: boolean;
   placement?: TooltipProps['placement'];
@@ -16,9 +18,11 @@ export default function StyledTooltip({
   title,
   arrow = true,
   placement = 'bottom-start',
+  lang,
 }: StyledTooltipProps): JSX.Element {
   const theme = useTheme();
   const [show, setShow] = React.useState(false);
+  const { t } = useTranslation(lang, 'tooltips');
 
   return (
     <Tooltip
@@ -40,7 +44,7 @@ export default function StyledTooltip({
               size="small"
               onClick={() => setShow(false)}
             >
-              Got it
+              {t('Common.closeTooltip')}
             </Button>
           </div>
         </div>
@@ -71,7 +75,10 @@ export default function StyledTooltip({
           verticalAlign: 'middle',
         }}
       >
-        <InfoOutlinedIcon fontSize="small" style={{ marginLeft: 5 }} />
+        <InfoOutlinedIcon
+          fontSize="small"
+          style={{ marginLeft: '5px', marginRight: '5px', marginBottom: '2px' }}
+        />
       </div>
     </Tooltip>
   );

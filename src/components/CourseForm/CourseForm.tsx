@@ -127,7 +127,11 @@ export default function CourseForm({
 
           <InputLabel htmlFor="courseFormDescription">
             {t('CourseForm.description')}
-            <StyledTooltip title="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur volutpat ex sapien, ac interdum metus ornare eu. Ut imperdiet nisl id enim tempus, vitae molestie ante condimentum. Suspendisse maximus urna lectus. Donec ligula justo, feugiat in dui ac, accumsan mattis ex." />
+            <StyledTooltip
+              placement="bottom"
+              lang={lang}
+              title="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur volutpat ex sapien, ac interdum metus ornare eu. Ut imperdiet nisl id enim tempus, vitae molestie ante condimentum. Suspendisse maximus urna lectus. Donec ligula justo, feugiat in dui ac, accumsan mattis ex."
+            />
           </InputLabel>
           <Controller
             data-testid="courseFormDescription"
