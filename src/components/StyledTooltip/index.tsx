@@ -1,17 +1,21 @@
 'use client';
 
 import React from 'react';
-import { Button, Grow, Tooltip } from '@mui/material';
+import { Button, Grow, Tooltip, TooltipProps } from '@mui/material';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { alpha } from '@mui/system';
 import { useTheme } from '@mui/material/styles';
 
 interface StyledTooltipProps {
   title: string;
+  arrow?: boolean;
+  placement?: TooltipProps['placement'];
 }
 
 export default function StyledTooltip({
   title,
+  arrow = true,
+  placement = 'bottom-start',
 }: StyledTooltipProps): JSX.Element {
   const theme = useTheme();
   const [show, setShow] = React.useState(false);
@@ -41,8 +45,8 @@ export default function StyledTooltip({
           </div>
         </div>
       }
-      arrow
-      placement="bottom-start"
+      arrow={arrow}
+      placement={placement}
       TransitionComponent={Grow}
       componentsProps={{
         tooltip: {
