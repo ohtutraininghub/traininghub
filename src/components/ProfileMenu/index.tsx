@@ -70,7 +70,7 @@ export default function ProfileMenu({ lang }: ProfileMenuProps) {
           <IconButton
             data-testid="avatarIconButton"
             size="small"
-            sx={{ ml: 2, padding: '0.5rem', borderRadius: 0 }}
+            sx={{ ml: 2, padding: '0.5rem' }}
             aria-controls={open ? 'account-menu' : undefined}
             aria-haspopup="true"
             aria-expanded={open ? 'true' : undefined}
