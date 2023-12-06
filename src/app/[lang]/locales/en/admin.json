@@ -1,8 +1,4 @@
 {
-  "CreateTag": {
-    "addNewTag": "Add new tag",
-    "tagsLabel": "Tags"
-  },
   "DashboardTitle": "Admin dashboard",
   "EditUsers": {
     "confirmCard": {
@@ -21,5 +17,19 @@
       "name": "Name",
       "role": "Role"
     }
+  },
+  "TagForm": {
+    "button": {
+      "submit": "Submit"
+    },
+    "label": "New tag",
+    "placeholderText": "Tag name"
+  },
+  "TagList": {
+    "confirmTagDeletion": "Are you sure you want to delete the tag \"{{name}}\"?",
+    "noTagsAdded": "No tags added"
+  },
+  "TagsSection": {
+    "header": "Tags"
   }
 }

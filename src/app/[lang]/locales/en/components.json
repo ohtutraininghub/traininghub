@@ -74,9 +74,6 @@
     "actions": "Actions",
     "newCourse": "Add New Course"
   },
-  "NewTagButton": {
-    "newTag": "Add New Tag"
-  },
   "ProfileMenu": {
     "confirmSignOut": "Are you sure you want to sign out?",
     "home": "Home",
@@ -103,13 +100,6 @@
     "button": {
       "closeTooltip": "Got it"
     }
-  },
-  "TagForm": {
-    "label": "New tag",
-    "submit": "Submit"
-  },
-  "TagList": {
-    "noTagsAdded": "No tags added"
   },
   "TextEditor": {
     "Dropdown": {

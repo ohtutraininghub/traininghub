@@ -9,9 +9,8 @@ interface TagListProps extends DictProps {
   tags: TagPrismaType[];
 }
 
-export default async function TagList({ tags }: TagListProps) {
-  const { t } = await translator('components');
-  const confirmDeleteText = 'Are you sure you want to delete the tag ';
+export default async function TagList({ lang, tags }: TagListProps) {
+  const { t } = await translator('admin');
 
   if (tags.length == 0) {
     return (
@@ -37,11 +36,7 @@ export default async function TagList({ tags }: TagListProps) {
             margin: '0 0.5em 1.2em 0',
           }}
         >
-          <TagChip
-            tagId={tag.id}
-            tagName={tag.name}
-            confirmDeleteText={confirmDeleteText}
-          />
+          <TagChip lang={lang} tagId={tag.id} tagName={tag.name} />
         </li>
       ))}
     </ul>

@@ -6,17 +6,23 @@ import { remove } from '@/lib/response/fetchUtil';
 import { useState } from 'react';
 import { useMessage } from '../Providers/MessageProvider';
 import { useRouter } from 'next/navigation';
+import { useTranslation } from '@/lib/i18n/client';
+import { DictProps } from '@/lib/i18n';
 
-interface Props {
+interface Props extends DictProps {
   tagId: string;
   tagName: string;
-  confirmDeleteText: string;
 }
 
-export default function TagChip({ tagId, tagName, confirmDeleteText }: Props) {
+export default function TagChip({ lang, tagId, tagName }: Props) {
+  const { t } = useTranslation(lang, 'admin');
   const router = useRouter();
   const { notify } = useMessage();
   const [backdropOpen, setBackdropOpen] = useState(false);
+
+  const confirmTagDeletionMessage = t('TagList.confirmTagDeletion', {
+    name: tagName,
+  });
 
   const handleDelete = async () => {
     const responseJson = await remove('/api/tag/', {
@@ -43,7 +49,7 @@ export default function TagChip({ tagId, tagName, confirmDeleteText }: Props) {
         lang="en"
         backdropOpen={backdropOpen}
         setBackdropOpen={setBackdropOpen}
-        confirmMessage={`${confirmDeleteText} \'${tagName}?\'`}
+        confirmMessage={confirmTagDeletionMessage}
         handleClick={handleDelete}
       />
     </>
