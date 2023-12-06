@@ -46,7 +46,7 @@ describe('StyledTooltip', () => {
       expect(tooltipContent).toBeInTheDocument();
     });
 
-    const closeButton = getByText('Common.closeTooltip');
+    const closeButton = getByText('StyledTooltip.button.closeTooltip');
     fireEvent.click(closeButton);
 
     await waitFor(() => {
