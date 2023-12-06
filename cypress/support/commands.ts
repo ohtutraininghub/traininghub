@@ -8,29 +8,16 @@ Cypress.Commands.add('login', (email, role) => {
   cy.get('#input-role-for-credentials-provider').type(`${role}{enter}`);
 });
 
-Cypress.Commands.add('setDate', (element, value, day) => {
-  cy.wait(2000);
-  cy.wrap(element).click();
-
-  const selectDate = (day) => cy.contains(day).click();
-
-  switch (value) {
-    case 'currentMonth':
-      selectDate(day);
-      break;
-
-    case 'nextMonth':
-      cy.get('[aria-label="Next month"]').click();
-      selectDate(day);
-      break;
-
-    case 'previousMonth':
-      cy.get('[aria-label="Previous month"]').click();
-      selectDate(day);
-      break;
-  }
-
-  cy.then(() => {
-    cy.contains('OK').click();
+Cypress.Commands.add('formatDate', (value, day) => {
+  const currentDate = new Date();
+  currentDate.setFullYear(currentDate.getFullYear() - day);
+  const formattedDate = currentDate.toLocaleString('en-US', {
+    month: '2-digit',
+    day: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
   });
+  cy.getCy(value).type(`${formattedDate}`);
 });

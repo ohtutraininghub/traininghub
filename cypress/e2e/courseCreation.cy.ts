@@ -24,13 +24,9 @@ describe('Course creation', () => {
     cy.getCy('textSelectorParagraph').click();
     cy.get('.ProseMirror').type(course.description);
 
-    cy.get('[aria-label="Choose date"]').each(($el, index) => {
-      index === 0
-        ? cy.setDate($el, 'currentMonth', 26)
-        : index === 1
-        ? cy.setDate($el, 'nextMonth', 25)
-        : null;
-    });
+    cy.formatDate('courseFormStartDate', -1);
+    cy.formatDate('courseFormEndDate', -2);
+
     cy.getCy('courseFormMaxStudents').clear().type(course.maxStudents);
     cy.getCy('courseFormSubmit').click();
     cy.contains(course.name).click();
@@ -53,13 +49,8 @@ describe('Course creation', () => {
 
     cy.getCy('courseFormName').clear().type(updatedCourse.name);
     cy.get('.ProseMirror').clear().type(updatedCourse.description);
-    cy.get('[aria-label="Choose date"]').each(($el, index) => {
-      index === 0
-        ? cy.setDate($el, 'currentMonth', 27)
-        : index === 1
-        ? cy.setDate($el, 'nextMonth', 20)
-        : null;
-    });
+    cy.formatDate('courseFormStartDate', -2);
+    cy.formatDate('courseFormEndDate', -3);
     cy.getCy('courseFormMaxStudents').clear().type(updatedCourse.maxStudents);
     cy.getCy('courseFormSubmit').click();
 
@@ -90,14 +81,8 @@ describe('Course creation', () => {
   it('should not be possible for end date to be before start date', () => {
     cy.login('trainer@test.com', 'TRAINER');
     cy.visit('/course/create');
-    cy.get('[aria-label="Choose date"]').each(($el, index) => {
-      index === 1
-        ? cy.setDate($el, 'currentMonth', 29)
-        : index === 0
-        ? cy.setDate($el, 'nextMonth', 28)
-        : null;
-    });
-    cy.wait(2000);
+    cy.formatDate('courseFormStartDate', -2);
+    cy.formatDate('courseFormEndDate', -1);
     cy.getCy('courseFormSubmit').click();
     cy.contains('The end date cannot be before the start date');
   });
@@ -105,9 +90,7 @@ describe('Course creation', () => {
   it('should not be possible for start date to be in the past', () => {
     cy.login('trainer@test.com', 'TRAINER');
     cy.visit('/course/create');
-    cy.get('[aria-label="Choose date"]').each(($el, index) => {
-      index === 0 ? cy.setDate($el, 'previousMonth', 27) : null;
-    });
+    cy.formatDate('courseFormStartDate', 1);
     cy.getCy('courseFormSubmit').click();
     cy.contains('Start date cannot be in the past');
   });
@@ -115,13 +98,8 @@ describe('Course creation', () => {
   it('should not be possible for last enroll date to be after the end date', () => {
     cy.login('trainer@test.com', 'TRAINER');
     cy.visit('/course/create');
-    cy.get('[aria-label="Choose date"]').each(($el, index) => {
-      index === 1
-        ? cy.setDate($el, 'currentMonth', 27)
-        : index === 2
-        ? cy.setDate($el, 'nextMonth', 26)
-        : null;
-    });
+    cy.formatDate('courseFormEndDate', -1);
+    cy.formatDate('courseFormLastEnrollDate', -2);
     cy.getCy('courseFormSubmit').click();
     cy.contains(
       'The last date to enroll cannot be after the end date of the course'
@@ -131,13 +109,8 @@ describe('Course creation', () => {
   it('should not be possible for last cancel date to be after the end date', () => {
     cy.login('trainer@test.com', 'TRAINER');
     cy.visit('/course/create');
-    cy.get('[aria-label="Choose date"]').each(($el, index) => {
-      index === 1
-        ? cy.setDate($el, 'currentMonth', 27)
-        : index === 3
-        ? cy.setDate($el, 'nextMonth', 26)
-        : null;
-    });
+    cy.formatDate('courseFormEndDate', -1);
+    cy.formatDate('courseFormLastCancelDate', -2);
     cy.getCy('courseFormSubmit').click();
     cy.contains(
       'The last date to cancel enrollment cannot be after the end date of the course'

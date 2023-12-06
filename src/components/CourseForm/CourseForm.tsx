@@ -80,7 +80,7 @@ export default function CourseForm({
   const [endDate, setEndDate] = useState<Date | null>(null);
   const [lastEnrollDate, setLastEnrollDate] = useState<Date | null | ''>(null);
   const [lastCancelDate, setLastCancelDate] = useState<Date | null | ''>(null);
-  const [timeFormat, setTimeFormat] = useState(false);
+  const [timeFormat, setTimeFormat] = useState(true);
 
   useEffect(() => {}, [
     lastEnrollDate,
