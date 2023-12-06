@@ -7,21 +7,26 @@ import Link from 'next/link';
 import { CourseWithTagsAndStudentCount } from '@/lib/prisma/courses';
 import LocalizedDateTime from '../LocalizedDateTime';
 import { useTheme } from '@mui/material/styles';
-import { Box, Button } from '@mui/material';
+import { Box, Button, useMediaQuery } from '@mui/material';
 import CardHeader from '@mui/material/CardHeader';
 import PeopleIcon from '@mui/icons-material/People';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import { usePathname, useSearchParams } from 'next/navigation';
+import { useTranslation } from '@/lib/i18n/client';
+import { DictProps } from '@/lib/i18n';
+import { ImageContainer } from '../ImageContainer';
 
-interface Props {
+interface Props extends DictProps {
   course: CourseWithTagsAndStudentCount;
   enrolls: string;
 }
 
-const CourseCard = ({ course, enrolls }: Props) => {
+const CourseCard = ({ course, enrolls, lang }: Props) => {
   const theme = useTheme();
   const searchParams = useSearchParams();
   const pathname = usePathname();
+  const { t } = useTranslation(lang, 'components');
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const getURL = () => {
     const params = new URLSearchParams(Array.from(searchParams.entries()));
@@ -52,6 +57,7 @@ const CourseCard = ({ course, enrolls }: Props) => {
         }}
       >
         <CardHeader
+          sx={{ paddingBottom: !course?.image ? '1rem' : 0 }}
           title={
             <Box>
               <CalendarTodayIcon
@@ -81,11 +87,16 @@ const CourseCard = ({ course, enrolls }: Props) => {
             justifyContent: 'space-between',
           }}
         >
-          <Box>
-            <Typography variant="h3" m={2}>
-              {course.name}
-            </Typography>
-          </Box>
+          <Typography variant="h3">{course.name}</Typography>
+
+          {course?.image && (
+            <ImageContainer
+              imageUrl={course.image}
+              width={isMobile ? 80 : 125}
+              height={isMobile ? 80 : 125}
+              altText={t('CourseModal.courseImageAltText')}
+            />
+          )}
           <Box
             sx={{
               alignItems: 'center',

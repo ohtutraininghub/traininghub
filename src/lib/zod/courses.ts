@@ -88,6 +88,7 @@ const courseSchemaBase = z
       .pipe(z.coerce.date().nullable()),
     maxStudents: z.number().min(1, 'Max students is required'),
     tags: z.array(z.string().min(1, 'Tag name cannot be empty')),
+    image: z.union([z.string().url().nullish(), z.literal('')]),
   })
   .strict();
 

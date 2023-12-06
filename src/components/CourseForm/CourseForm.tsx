@@ -50,6 +50,7 @@ export default function CourseForm({
   const { notify } = useMessage();
 
   const {
+    getValues,
     control,
     register,
     formState: { errors, isSubmitting },
@@ -70,7 +71,7 @@ export default function CourseForm({
         : { maxStudents: 10 }),
     },
   });
-
+  console.log(JSON.stringify(getValues(), null, 2));
   const submitForm = async (data: FormType) => {
     const responseJson = isEditMode
       ? await update(`/api/course`, data)
@@ -197,6 +198,20 @@ export default function CourseForm({
               );
             }}
           />
+          <InputLabel htmlFor="courseFormImage">
+            {t('CourseForm.courseImage')}
+          </InputLabel>
+          <Input
+            {...register('image')}
+            id="courseFormImage"
+            color="secondary"
+            error={!!errors.image}
+            type="url"
+            inputProps={{
+              'data-testid': 'courseFormImage',
+            }}
+          />
+          <FormFieldError error={errors.image} />
           <InputLabel htmlFor="courseFormStartDate">
             {t('CourseForm.startDate')}
           </InputLabel>

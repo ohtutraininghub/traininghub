@@ -19,6 +19,7 @@
     "lastEnrollDate": "Last date to enroll (optional)",
     "lastCancelDate": "Last date to cancel enrollment (optional)",
     "maxStudents": "Max students",
+    "courseImage": "Course image url (optional)",
     "submit": "Submit",
     "tags": "Tags"
   },

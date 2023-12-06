@@ -6,6 +6,7 @@ import {
   Grid,
   List,
   ListItem,
+  ListItemIcon,
   ListItemText,
   ToggleButton,
   ToggleButtonGroup,
@@ -26,6 +27,7 @@ import LocalizedDateTime from '../LocalizedDateTime';
 import Link from 'next/link';
 import CourseCard from '@/components/CourseCard';
 import { UserNamesAndIds } from '@/lib/prisma/users';
+import { ImageContainer } from '../ImageContainer';
 
 interface CourseListProps extends DictProps {
   courses: CourseWithTagsAndStudentCount[];
@@ -157,6 +159,7 @@ export default function CourseList({
               {filteredCourses.map((course) => (
                 <Grid key={course.id} item xs={1} sx={{ marginBottom: '50px' }}>
                   <CourseCard
+                    lang={lang}
                     enrolls={t('CourseCard.enrolls', {
                       studentCount: course._count.students,
                       maxStudentCount: course.maxStudents,
@@ -192,8 +195,19 @@ export default function CourseList({
                             backgroundColor: 'rgba(255, 255, 255, 0.1)',
                             borderRight: '15px dashed #ffd100',
                           },
+                          paddingLeft: !!course?.image ? 0 : 'auto',
                         }}
                       >
+                        {course?.image && (
+                          <ListItemIcon>
+                            <ImageContainer
+                              imageUrl={course.image}
+                              width={75}
+                              height={75}
+                              altText={t('CourseModal.courseImageAltText')}
+                            />
+                          </ListItemIcon>
+                        )}
                         <ListItemText
                           primary={course.name}
                           primaryTypographyProps={{

@@ -21,7 +21,8 @@
       "viewEnrolledStudentsLabel": "Students"
     },
     "enrollmentDeadlineHeader": "Note: Enrollment deadline ",
-    "enrolls": "Enrolls: {{studentCount}} / {{maxStudentCount}}"
+    "enrolls": "Enrolls: {{studentCount}} / {{maxStudentCount}}",
+    "courseImageAltText": "Course title image"
   },
   "CourseModalCloseButton": {
     "close": "Close"
