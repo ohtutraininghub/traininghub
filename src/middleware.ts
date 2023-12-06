@@ -1,7 +1,9 @@
 import { getToken } from 'next-auth/jwt';
 import { withAuth } from 'next-auth/middleware';
 import { NextResponse } from 'next/server';
-import { checkForMissingLocale, getLocale } from '@i18n/index';
+import { checkForMissingLocale } from '@i18n/index';
+import { cookies } from 'next/headers';
+import { i18n } from './lib/i18n/i18n-config';
 
 const PUBLIC_FILE = /\.(.*)$/;
 
@@ -24,15 +26,16 @@ export default withAuth(async function middleware(req) {
       PUBLIC_FILE.test(pathname)
     )
   ) {
+    const nextLocale = cookies().get('NEXT_LOCALE');
+    const locale = nextLocale?.value ?? i18n.defaultLocale;
+
     const pathnameIsMissingLocale = checkForMissingLocale(pathname);
 
     // Redirect if there is no locale
     if (pathnameIsMissingLocale) {
-      const locale = getLocale(req);
-
       // e.g. incoming request is /products
       // The new URL is now /en/products
-      return NextResponse.redirect(
+      const response = NextResponse.redirect(
         new URL(
           `/${locale}${pathname.startsWith('/') ? '' : '/'}${pathname}${
             search ? `${search}` : ''
@@ -40,6 +43,26 @@ export default withAuth(async function middleware(req) {
           req.url
         )
       );
+      response.cookies.set('NEXT_LOCALE', locale);
+      return response;
+    }
+
+    const pathnameHasWrongLocale = !pathname.startsWith(`/${locale}`);
+    // Redirect if the url path locale is different than NEXT_LOCALE cookie value
+    if (pathnameHasWrongLocale) {
+      const selectedLocale =
+        i18n.locales.find((locale) => pathname.startsWith(`/${locale}`)) ?? '';
+      const newPath = pathname.replace(selectedLocale, '');
+      const response = NextResponse.redirect(
+        new URL(
+          `/${locale}${newPath.startsWith('/') ? '' : '/'}${newPath}${
+            search ? `${search}` : ''
+          }`,
+          req.url
+        )
+      );
+      response.cookies.set('NEXT_LOCALE', locale);
+      return response;
     }
   }
 });

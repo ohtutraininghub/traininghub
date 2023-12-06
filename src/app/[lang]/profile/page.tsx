@@ -5,7 +5,7 @@ import CourseModal from '@/components/CourseModal/CourseModal';
 import { getServerAuthSession } from '@/lib/auth';
 import { notFound } from 'next/navigation';
 import { Locale } from '@i18n/i18n-config';
-import { useTranslation } from '@/lib/i18n';
+import { translator } from '@/lib/i18n';
 import {
   UserNamesAndIds,
   getAllUsers,
@@ -22,7 +22,7 @@ type Props = {
 
 export default async function ProfilePage({ searchParams, params }: Props) {
   const session = await getServerAuthSession();
-  const { t } = await useTranslation(params.lang, ['components', 'admin']);
+  const { t } = await translator(['components', 'admin']);
   const allUsers = await getAllUsers();
   const userData = await prisma.user.findUnique({
     where: {

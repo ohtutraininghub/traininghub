@@ -41,3 +41,9 @@ afterAll(() => {
 });
 
 dotenv.config({ path: '.env.test' });
+
+jest.mock('next/headers', () => ({
+  cookies: () => ({
+    get: jest.fn,
+  }),
+}));
