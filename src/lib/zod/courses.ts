@@ -80,12 +80,37 @@ const courseSchemaBase = z
       .string()
       .nullish()
       .transform((value) => (value ? value : null))
-      .pipe(z.coerce.date().nullable()),
+      .pipe(z.coerce.date().nullable())
+      .refine(
+        (enroll) => {
+          // avoid .refine trying to call .getTime on undefined when field is empty
+          if (!enroll) {
+            return true;
+          }
+          return enroll.getTime() > Date.now();
+        },
+        {
+          message: 'Last date to enroll cannot be in the past',
+        }
+      ),
+
     lastCancelDate: z
       .string()
       .nullish()
       .transform((value) => (value ? value : null))
-      .pipe(z.coerce.date().nullable()),
+      .pipe(z.coerce.date().nullable())
+      .refine(
+        (cancel) => {
+          // avoid .refine trying to call .getTime on undefined when field is empty
+          if (!cancel) {
+            return true;
+          }
+          return cancel.getTime() > Date.now();
+        },
+        {
+          message: 'Last date to cancel cannot be in the past',
+        }
+      ),
     maxStudents: z.number().min(1, 'Max students is required'),
     tags: z.array(z.string().min(1, 'Tag name cannot be empty')),
   })
