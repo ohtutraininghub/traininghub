@@ -107,10 +107,10 @@ export default function CourseForm({
           <StyledTooltip
             lang={lang}
             data-testid={
-              isEditMode ? 'tooltipCreateCourse' : 'tooltipEditCourse'
+              !isEditMode ? 'tooltipCreateCourse' : 'tooltipEditCourse'
             }
             title={
-              isEditMode ? t('Tooltip.createCourse') : t('Tooltip.editCourse')
+              !isEditMode ? t('Tooltip.createCourse') : t('Tooltip.editCourse')
             }
           />
         </Typography>

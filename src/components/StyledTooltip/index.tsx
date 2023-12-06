@@ -25,7 +25,7 @@ export default function StyledTooltip({
 }: StyledTooltipProps): JSX.Element {
   const theme = useTheme();
   const [show, setShow] = React.useState(false);
-  const { t } = useTranslation(lang, 'tooltips');
+  const { t } = useTranslation(lang, 'components');
 
   return (
     <Tooltip
@@ -36,7 +36,6 @@ export default function StyledTooltip({
             flexDirection: 'column',
             alignItems: 'flex-start',
           }}
-          data-testid="closeTooltip"
         >
           <LightbulbIcon
             fontSize="small"
@@ -54,7 +53,7 @@ export default function StyledTooltip({
               size="small"
               onClick={() => setShow(false)}
             >
-              {t('Common.closeTooltip')}
+              {t('StyledTooltip.button.closeTooltip')}
             </Button>
           </div>
         </div>
