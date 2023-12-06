@@ -47,6 +47,7 @@ export async function POST(request: NextRequest) {
 }
 
 export async function DELETE(request: NextRequest) {
+  const { t } = await translator('api');
   try {
     const { user } = await getServerAuthSession();
     if (!isAdmin(user)) {
@@ -65,7 +66,7 @@ export async function DELETE(request: NextRequest) {
     });
 
     return successResponse({
-      message: `The tag was deleted.`,
+      message: t('Tags.tagDeleted'),
       statusCode: StatusCodeType.OK,
     });
   } catch (error: unknown) {
