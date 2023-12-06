@@ -78,8 +78,8 @@ export default function CourseForm({
 
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
-  const [lastEnrollDate, setLastEnrollDate] = useState<Date | null>(null);
-  const [lastCancelDate, setLastCancelDate] = useState<Date | null>(null);
+  const [lastEnrollDate, setLastEnrollDate] = useState<Date | null | ''>(null);
+  const [lastCancelDate, setLastCancelDate] = useState<Date | null | ''>(null);
 
   useEffect(() => {}, [lastEnrollDate, lastCancelDate, startDate, endDate]);
 
@@ -108,14 +108,6 @@ export default function CourseForm({
     return date;
   };
 
-  const setCurrentTime = (date: Dayjs) => {
-    const currentDate = new Date();
-    const updatedDate = date.toDate();
-    updatedDate.setHours(currentDate.getHours());
-    updatedDate.setMinutes(currentDate.getMinutes());
-    return updatedDate;
-  };
-
   const updateValue = (
     newValue: any,
     currentValue: Date | null | undefined
@@ -132,7 +124,7 @@ export default function CourseForm({
       compulsoryDay === 'startDate' ? setStartDate : setEndDate;
     const isValidDate = date !== null && dayjs(date).isValid();
     let selectedDate: any;
-    selectedDate = isValidDate ? dayjs(setCurrentTime(date)).toDate() : null;
+    selectedDate = isValidDate ? dayjs(date).toDate() : null;
     setterFunction(selectedDate);
     setValue(
       compulsoryDay,
@@ -146,9 +138,11 @@ export default function CourseForm({
     if (date !== null && dayjs(date).isValid()) {
       const selectedDate = dayjs(date).toDate();
       dateHasData(selectedDate, lastDay);
-    } else {
+    } else if (date === null) {
       setterFunction(null);
       setValue(lastDay, '');
+    } else {
+      setValue(lastDay, 'invalid date');
     }
   };
 
@@ -294,7 +288,7 @@ export default function CourseForm({
                 textField: {
                   id: 'courseFormStartDate',
                   inputProps: {
-                    readOnly: true,
+                    readOnly: false,
                     'data-testid': 'courseFormStartDate',
                   },
                   variant: 'outlined',
@@ -320,7 +314,7 @@ export default function CourseForm({
                 textField: {
                   id: 'courseFormEndDate',
                   inputProps: {
-                    readOnly: true,
+                    readOnly: false,
                     'data-testid': 'courseFormEndDate',
                   },
                   variant: 'outlined',
@@ -347,7 +341,7 @@ export default function CourseForm({
                 textField: {
                   id: 'courseFormLastEnrollDate',
                   inputProps: {
-                    readOnly: true,
+                    readOnly: false,
                     'data-testid': 'courseFormLastEnrollDate',
                   },
                   variant: 'outlined',
@@ -374,7 +368,7 @@ export default function CourseForm({
                 textField: {
                   id: 'courseFormLastCancelDate',
                   inputProps: {
-                    readOnly: true,
+                    readOnly: false,
                     'data-testid': 'courseFormLastCancelDate',
                   },
                   variant: 'outlined',
