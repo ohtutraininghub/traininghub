@@ -99,6 +99,11 @@
   "SignOutButton": {
     "signOut": "Sign out"
   },
+  "StyledTooltip": {
+    "button": {
+      "closeTooltip": "Got it"
+    }
+  },
   "TagForm": {
     "label": "New tag",
     "submit": "Submit"

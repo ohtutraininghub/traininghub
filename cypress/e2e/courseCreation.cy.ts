@@ -122,4 +122,13 @@ describe('Course creation', () => {
     cy.visit('/course/create');
     cy.contains('You are not authorized to view this page');
   });
+
+  it('should be able to open a tooltip', () => {
+    cy.login('trainer@test.com', 'TRAINER');
+    cy.visit('/course/create');
+    cy.getCy('tooltipCourseDescription').trigger('mouseover');
+    cy.contains(
+      'The course description is visible to all users upon opening the course details page.'
+    );
+  });
 });
