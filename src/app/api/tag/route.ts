@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server';
-import { tagSchema, TagSchemaType } from '@/lib/zod/tags';
+import { tagDeleteSchema, tagSchema, TagSchemaType } from '@/lib/zod/tags';
 import { prisma } from '@/lib/prisma';
 import { Prisma } from '@prisma/client';
 import {
@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
       data: newTag,
     });
     return successResponse({
-      message: `Tag \"${newTag.name}\" succesfully created!`,
+      message: `Tag \'${newTag.name}\' was succesfully created!`,
       statusCode: StatusCodeType.CREATED,
     });
   } catch (error: unknown) {
@@ -37,10 +37,37 @@ export async function POST(request: NextRequest) {
     ) {
       return errorResponse({
         message:
-          'Failed to create tag. Tag "' + newTag?.name + '" already exists.',
+          "Failed to create tag. Tag '" + newTag?.name + "' already exists.",
         statusCode: StatusCodeType.UNPROCESSABLE_CONTENT,
       });
     }
+    return handleCommonErrors(error);
+  }
+}
+
+export async function DELETE(request: NextRequest) {
+  try {
+    const { user } = await getServerAuthSession();
+    if (!isAdmin(user)) {
+      return errorResponse({
+        message: 'Forbidden',
+        statusCode: StatusCodeType.FORBIDDEN,
+      });
+    }
+    const reqData = await request.json();
+    const tag = tagDeleteSchema.parse(reqData);
+
+    await prisma.tag.delete({
+      where: {
+        id: tag.tagId,
+      },
+    });
+
+    return successResponse({
+      message: `The tag was deleted.`,
+      statusCode: StatusCodeType.OK,
+    });
+  } catch (error: unknown) {
     return handleCommonErrors(error);
   }
 }
