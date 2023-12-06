@@ -25,11 +25,13 @@ import Divider from '@mui/material/Divider';
 import LocalizedDateTime from '../LocalizedDateTime';
 import Link from 'next/link';
 import CourseCard from '@/components/CourseCard';
+import { UserNamesAndIds } from '@/lib/prisma/users';
 
 interface CourseListProps extends DictProps {
   courses: CourseWithTagsAndStudentCount[];
   openedCourse: CourseWithTagsAndStudentCount | undefined;
   usersEnrolledCourseIds: string[];
+  enrolledStudents: UserNamesAndIds | null;
   searchCourses: {
     courseName?: string;
     courseTag?: string;
@@ -42,6 +44,7 @@ export default function CourseList({
   courses,
   openedCourse,
   usersEnrolledCourseIds,
+  enrolledStudents,
   searchCourses,
   lang,
 }: CourseListProps) {
@@ -65,11 +68,11 @@ export default function CourseList({
         lang={lang}
         course={openedCourse}
         usersEnrolledCourseIds={usersEnrolledCourseIds}
+        enrolledStudents={enrolledStudents}
         enrolls={t('CourseModal.enrolls', {
           studentCount: openedCourse?._count.students,
           maxStudentCount: openedCourse?.maxStudents,
         })}
-        description={t('CourseModal.description')}
         editCourseLabel={t('EditButton.editCourse')}
       />
       <div style={{ paddingTop: '1em' }}>

@@ -1,5 +1,10 @@
 import DOMPurify from 'isomorphic-dompurify';
 import z from 'zod';
+import { zodI18nMap } from 'zod-i18n-map';
+import { makeZodI18nMap } from 'zod-i18n-map';
+
+z.setErrorMap(zodI18nMap);
+z.setErrorMap(makeZodI18nMap({ ns: ['zod', 'custom'] }));
 
 // The minimum time in milliseconds to course start
 // at which cancelling enrollment is still allowed
@@ -18,7 +23,9 @@ const withRefine = <O extends CourseSchemaType, T extends z.ZodTypeDef, I>(
         return startDate.getTime() <= endDate.getTime();
       },
       {
-        message: 'The end date cannot be before the start date',
+        params: {
+          i18n: { key: 'endDateCannotBeBeforeStartDate' },
+        },
         path: ['endDate'],
       }
     )
@@ -31,8 +38,9 @@ const withRefine = <O extends CourseSchemaType, T extends z.ZodTypeDef, I>(
         return lastEnrollDate.getTime() < endDate.getTime();
       },
       {
-        message:
-          'The last date to enroll cannot be after the end date of the course',
+        params: {
+          i18n: { key: 'lastEnrollDateCannotBeAfterEndDate' },
+        },
         path: ['lastEnrollDate'],
       }
     )
@@ -45,8 +53,9 @@ const withRefine = <O extends CourseSchemaType, T extends z.ZodTypeDef, I>(
         return lastCancelDate.getTime() < endDate.getTime();
       },
       {
-        message:
-          'The last date to cancel enrollment cannot be after the end date of the course',
+        params: {
+          i18n: { key: 'lastCancelEnrollDateCannotBeAfterEndDate' },
+        },
         path: ['lastCancelDate'],
       }
     );
@@ -54,14 +63,14 @@ const withRefine = <O extends CourseSchemaType, T extends z.ZodTypeDef, I>(
 
 const courseSchemaBase = z
   .object({
-    name: z.string().min(1, 'Name is required'),
+    name: z.string().min(1),
     description: z
       .string()
-      .min(1, 'Description is required')
+      .min(1)
       .transform((desc) => DOMPurify.sanitize(desc)),
     startDate: z
       .string()
-      .min(1, 'Start date is required')
+      .min(1)
       .pipe(z.coerce.date())
       .refine(
         (start) => {
@@ -72,10 +81,12 @@ const courseSchemaBase = z
           return start.getTime() > Date.now();
         },
         {
-          message: 'Start date cannot be in the past',
+          params: {
+            i18n: { key: 'startDateCannotBeInThePast' },
+          },
         }
       ),
-    endDate: z.string().min(1, 'End date is required').pipe(z.coerce.date()),
+    endDate: z.string().min(1).pipe(z.coerce.date()),
     lastEnrollDate: z
       .string()
       .nullish()
@@ -117,7 +128,7 @@ const courseSchemaBase = z
   .strict();
 
 const courseSchemaBaseWithId = courseSchemaBase.extend({
-  id: z.string().min(1, 'Id is required'),
+  id: z.string().min(1),
   createdById: z.string(),
 });
 
@@ -129,7 +140,7 @@ export type CourseSchemaWithIdType = z.infer<typeof courseSchemaBaseWithId>;
 
 export const courseEnrollSchema = z
   .object({
-    courseId: z.string().min(1, 'Course id is required'),
+    courseId: z.string().min(1),
     insertToCalendar: z.boolean().nullish(),
   })
   .strict();

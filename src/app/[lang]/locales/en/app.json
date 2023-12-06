@@ -1,5 +1,19 @@
 {
   "AppTitle": "Training hub",
+  "CourseForm": {
+    "description": "Description",
+    "endDate": "End date",
+    "lastCancelDate": "Last date to cancel enrollment (optional)",
+    "lastEnrollDate": "Last date to enroll (optional)",
+    "maxStudents": "Max students",
+    "name": "Name",
+    "startDate": "Start date",
+    "submit": "Submit",
+    "tags": "Tags"
+  },
+  "Error": {
+    "somethingWrong": "Something went wrong... Try again"
+  },
   "HomePage": {
     "trainingListTitle": "Add new Course"
   },
@@ -9,20 +23,5 @@
       "signOut": "Sign out",
       "signOutConfirmation": "Confirm sign out"
     }
-  },
-
-  "CourseForm": {
-    "name": "Name",
-    "description": "Description",
-    "startDate": "Start date",
-    "endDate": "End date",
-    "lastEnrollDate": "Last date to enroll (optional)",
-    "lastCancelDate": "Last date to cancel enrollment (optional)",
-    "maxStudents": "Max students",
-    "submit": "Submit",
-    "tags": "Tags"
-  },
-  "Error": {
-    "somethingWrong": "Something went wrong... Try again"
   }
 }

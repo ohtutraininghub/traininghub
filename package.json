@@ -25,8 +25,8 @@
     "lint:write": "next lint --fix",
     "lint:test": "next lint",
     "_FORMAT SCRIPTS": "===",
-    "format:write": "prettier . --write --plugin=prettier-plugin-prisma",
-    "format:test": "prettier . --check --plugin=prettier-plugin-prisma",
+    "format:write": "prettier . --write --plugin=prettier-plugin-prisma --plugin=prettier-plugin-sort-json",
+    "format:test": "prettier . --check --plugin=prettier-plugin-prisma --plugin=prettier-plugin-sort-json",
     "_LIFECYCLE SCRIPTS": "===",
     "prepare": "node -e \"try { require('husky').install() } catch (e) {if (e.code !== 'MODULE_NOT_FOUND') throw e}\"",
     "precommit": "lint-staged"
@@ -36,7 +36,7 @@
       "eslint --quiet --fix"
     ],
     "*.{json,js,ts,jsx,tsx,html,prisma,md,yml,yaml}": [
-      "prettier --write --ignore-unknown --plugin=prettier-plugin-prisma"
+      "prettier --write --ignore-unknown --plugin=prettier-plugin-prisma --plugin=prettier-plugin-sort-json"
     ]
   },
   "prisma": {
@@ -75,7 +75,8 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.46.2",
     "react-i18next": "^13.3.0",
-    "zod": "^3.22.4"
+    "zod": "^3.22.4",
+    "zod-i18n-map": "^2.21.0"
   },
   "devDependencies": {
     "@testing-library/cypress": "^10.0.1",
@@ -101,6 +102,7 @@
     "node-mocks-http": "^1.13.0",
     "prettier": "^3.0.3",
     "prettier-plugin-prisma": "^5.0.0",
+    "prettier-plugin-sort-json": "^3.1.0",
     "prisma": "^5.4.1",
     "ts-node": "^10.9.1",
     "typescript": "5.2.2"

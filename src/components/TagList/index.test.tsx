@@ -8,7 +8,7 @@ type Translation = keyof typeof componentTranslations.TagList;
 
 jest.mock('../../lib/i18n', () => ({
   // this mock makes sure any components using the translate hook can use it without a warning being shown
-  useTranslation: () => {
+  translator: () => {
     return {
       t: (str: `${Component}.${Translation}`) => {
         const [component, tr] = str.split('.');

@@ -176,59 +176,53 @@ describe('Course API tests', () => {
       const req = mockPostRequest(studentsAsStringCourse);
       const response = await POST(req);
       const data = await response.json();
-      expect(data.message).toContain('Expected number, received string.');
+      expect(data.message).toContain('Unprocessable content');
       expect(data.messageType).toBe(MessageType.ERROR);
-      expect(response.status).toBe(400);
+      expect(response.status).toBe(422);
     });
 
     it('fails if end date is prior to start date', async () => {
       const req = mockPostRequest(startAfterEndCourse);
       const response = await POST(req);
       const data = await response.json();
-      expect(data.message).toContain(
-        'The end date cannot be before the start date'
-      );
+      expect(data.message).toContain('Unprocessable content');
       expect(data.messageType).toBe(MessageType.ERROR);
       const tblLength = await getTableLength();
       expect(tblLength).toBe(0);
-      expect(response.status).toBe(400);
+      expect(response.status).toBe(422);
     });
 
     it('fails if start date is in the past', async () => {
       const req = mockPostRequest(startDateInThePastCourse);
       const response = await POST(req);
       const data = await response.json();
-      expect(data.message).toContain('Start date cannot be in the past');
+      expect(data.message).toContain('Unprocessable content');
       expect(data.messageType).toBe(MessageType.ERROR);
       const tblLength = await getTableLength();
       expect(tblLength).toBe(0);
-      expect(response.status).toBe(400);
+      expect(response.status).toBe(422);
     });
 
     it('fails if last enroll date is after the end of the course', async () => {
       const req = mockPostRequest(lastEnrollDateAfterEndCourse);
       const response = await POST(req);
       const data = await response.json();
-      expect(data.message).toContain(
-        'The last date to enroll cannot be after the end date of the course'
-      );
+      expect(data.message).toContain('Unprocessable content');
       expect(data.messageType).toBe(MessageType.ERROR);
       const tblLength = await getTableLength();
       expect(tblLength).toBe(0);
-      expect(response.status).toBe(StatusCodeType.BAD_REQUEST);
+      expect(response.status).toBe(StatusCodeType.UNPROCESSABLE_CONTENT);
     });
 
     it('fails if last cancel date is after the end of the course', async () => {
       const req = mockPostRequest(lastCancelDateAfterEndCourse);
       const response = await POST(req);
       const data = await response.json();
-      expect(data.message).toContain(
-        'The last date to cancel enrollment cannot be after the end date of the course'
-      );
+      expect(data.message).toContain('Unprocessable content');
       expect(data.messageType).toBe(MessageType.ERROR);
       const tblLength = await getTableLength();
       expect(tblLength).toBe(0);
-      expect(response.status).toBe(StatusCodeType.BAD_REQUEST);
+      expect(response.status).toBe(StatusCodeType.UNPROCESSABLE_CONTENT);
     });
 
     it('sanitizes description on post', async () => {
@@ -272,7 +266,7 @@ describe('Course API tests', () => {
 
       const response = await PUT(req);
       const data = await response.json();
-      expect(data.message).toContain('Course not found');
+      expect(data.message).toContain('Course by given id was not found');
       expect(data.messageType).toBe(MessageType.ERROR);
       expect(response.status).toBe(404);
     });
@@ -344,11 +338,9 @@ describe('Course API tests', () => {
       const req = mockUpdateRequest(updatedCourse);
       const response = await PUT(req);
       const data = await response.json();
-      expect(data.message).toBe(
-        'The last date to enroll cannot be after the end date of the course.'
-      );
+      expect(data.message).toBe('Unprocessable content');
       expect(data.messageType).toBe(MessageType.ERROR);
-      expect(response.status).toBe(StatusCodeType.BAD_REQUEST);
+      expect(response.status).toBe(StatusCodeType.UNPROCESSABLE_CONTENT);
     });
 
     it('Fails if last cancel date is updated to be after course has ended', async () => {
@@ -374,11 +366,9 @@ describe('Course API tests', () => {
       const req = mockUpdateRequest(updatedCourse);
       const response = await PUT(req);
       const data = await response.json();
-      expect(data.message).toBe(
-        'The last date to cancel enrollment cannot be after the end date of the course.'
-      );
+      expect(data.message).toBe('Unprocessable content');
       expect(data.messageType).toBe(MessageType.ERROR);
-      expect(response.status).toBe(StatusCodeType.BAD_REQUEST);
+      expect(response.status).toBe(StatusCodeType.UNPROCESSABLE_CONTENT);
     });
   });
 });
