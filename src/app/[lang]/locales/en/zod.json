@@ -1,0 +1,27 @@
+{
+  "consecutiveSpacesNotAllowed": "Consecutive spaces are not allowed",
+  "courseId": "Course Id",
+  "description": "Description",
+  "endDate": "End date",
+  "endDateCannotBeBeforeStartDate": "The end date cannot be before the start date",
+  "errors": {
+    "too_small": {
+      "number": {
+        "inclusive": "{{path}} is required"
+      },
+      "string": {
+        "inclusive": "{{path}} is required"
+      }
+    }
+  },
+  "id": "Id",
+  "lastCancelEnrollDateCannotBeAfterEndDate": "The last date to cancel enrollment cannot be after the end date of the course",
+  "lastEnrollDateCannotBeAfterEndDate": "The last date to enroll cannot be after the end date of the course",
+  "maxStudents": "Max students",
+  "maximumLengthForTagIs": "The maximum length for a tag is {{maxTagLength}} characters",
+  "name": "Name",
+  "startDate": "Start date",
+  "startDateCannotBeInThePast": "Start date cannot be in the past",
+  "tagNameRequired": "A tag name is required",
+  "tags": "Tag name"
+}

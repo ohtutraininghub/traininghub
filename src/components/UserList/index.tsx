@@ -5,7 +5,6 @@ import { SmallConfirmCard } from '@/components/SmallConfirmCard';
 import { DictProps } from '@/lib/i18n';
 import { useTranslation } from '@/lib/i18n/client';
 import { Users } from '@/lib/prisma/users';
-import { handleCommonErrors } from '@/lib/response/errorUtil';
 import { update } from '@/lib/response/fetchUtil';
 import { MessageType } from '@/lib/response/responseUtil';
 import { FilterAlt } from '@mui/icons-material';
@@ -140,7 +139,10 @@ export default function UserList({ lang, users }: Props) {
         disableAutoHide: true,
       });
     } catch (error) {
-      return handleCommonErrors(error);
+      notify({
+        message: t('EditUsers.failedToUpdateUser'),
+        messageType: MessageType.ERROR,
+      });
     }
   }
 

@@ -14,6 +14,8 @@ import {
 import { initReactI18next } from 'react-i18next/initReactI18next';
 import { FallbackNs } from 'react-i18next';
 import resourcesToBackend from 'i18next-resources-to-backend';
+import { cookies } from 'next/headers';
+import z from 'zod';
 
 export interface DictProps {
   lang: Locale;
@@ -31,8 +33,7 @@ export function getLocale(request: NextRequest): string | undefined {
   const negotiatorHeaders: Record<string, string> = {};
   request.headers.forEach((value, key) => (negotiatorHeaders[key] = value));
 
-  // @ts-ignore locales are readonly
-  const locales: string[] = i18n.locales;
+  const locales = [...i18n.locales];
 
   // Use negotiator and intl-localematcher to get best locale
   let languages = new Negotiator({ headers: negotiatorHeaders }).languages(
@@ -58,14 +59,17 @@ const initI18next = async (lng: Locale, ns?: NameSpace | NameSpace[]) => {
   return i18nInstance;
 };
 
-export async function useTranslation<
+export async function translator<
   Ns extends FlatNamespace,
   KPrefix extends KeyPrefix<FallbackNs<Ns>> = undefined,
->(lng: Locale, ns?: Ns | Ns[], options: { keyPrefix?: KPrefix } = {}) {
-  const i18nextInstance = await initI18next(lng, ns);
+>(ns?: Ns | Ns[], options: { keyPrefix?: KPrefix } = {}) {
+  const locale = cookies().get('NEXT_LOCALE')?.value;
+  const result = z.enum(i18n.locales).safeParse(locale);
+  const language = result.success ? result.data : i18n.defaultLocale;
+  const i18nextInstance = await initI18next(language, ns);
   return {
     t: i18nextInstance.getFixedT(
-      lng,
+      language,
       Array.isArray(ns) ? ns[0] : ns,
       options.keyPrefix
     ),

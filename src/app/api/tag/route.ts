@@ -10,14 +10,16 @@ import {
 import { handleCommonErrors } from '@/lib/response/errorUtil';
 import { getServerAuthSession } from '@/lib/auth';
 import { isAdmin } from '@/lib/auth-utils';
+import { translator } from '@/lib/i18n';
 
 export async function POST(request: NextRequest) {
   let newTag: TagSchemaType | undefined;
+  const { t } = await translator('api');
   try {
     const { user } = await getServerAuthSession();
     if (!isAdmin(user)) {
       return errorResponse({
-        message: 'Forbidden',
+        message: t('Common.forbidden'),
         statusCode: StatusCodeType.FORBIDDEN,
       });
     }
@@ -27,7 +29,7 @@ export async function POST(request: NextRequest) {
       data: newTag,
     });
     return successResponse({
-      message: `Tag \'${newTag.name}\' was succesfully created!`,
+      message: t('Tags.tagCreated', { name: newTag.name }),
       statusCode: StatusCodeType.CREATED,
     });
   } catch (error: unknown) {
@@ -36,12 +38,11 @@ export async function POST(request: NextRequest) {
       error.code === 'P2002'
     ) {
       return errorResponse({
-        message:
-          "Failed to create tag. Tag '" + newTag?.name + "' already exists.",
+        message: t('Tags.duplicateError', { name: newTag?.name ?? '' }),
         statusCode: StatusCodeType.UNPROCESSABLE_CONTENT,
       });
     }
-    return handleCommonErrors(error);
+    return await handleCommonErrors(error);
   }
 }
 
