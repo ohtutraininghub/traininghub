@@ -59,6 +59,7 @@ export default function TagForm({ lang }: Props) {
           inputProps={{
             maxLength: maxTagLength + 1,
             sx: { padding: '0.75rem' },
+            'data-testid': 'tagFormInput',
           }}
         />
 

@@ -11,6 +11,7 @@ import { handleCommonErrors } from '@/lib/response/errorUtil';
 import { getServerAuthSession } from '@/lib/auth';
 import { hasCourseEditRights, isTrainerOrAdmin } from '@/lib/auth-utils';
 import { updateCourseToCalendars } from '@/lib/google';
+import { translator } from '@/lib/i18n';
 
 const parseTags = async (tags: string[]): Promise<Tag[]> => {
   const allTags = await prisma.tag.findMany();
@@ -24,10 +25,11 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
+    const { t } = await translator('api');
     const { user } = await getServerAuthSession();
     if (!isTrainerOrAdmin(user)) {
       return errorResponse({
-        message: 'Forbidden',
+        message: t('Common.forbidden'),
         statusCode: StatusCodeType.FORBIDDEN,
       });
     }
@@ -45,16 +47,17 @@ export async function POST(request: NextRequest) {
     });
 
     return successResponse({
-      message: 'Course successfully created!',
+      message: t('Courses.courseCreated'),
       statusCode: StatusCodeType.CREATED,
     });
   } catch (error) {
-    return handleCommonErrors(error);
+    return await handleCommonErrors(error);
   }
 }
 
 export async function PUT(request: NextRequest) {
   try {
+    const { t } = await translator('api');
     const { user } = await getServerAuthSession();
     const body = courseSchemaWithId.parse(await request.json());
     const parsedTags = await parseTags(body.tags);
@@ -63,13 +66,13 @@ export async function PUT(request: NextRequest) {
     });
     if (!course) {
       return errorResponse({
-        message: 'Course not found',
+        message: t('Common.courseNotFound'),
         statusCode: StatusCodeType.NOT_FOUND,
       });
     }
     if (!hasCourseEditRights(user, course)) {
       return errorResponse({
-        message: 'Forbidden',
+        message: t('Common.forbidden'),
         statusCode: StatusCodeType.FORBIDDEN,
       });
     }
@@ -90,10 +93,10 @@ export async function PUT(request: NextRequest) {
     await updateCourseToCalendars(updatedCourse);
 
     return successResponse({
-      message: 'Course successfully updated!',
+      message: t('Courses.courseUpdated'),
       statusCode: StatusCodeType.OK,
     });
   } catch (error) {
-    return handleCommonErrors(error);
+    return await handleCommonErrors(error);
   }
 }

@@ -13,9 +13,11 @@ import { handleCommonErrors } from '@/lib/response/errorUtil';
 import { isPastDeadline } from '@/lib/timedateutils';
 import { deleteCourseFromCalendar, insertCourseToCalendar } from '@/lib/google';
 import { hasGoogleCalendarScope } from '@/lib/prisma/account';
+import { translator } from '@/lib/i18n';
 
 export async function POST(request: NextRequest) {
   try {
+    const { t } = await translator('api');
     const session = await getServerAuthSession();
     const userId = session.user.id;
     const data = await request.json();
@@ -33,21 +35,21 @@ export async function POST(request: NextRequest) {
     });
     if (!course) {
       return errorResponse({
-        message: 'Could not find course with given identifier!',
+        message: t('Common.courseNotFound'),
         statusCode: StatusCodeType.NOT_FOUND,
       });
     }
 
     if (course._count.students >= course.maxStudents) {
       return errorResponse({
-        message: 'Course is already full!',
+        message: t('Enrolls.courseIsFull'),
         statusCode: StatusCodeType.UNPROCESSABLE_CONTENT,
       });
     }
 
     if (isPastDeadline(course.lastEnrollDate)) {
       return errorResponse({
-        message: 'No enrolling allowed after enrollment deadline',
+        message: t('Enrolls.noEnrollingAfterDeadline'),
         statusCode: StatusCodeType.UNPROCESSABLE_CONTENT,
       });
     }
@@ -65,7 +67,7 @@ export async function POST(request: NextRequest) {
 
     if (userCourseIds?.courses.find((course) => course.id === courseId)) {
       return errorResponse({
-        message: 'You have already enrolled!',
+        message: t('Enrolls.youHaveAlreadyEnrolled'),
         statusCode: StatusCodeType.UNPROCESSABLE_CONTENT,
       });
     }
@@ -88,7 +90,7 @@ export async function POST(request: NextRequest) {
     if (insertToCalendar) {
       if (!hasCalendarPermissions) {
         return errorResponse({
-          message: 'Can not insert calendar entry without calendar permissions',
+          message: t('Calendar.noPermissionsToInsertEntry'),
           statusCode: StatusCodeType.UNPROCESSABLE_CONTENT,
         });
       }
@@ -98,18 +100,19 @@ export async function POST(request: NextRequest) {
     }
 
     return messageWithDataResponse({
-      message: 'Enrolled succesfully!',
+      message: t('Enrolls.enrollmentSuccessfull'),
       messageType: MessageType.SUCCESS,
       statusCode: StatusCodeType.CREATED,
       data: hasCalendarPermissions,
     });
   } catch (error) {
-    return handleCommonErrors(error);
+    return await handleCommonErrors(error);
   }
 }
 
 export async function PUT(request: NextRequest) {
   try {
+    const { t } = await translator('api');
     const session = await getServerAuthSession();
     const userId = session.user.id;
     const data = await request.json();
@@ -128,21 +131,21 @@ export async function PUT(request: NextRequest) {
 
     if (!course) {
       return errorResponse({
-        message: 'Could not find course with given identifier!',
+        message: t('Common.courseNotFound'),
         statusCode: StatusCodeType.NOT_FOUND,
       });
     }
 
     if (!course.students.find((student) => student.id === userId)) {
       return errorResponse({
-        message: 'You are not enrolled to this course',
+        message: t('Common.notEnrolledError'),
         statusCode: StatusCodeType.UNPROCESSABLE_CONTENT,
       });
     }
 
     if (isPastDeadline(course.lastCancelDate)) {
       return errorResponse({
-        message: 'No cancelling allowed after cancellation deadline',
+        message: t('Enrolls.noCancellingAfterDeadline'),
         statusCode: StatusCodeType.UNPROCESSABLE_CONTENT,
       });
     }
@@ -160,10 +163,10 @@ export async function PUT(request: NextRequest) {
     await deleteCourseFromCalendar(userId, course);
 
     return successResponse({
-      message: 'Your enrollment was canceled',
+      message: t('Enrolls.enrollmentCanceled'),
       statusCode: StatusCodeType.OK,
     });
   } catch (error) {
-    return handleCommonErrors(error);
+    return await handleCommonErrors(error);
   }
 }
