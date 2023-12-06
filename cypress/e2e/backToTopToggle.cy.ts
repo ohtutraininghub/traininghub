@@ -28,13 +28,8 @@ describe('BackToTopToggle button', () => {
     cy.getCy('textEditorTextSelect').click();
     cy.getCy('textSelectorParagraph').click();
     cy.get('.ProseMirror').type(course.description);
-    cy.get('[aria-label="Choose date"]').each(($el, index) => {
-      index === 0
-        ? cy.setDate($el, 'currentMonth', 27)
-        : index === 1
-        ? cy.setDate($el, 'nextMonth', 26)
-        : null;
-    });
+    cy.formatDate('courseFormStartDate', -1);
+    cy.formatDate('courseFormEndDate', -2);
     cy.getCy('courseFormMaxStudents').clear().type(course.maxStudents);
     cy.getCy('courseFormSubmit').click();
     // view at top, button should not be visible
