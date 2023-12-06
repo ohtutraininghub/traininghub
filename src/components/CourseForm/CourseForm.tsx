@@ -80,8 +80,15 @@ export default function CourseForm({
   const [endDate, setEndDate] = useState<Date | null>(null);
   const [lastEnrollDate, setLastEnrollDate] = useState<Date | null | ''>(null);
   const [lastCancelDate, setLastCancelDate] = useState<Date | null | ''>(null);
+  const [timeFormat, setTimeFormat] = useState(false);
 
-  useEffect(() => {}, [lastEnrollDate, lastCancelDate, startDate, endDate]);
+  useEffect(() => {}, [
+    lastEnrollDate,
+    lastCancelDate,
+    startDate,
+    endDate,
+    timeFormat,
+  ]);
 
   const dateHasData = (date: Date, lastDate: any) => {
     const setterFunction =
@@ -171,6 +178,23 @@ export default function CourseForm({
           boxShadow: 8,
         }}
       >
+        <Box display="flex" justifyContent="flex-end">
+          <Button
+            onClick={() => setTimeFormat(!timeFormat)}
+            variant="contained"
+            sx={{
+              display: 'block',
+              mt: 2,
+              color: palette.white.main,
+              backgroundColor: palette.secondary.main,
+              '&:hover': {
+                backgroundColor: palette.secondary.light,
+              },
+            }}
+          >
+            Toggle Time Format
+          </Button>
+        </Box>
         <Typography
           variant="h2"
           color={palette.black.main}
@@ -283,6 +307,7 @@ export default function CourseForm({
               onChange={(value) => {
                 validateCompulsory(value, 'startDate');
               }}
+              ampm={!timeFormat}
               timeSteps={{ minutes: 1 }}
               slotProps={{
                 textField: {
@@ -309,6 +334,7 @@ export default function CourseForm({
               onChange={(value) => {
                 validateCompulsory(value, 'endDate');
               }}
+              ampm={!timeFormat}
               timeSteps={{ minutes: 1 }}
               slotProps={{
                 textField: {
@@ -336,6 +362,7 @@ export default function CourseForm({
               onChange={(value) => {
                 validateOptional(value, 'lastEnrollDate');
               }}
+              ampm={!timeFormat}
               timeSteps={{ minutes: 1 }}
               slotProps={{
                 textField: {
@@ -363,6 +390,7 @@ export default function CourseForm({
               onChange={(value) => {
                 validateOptional(value, 'lastCancelDate');
               }}
+              ampm={!timeFormat}
               timeSteps={{ minutes: 1 }}
               slotProps={{
                 textField: {
