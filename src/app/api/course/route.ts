@@ -70,7 +70,8 @@ export async function PUT(request: NextRequest) {
         statusCode: StatusCodeType.NOT_FOUND,
       });
     }
-    if (!hasCourseEditRights(user, course)) {
+
+    if (!hasCourseEditRights(user)) {
       return errorResponse({
         message: t('Common.forbidden'),
         statusCode: StatusCodeType.FORBIDDEN,
