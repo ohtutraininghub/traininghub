@@ -1,23 +1,20 @@
 import { createMocks } from 'node-mocks-http';
 import { NextRequest } from 'next/server';
-import { POST } from './route';
+import { POST, DELETE } from './route';
 import { clearDatabase, prisma } from '@/lib/prisma';
 import { MessageType, StatusCodeType } from '@/lib/response/responseUtil';
 import { Role } from '@prisma/client';
+import { getServerAuthSession } from '@/lib/auth';
 
-const testUser = {
-  id: 'cloeouh4x0000qiexq8tqzvh7',
+const adminUser = {
+  id: '987654',
+  role: Role.ADMIN,
 };
 
-jest.mock('../../../lib/auth', () => ({
-  getServerAuthSession: async () =>
-    Promise.resolve({
-      user: {
-        id: testUser.id,
-        role: Role.ADMIN,
-      },
-    }),
-}));
+const traineeUser = {
+  id: '123456',
+  role: Role.TRAINEE,
+};
 
 const existingTag = { name: 'Git' };
 const newTag = { name: 'Jenkins' };
@@ -28,6 +25,24 @@ const tooLongTag = {
 const emptyTag = { name: '' };
 const extraSpacesTag = { name: 'Robot  Framework' };
 
+const mockPostRequest = (body: any) => {
+  return createMocks<NextRequest>({
+    method: 'POST',
+    json: () => body,
+  }).req;
+};
+
+const mockDeleteRequest = (body: any) => {
+  return createMocks<NextRequest>({
+    method: 'DELETE',
+    json: () => body,
+  }).req;
+};
+
+jest.mock('../../../lib/auth', () => ({
+  getServerAuthSession: jest.fn(),
+}));
+
 beforeEach(async () => {
   await clearDatabase();
   await prisma.tag.create({
@@ -35,30 +50,28 @@ beforeEach(async () => {
   });
 });
 
-describe('API', () => {
+describe('Tag API tests', () => {
   describe('POST', () => {
-    it('adds a new tag to the database', async () => {
-      const { req } = createMocks<NextRequest>({
-        method: 'POST',
-        json: () => newTag,
-      });
+    (getServerAuthSession as jest.Mock).mockImplementation(async () =>
+      Promise.resolve({
+        user: adminUser,
+      })
+    );
 
-      const response = await POST(req);
+    it('adds a new tag to the database', async () => {
+      const request = mockPostRequest(newTag);
+      const response = await POST(request);
       const data = await response.json();
 
-      expect(data.message).toBe(`Tag \"${newTag.name}\" succesfully created!`);
+      expect(data.message).toBe(
+        `Tag \"${newTag.name}\" was succesfully created!`
+      );
       expect(data.messageType).toBe(MessageType.SUCCESS);
       expect(response.status).toBe(StatusCodeType.CREATED);
     });
-  });
-  describe('POST', () => {
     it('fails if identical tag already exists in database', async () => {
-      const { req } = createMocks<NextRequest>({
-        method: 'POST',
-        json: () => existingTag,
-      });
-
-      const response = await POST(req);
+      const request = mockPostRequest(existingTag);
+      const response = await POST(request);
       const data = await response.json();
 
       expect(data.message).toBe(
@@ -67,15 +80,9 @@ describe('API', () => {
       expect(data.messageType).toBe(MessageType.ERROR);
       expect(response.status).toBe(StatusCodeType.UNPROCESSABLE_CONTENT);
     });
-  });
-  describe('POST', () => {
     it('fails if same tag with different casing exists in database', async () => {
-      const { req } = createMocks<NextRequest>({
-        method: 'POST',
-        json: () => duplicateTag,
-      });
-
-      const response = await POST(req);
+      const request = mockPostRequest(duplicateTag);
+      const response = await POST(request);
       const data = await response.json();
 
       expect(data.message).toBe(
@@ -84,30 +91,27 @@ describe('API', () => {
       expect(data.messageType).toBe(MessageType.ERROR);
       expect(response.status).toBe(StatusCodeType.UNPROCESSABLE_CONTENT);
     });
-  });
-  describe('POST', () => {
     it('fails if the tag name is empty', async () => {
-      const { req } = createMocks<NextRequest>({
-        method: 'POST',
-        json: () => emptyTag,
-      });
-
-      const response = await POST(req);
+      const request = mockPostRequest(emptyTag);
+      const response = await POST(request);
       const data = await response.json();
 
       expect(data.message).toBe('Unprocessable content');
       expect(data.messageType).toBe(MessageType.ERROR);
       expect(response.status).toBe(StatusCodeType.UNPROCESSABLE_CONTENT);
     });
-  });
-  describe('POST', () => {
     it('fails if the tag name is too long', async () => {
-      const { req } = createMocks<NextRequest>({
-        method: 'POST',
-        json: () => tooLongTag,
-      });
+      const request = mockPostRequest(tooLongTag);
+      const response = await POST(request);
+      const data = await response.json();
 
-      const response = await POST(req);
+      expect(data.message).toBe('Unprocessable content');
+      expect(data.messageType).toBe(MessageType.ERROR);
+      expect(response.status).toBe(StatusCodeType.UNPROCESSABLE_CONTENT);
+    });
+    it('fails if there is consecutive spaces in the tag name', async () => {
+      const request = mockPostRequest(extraSpacesTag);
+      const response = await POST(request);
       const data = await response.json();
 
       expect(data.message).toBe('Unprocessable content');
@@ -115,17 +119,61 @@ describe('API', () => {
       expect(response.status).toBe(StatusCodeType.UNPROCESSABLE_CONTENT);
     });
   });
-  describe('POST', () => {
-    it('fails if there is consecutive spaces in the tag name', async () => {
-      const { req } = createMocks<NextRequest>({
-        method: 'POST',
-        json: () => extraSpacesTag,
-      });
 
-      const response = await POST(req);
+  describe('DELETE', () => {
+    it('succesfully deletes an existing tag if user is an admin', async () => {
+      (getServerAuthSession as jest.Mock).mockImplementation(async () =>
+        Promise.resolve({
+          user: adminUser,
+        })
+      );
+
+      const exists = await prisma.tag.findFirst({
+        where: {
+          name: existingTag.name,
+        },
+      });
+      const req = mockDeleteRequest({ tagId: exists?.id });
+      const response = await DELETE(req);
       const data = await response.json();
 
-      expect(data.message).toBe('Unprocessable content');
+      expect(data.message).toBe(`The tag was succesfully deleted`);
+      expect(data.messageType).toBe(MessageType.SUCCESS);
+      expect(response.status).toBe(StatusCodeType.OK);
+    });
+    it('deleting an existing tag fails if user is a trainee', async () => {
+      (getServerAuthSession as jest.Mock).mockImplementation(async () =>
+        Promise.resolve({
+          user: traineeUser,
+        })
+      );
+
+      const exists = await prisma.tag.findFirst({
+        where: {
+          name: existingTag.name,
+        },
+      });
+
+      const request = mockDeleteRequest({ tagId: exists?.id });
+      const response = await DELETE(request);
+      const data = await response.json();
+
+      expect(data.message).toBe(`Forbidden`);
+      expect(data.messageType).toBe(MessageType.ERROR);
+      expect(response.status).toBe(StatusCodeType.FORBIDDEN);
+    });
+    it('attempting to delete a tag using a non-valid id fails with an error message', async () => {
+      (getServerAuthSession as jest.Mock).mockImplementation(async () =>
+        Promise.resolve({
+          user: adminUser,
+        })
+      );
+
+      const request = mockDeleteRequest({ tagId: 'foobar' });
+      const response = await DELETE(request);
+      const data = await response.json();
+
+      expect(data.message).toBe(`Unprocessable content`);
       expect(data.messageType).toBe(MessageType.ERROR);
       expect(response.status).toBe(StatusCodeType.UNPROCESSABLE_CONTENT);
     });

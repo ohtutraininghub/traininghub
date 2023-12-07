@@ -29,7 +29,7 @@ export const tagSchema = z.object({
 
 export const tagDeleteSchema = z
   .object({
-    tagId: z.string().cuid({ message: 'A valid tag id is required' }),
+    tagId: z.string().cuid(),
   })
   .strict();
 
