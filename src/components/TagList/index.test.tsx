@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react';
 import { renderAsyncComponent } from '@/lib/test-utils';
 import TagList from '.';
-import componentTranslations from '@/app/[lang]/locales/en/components.json';
+import componentTranslations from '@/app/[lang]/locales/en/admin.json';
 
 type Component = 'TagList';
 type Translation = keyof typeof componentTranslations.TagList;
