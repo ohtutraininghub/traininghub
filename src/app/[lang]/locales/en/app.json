@@ -34,6 +34,7 @@
     "lastEnrollDate": "Last date to enroll is an optional field. If specified, it indicates the final date for students to enroll in the course.",
     "maxStudents": "The maximum number of students allowed in the course. This is a mandatory field. Once this maximum capacity is reached, enrollment will be closed. You have the flexibility to edit this field later to increase the course capacity.",
     "startDate": "Start date indicates when the course begins. It's a required field. The date cannot be in the past.",
+    "summary": "Summary should be a brief description of the course to quickly grab trainees' attention. The text will be displayed on the course card in the main view.",
     "tags": "Tags help organize courses. Choose relevant tags to improve course categorization, making it easier for users to discover interesting content quickly. Feel free to select any number of tags from the dropdown menu."
   }
 }

@@ -156,6 +156,11 @@ export default function CourseForm({
 
           <InputLabel htmlFor="courseFormSummary">
             {t('CourseForm.summary')}
+            <StyledTooltip
+              testid="tooltipCourseSummary"
+              lang={lang}
+              title={t('Tooltip.summary')}
+            />
           </InputLabel>
           <TextField
             {...register('summary')}
