@@ -1,7 +1,7 @@
 import { Prisma } from '@prisma/client';
 import Box from '@mui/material/Box';
 import { Typography } from '@mui/material';
-import { DictProps, useTranslation } from '@/lib/i18n';
+import { DictProps, translator } from '@/lib/i18n';
 
 type TagPrismaType = Prisma.TagGetPayload<Prisma.TagDefaultArgs>;
 
@@ -9,8 +9,8 @@ interface TagListProps extends DictProps {
   tags: TagPrismaType[];
 }
 
-export default async function TagList({ tags, lang }: TagListProps) {
-  const { t } = await useTranslation(lang, 'components');
+export default async function TagList({ tags }: TagListProps) {
+  const { t } = await translator('components');
 
   if (tags.length == 0) {
     return (
