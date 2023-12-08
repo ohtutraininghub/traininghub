@@ -2,8 +2,8 @@ name: E2E test
 
 on:
   workflow_run:
-    workflows: ['Unit test']
-    types: ['completed']
+    workflows: [Unit test]
+    types: [completed]
 
 env:
   HUSKY: 0

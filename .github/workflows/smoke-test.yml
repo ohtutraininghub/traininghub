@@ -2,8 +2,7 @@ name: Smoke test
 
 on:
   push:
-    branches:
-      - staging
+    branches: [staging]
   pull_request:
     branches: [staging]
     types: [opened, synchronize, ready_for_review]

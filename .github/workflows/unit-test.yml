@@ -2,8 +2,8 @@ name: Unit test
 
 on:
   workflow_run:
-    workflows: ['Smoke test']
-    types: ['completed']
+    workflows: [Smoke test]
+    types: [completed]
 
 jobs:
   unit-test:
