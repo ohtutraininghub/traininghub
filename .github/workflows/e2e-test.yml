@@ -3,9 +3,6 @@ name: E2E test flow
 on:
   workflow_call:
 
-env:
-  HUSKY: 0
-
 jobs:
   e2e-test:
     runs-on: ubuntu-22.04

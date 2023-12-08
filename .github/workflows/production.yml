@@ -5,51 +5,7 @@ on:
     branches: [main]
 
 jobs:
-  deploy:
-    runs-on: ubuntu-22.04
-    environment: production
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Heroku deploy
-        uses: akhileshns/heroku-deploy@v3.12.14
-        with:
-          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
-          heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
-          heroku_email: ${{ secrets.HEROKU_EMAIL }}
-          usedocker: true
-          docker_build_args: |
-            NEXTAUTH_URL
-            NEXTAUTH_SECRET
-            SENTRY_ENVIRONMENT
-            NEXT_PUBLIC_SENTRY_ENVIRONMENT
-            SENTRY_AUTH_TOKEN
-            SENTRY_ORG
-            SENTRY_PROJECT
-        env:
-          # NEXTAUTH
-          HD_NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL }}
-          HD_NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
-
-          # GOOGLE
-          HD_GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
-          HD_GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
-
-          # SENTRY
-          HD_SENTRY_ENVIRONMENT: 'production'
-          HD_SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-          HD_SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
-          HD_SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
-
-          # BUILD TIME ARGS
-
-          # NEXTAUTH
-          NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL }}
-          NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
-
-          # SENTRY
-          SENTRY_ENVIRONMENT: 'production'
-          NEXT_PUBLIC_SENTRY_ENVIRONMENT: 'production'
-          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
-          SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
+  production-deploy:
+    uses: ./.github/workflows/heroku-deploy.yml
+    with:
+      ENVIRONMENT_NAME: production
