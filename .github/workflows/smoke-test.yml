@@ -1,16 +1,11 @@
-name: 'smoke-test'
+name: smoke-test
 
 on:
-  push:
-    branches: [staging]
-  pull_request:
-    branches: [staging]
-    types: [opened, synchronize, ready_for_review]
+  workflow_call:
 
 jobs:
   smoke-test:
     runs-on: ubuntu-22.04
-    if: ${{ !github.event.pull_request.draft }}
     steps:
       - name: checkout
         uses: actions/checkout@v3

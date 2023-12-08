@@ -1,15 +1,28 @@
 name: Deployment pipeline to staging
 
 on:
-  workflow_run:
-    workflows: ['e2e-test']
-    types: ['completed']
+  push:
+    branches: [staging]
+  pull_request:
+    branches: [staging]
+    types: [opened, synchronize, ready_for_review]
 
 jobs:
+  smoke-test:
+    uses: ./.github/workflows/smoke-test.yml
+    if: ${{ !github.event.pull_request.draft }}
+  unit-test:
+    uses: ./.github/workflows/unit-test.yml
+    needs: [smoke-test]
+  e2e-test:
+    uses: ./.github/workflows/e2e-test.yml
+    needs: [smoke-test]
+
   deploy:
     runs-on: ubuntu-22.04
     environment: staging
     if: ${{ github.event_name == 'push' }}
+    needs: [smoke-test, e2e-test]
     steps:
       - name: Checkout
         uses: actions/checkout@v3
