@@ -18,7 +18,7 @@ describe('Course creation', () => {
     cy.getCy('courseFormName').type(course.name);
     cy.getCy('textEditorTextSelect').click();
     cy.getCy('textSelectorHeader1').click();
-    cy.get('.ProseMirror').type(`${course.header}{enter}`);
+    cy.get('.ProseMirror').type(`${course.header}`);
 
     cy.getCy('textEditorTextSelect').click();
     cy.getCy('textSelectorParagraph').click();
@@ -27,10 +27,10 @@ describe('Course creation', () => {
     cy.formatDate('courseFormStartDate', -1);
     cy.formatDate('courseFormEndDate', -2);
 
-    cy.getCy('courseFormMaxStudents')
-      .clear({ force: true })
-      .type(course.maxStudents, { force: true });
-    cy.getCy('courseFormSubmit').click({ force: true });
+    cy.getCy('courseFormMaxStudents').type(
+      `{selectall}{backspace}${course.maxStudents}`
+    );
+    cy.getCy('courseFormSubmit').click();
     cy.contains(course.name).click();
     cy.contains(course.name);
     cy.contains(course.header);
@@ -49,14 +49,18 @@ describe('Course creation', () => {
     cy.contains(course.name).click();
     cy.getCy('EditIcon').click();
 
-    cy.getCy('courseFormName').clear().type(updatedCourse.name);
-    cy.get('.ProseMirror').clear().type(updatedCourse.description);
+    cy.getCy('courseFormName').type(
+      `{selectall}{backspace}${updatedCourse.name}`
+    );
+    cy.get('.ProseMirror').type(
+      `{selectall}{backspace}${updatedCourse.description}`
+    );
     cy.formatDate('courseFormStartDate', -2);
     cy.formatDate('courseFormEndDate', -3);
-    cy.getCy('courseFormMaxStudents')
-      .clear({ force: true })
-      .type(updatedCourse.maxStudents, { force: true });
-    cy.getCy('courseFormSubmit').click({ force: true });
+    cy.getCy('courseFormMaxStudents').type(
+      `{selectall}{backspace}${updatedCourse.maxStudents}`
+    );
+    cy.getCy('courseFormSubmit').click();
 
     cy.contains(updatedCourse.name).click();
     cy.contains(updatedCourse.name);
@@ -87,7 +91,7 @@ describe('Course creation', () => {
     cy.visit('/course/create');
     cy.formatDate('courseFormStartDate', -2);
     cy.formatDate('courseFormEndDate', -1);
-    cy.getCy('courseFormSubmit').click({ force: true });
+    cy.getCy('courseFormSubmit').click();
     cy.contains('The end date cannot be before the start date');
   });
 
@@ -104,7 +108,7 @@ describe('Course creation', () => {
     cy.visit('/course/create');
     cy.formatDate('courseFormEndDate', -1);
     cy.formatDate('courseFormLastEnrollDate', -2);
-    cy.getCy('courseFormSubmit').click({ force: true });
+    cy.getCy('courseFormSubmit').click();
     cy.contains(
       'The last date to enroll cannot be after the end date of the course'
     );
@@ -115,7 +119,7 @@ describe('Course creation', () => {
     cy.visit('/course/create');
     cy.formatDate('courseFormEndDate', -1);
     cy.formatDate('courseFormLastCancelDate', -2);
-    cy.getCy('courseFormSubmit').click({ force: true });
+    cy.getCy('courseFormSubmit').click();
     cy.contains(
       'The last date to cancel enrollment cannot be after the end date of the course'
     );

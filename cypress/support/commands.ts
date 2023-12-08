@@ -19,7 +19,5 @@ Cypress.Commands.add('formatDate', (value, year) => {
     minute: '2-digit',
     hour12: false,
   });
-  cy.getCy(value)
-    .invoke('removeAttr', 'disabled')
-    .type(`${formattedDate}`, { force: true });
+  cy.getCy(value).type(`${formattedDate}`);
 });

@@ -23,16 +23,16 @@ describe('BackToTopToggle button', () => {
     cy.getCy('courseFormName').type(course.name);
     cy.getCy('textEditorTextSelect').click();
     cy.getCy('textSelectorHeader1').click();
-    cy.get('.ProseMirror').type(`${course.header}{enter}`);
+    cy.get('.ProseMirror').type(`${course.header}`);
 
     cy.getCy('textEditorTextSelect').click();
     cy.getCy('textSelectorParagraph').click();
     cy.get('.ProseMirror').type(course.description);
     cy.formatDate('courseFormStartDate', -1);
     cy.formatDate('courseFormEndDate', -2);
-    cy.getCy('courseFormMaxStudents')
-      .clear()
-      .type(course.maxStudents, { force: true });
+    cy.getCy('courseFormMaxStudents').type(
+      `{selectall}{backspace}${course.maxStudents}`
+    );
     cy.getCy('courseFormSubmit').click();
     // view at top, button should not be visible
     cy.getCy('backToTopToggle').should('not.be.visible');
