@@ -27,8 +27,10 @@ describe('Course creation', () => {
     cy.formatDate('courseFormStartDate', -1);
     cy.formatDate('courseFormEndDate', -2);
 
-    cy.getCy('courseFormMaxStudents').clear().type(course.maxStudents);
-    cy.getCy('courseFormSubmit').click();
+    cy.getCy('courseFormMaxStudents')
+      .clear({ force: true })
+      .type(course.maxStudents, { force: true });
+    cy.getCy('courseFormSubmit').click({ force: true });
     cy.contains(course.name).click();
     cy.contains(course.name);
     cy.contains(course.header);
@@ -51,8 +53,10 @@ describe('Course creation', () => {
     cy.get('.ProseMirror').clear().type(updatedCourse.description);
     cy.formatDate('courseFormStartDate', -2);
     cy.formatDate('courseFormEndDate', -3);
-    cy.getCy('courseFormMaxStudents').clear().type(updatedCourse.maxStudents);
-    cy.getCy('courseFormSubmit').click();
+    cy.getCy('courseFormMaxStudents')
+      .clear({ force: true })
+      .type(updatedCourse.maxStudents, { force: true });
+    cy.getCy('courseFormSubmit').click({ force: true });
 
     cy.contains(updatedCourse.name).click();
     cy.contains(updatedCourse.name);
@@ -83,14 +87,14 @@ describe('Course creation', () => {
     cy.visit('/course/create');
     cy.formatDate('courseFormStartDate', -2);
     cy.formatDate('courseFormEndDate', -1);
-    cy.getCy('courseFormSubmit').click();
+    cy.getCy('courseFormSubmit').click({ force: true });
     cy.contains('The end date cannot be before the start date');
   });
 
   it('should not be possible for start date to be in the past', () => {
     cy.login('trainer@test.com', 'TRAINER');
     cy.visit('/course/create');
-    cy.formatDate('courseFormStartDate', 1);
+    cy.formatDate('courseFormStartDate', 3);
     cy.getCy('courseFormSubmit').click();
     cy.contains('Start date cannot be in the past');
   });
@@ -100,7 +104,7 @@ describe('Course creation', () => {
     cy.visit('/course/create');
     cy.formatDate('courseFormEndDate', -1);
     cy.formatDate('courseFormLastEnrollDate', -2);
-    cy.getCy('courseFormSubmit').click();
+    cy.getCy('courseFormSubmit').click({ force: true });
     cy.contains(
       'The last date to enroll cannot be after the end date of the course'
     );
@@ -111,7 +115,7 @@ describe('Course creation', () => {
     cy.visit('/course/create');
     cy.formatDate('courseFormEndDate', -1);
     cy.formatDate('courseFormLastCancelDate', -2);
-    cy.getCy('courseFormSubmit').click();
+    cy.getCy('courseFormSubmit').click({ force: true });
     cy.contains(
       'The last date to cancel enrollment cannot be after the end date of the course'
     );

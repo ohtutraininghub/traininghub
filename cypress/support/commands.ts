@@ -8,9 +8,9 @@ Cypress.Commands.add('login', (email, role) => {
   cy.get('#input-role-for-credentials-provider').type(`${role}{enter}`);
 });
 
-Cypress.Commands.add('formatDate', (value, day) => {
+Cypress.Commands.add('formatDate', (value, year) => {
   const currentDate = new Date();
-  currentDate.setFullYear(currentDate.getFullYear() - day);
+  currentDate.setFullYear(currentDate.getFullYear() - year);
   const formattedDate = currentDate.toLocaleString('en-US', {
     month: '2-digit',
     day: '2-digit',

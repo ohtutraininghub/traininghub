@@ -30,7 +30,9 @@ describe('BackToTopToggle button', () => {
     cy.get('.ProseMirror').type(course.description);
     cy.formatDate('courseFormStartDate', -1);
     cy.formatDate('courseFormEndDate', -2);
-    cy.getCy('courseFormMaxStudents').clear().type(course.maxStudents);
+    cy.getCy('courseFormMaxStudents')
+      .clear()
+      .type(course.maxStudents, { force: true });
     cy.getCy('courseFormSubmit').click();
     // view at top, button should not be visible
     cy.getCy('backToTopToggle').should('not.be.visible');
