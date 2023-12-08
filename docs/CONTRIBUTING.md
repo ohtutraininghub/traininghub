@@ -22,7 +22,8 @@ This getting started sections helps you setup and start development environment.
    - Applies migrations
    - Seeds database
 
-> **_Note_:** Runs script located at `scripts/dev_install.sh`
+> **_Note_:** Runs script located at `scripts/dev_install.sh`  
+> **_Note_:** If you want to use `Google` sign in see [production setup guide](./production-setup-guide.md)
 
 ### Start and stop project locally
 
