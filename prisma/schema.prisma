@@ -36,6 +36,7 @@ model Course {
   id             String     @id @default(cuid())
   name           String
   description    String
+  summary        String?
   startDate      DateTime
   endDate        DateTime
   lastEnrollDate DateTime?
