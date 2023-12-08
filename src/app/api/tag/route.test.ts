@@ -95,9 +95,9 @@ describe('API', () => {
       const response = await POST(req);
       const data = await response.json();
 
-      expect(data.message).toBe('A tag name is required.');
+      expect(data.message).toBe('Unprocessable content');
       expect(data.messageType).toBe(MessageType.ERROR);
-      expect(response.status).toBe(StatusCodeType.BAD_REQUEST);
+      expect(response.status).toBe(StatusCodeType.UNPROCESSABLE_CONTENT);
     });
   });
   describe('POST', () => {
@@ -110,11 +110,9 @@ describe('API', () => {
       const response = await POST(req);
       const data = await response.json();
 
-      expect(data.message).toBe(
-        'The maximum length for a tag is 50 characters.'
-      );
+      expect(data.message).toBe('Unprocessable content');
       expect(data.messageType).toBe(MessageType.ERROR);
-      expect(response.status).toBe(StatusCodeType.BAD_REQUEST);
+      expect(response.status).toBe(StatusCodeType.UNPROCESSABLE_CONTENT);
     });
   });
   describe('POST', () => {
@@ -127,9 +125,9 @@ describe('API', () => {
       const response = await POST(req);
       const data = await response.json();
 
-      expect(data.message).toBe('Consecutive spaces are not allowed.');
+      expect(data.message).toBe('Unprocessable content');
       expect(data.messageType).toBe(MessageType.ERROR);
-      expect(response.status).toBe(StatusCodeType.BAD_REQUEST);
+      expect(response.status).toBe(StatusCodeType.UNPROCESSABLE_CONTENT);
     });
   });
 });
