@@ -9,6 +9,7 @@
     "name": "Name",
     "startDate": "Start date",
     "submit": "Submit",
+    "summary": "Summary",
     "tags": "Tags"
   },
   "Error": {

@@ -99,6 +99,7 @@ const courseSchemaBase = z
       .pipe(z.coerce.date().nullable()),
     maxStudents: z.number().min(1),
     tags: z.array(z.string().min(1)),
+    summary: z.string().max(300).nullish(),
   })
   .strict();
 

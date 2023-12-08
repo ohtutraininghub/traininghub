@@ -10,6 +10,7 @@ import {
   Select,
   MenuItem,
   Chip,
+  TextField,
 } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { useTheme } from '@mui/material/styles';
@@ -152,6 +153,18 @@ export default function CourseForm({
             )}
           />
           <FormFieldError error={errors.description} />
+
+          <InputLabel htmlFor="courseFormSummary">
+            {t('CourseForm.summary')}
+          </InputLabel>
+          <TextField
+            {...register('summary')}
+            color="secondary"
+            id="courseFormSummary"
+            error={!!errors.summary}
+            autoComplete="off"
+          />
+          <FormFieldError error={errors.summary} />
 
           <Controller
             name="tags"
