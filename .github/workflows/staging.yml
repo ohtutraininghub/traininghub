@@ -2,7 +2,7 @@ name: Deployment pipeline to staging
 
 on:
   workflow_run:
-    workflows: ['E2E test']
+    workflows: ['e2e-test']
     types: ['completed']
 
 jobs:
