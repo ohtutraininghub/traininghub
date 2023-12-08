@@ -1,0 +1,25 @@
+name: Smoke test
+
+on:
+  push:
+    branches:
+      - staging
+  pull_request:
+    branches: [staging]
+    types: [opened, synchronize, ready_for_review]
+
+jobs:
+  smoke-test:
+    runs-on: ubuntu-22.04
+    if: ${{ !github.event.pull_request.draft }}
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: install
+        run: npm ci
+      - name: lint
+        run: npm run lint:test
+      - name: prettier
+        run: npm run format:test
+      - name: build
+        run: npm run build

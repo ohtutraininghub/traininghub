@@ -4,19 +4,11 @@ on:
   push:
     branches:
       - main
-  pull_request:
-    branches: [main]
-    types: [opened, synchronize]
-
-# Tests are already done in staging.yml
-# Staging deployment is required to succeed
-# before production deploy.
 
 jobs:
   deploy:
     runs-on: ubuntu-22.04
     environment: production
-    if: ${{ github.event_name == 'push' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
