@@ -17,7 +17,7 @@ jobs:
     if: ${{ !github.event.pull_request.draft }}
     steps:
       - name: checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: install
         run: npm ci
       - name: lint
@@ -46,7 +46,7 @@ jobs:
       DATABASE_URL: ${{ secrets.DATABASE_URL }}
     steps:
       - name: checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: install
         run: npm ci
       - name: migrate database
@@ -75,7 +75,7 @@ jobs:
       NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL }}
     steps:
       - name: checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: install
         run: npm ci
       - name: migrate database
@@ -101,7 +101,7 @@ jobs:
     if: ${{ github.event_name == 'push' }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Heroku deploy
         uses: akhileshns/heroku-deploy@v3.12.14
         with:
