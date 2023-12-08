@@ -2,7 +2,7 @@ name: E2E test
 
 on:
   workflow_run:
-    workflows: [Unit test]
+    workflows: ['Unit test']
     types: [completed]
 
 env:
