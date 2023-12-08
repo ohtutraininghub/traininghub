@@ -51,7 +51,6 @@ export default function CourseForm({
   const { notify } = useMessage();
 
   const {
-    getValues,
     control,
     register,
     formState: { errors, isSubmitting },
@@ -72,7 +71,7 @@ export default function CourseForm({
         : { maxStudents: 10 }),
     },
   });
-  console.log(JSON.stringify(getValues(), null, 2));
+
   const submitForm = async (data: FormType) => {
     const responseJson = isEditMode
       ? await update(`/api/course`, data)
