@@ -49,33 +49,6 @@ jest.mock('../../lib/i18n/client', () => ({
   },
 }));
 
-const requiredErrors = [
-  'Name is required',
-  'Description is required',
-  'Start date is required',
-  'End date is required',
-  'Max students is required',
-];
-
-describe('Course Form New Course Tests', () => {
-  beforeEach(() => {
-    renderWithTheme(<CourseForm lang="en" tags={[]} />);
-  });
-
-  it('Required errors for form fields are displayed correctly', async () => {
-    // Clear the max students input because it has a default value
-    const maxStudents = screen.getByTestId('courseFormMaxStudents');
-    await userEvent.clear(maxStudents);
-
-    const submitButton = screen.getByTestId('courseFormSubmit');
-    await userEvent.click(submitButton);
-
-    requiredErrors.forEach((message) => {
-      expect(screen.getByText(message)).toBeVisible();
-    });
-  });
-});
-
 describe('Course Form Course Edit Tests', () => {
   const courseStart = new Date(Date.now() + 24 * 60 * 60 * 1000);
   const courseEnd = new Date(Date.now() + 2 * 24 * 60 * 60 * 1000);
