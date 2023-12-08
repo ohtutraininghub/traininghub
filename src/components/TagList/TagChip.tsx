@@ -45,13 +45,15 @@ export default function TagChip({ lang, tagId, tagName }: Props) {
           handleDeleteBtnClick();
         }}
       />
-      <ConfirmCard
-        lang="en"
-        backdropOpen={backdropOpen}
-        setBackdropOpen={setBackdropOpen}
-        confirmMessage={confirmTagDeletionMessage}
-        handleClick={handleDelete}
-      />
+      {backdropOpen && (
+        <ConfirmCard
+          lang="en"
+          backdropOpen={backdropOpen}
+          setBackdropOpen={setBackdropOpen}
+          confirmMessage={confirmTagDeletionMessage}
+          handleClick={handleDelete}
+        />
+      )}
     </>
   );
 }
