@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 import { getServerAuthSession } from '@/lib/auth';
 import { insertCourseToCalendar } from '@/lib/google';
 import { prisma } from '@/lib/prisma';
@@ -8,6 +8,7 @@ import {
   successResponse,
 } from '@/lib/response/responseUtil';
 import { translator } from '@/lib/i18n';
+import { permanentRedirect } from 'next/navigation';
 
 /**
  * This route is required because after successful calendar scope grant
@@ -26,7 +27,7 @@ export async function GET(request: NextRequest) {
   }
 
   // And redirect to course modal
-  return NextResponse.redirect(new URL(`/?courseId=${courseId}`, request.url));
+  permanentRedirect(`/?courseId=${courseId}`);
 }
 
 export async function POST(request: NextRequest) {
