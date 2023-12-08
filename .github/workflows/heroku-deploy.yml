@@ -1,4 +1,4 @@
-name: Smoke test flow
+name: Heroku deploy flow
 
 on:
   workflow_call:

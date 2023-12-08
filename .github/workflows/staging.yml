@@ -1,4 +1,4 @@
-name: Deployment pipeline to staging
+name: Deploy to staging flow
 
 on:
   push:
@@ -24,3 +24,4 @@ jobs:
     needs: ['unit-test', 'e2e-test']
     with:
       ENVIRONMENT_NAME: staging
+    secrets: inherit

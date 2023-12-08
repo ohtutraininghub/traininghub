@@ -1,4 +1,4 @@
-name: Deployment pipeline to production
+name: Deploy to production flow
 
 on:
   push:
@@ -9,3 +9,4 @@ jobs:
     uses: ./.github/workflows/heroku-deploy.yml
     with:
       ENVIRONMENT_NAME: production
+    secrets: inherit
