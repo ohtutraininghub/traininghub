@@ -168,6 +168,9 @@ export default function CourseForm({
             id="courseFormSummary"
             error={!!errors.summary}
             autoComplete="off"
+            inputProps={{
+              'data-testid': 'courseFormSummary',
+            }}
           />
           <FormFieldError error={errors.summary} />
 
