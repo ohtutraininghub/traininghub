@@ -1,4 +1,9 @@
 import z from 'zod';
+import { zodI18nMap } from 'zod-i18n-map';
+import { makeZodI18nMap } from 'zod-i18n-map';
+
+z.setErrorMap(zodI18nMap);
+z.setErrorMap(makeZodI18nMap({ ns: ['zod', 'custom'] }));
 
 export const maxTagLength = 50;
 
@@ -6,13 +11,19 @@ export const tagSchema = z.object({
   name: z
     .string()
     .refine((value) => value.trim() !== '', {
-      message: 'A tag name is required',
+      params: {
+        i18n: { key: 'tagNameRequired' },
+      },
     })
     .refine((value) => value.trim().length <= maxTagLength, {
-      message: `The maximum length for a tag is ${maxTagLength} characters`,
+      params: {
+        i18n: { key: 'maximumLengthForTagIs', values: { maxTagLength } },
+      },
     })
     .refine((value) => !/\s{2,}/.test(value), {
-      message: 'Consecutive spaces are not allowed',
+      params: {
+        i18n: { key: 'consecutiveSpacesNotAllowed' },
+      },
     }),
 });
 

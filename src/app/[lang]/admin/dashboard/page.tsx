@@ -1,6 +1,6 @@
 import CreateTag from './CreateTag';
 import { Locale } from '@/lib/i18n/i18n-config';
-import { useTranslation } from '@/lib/i18n';
+import { translator } from '@/lib/i18n';
 import UserList from '@/components/UserList';
 import { Typography } from '@mui/material';
 import { getAllUsers } from '@/lib/prisma/users';
@@ -13,7 +13,7 @@ interface Props {
 }
 
 export default async function AdminDashboardPage({ params }: Props) {
-  const { t } = await useTranslation(params.lang, 'admin');
+  const { t } = await translator('admin');
   const tags = await getTags();
 
   const users = await getAllUsers();

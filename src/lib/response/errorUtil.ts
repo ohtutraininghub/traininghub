@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { ZodError } from 'zod';
 import { errorResponse, StatusCodeType } from './responseUtil';
+import { translator } from '../i18n';
 
 /**
  * Used in routes to handle common errors.
@@ -31,16 +32,25 @@ import { errorResponse, StatusCodeType } from './responseUtil';
  *   }
  * }
  */
-export const handleCommonErrors = (error: unknown): NextResponse => {
+export const handleCommonErrors = async (
+  error: unknown
+): Promise<NextResponse> => {
   if (error instanceof ZodError) {
-    return handleZodError(error);
+    return await handleZodError(error);
   }
 
   // If not known error throw it for error handler
   throw error;
 };
 
-const handleZodError = (error: ZodError) => {
+const handleZodError = async (error: ZodError) => {
+  const { t } = await translator('api');
+  if (error.issues.some((issue) => !issue?.message)) {
+    return errorResponse({
+      message: t('Common.unprocessableContent'),
+      statusCode: StatusCodeType.UNPROCESSABLE_CONTENT,
+    });
+  }
   // Get all Zod issues, map them to end with dot
   // Then join all issues into single string
   const errorMessage = error.issues

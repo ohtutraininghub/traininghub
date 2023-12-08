@@ -1,5 +1,20 @@
 {
   "AppTitle": "Training hub",
+  "CourseForm": {
+    "description": "Description",
+    "endDate": "End date",
+    "lastCancelDate": "Last date to cancel enrollment (optional)",
+    "lastEnrollDate": "Last date to enroll (optional)",
+    "maxStudents": "Max students",
+    "courseImage": "Course image url (optional)",
+    "name": "Name",
+    "startDate": "Start date",
+    "submit": "Submit",
+    "tags": "Tags"
+  },
+  "Error": {
+    "somethingWrong": "Something went wrong... Try again"
+  },
   "HomePage": {
     "trainingListTitle": "Add new Course"
   },
@@ -10,20 +25,15 @@
       "signOutConfirmation": "Confirm sign out"
     }
   },
-
-  "CourseForm": {
-    "name": "Name",
-    "description": "Description",
-    "startDate": "Start date",
-    "endDate": "End date",
-    "lastEnrollDate": "Last date to enroll (optional)",
-    "lastCancelDate": "Last date to cancel enrollment (optional)",
-    "maxStudents": "Max students",
-    "courseImage": "Course image url (optional)",
-    "submit": "Submit",
-    "tags": "Tags"
-  },
-  "Error": {
-    "somethingWrong": "Something went wrong... Try again"
+  "Tooltip": {
+    "courseDescription": "The course description is visible to all users upon opening the course details page. Utilize the online text editor for formatting. Hover over buttons for tooltips on each functionality.",
+    "createCourse": "This form is used to create a new course. Fill in the necessary details, and once you're done, click the 'Submit' button at the bottom to publish the course. Some fields are optional. See the tooltips for details.",
+    "editCourse": "This form allows you to modify the course details. After making the desired updates, remember to save the changes by clicking the 'Update' button at the bottom. Your modifications will be published instantly.",
+    "endDate": "The end date signifies the completion of the course. This is a mandatory field. Courses are displayed in the course listings for all users until their end date.",
+    "lastCancelDate": "Last date to cancel enrollment is an optional field. If specified, it denotes the final date for students to cancel their enrollment in the course.",
+    "lastEnrollDate": "Last date to enroll is an optional field. If specified, it indicates the final date for students to enroll in the course.",
+    "maxStudents": "The maximum number of students allowed in the course. This is a mandatory field. Once this maximum capacity is reached, enrollment will be closed. You have the flexibility to edit this field later to increase the course capacity.",
+    "startDate": "Start date indicates when the course begins. It's a required field. The date cannot be in the past.",
+    "tags": "Tags help organize courses. Choose relevant tags to improve course categorization, making it easier for users to discover interesting content quickly. Feel free to select any number of tags from the dropdown menu."
   }
 }

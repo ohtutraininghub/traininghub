@@ -64,7 +64,7 @@ export default function CourseModal({
   const isUserEnrolled = usersEnrolledCourseIds.includes(course.id);
   const isCourseFull = course._count.students === course.maxStudents;
   const hasRightToViewStudents = isTrainerOrAdmin(session.user);
-  const hasEditRights = hasCourseEditRights(session.user, course);
+  const hasEditRights = hasCourseEditRights(session.user);
 
   const handleClick = (event: object, reason: string) => {
     if (reason === 'backdropClick') {
