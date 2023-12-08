@@ -47,7 +47,7 @@
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@fontsource/roboto": "^5.0.8",
-    "@formatjs/intl-localematcher": "^0.4.2",
+    "@formatjs/intl-localematcher": "^0.5.2",
     "@googleapis/calendar": "^9.3.2",
     "@hookform/resolvers": "^3.3.1",
     "@mui/icons-material": "^5.14.8",
