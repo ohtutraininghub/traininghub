@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 import { getServerAuthSession } from '@/lib/auth';
 import { insertCourseToCalendar } from '@/lib/google';
 import { prisma } from '@/lib/prisma';
@@ -7,6 +7,8 @@ import {
   errorResponse,
   successResponse,
 } from '@/lib/response/responseUtil';
+import { translator } from '@/lib/i18n';
+import { permanentRedirect } from 'next/navigation';
 
 /**
  * This route is required because after successful calendar scope grant
@@ -25,10 +27,11 @@ export async function GET(request: NextRequest) {
   }
 
   // And redirect to course modal
-  return NextResponse.redirect(new URL(`/?courseId=${courseId}`, request.url));
+  permanentRedirect(`/?courseId=${courseId}`);
 }
 
 export async function POST(request: NextRequest) {
+  const { t } = await translator('api');
   const { searchParams } = new URL(request.url);
   const courseId = searchParams.get('courseId');
 
@@ -40,15 +43,17 @@ export async function POST(request: NextRequest) {
   }
 
   return successResponse({
-    message: 'Added course to calendar!',
+    message: t('Courses.addedToCalendar'),
     statusCode: StatusCodeType.CREATED,
   });
 }
 
 const commonBody = async (courseId: string | null) => {
+  const { t } = await translator('api');
+
   if (!courseId) {
     return errorResponse({
-      message: 'Course id param missing!',
+      message: t('Courses.idMissing'),
       statusCode: StatusCodeType.UNPROCESSABLE_CONTENT,
     });
   }
@@ -68,14 +73,14 @@ const commonBody = async (courseId: string | null) => {
   });
   if (!course) {
     return errorResponse({
-      message: 'Course by given id was not found!',
+      message: t('Common.courseNotFound'),
       statusCode: StatusCodeType.UNPROCESSABLE_CONTENT,
     });
   }
 
   if (!course.students.some((student) => student.id === userId)) {
     return errorResponse({
-      message: 'You have not enrolled for this course!',
+      message: t('Common.notEnrolledError'),
       statusCode: StatusCodeType.UNPROCESSABLE_CONTENT,
     });
   }

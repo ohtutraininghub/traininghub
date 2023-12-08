@@ -1,24 +1,25 @@
 {
-  "DashboardTitle": "Admin dashboard",
   "CreateTag": {
     "addNewTag": "Add new tag",
     "tagsLabel": "Tags"
   },
+  "DashboardTitle": "Admin dashboard",
   "EditUsers": {
-    "label": "Users",
-    "infoText": "Changes in user roles are applied when user signs in again",
-    "filterToggleLabel": "Show filter row",
+    "confirmCard": {
+      "cancel": "Cancel changes",
+      "confirm": "Confirm changes"
+    },
+    "failedToUpdateUser": "Failed to update user",
     "filterHideLabel": "Hide filter row",
+    "filterToggleLabel": "Show filter row",
+    "infoText": "Changes in user roles are applied when user signs in again",
+    "label": "Users",
+    "searchTooltip": "Filter table with {{headerValue}}",
     "tableHeaders": {
-      "name": "Name",
       "email": "Email",
       "emailVerified": "Email Verified",
+      "name": "Name",
       "role": "Role"
-    },
-    "searchTooltip": "Filter table with {{headerValue}}",
-    "confirmCard": {
-      "confirm": "Confirm changes",
-      "cancel": "Cancel changes"
     }
   }
 }
