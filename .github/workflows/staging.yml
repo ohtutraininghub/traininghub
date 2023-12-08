@@ -14,15 +14,16 @@ jobs:
   unit-test:
     uses: ./.github/workflows/unit-test.yml
     needs: [smoke-test]
+    secrets: inherit
   e2e-test:
     uses: ./.github/workflows/e2e-test.yml
     needs: [smoke-test]
-
+    secrets: inherit
   deploy:
     runs-on: ubuntu-22.04
     environment: staging
     if: ${{ github.event_name == 'push' }}
-    needs: [smoke-test, e2e-test]
+    needs: ['unit-test', 'e2e-test']
     steps:
       - name: Checkout
         uses: actions/checkout@v3
