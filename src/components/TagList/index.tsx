@@ -22,6 +22,7 @@ export default async function TagList({ lang, tags }: TagListProps) {
 
   return (
     <ul
+      data-testid="tag-list"
       style={{
         display: 'flex',
         flexWrap: 'wrap',
