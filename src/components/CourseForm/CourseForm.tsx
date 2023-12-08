@@ -319,6 +319,7 @@ export default function CourseForm({
           <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={lang}>
             <InputLabel htmlFor="courseFormStartDate">
               {t('CourseForm.startDate')}
+              YEEEEEET
               <StyledTooltip
                 data-testid="tooltipStartDate"
                 lang={lang}
