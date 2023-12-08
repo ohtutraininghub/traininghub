@@ -1,3 +1,33 @@
+# Setup .env file if not exists for development
+ENV_FILE=.env
+if [ ! -f $ENV_FILE ]; then
+  DATABASE_URL=postgresql://admin:password@localhost:5433/traininghub-db-dev?schema=public
+  NEXTAUTH_SECRET=$(openssl rand -base64 32)
+  NEXTAUTH_URL=http://localhost:3000
+
+  echo "# Required for Prisma" > $ENV_FILE
+  echo "DATABASE_URL=$DATABASE_URL" >> $ENV_FILE
+  echo "" >> $ENV_FILE
+  echo "# Required for NextAuth" >> $ENV_FILE
+  echo "NEXTAUTH_SECRET=$NEXTAUTH_SECRET" >> $ENV_FILE
+  echo "NEXTAUTH_URL=$NEXTAUTH_URL" >> $ENV_FILE
+fi
+
+# Setup .env.text file if not exists for development
+ENV_TEST_FILE=.env.test
+if [ ! -f $ENV_TEST_FILE ]; then
+  DATABASE_URL=postgresql://admin:password@localhost:5434/traininghub-db?schema=public
+  NEXTAUTH_SECRET=$(openssl rand -base64 32)
+  NEXTAUTH_URL=http://localhost:3000
+
+  echo "# Required for Prisma" > $ENV_TEST_FILE
+  echo "DATABASE_URL=$DATABASE_URL" >> $ENV_TEST_FILE
+  echo "" >> $ENV_TEST_FILE
+  echo "# Required for NextAuth" >> $ENV_TEST_FILE
+  echo "NEXTAUTH_SECRET=$NEXTAUTH_SECRET" >> $ENV_TEST_FILE
+  echo "NEXTAUTH_URL=$NEXTAUTH_URL" >> $ENV_TEST_FILE
+fi
+
 # Install depencies
 npm install
 
