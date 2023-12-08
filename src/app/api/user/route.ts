@@ -8,16 +8,18 @@ import { NextRequest } from 'next/server';
 import { getServerAuthSession } from '@/lib/auth';
 import { isAdmin } from '@/lib/auth-utils';
 import { handleCommonErrors } from '@/lib/response/errorUtil';
+import { translator } from '@/lib/i18n';
 
 export async function PUT(request: NextRequest) {
   try {
+    const { t } = await translator('api');
     const data = await request.json();
     const { userId, newRole } = data;
 
     const { user } = await getServerAuthSession();
     if (!isAdmin(user)) {
       return errorResponse({
-        message: 'Forbidden',
+        message: t('Common.forbidden'),
         statusCode: StatusCodeType.FORBIDDEN,
       });
     }
@@ -28,10 +30,10 @@ export async function PUT(request: NextRequest) {
     });
 
     return successResponse({
-      message: 'User access role succesfully changed!',
+      message: t('Users.roleChanged'),
       statusCode: StatusCodeType.OK,
     });
   } catch (error: unknown) {
-    return handleCommonErrors(error);
+    return await handleCommonErrors(error);
   }
 }

@@ -98,7 +98,7 @@ describe('Course enrollment API tests', () => {
       const response = await POST(req);
       const data = await response.json();
 
-      expect(data.message).toBe('Could not find course with given identifier!');
+      expect(data.message).toBe('Course by given id was not found!');
       expect(data.messageType).toBe(MessageType.ERROR);
       expect(response.status).toBe(StatusCodeType.NOT_FOUND);
     });
@@ -205,7 +205,7 @@ describe('Course enrollment API tests', () => {
       const response = await PUT(req);
       const data = await response.json();
 
-      expect(data.message).toBe('You are not enrolled to this course');
+      expect(data.message).toBe('You have not enrolled to this course');
       expect(data.messageType).toBe(MessageType.ERROR);
       expect(response.status).toBe(StatusCodeType.UNPROCESSABLE_CONTENT);
     });
