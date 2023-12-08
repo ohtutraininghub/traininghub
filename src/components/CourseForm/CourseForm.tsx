@@ -30,6 +30,7 @@ import { CourseWithTags } from '@/lib/prisma/courses';
 import { useTranslation } from '@i18n/client';
 import { DictProps } from '@i18n/index';
 import RichTextEditor from '@/components/TextEditor';
+import StyledTooltip from '@/components/StyledTooltip';
 
 interface CourseFormProps extends DictProps {
   tags: Tag[];
@@ -103,6 +104,15 @@ export default function CourseForm({
           marginBottom={1}
         >
           {!isEditMode ? 'Add New Course' : 'Edit Course Details'}
+          <StyledTooltip
+            lang={lang}
+            data-testid={
+              !isEditMode ? 'tooltipCreateCourse' : 'tooltipEditCourse'
+            }
+            title={
+              !isEditMode ? t('Tooltip.createCourse') : t('Tooltip.editCourse')
+            }
+          />
         </Typography>
         <form
           id="courseForm"
@@ -126,6 +136,11 @@ export default function CourseForm({
 
           <InputLabel htmlFor="courseFormDescription">
             {t('CourseForm.description')}
+            <StyledTooltip
+              testid="tooltipCourseDescription"
+              lang={lang}
+              title={t('Tooltip.courseDescription')}
+            />
           </InputLabel>
           <Controller
             data-testid="courseFormDescription"
@@ -147,6 +162,11 @@ export default function CourseForm({
                 <>
                   <InputLabel htmlFor="tagSelection">
                     {t('CourseForm.tags')}
+                    <StyledTooltip
+                      data-testid="tooltipTags"
+                      lang={lang}
+                      title={t('Tooltip.tags')}
+                    />
                   </InputLabel>
                   <Select
                     {...field}
@@ -199,6 +219,11 @@ export default function CourseForm({
           />
           <InputLabel htmlFor="courseFormStartDate">
             {t('CourseForm.startDate')}
+            <StyledTooltip
+              data-testid="tooltipStartDate"
+              lang={lang}
+              title={t('Tooltip.startDate')}
+            />
           </InputLabel>
           <Input
             {...register('startDate')}
@@ -216,6 +241,11 @@ export default function CourseForm({
           <FormFieldError error={errors.startDate} />
           <InputLabel htmlFor="courseFormEndDate">
             {t('CourseForm.endDate')}
+            <StyledTooltip
+              data-testid="tooltipEndDate"
+              lang={lang}
+              title={t('Tooltip.endDate')}
+            />
           </InputLabel>
           <Input
             {...register('endDate')}
@@ -234,6 +264,11 @@ export default function CourseForm({
 
           <InputLabel htmlFor="courseFormLastEnrollDate">
             {t('CourseForm.lastEnrollDate')}
+            <StyledTooltip
+              data-testid="tooltipLastEnrollDate"
+              lang={lang}
+              title={t('Tooltip.lastEnrollDate')}
+            />
           </InputLabel>
           <Input
             {...register('lastEnrollDate')}
@@ -254,6 +289,11 @@ export default function CourseForm({
 
           <InputLabel htmlFor="courseFormLastCancelDate">
             {t('CourseForm.lastCancelDate')}
+            <StyledTooltip
+              data-testid="tooltipLastCancelDate"
+              lang={lang}
+              title={t('Tooltip.lastCancelDate')}
+            />
           </InputLabel>
           <Input
             {...register('lastCancelDate')}
@@ -274,6 +314,11 @@ export default function CourseForm({
 
           <InputLabel htmlFor="courseFormMaxStudents">
             {t('CourseForm.maxStudents')}
+            <StyledTooltip
+              data-testid="maxStudents"
+              lang={lang}
+              title={t('Tooltip.maxStudents')}
+            />
           </InputLabel>
           <Input
             {...register('maxStudents', {
