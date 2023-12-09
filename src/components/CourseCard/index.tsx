@@ -28,7 +28,6 @@ const CourseCard = ({ course, enrolls }: Props) => {
     params.set('courseId', course.id);
     return `${pathname}?${params.toString()}`;
   };
-
   return (
     <Link href={getURL()} style={{ textDecoration: 'none' }}>
       <Card
@@ -36,7 +35,7 @@ const CourseCard = ({ course, enrolls }: Props) => {
           backgroundColor: theme.palette.coverBlue.dark,
           color: theme.palette.white.main,
           width: 450, // fixed dimensions for styling
-          height: '300px',
+          height: '400px',
           [theme.breakpoints.up('sm')]: {
             // adjust to smaller card size for mobile
             height: '540px',
@@ -81,11 +80,14 @@ const CourseCard = ({ course, enrolls }: Props) => {
             justifyContent: 'space-between',
           }}
         >
-          <Box>
-            <Typography variant="h3" m={2}>
-              {course.name}
+          <Typography variant="h3" m={2}>
+            {course.name}
+          </Typography>
+          {course.summary && (
+            <Typography variant="body1" width="90%">
+              {course.summary}
             </Typography>
-          </Box>
+          )}
           <Box
             sx={{
               alignItems: 'center',
