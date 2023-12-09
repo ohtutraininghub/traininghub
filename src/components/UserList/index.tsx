@@ -126,7 +126,14 @@ export default function UserList({ lang, users }: Props) {
   }
 
   function handleChangeVisibleRows(event: React.ChangeEvent<HTMLInputElement>) {
-    setVisibleRowsPerPage(Number(event.target.value));
+    const newRowsPerPage = Number(event.target.value);
+    const newPage = Math.min(
+      page,
+      Math.ceil(filteredUsers.length / newRowsPerPage) - 1
+    );
+
+    setPage(newPage);
+    setVisibleRowsPerPage(newRowsPerPage);
   }
 
   async function handleUserRoleChange(userId: string, newRole: $Enums.Role) {
