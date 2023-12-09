@@ -19,5 +19,16 @@ Cypress.Commands.add('formatDate', (value, year) => {
     minute: '2-digit',
     hour12: false,
   });
-  cy.getCy(value).type(`${formattedDate}`);
+
+  cy.getCy(value).then(($element) => {
+    if ($element.find('CLEAR').length > 0) {
+      cy.contains('CLEAR')
+        .click()
+        .then(() => {
+          cy.getCy(value).type(`${formattedDate}`);
+        });
+    } else {
+      cy.getCy(value).type(`${formattedDate}`);
+    }
+  });
 });
