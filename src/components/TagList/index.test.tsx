@@ -21,6 +21,46 @@ jest.mock('../../lib/i18n', () => ({
   },
 }));
 
+jest.mock('../../lib/i18n/client', () => ({
+  // this mock makes sure any components using the translate hook can use it without a warning being shown
+  useTranslation: () => {
+    return {
+      t: (str: string) => str,
+      i18n: {
+        changeLanguage: () => new Promise(() => {}),
+      },
+    };
+  },
+}));
+
+jest.mock('next/navigation', () => ({
+  useRouter() {
+    return {
+      push: jest.fn(),
+      refresh: jest.fn(),
+    };
+  },
+}));
+
+jest.mock('../Providers/MessageProvider', () => ({
+  useMessage() {
+    return {
+      notify: jest.fn(),
+    };
+  },
+}));
+
+const mockFetch = jest.fn((...args: any[]) =>
+  Promise.resolve({
+    json: () => Promise.resolve({ args: args }),
+    ok: true,
+  })
+);
+
+jest.mock('../../lib/response/fetchUtil', () => ({
+  remove: (...args: any[]) => mockFetch(...args),
+}));
+
 const tags = [
   { name: 'Agile methods' },
   { name: 'CI/CD' },
