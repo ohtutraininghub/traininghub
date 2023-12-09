@@ -26,7 +26,7 @@
     "placeholderText": "Tag name"
   },
   "TagList": {
-    "confirmTagDeletion": "Are you sure you want to delete the tag \"{{name}}\"?",
+    "confirmTagDeletion": "Are you sure you want to delete the following tag:",
     "noTagsAdded": "No tags added"
   },
   "TagsSection": {

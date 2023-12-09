@@ -20,9 +20,9 @@ export default function TagChip({ lang, tagId, tagName }: Props) {
   const { notify } = useMessage();
   const [backdropOpen, setBackdropOpen] = useState(false);
 
-  const confirmTagDeletionMessage = t('TagList.confirmTagDeletion', {
-    name: tagName,
-  });
+  const confirmTagDeletionMessage = `${t(
+    'TagList.confirmTagDeletion'
+  )} ${tagName}`;
 
   const handleDelete = async () => {
     const responseJson = await remove('/api/tag/', {

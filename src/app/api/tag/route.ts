@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
       data: newTag,
     });
     return successResponse({
-      message: t('Tags.tagCreated', { name: newTag.name }),
+      message: t('Tags.tagCreated'),
       statusCode: StatusCodeType.CREATED,
     });
   } catch (error: unknown) {
@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
       error.code === 'P2002'
     ) {
       return errorResponse({
-        message: t('Tags.duplicateError', { name: newTag?.name ?? '' }),
+        message: t('Tags.duplicateError'),
         statusCode: StatusCodeType.UNPROCESSABLE_CONTENT,
       });
     }
