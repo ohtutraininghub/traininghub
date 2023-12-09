@@ -63,9 +63,7 @@ describe('Tag API tests', () => {
       const response = await POST(request);
       const data = await response.json();
 
-      expect(data.message).toBe(
-        `Tag \"${newTag.name}\" was succesfully created!`
-      );
+      expect(data.message).toBe(`The tag was succesfully created!`);
       expect(data.messageType).toBe(MessageType.SUCCESS);
       expect(response.status).toBe(StatusCodeType.CREATED);
     });
@@ -75,7 +73,7 @@ describe('Tag API tests', () => {
       const data = await response.json();
 
       expect(data.message).toBe(
-        `Failed to create tag. Tag \"${existingTag.name}\" already exists.`
+        `Failed to create tag. A duplicate tag already exists.`
       );
       expect(data.messageType).toBe(MessageType.ERROR);
       expect(response.status).toBe(StatusCodeType.UNPROCESSABLE_CONTENT);
@@ -86,7 +84,7 @@ describe('Tag API tests', () => {
       const data = await response.json();
 
       expect(data.message).toBe(
-        `Failed to create tag. Tag \"${duplicateTag.name}\" already exists.`
+        `Failed to create tag. A duplicate tag already exists.`
       );
       expect(data.messageType).toBe(MessageType.ERROR);
       expect(response.status).toBe(StatusCodeType.UNPROCESSABLE_CONTENT);
