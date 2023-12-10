@@ -198,7 +198,7 @@ export default function CourseList({
                           paddingLeft: !!course?.image ? 0 : 'auto',
                         }}
                       >
-                        {course?.image && (
+                        {course.image && (
                           <ListItemIcon>
                             <ImageContainer
                               imageUrl={course.image}
