@@ -70,6 +70,6 @@ export async function DELETE(request: NextRequest) {
       statusCode: StatusCodeType.OK,
     });
   } catch (error: unknown) {
-    return handleCommonErrors(error);
+    return await handleCommonErrors(error);
   }
 }
