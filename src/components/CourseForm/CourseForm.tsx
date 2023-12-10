@@ -10,7 +10,6 @@ import {
   Select,
   MenuItem,
   Chip,
-  TextField,
 } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { useTheme } from '@mui/material/styles';
@@ -161,7 +160,7 @@ export default function CourseForm({
               title={t('Tooltip.summary')}
             />
           </InputLabel>
-          <TextField
+          <Input
             {...register('summary')}
             color="secondary"
             id="courseFormSummary"
@@ -172,6 +171,24 @@ export default function CourseForm({
             }}
           />
           <FormFieldError error={errors.summary} />
+
+          <InputLabel htmlFor="courseFormImage">
+            {t('CourseForm.courseImage')}
+            <StyledTooltip
+              testid="tooltipCourseImage"
+              lang={lang}
+              title={t('Tooltip.image')}
+            />
+          </InputLabel>
+          <Input
+            {...register('image')}
+            id="courseFormImage"
+            color="secondary"
+            error={!!errors.image}
+            inputProps={{
+              'data-testid': 'courseFormImage',
+            }}
+          />
 
           <Controller
             name="tags"
@@ -237,23 +254,7 @@ export default function CourseForm({
               );
             }}
           />
-          <InputLabel htmlFor="courseFormImage">
-            {t('CourseForm.courseImage')}
-            <StyledTooltip
-              testid="tooltipCourseImage"
-              lang={lang}
-              title={t('Tooltip.image')}
-            />
-          </InputLabel>
-          <Input
-            {...register('image')}
-            id="courseFormImage"
-            color="secondary"
-            error={!!errors.image}
-            inputProps={{
-              'data-testid': 'courseFormImage',
-            }}
-          />
+
           <FormFieldError error={errors.image} />
           <InputLabel htmlFor="courseFormStartDate">
             {t('CourseForm.startDate')}
