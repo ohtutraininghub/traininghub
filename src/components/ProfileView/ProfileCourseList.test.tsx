@@ -16,6 +16,7 @@ const testCourses: Course[] = [
     lastEnrollDate: null,
     lastCancelDate: null,
     maxStudents: 10,
+    image: '',
   },
   {
     id: '223456789',
@@ -27,6 +28,7 @@ const testCourses: Course[] = [
     lastEnrollDate: null,
     lastCancelDate: null,
     maxStudents: 10,
+    image: '',
   },
 ];
 

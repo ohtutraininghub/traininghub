@@ -13,7 +13,9 @@
     },
     "checkbox": {
       "remember": "Remember my decision"
-    }
+    },
+    "enrollmentDeadlineHeader": "Note: Enrollment deadline ",
+    "enrolls": "Enrolls: {{studentCount}} / {{maxStudentCount}}"
   },
   "CancelEnroll": {
     "cancelEnrollment": "Cancel enrollment",
@@ -53,6 +55,7 @@
       "viewCourseDetailsLabel": "Details",
       "viewEnrolledStudentsLabel": "Students"
     },
+    "courseImageAltText": "Course title image",
     "enrollmentDeadlineHeader": "Note: Enrollment deadline ",
     "enrolls": "Enrolls: {{studentCount}} / {{maxStudentCount}}"
   },
