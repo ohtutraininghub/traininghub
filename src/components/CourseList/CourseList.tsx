@@ -195,7 +195,7 @@ export default function CourseList({
                             backgroundColor: 'rgba(255, 255, 255, 0.1)',
                             borderRight: '15px dashed #ffd100',
                           },
-                          paddingLeft: !!course?.image ? 0 : 'auto',
+                          paddingLeft: !!course.image ? 0 : 'auto',
                         }}
                       >
                         {course.image && (
