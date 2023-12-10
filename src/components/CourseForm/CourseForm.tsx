@@ -167,6 +167,7 @@ export default function CourseForm({
             error={!!errors.summary}
             autoComplete="off"
             inputProps={{
+              maxLength: 150,
               'data-testid': 'courseFormSummary',
             }}
           />

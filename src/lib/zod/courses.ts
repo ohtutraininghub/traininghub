@@ -100,7 +100,7 @@ const courseSchemaBase = z
     image: z.union([z.string().url().nullish(), z.literal('')]),
     maxStudents: z.number().min(1),
     tags: z.array(z.string().min(1)),
-    summary: z.string().max(300).nullish(),
+    summary: z.string().max(150).nullish(),
   })
   .strict();
 
