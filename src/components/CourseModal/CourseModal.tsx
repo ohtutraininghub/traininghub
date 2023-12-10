@@ -143,7 +143,7 @@ export default function CourseModal({
             <CourseModalCloseButton lang={lang} />
           </div>
         </div>
-        {course?.image && courseView === 'details' && (
+        {course.image && courseView === 'details' && (
           <ImageContainer
             withBorder
             imageUrl={course.image}
