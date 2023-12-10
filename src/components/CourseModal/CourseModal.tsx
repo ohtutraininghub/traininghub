@@ -22,6 +22,8 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import TrainerTools from './TrainerTools';
 import { isTrainerOrAdmin } from '@/lib/auth-utils';
+import { useMediaQuery, useTheme } from '@mui/material';
+import { ImageContainer } from '../ImageContainer';
 
 interface Props extends DictProps {
   course: CourseWithTagsAndStudentCount | undefined;
@@ -45,6 +47,8 @@ export default function CourseModal({
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const [courseView, setCourseView] = useState<string | null>('details');
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   //Reset view to course description when modal is opened/closed
   useEffect(() => {
@@ -60,7 +64,7 @@ export default function CourseModal({
   const isUserEnrolled = usersEnrolledCourseIds.includes(course.id);
   const isCourseFull = course._count.students === course.maxStudents;
   const hasRightToViewStudents = isTrainerOrAdmin(session.user);
-  const hasEditRights = hasCourseEditRights(session.user, course);
+  const hasEditRights = hasCourseEditRights(session.user);
 
   const handleClick = (event: object, reason: string) => {
     if (reason === 'backdropClick') {
@@ -139,7 +143,15 @@ export default function CourseModal({
             <CourseModalCloseButton lang={lang} />
           </div>
         </div>
-
+        {course.image && courseView === 'details' && (
+          <ImageContainer
+            withBorder
+            imageUrl={course.image}
+            width={isMobile ? 60 : 100}
+            height={isMobile ? 60 : 100}
+            altText={t('CourseModal.courseImageAltText')}
+          />
+        )}
         <Typography variant="h1">{course.name}</Typography>
         <Typography sx={{ my: 2 }}>
           <LocalizedDateTime

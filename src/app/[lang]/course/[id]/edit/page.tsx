@@ -24,7 +24,7 @@ export default async function CourseEditPage({ params }: Props) {
   if (!course) {
     notFound();
   }
-  if (!hasCourseEditRights(user, course)) {
+  if (!hasCourseEditRights(user)) {
     return <UnauthorizedError lang={params.lang} />;
   }
 

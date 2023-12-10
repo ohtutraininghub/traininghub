@@ -1,15 +1,24 @@
+const course = {
+  name: 'Kubernetes Fundamentals',
+  header: 'Learn Kubernetes',
+  description:
+    'Take your first steps in using Kubernetes for container orchestration. This course will introduce you to the basic concepts and building blocks of Kubernetes and the architecture of the system. Get ready to start you cloud native journey!',
+  startDate: '2030-06-01T08:30',
+  endDate: '2030-07-01T08:30',
+  maxStudents: '100',
+  image: 'http://test-image.com',
+};
+
 describe('Course creation', () => {
   before(() => {
     cy.task('clearDatabase');
   });
 
-  const course = {
-    name: 'Kubernetes Fundamentals',
-    header: 'Learn Kubernetes',
-    description:
-      'Take your first steps in using Kubernetes for container orchestration. This course will introduce you to the basic concepts and building blocks of Kubernetes and the architecture of the system. Get ready to start you cloud native journey!',
-    maxStudents: '100',
-  };
+  beforeEach(() => {
+    cy.intercept('*_next/image?url=http*', (req) => {
+      req.reply({ statusCode: 200, fixture: 'images/test_logo.png' });
+    });
+  });
 
   it('course creation should be successful when the input is valid ', () => {
     cy.login('trainer@test.com', 'TRAINER');
@@ -30,18 +39,23 @@ describe('Course creation', () => {
     cy.getCy('courseFormMaxStudents').type(
       `{selectall}{backspace}${course.maxStudents}`
     );
+
+    cy.getCy('courseFormMaxStudents').clear().type(course.maxStudents);
+    cy.getCy('courseFormImage').type(course.image);
     cy.getCy('courseFormSubmit').click();
     cy.contains(course.name).click();
     cy.contains(course.name);
     cy.contains(course.header);
     cy.contains(course.maxStudents);
     cy.contains(course.description);
+    cy.getCy('courseImage').should('be.visible');
   });
 
   const updatedCourse = {
     name: 'Kubernetes 2',
     description: 'New description',
     maxStudents: '120',
+    image: '',
   };
 
   it('editing course with valid data should be successful', () => {
@@ -66,6 +80,7 @@ describe('Course creation', () => {
     cy.contains(updatedCourse.name);
     cy.contains(updatedCourse.maxStudents);
     cy.contains(updatedCourse.description);
+    cy.getCy('courseImage').should('be.visible');
   });
 
   const requiredErrors = [
@@ -123,6 +138,14 @@ describe('Course creation', () => {
     cy.contains(
       'The last date to cancel enrollment cannot be after the end date of the course'
     );
+  });
+
+  it('should not be possible to add an invalid url for course image', () => {
+    cy.login('trainer@test.com', 'TRAINER');
+    cy.visit('/course/create');
+    cy.getCy('courseFormImage').type('invalid url');
+    cy.getCy('courseFormSubmit').click();
+    cy.contains('Invalid url');
   });
 
   it('should not be possible to access course creation page as a trainee', () => {
