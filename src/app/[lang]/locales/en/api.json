@@ -23,8 +23,9 @@
     "youHaveAlreadyEnrolled": "You have already enrolled!"
   },
   "Tags": {
-    "duplicateError": "Failed to create tag. Tag \"{{name}}\" already exists.",
-    "tagCreated": "Tag \"{{name}}\" succesfully created!"
+    "duplicateError": "Failed to create tag. A duplicate tag already exists.",
+    "tagCreated": "The tag was succesfully created!",
+    "tagDeleted": "The tag was succesfully deleted"
   },
   "Users": {
     "roleChanged": "User access role succesfully changed!"

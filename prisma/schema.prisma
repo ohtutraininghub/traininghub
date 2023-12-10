@@ -47,6 +47,7 @@ model Course {
   createdBy      User?      @relation(name: "createdCourses", references: [id], fields: [createdById])
   createdById    String
   calendar       Calendar[]
+  image          String?
 }
 
 model Calendar {

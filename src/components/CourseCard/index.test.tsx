@@ -34,11 +34,16 @@ const course: CourseWithTagsAndStudentCount = {
     students: 0,
   },
   tags: [],
+  image: '',
 };
 
 beforeEach(() => {
   renderWithTheme(
-    <CourseCard enrolls={`0 / ${course.maxStudents}`} course={course} />
+    <CourseCard
+      lang="en"
+      enrolls={`0 / ${course.maxStudents}`}
+      course={course}
+    />
   );
 });
 

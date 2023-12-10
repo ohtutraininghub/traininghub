@@ -97,6 +97,7 @@ const courseSchemaBase = z
       .nullish()
       .transform((value) => (value ? value : null))
       .pipe(z.coerce.date().nullable()),
+    image: z.union([z.string().url().nullish(), z.literal('')]),
     maxStudents: z.number().min(1),
     tags: z.array(z.string().min(1)),
     summary: z.string().max(300).nullish(),

@@ -5,6 +5,15 @@ const nextConfig = {
     config.externals = [...config.externals, 'canvas', 'jsdom', 'node-fetch'];
     return config;
   },
+  images: {
+    remotePatterns: [
+      {
+        hostname: '**',
+        port: '',
+        pathname: '**',
+      },
+    ],
+  },
 };
 
 module.exports = nextConfig;

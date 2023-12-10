@@ -11,11 +11,11 @@ type Tag = {
 };
 
 interface Props extends DictProps {
-  existingTagLabel: string;
+  tagsHeader: string;
   tags: Tag[];
 }
 
-export default function CreateTag({ lang, existingTagLabel, tags }: Props) {
+export default function CreateTag({ lang, tagsHeader, tags }: Props) {
   return (
     <div
       style={{
@@ -25,7 +25,7 @@ export default function CreateTag({ lang, existingTagLabel, tags }: Props) {
       }}
     >
       <Typography variant="h2" sx={{ marginBottom: '2rem' }}>
-        {existingTagLabel}
+        {tagsHeader}
       </Typography>
       <TagList lang={lang} tags={tags} />
       <TagForm lang={lang} />
