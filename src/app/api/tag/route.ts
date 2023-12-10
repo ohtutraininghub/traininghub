@@ -52,7 +52,7 @@ export async function DELETE(request: NextRequest) {
     const { user } = await getServerAuthSession();
     if (!isAdmin(user)) {
       return errorResponse({
-        message: 'Forbidden',
+        message: t('Common.forbidden'),
         statusCode: StatusCodeType.FORBIDDEN,
       });
     }
