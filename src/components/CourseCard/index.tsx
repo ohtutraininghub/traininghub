@@ -89,7 +89,7 @@ const CourseCard = ({ course, enrolls, lang }: Props) => {
         >
           <Typography variant="h3">{course.name}</Typography>
 
-          {course?.image && (
+          {course.image && (
             <ImageContainer
               imageUrl={course.image}
               width={isMobile ? 80 : 125}
