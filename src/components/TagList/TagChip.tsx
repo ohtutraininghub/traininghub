@@ -32,17 +32,13 @@ export default function TagChip({ lang, tagId, tagName }: Props) {
     router.refresh();
   };
 
-  function handleDeleteBtnClick() {
-    setBackdropOpen(true);
-  }
-
   return (
     <>
       <Chip
         label={tagName}
         variant={'outlined'}
         onDelete={() => {
-          handleDeleteBtnClick();
+          setBackdropOpen(true);
         }}
       />
       {backdropOpen && (
