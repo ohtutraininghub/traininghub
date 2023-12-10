@@ -27,4 +27,12 @@ export const tagSchema = z.object({
     }),
 });
 
+export const tagDeleteSchema = z
+  .object({
+    tagId: z.string().cuid(),
+  })
+  .strict();
+
 export type TagSchemaType = z.infer<typeof tagSchema>;
+
+export type TagDeleteSchemaType = z.infer<typeof tagDeleteSchema>;

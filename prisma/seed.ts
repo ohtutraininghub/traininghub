@@ -9,13 +9,17 @@ const traineeUser = {
   role: Role.TRAINEE,
 };
 
+const currentDate = new Date().setHours(9, 0, 0, 0).valueOf();
+const msDay = 24 * 60 * 60 * 1000;
+const msHour = 60 * 60 * 1000;
+
 const courseData = [
   {
     name: 'Git Fundamentals',
     description:
       'This course will walk you through the fundamentals of using Git for version control. You will learn how to create a local Git repository, commit files and push your changes to a remote repository. The course will introduce you to concepts like the working copy and the staging area and teach you how to organise you repository using tags and branches. You will learn how to make pull requests and merge branches, and tackle merge conflicts when they arise.',
-    startDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-    endDate: new Date(Date.now() + 8 * 24 * 60 * 60 * 1000),
+    startDate: new Date(currentDate + 7 * msDay),
+    endDate: new Date(currentDate + 7 * msDay + 8 * msHour),
     maxStudents: 12,
     tags: ['Git'],
   },
@@ -23,8 +27,8 @@ const courseData = [
     name: 'Jenkins Fundamentals',
     description:
       'Learn how to automate building, testing and deploying your code using Jenkins, a popular open-source server for setting up continuous integration and continuous delivery pipelines. During this two-day course you will get a lot of hands-on experience in Jenkins basics like setting up a Jenkins server, choosing and installing Jenkins plugins and building a Jenkins CI/CD pipeline.',
-    startDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
-    endDate: new Date(Date.now() + 32 * 24 * 60 * 60 * 1000),
+    startDate: new Date(currentDate + 30 * msDay),
+    endDate: new Date(currentDate + 32 * msDay + 7.5 * msHour),
     maxStudents: 8,
     tags: ['CI/CD', 'Jenkins'],
   },
@@ -32,8 +36,8 @@ const courseData = [
     name: 'Robot Framework Fundamentals',
     description:
       'This course will teach you how to automate the acceptance testing of your software using Robot Framework, a generic, open-source, Python-based automation framework. You will get an introduction to how Robot Framework works and learn how to write tasks utilising keywords, all in an easily readable and human-friendly syntax.',
-    startDate: new Date(Date.now() + 180 * 24 * 60 * 60 * 1000),
-    endDate: new Date(Date.now() + 183 * 32 * 60 * 60 * 1000),
+    startDate: new Date(currentDate + 180 * msDay),
+    endDate: new Date(currentDate + 183 * msDay + 6.5 * msHour),
     maxStudents: 10,
     tags: ['Testing', 'Python', 'Robot Framework'],
   },
@@ -41,8 +45,8 @@ const courseData = [
     name: 'Kubernetes Fundamentals',
     description:
       'Take your first steps in using Kubernetes for container orchestration. This course will introduce you to the basic concepts and building blocks of Kubernetes and the architecture of the system. Get ready to start you cloud native journey!',
-    startDate: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000),
-    endDate: new Date(Date.now() + 365 * 32 * 60 * 60 * 1000),
+    startDate: new Date(currentDate + 365 * msDay),
+    endDate: new Date(currentDate + 366 * msDay + 7 * msHour),
     maxStudents: 15,
     tags: ['Kubernetes', 'Docker', 'CI/CD'],
   },
