@@ -45,6 +45,7 @@ const testCourse: CourseWithTagsAndStudentCount = {
   tags: [],
   _count: { students: 5 },
   createdById: adminUser.id,
+  image: '',
 };
 
 jest.mock('../../lib/i18n/client', () => ({

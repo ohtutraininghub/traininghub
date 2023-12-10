@@ -20,6 +20,7 @@ export function ImageContainer({
 }: Props) {
   return (
     <Image
+      data-testid="courseImage"
       style={{
         alignSelf: 'center',
         margin: '1rem 0 1rem 0',
