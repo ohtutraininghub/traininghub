@@ -47,7 +47,7 @@ export default function TagChip({ lang, tagId, tagName }: Props) {
       />
       {backdropOpen && (
         <ConfirmCard
-          lang="en"
+          lang={lang}
           backdropOpen={backdropOpen}
           setBackdropOpen={setBackdropOpen}
           confirmMessage={confirmTagDeletionMessage}
