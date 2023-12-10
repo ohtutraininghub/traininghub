@@ -57,7 +57,7 @@ const CourseCard = ({ course, enrolls, lang }: Props) => {
         }}
       >
         <CardHeader
-          sx={{ paddingBottom: !course?.image ? '1rem' : 0 }}
+          sx={{ paddingBottom: !course.image ? '1rem' : 0 }}
           title={
             <Box>
               <CalendarTodayIcon
