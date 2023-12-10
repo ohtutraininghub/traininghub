@@ -85,7 +85,6 @@ export default function CourseForm({
     router.push('/');
     router.refresh();
   };
-  console.log(errors);
   return (
     <Container>
       <Box
