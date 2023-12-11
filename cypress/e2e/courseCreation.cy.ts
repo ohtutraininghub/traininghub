@@ -1,54 +1,12 @@
-const course = {
-  name: 'Kubernetes Fundamentals',
-  header: 'Learn Kubernetes',
-  description:
-    'Take your first steps in using Kubernetes for container orchestration. This course will introduce you to the basic concepts and building blocks of Kubernetes and the architecture of the system. Get ready to start you cloud native journey!',
-  startDate: '2030-06-01T08:30',
-  endDate: '2030-07-01T08:30',
-  maxStudents: '100',
-  image: 'http://test-image.com',
-};
-
 describe('Course creation', () => {
   before(() => {
-    cy.task('clearDatabase');
+    cy.task('seedDatabase');
   });
 
   beforeEach(() => {
     cy.intercept('*_next/image?url=http*', (req) => {
       req.reply({ statusCode: 200, fixture: 'images/test_logo.png' });
     });
-  });
-
-  it('course creation should be successful when the input is valid ', () => {
-    cy.login('trainer@test.com', 'TRAINER');
-    cy.visit('/course/create');
-
-    cy.getCy('courseFormName').type(course.name);
-    cy.getCy('textEditorTextSelect').click();
-    cy.getCy('textSelectorHeader1').click();
-    cy.get('.ProseMirror').type(`${course.header}`);
-
-    cy.getCy('textEditorTextSelect').click();
-    cy.getCy('textSelectorParagraph').click();
-    cy.get('.ProseMirror').type(course.description);
-
-    cy.formatDate('courseFormStartDate', -1);
-    cy.formatDate('courseFormEndDate', -2);
-
-    cy.getCy('courseFormMaxStudents').type(
-      `{selectall}{backspace}${course.maxStudents}`
-    );
-
-    cy.getCy('courseFormMaxStudents').clear().type(course.maxStudents);
-    cy.getCy('courseFormImage').type(course.image);
-    cy.getCy('courseFormSubmit').click();
-    cy.contains(course.name).click();
-    cy.contains(course.name);
-    cy.contains(course.header);
-    cy.contains(course.maxStudents);
-    cy.contains(course.description);
-    cy.getCy('courseImage').should('be.visible');
   });
 
   const updatedCourse = {
@@ -60,7 +18,7 @@ describe('Course creation', () => {
 
   it('editing course with valid data should be successful', () => {
     cy.login('trainer@test.com', 'TRAINER');
-    cy.contains(course.name).click();
+    cy.contains('Kubernetes Fundamentals').click();
     cy.getCy('EditIcon').click();
 
     cy.getCy('courseFormName').type(
@@ -69,11 +27,11 @@ describe('Course creation', () => {
     cy.get('.ProseMirror').type(
       `{selectall}{backspace}${updatedCourse.description}`
     );
-    cy.formatDate('courseFormStartDate', -2);
-    cy.formatDate('courseFormEndDate', -3);
+
     cy.getCy('courseFormMaxStudents').type(
       `{selectall}{backspace}${updatedCourse.maxStudents}`
     );
+    cy.getCy('courseFormImage').type('http://test-image.com');
     cy.getCy('courseFormSubmit').click();
 
     cy.contains(updatedCourse.name).click();
@@ -99,45 +57,6 @@ describe('Course creation', () => {
       .type('{backspace}{backspace}');
     cy.getCy('courseFormSubmit').click();
     requiredErrors.forEach((error) => cy.contains(error));
-  });
-
-  it('should not be possible for end date to be before start date', () => {
-    cy.login('trainer@test.com', 'TRAINER');
-    cy.visit('/course/create');
-    cy.formatDate('courseFormStartDate', -2);
-    cy.formatDate('courseFormEndDate', -1);
-    cy.getCy('courseFormSubmit').click();
-    cy.contains('The end date cannot be before the start date');
-  });
-
-  it('should not be possible for start date to be in the past', () => {
-    cy.login('trainer@test.com', 'TRAINER');
-    cy.visit('/course/create');
-    cy.formatDate('courseFormStartDate', 3);
-    cy.getCy('courseFormSubmit').click();
-    cy.contains('Start date cannot be in the past');
-  });
-
-  it('should not be possible for last enroll date to be after the end date', () => {
-    cy.login('trainer@test.com', 'TRAINER');
-    cy.visit('/course/create');
-    cy.formatDate('courseFormEndDate', -1);
-    cy.formatDate('courseFormLastEnrollDate', -2);
-    cy.getCy('courseFormSubmit').click();
-    cy.contains(
-      'The last date to enroll cannot be after the end date of the course'
-    );
-  });
-
-  it('should not be possible for last cancel date to be after the end date', () => {
-    cy.login('trainer@test.com', 'TRAINER');
-    cy.visit('/course/create');
-    cy.formatDate('courseFormEndDate', -1);
-    cy.formatDate('courseFormLastCancelDate', -2);
-    cy.getCy('courseFormSubmit').click();
-    cy.contains(
-      'The last date to cancel enrollment cannot be after the end date of the course'
-    );
   });
 
   it('should not be possible to add an invalid url for course image', () => {

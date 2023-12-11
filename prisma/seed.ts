@@ -48,6 +48,7 @@ const courseData = [
     startDate: new Date(currentDate + 365 * msDay),
     endDate: new Date(currentDate + 366 * msDay + 7 * msHour),
     maxStudents: 15,
+    image: 'http://test-image.com',
     tags: ['Kubernetes', 'Docker', 'CI/CD'],
   },
 ];
