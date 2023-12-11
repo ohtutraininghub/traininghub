@@ -8,7 +8,6 @@ declare global {
     interface Chainable {
       getCy(selector: string): Chainable<JQuery<HTMLElement>>;
       login(email: string, role: Role): Chainable<void>;
-      formatDate(value: string, day: number);
     }
   }
 }
