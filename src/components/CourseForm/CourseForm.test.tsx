@@ -66,6 +66,7 @@ describe('Course Form Course Edit Tests', () => {
       lastCancelDate: oneDayBeforeStart,
       maxStudents: 55,
       tags: [],
+      image: '',
     };
     const { container } = renderWithTheme(
       <CourseForm lang="en" tags={[]} courseData={course} />
@@ -112,6 +113,7 @@ describe('Course Form Course Edit Tests', () => {
       lastCancelDate: null,
       maxStudents: 55,
       tags: [],
+      image: '',
     };
     const { container } = renderWithTheme(
       <CourseForm lang="en" tags={[]} courseData={course} />
@@ -154,6 +156,7 @@ describe('Course Form Course Edit Tests', () => {
       lastCancelDate: oneDayBeforeStart,
       maxStudents: 55,
       tags: [],
+      image: '',
     };
 
     renderWithTheme(<CourseForm lang="en" tags={[]} courseData={course} />);
@@ -185,6 +188,7 @@ describe('Course Form Course Edit Tests', () => {
       lastCancelDate: null,
       maxStudents: 55,
       tags: [],
+      image: '',
     };
 
     renderWithTheme(<CourseForm lang="en" tags={[]} courseData={course} />);

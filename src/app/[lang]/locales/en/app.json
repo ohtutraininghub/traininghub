@@ -1,6 +1,7 @@
 {
   "AppTitle": "Training hub",
   "CourseForm": {
+    "courseImage": "Course image url (optional)",
     "description": "Description",
     "endDate": "End date",
     "lastCancelDate": "Last date to cancel enrollment (optional)",
@@ -29,6 +30,7 @@
     "createCourse": "This form is used to create a new course. Fill in the necessary details, and once you're done, click the 'Submit' button at the bottom to publish the course. Some fields are optional. See the tooltips for details.",
     "editCourse": "This form allows you to modify the course details. After making the desired updates, remember to save the changes by clicking the 'Update' button at the bottom. Your modifications will be published instantly.",
     "endDate": "The end date signifies the completion of the course. This is a mandatory field. Courses are displayed in the course listings for all users until their end date.",
+    "image": "Image for visual styling purposes. An image can be added by placing a valid url for the image.",
     "lastCancelDate": "Last date to cancel enrollment is an optional field. If specified, it denotes the final date for students to cancel their enrollment in the course.",
     "lastEnrollDate": "Last date to enroll is an optional field. If specified, it indicates the final date for students to enroll in the course.",
     "maxStudents": "The maximum number of students allowed in the course. This is a mandatory field. Once this maximum capacity is reached, enrollment will be closed. You have the flexibility to edit this field later to increase the course capacity.",

@@ -85,7 +85,6 @@ export default function CourseForm({
     router.push('/');
     router.refresh();
   };
-
   return (
     <Container>
       <Box
@@ -217,6 +216,24 @@ export default function CourseForm({
               );
             }}
           />
+          <InputLabel htmlFor="courseFormImage">
+            {t('CourseForm.courseImage')}
+            <StyledTooltip
+              testid="tooltipCourseImage"
+              lang={lang}
+              title={t('Tooltip.image')}
+            />
+          </InputLabel>
+          <Input
+            {...register('image')}
+            id="courseFormImage"
+            color="secondary"
+            error={!!errors.image}
+            inputProps={{
+              'data-testid': 'courseFormImage',
+            }}
+          />
+          <FormFieldError error={errors.image} />
           <InputLabel htmlFor="courseFormStartDate">
             {t('CourseForm.startDate')}
             <StyledTooltip

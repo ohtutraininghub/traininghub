@@ -30,6 +30,7 @@ export function ConfirmCard({
     >
       <Card
         raised
+        data-testid="confirmCard"
         sx={{
           display: 'flex',
           flexDirection: 'column',
@@ -78,7 +79,11 @@ export function ConfirmCard({
           className="button-container"
           display="flex"
         >
-          <Button variant="outlined" onClick={() => setBackdropOpen(false)}>
+          <Button
+            variant="outlined"
+            data-testid="confirmCardCancel"
+            onClick={() => setBackdropOpen(false)}
+          >
             {t('ConfirmCard.cancel')}
           </Button>
           <Button
