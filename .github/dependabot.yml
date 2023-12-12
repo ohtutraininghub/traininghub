@@ -7,6 +7,9 @@ updates:
     commit-message:
       prefix: 'NPM: '
     target-branch: 'dependabot-target'
+    ignore: # ignore major updates
+      - dependency-name: '*'
+        update-types: ['version-update:semver-major']
 
   - package-ecosystem: 'github-actions'
     directory: '/'
