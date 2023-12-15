@@ -23,7 +23,7 @@ import {
 } from '@/lib/zod/courses';
 import { useMessage } from '../Providers/MessageProvider';
 import { post, update } from '@/lib/response/fetchUtil';
-import FormFieldError from '../FormFieldError/FormFieldError';
+import FormFieldError from '../FormFieldError';
 import { Tag } from '@prisma/client';
 import { dateToDateTimeLocal } from '@/lib/timedateutils';
 import { CourseWithTags } from '@/lib/prisma/courses';

@@ -13,7 +13,7 @@ import {
   Typography,
 } from '@mui/material';
 import { CourseWithTagsAndStudentCount } from '@/lib/prisma/courses';
-import CourseModal from '@/components/CourseModal/CourseModal';
+import CourseModal from '@/components/CourseModal';
 import { filterCourses } from '@/components/CourseFilter/CourseFilterLogic';
 import { useTranslation } from '@i18n/client';
 import ViewHeadlineIcon from '@mui/icons-material/ViewHeadline';

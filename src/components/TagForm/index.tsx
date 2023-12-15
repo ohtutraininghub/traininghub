@@ -11,7 +11,7 @@ import {
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
-import FormFieldError from '@/components/FormFieldError/FormFieldError';
+import FormFieldError from '@/components/FormFieldError';
 import { useMessage } from '../Providers/MessageProvider';
 import { post } from '@/lib/response/fetchUtil';
 import { DictProps } from '@/lib/i18n';
