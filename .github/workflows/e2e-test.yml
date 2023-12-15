@@ -20,7 +20,7 @@ jobs:
     env:
       DATABASE_URL: 'postgresql://admin:password@localhost:5433/traininghub-db?schema=public'
       NEXTAUTH_SECRET: 'verySekretTestingSekret'
-      NEXTAUTH_URL: 'localhost:3000'
+      NEXTAUTH_URL: 'http://localhost:3000'
     steps:
       - name: checkout
         uses: actions/checkout@v3
