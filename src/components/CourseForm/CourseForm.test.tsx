@@ -60,6 +60,7 @@ describe('Course Form Course Edit Tests', () => {
       createdById: '30',
       name: 'New course',
       description: 'A test course',
+      summary: 'All you ever wanted to know about testing!',
       startDate: courseStart,
       endDate: courseEnd,
       lastEnrollDate: oneDayBeforeStart,
@@ -87,9 +88,11 @@ describe('Course Form Course Edit Tests', () => {
     const maxStudents = screen.getByTestId(
       'courseFormMaxStudents'
     ) as HTMLInputElement;
+    const summary = screen.getByTestId('courseFormSummary') as HTMLInputElement;
 
     expect(name.value).toBe(course.name);
     expect(description).toHaveTextContent(course.description);
+    expect(summary.value).toBe(course.summary);
     expect(maxStudents.value).toBe(course.maxStudents.toString());
     expect(startDate.value).toBe(dateToDateTimeLocal(course.startDate));
     expect(endDate.value).toBe(dateToDateTimeLocal(course.endDate));
@@ -107,6 +110,7 @@ describe('Course Form Course Edit Tests', () => {
       createdById: '30',
       name: 'New course',
       description: 'A test course',
+      summary: 'All you ever wanted to know about testing!',
       startDate: new Date(),
       endDate: new Date(),
       lastEnrollDate: null,
@@ -134,9 +138,11 @@ describe('Course Form Course Edit Tests', () => {
     const maxStudents = screen.getByTestId(
       'courseFormMaxStudents'
     ) as HTMLInputElement;
+    const summary = screen.getByTestId('courseFormSummary') as HTMLInputElement;
 
     expect(name.value).toBe(course.name);
     expect(description).toHaveTextContent(course.description);
+    expect(summary.value).toBe(course.summary);
     expect(maxStudents.value).toBe(course.maxStudents.toString());
     expect(startDate.value).toBe(dateToDateTimeLocal(course.startDate));
     expect(endDate.value).toBe(dateToDateTimeLocal(course.endDate));
@@ -150,6 +156,7 @@ describe('Course Form Course Edit Tests', () => {
       createdById: '30',
       name: 'New course',
       description: '<p>A test course</p>',
+      summary: 'All you ever wanted to know about testing!',
       startDate: courseStart,
       endDate: courseEnd,
       lastEnrollDate: oneDayBeforeStart,
@@ -182,6 +189,7 @@ describe('Course Form Course Edit Tests', () => {
       createdById: '30',
       name: 'New course',
       description: 'A test course',
+      summary: 'All you ever wanted to know about testing!',
       startDate: new Date(Date.now() + 1000 * 60 * 60 * 24),
       endDate: new Date(Date.now() + 1000 * 60 * 60 * 24 * 2),
       lastEnrollDate: null,

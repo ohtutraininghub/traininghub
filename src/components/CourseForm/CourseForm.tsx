@@ -152,6 +152,45 @@ export default function CourseForm({
           />
           <FormFieldError error={errors.description} />
 
+          <InputLabel htmlFor="courseFormSummary">
+            {t('CourseForm.summary')}
+            <StyledTooltip
+              testid="tooltipCourseSummary"
+              lang={lang}
+              title={t('Tooltip.summary')}
+            />
+          </InputLabel>
+          <Input
+            {...register('summary')}
+            color="secondary"
+            id="courseFormSummary"
+            error={!!errors.summary}
+            autoComplete="off"
+            inputProps={{
+              maxLength: 150,
+              'data-testid': 'courseFormSummary',
+            }}
+          />
+          <FormFieldError error={errors.summary} />
+
+          <InputLabel htmlFor="courseFormImage">
+            {t('CourseForm.courseImage')}
+            <StyledTooltip
+              testid="tooltipCourseImage"
+              lang={lang}
+              title={t('Tooltip.image')}
+            />
+          </InputLabel>
+          <Input
+            {...register('image')}
+            id="courseFormImage"
+            color="secondary"
+            error={!!errors.image}
+            inputProps={{
+              'data-testid': 'courseFormImage',
+            }}
+          />
+
           <Controller
             name="tags"
             control={control}
@@ -216,23 +255,7 @@ export default function CourseForm({
               );
             }}
           />
-          <InputLabel htmlFor="courseFormImage">
-            {t('CourseForm.courseImage')}
-            <StyledTooltip
-              testid="tooltipCourseImage"
-              lang={lang}
-              title={t('Tooltip.image')}
-            />
-          </InputLabel>
-          <Input
-            {...register('image')}
-            id="courseFormImage"
-            color="secondary"
-            error={!!errors.image}
-            inputProps={{
-              'data-testid': 'courseFormImage',
-            }}
-          />
+
           <FormFieldError error={errors.image} />
           <InputLabel htmlFor="courseFormStartDate">
             {t('CourseForm.startDate')}
