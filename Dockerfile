@@ -1,4 +1,4 @@
-FROM node:18-alpine as builder
+FROM node:21-alpine as builder
 
 # Passed in workflow via docker_build_args
 ARG NEXTAUTH_URL
@@ -31,7 +31,7 @@ RUN apk add --no-cache libc6-compat && \
   npm ci && \
   npm run build
 
-FROM node:18-alpine as runner
+FROM node:21-alpine as runner
 
 ENV NODE_ENV production
 ENV NEXT_TELEMETRY_DISABLED 1
