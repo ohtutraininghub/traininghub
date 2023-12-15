@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react';
 import { renderAsyncComponent } from '@/lib/test-utils';
 import TagList from '.';
-import componentTranslations from '@/app/[lang]/locales/en/components.json';
+import componentTranslations from '@/app/[lang]/locales/en/admin.json';
 
 type Component = 'TagList';
 type Translation = keyof typeof componentTranslations.TagList;
@@ -19,6 +19,46 @@ jest.mock('../../lib/i18n', () => ({
       },
     };
   },
+}));
+
+jest.mock('../../lib/i18n/client', () => ({
+  // this mock makes sure any components using the translate hook can use it without a warning being shown
+  useTranslation: () => {
+    return {
+      t: (str: string) => str,
+      i18n: {
+        changeLanguage: () => new Promise(() => {}),
+      },
+    };
+  },
+}));
+
+jest.mock('next/navigation', () => ({
+  useRouter() {
+    return {
+      push: jest.fn(),
+      refresh: jest.fn(),
+    };
+  },
+}));
+
+jest.mock('../Providers/MessageProvider', () => ({
+  useMessage() {
+    return {
+      notify: jest.fn(),
+    };
+  },
+}));
+
+const mockFetch = jest.fn((...args: any[]) =>
+  Promise.resolve({
+    json: () => Promise.resolve({ args: args }),
+    ok: true,
+  })
+);
+
+jest.mock('../../lib/response/fetchUtil', () => ({
+  remove: (...args: any[]) => mockFetch(...args),
 }));
 
 const tags = [

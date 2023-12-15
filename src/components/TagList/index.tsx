@@ -1,7 +1,7 @@
 import { Prisma } from '@prisma/client';
-import Box from '@mui/material/Box';
 import { Typography } from '@mui/material';
 import { DictProps, translator } from '@/lib/i18n';
+import TagChip from './TagChip';
 
 type TagPrismaType = Prisma.TagGetPayload<Prisma.TagDefaultArgs>;
 
@@ -9,8 +9,8 @@ interface TagListProps extends DictProps {
   tags: TagPrismaType[];
 }
 
-export default async function TagList({ tags }: TagListProps) {
-  const { t } = await translator('components');
+export default async function TagList({ lang, tags }: TagListProps) {
+  const { t } = await translator('admin');
 
   if (tags.length == 0) {
     return (
@@ -22,6 +22,7 @@ export default async function TagList({ tags }: TagListProps) {
 
   return (
     <ul
+      data-testid="tag-list"
       style={{
         display: 'flex',
         flexWrap: 'wrap',
@@ -36,16 +37,7 @@ export default async function TagList({ tags }: TagListProps) {
             margin: '0 0.5em 1.2em 0',
           }}
         >
-          <Box
-            component="span"
-            sx={{
-              border: '1px solid',
-              borderRadius: '4px',
-              p: '0.5em',
-            }}
-          >
-            {tag.name}
-          </Box>
+          <TagChip lang={lang} tagId={tag.id} tagName={tag.name} />
         </li>
       ))}
     </ul>
