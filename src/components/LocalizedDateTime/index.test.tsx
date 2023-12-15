@@ -17,6 +17,7 @@ const course: CourseWithTagsAndStudentCount = {
     students: 0,
   },
   tags: [],
+  image: '',
 };
 
 describe('LocalizedDateTime', () => {

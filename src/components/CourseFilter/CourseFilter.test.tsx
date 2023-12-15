@@ -15,6 +15,7 @@ describe('filterCourses function', () => {
       createdById: '1234321',
       maxStudents: 20,
       tags: [{ id: 'tag1', name: 'Programming' }],
+      image: '',
     },
     {
       _count: { students: 5 },
@@ -28,6 +29,7 @@ describe('filterCourses function', () => {
       createdById: '123432132',
       maxStudents: 15,
       tags: [{ id: 'tag2', name: 'Web Development' }],
+      image: '',
     },
   ];
 

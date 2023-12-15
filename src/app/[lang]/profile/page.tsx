@@ -81,7 +81,7 @@ export default async function ProfilePage({ searchParams, params }: Props) {
         users={allUsers}
       >
         <CreateTag
-          existingTagLabel={t('admin:CreateTag.tagsLabel')}
+          tagsHeader={t('admin:TagsSection.header')}
           tags={tags}
           lang={params.lang}
         />
