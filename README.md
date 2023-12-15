@@ -7,6 +7,7 @@ An application for displaying available trainings for company's employees. Users
 ### Developer
 
 - [Contributing](./docs/CONTRIBUTING.md)
+- [Production setup](./docs/production-setup-guide.md)
 - [Definition Of Done](./docs/definition-of-done.md)
 - [Working hours](https://docs.google.com/spreadsheets/d/1M2OMBj00sbtw43GIW0e-fb5uT-ZDVjOd9kekBudSLag/)
 - [Project notes](https://drive.google.com/drive/folders/1lrgzH4jyzfOwHXpzYJWC8iNKkfszvz2j)
