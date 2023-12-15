@@ -46,7 +46,7 @@ export function CourseModalCloseButton({ lang }: CourseModalCloseButtonProps) {
   const handleClick = () => {
     const params = new URLSearchParams(searchParams);
     params.delete('courseId');
-    router.replace(`${pathname}?` + params);
+    router.replace(`${pathname}?${params}`);
   };
 
   return (

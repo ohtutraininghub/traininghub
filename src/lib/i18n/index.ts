@@ -36,7 +36,7 @@ export function getLocale(request: NextRequest): string | undefined {
   const locales = [...i18n.locales];
 
   // Use negotiator and intl-localematcher to get best locale
-  let languages = new Negotiator({ headers: negotiatorHeaders }).languages(
+  const languages = new Negotiator({ headers: negotiatorHeaders }).languages(
     locales
   );
 
@@ -78,6 +78,8 @@ export async function translator<
 }
 
 export const mockTFunction: TFunction<'app', undefined> = function () {
+  // Any because magic line
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return {} as TFunctionReturnOptionalDetails<any, any>;
 };
 

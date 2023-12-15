@@ -18,9 +18,8 @@ function InfoBoxContent({ infoText, Icon }: Props) {
         </Typography>
       </>
     );
-  } else {
-    return <Typography variant="body2">{infoText}</Typography>;
   }
+  return <Typography variant="body2">{infoText}</Typography>;
 }
 
 export default function InfoBox({ infoText, Icon }: Props) {

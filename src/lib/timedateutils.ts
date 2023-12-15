@@ -25,9 +25,8 @@ export const timeUntilstart = (startDate: Date): string => {
     return `Starts in ${Math.floor(asMinutes)} ${
       Math.floor(asMinutes) === 1 ? 'minute' : 'minutes'
     }`;
-  } else {
-    return `Starts soon...`;
   }
+  return `Starts soon...`;
 };
 
 export const msUntilStart = (startDate: Date): number => {

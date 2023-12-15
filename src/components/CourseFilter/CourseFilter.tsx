@@ -72,7 +72,7 @@ export default function CourseFilter({
     const searchTerm: string | null = value;
     setCourseName(searchTerm || '');
     router.push(
-      pathname + '?' + createQueryString('courseName', searchTerm || '')
+      `${pathname}?${createQueryString('courseName', searchTerm || '')}`
     );
   };
 
@@ -88,7 +88,7 @@ export default function CourseFilter({
       'courseTag',
       tagList.toString()
     );
-    router.push(pathname + '?' + tagListQueryParam);
+    router.push(`${pathname}?${tagListQueryParam}`);
   };
 
   const handleStartDateChange = (date: Date | null) => {

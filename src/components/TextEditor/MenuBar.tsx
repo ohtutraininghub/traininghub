@@ -90,9 +90,8 @@ export const MenuBar = ({ lang }: DictProps) => {
       return 'header2';
     } else if (editor.isActive('heading', { level: 3 })) {
       return 'header3';
-    } else {
-      return 'paragraph';
     }
+    return 'paragraph';
   };
 
   const dropdownOnChange = (event: SelectChangeEvent) => {
