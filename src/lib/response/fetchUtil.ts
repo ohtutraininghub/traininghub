@@ -10,15 +10,15 @@ export const get = async (url: RequestInfo | URL) => {
   return responseAsJson;
 };
 
-export const post = async (url: RequestInfo | URL, data?: any) => {
+export const post = async (url: RequestInfo | URL, data?: unknown) => {
   return await commonBody(url, data, 'POST');
 };
 
-export const update = async (url: RequestInfo | URL, data: any) => {
+export const update = async (url: RequestInfo | URL, data: unknown) => {
   return await commonBody(url, data, 'PUT');
 };
 
-export const remove = async (url: RequestInfo | URL, data: any) => {
+export const remove = async (url: RequestInfo | URL, data: unknown) => {
   return await commonBody(url, data, 'DELETE');
 };
 
@@ -32,16 +32,14 @@ export const remove = async (url: RequestInfo | URL, data: any) => {
  *   const data = withDataJson.data
  * }
  */
-export const asResponseDataJson = (jsonResponse: any) => {
-  if (!jsonResponse.data) {
-    return undefined;
-  }
-  return jsonResponse as MessageWithDataResponseType;
+export const asResponseDataJson = (jsonResponse: MessageResponseType) => {
+  const jsonWithData = jsonResponse as MessageWithDataResponseType;
+  return jsonWithData.data ? jsonWithData : undefined;
 };
 
 const commonBody = async (
   url: RequestInfo | URL,
-  data: any,
+  data: unknown,
   method: string
 ) => {
   const response = await fetch(url, {

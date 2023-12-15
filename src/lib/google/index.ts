@@ -142,7 +142,7 @@ const courseRequestBody = (course: Course) => {
 };
 
 const handleGoogleError = async (
-  error: any,
+  error: Error,
   userId?: string,
   courseId?: string,
   eventId?: string
