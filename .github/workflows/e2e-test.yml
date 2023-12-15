@@ -6,22 +6,21 @@ on:
 jobs:
   e2e-test:
     runs-on: ubuntu-22.04
-    environment: testing
     services:
       postgres:
         image: postgres
         env:
-          POSTGRES_USER: admin
-          POSTGRES_PASSWORD: password
+          POSTGRES_USER: 'admin'
+          POSTGRES_PASSWORD: 'password'
         options: >-
           --health-cmd pg_isready  --health-interval 10s  --health-timeout 5s
           --health-retries 5
         ports:
           - 5433:5432
     env:
-      DATABASE_URL: postgresql://admin:password@localhost:5433/traininghub-db?schema=public
-      NEXTAUTH_SECRET: verySekretTestingSekret
-      NEXTAUTH_URL: localhost:3000
+      DATABASE_URL: 'postgresql://admin:password@localhost:5433/traininghub-db?schema=public'
+      NEXTAUTH_SECRET: 'verySekretTestingSekret'
+      NEXTAUTH_URL: 'localhost:3000'
     steps:
       - name: checkout
         uses: actions/checkout@v3
@@ -35,6 +34,7 @@ jobs:
           build: npm run cypress:build
           start: npm run cypress:start
           browser: chrome
+          config: baseUrl="localhost:3000"
       - name: store screenshots
         uses: actions/upload-artifact@v3
         if: failure()
