@@ -14,6 +14,7 @@ describe('Course creation', () => {
     description: 'New description',
     maxStudents: '120',
     image: '',
+    summary: 'All you ever wanted to know about kubernetes!',
   };
 
   it('editing course with valid data should be successful', () => {
@@ -28,12 +29,14 @@ describe('Course creation', () => {
       `{selectall}{backspace}${updatedCourse.description}`
     );
 
+    cy.getCy('courseFormSummary').type(updatedCourse.summary);
     cy.getCy('courseFormMaxStudents').type(
       `{selectall}{backspace}${updatedCourse.maxStudents}`
     );
     cy.getCy('courseFormImage').type('http://test-image.com');
     cy.getCy('courseFormSubmit').click();
 
+    cy.contains(updatedCourse.summary);
     cy.contains(updatedCourse.name).click();
     cy.contains(updatedCourse.name);
     cy.contains(updatedCourse.maxStudents);
