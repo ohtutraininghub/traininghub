@@ -9,6 +9,8 @@ Idea of this file is to provide necessary information for:
 
 This getting started sections helps you setup and start development environment.
 
+> **_Note_:** Windows users check what the scripts do and then do it manually :)
+
 ### 1 Install required dependencies
 
 - [Node](https://nodejs.org/en/download)
