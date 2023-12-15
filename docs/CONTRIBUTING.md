@@ -9,53 +9,23 @@ Idea of this file is to provide necessary information for:
 
 This getting started sections helps you setup and start development environment.
 
+> **_Note_:** Windows users check what the scripts do and then do it manually :)
+
 ### 1 Install required dependencies
 
 - [Node](https://nodejs.org/en/download)
 - [Docker](https://docs.docker.com/engine/install/)
 
-### 2 Setup env files
-
-Add `.env` file with following content to the project's root
-
-```
-# Required for Prisma
-DATABASE_URL="postgresql://admin:password@localhost:5433/traininghub-db-dev?schema=public"
-
-# Required for NextAuth
-NEXTAUTH_SECRET="" # openssl rand -base64 32
-NEXTAUTH_URL="http://localhost:3000"
-
-# Required for OAuth. See below how to create ID and secret for development.
-GOOGLE_CLIENT_ID=""
-GOOGLE_CLIENT_SECRET=""
-```
-
-Add `.env.test` file with following content to the project's root
-
-```
-# Required for Prisma
-DATABASE_URL="postgresql://admin:password@localhost:5434/traininghub-db-dev?schema=public"
-```
-
-#### More information about Google Client ID
-
-Follow the instructions in [Google's documentation on setting up OAuth 2.0 credentials](https://support.google.com/cloud/answer/6158849).
-
-You will need the following information:
-
-- Fill all the required information for consent screen
-- Choose User type as "External"
-- Add to Authorized JavaScript origins the following: "http://localhost:3000"
-- Add to Authorized redirect URIs the following: http://localhost:3000/api/auth/callback/google
-- Ensure the app publishing status is set to "Testing"
-- Add to "Test users" your own email. This way you can sign in using NextAuth.
-
-### 3 Install
+### 2 Install
 
 1. `npm run dev:install`
+   - Generates `.env` and `.env.test` files
+   - Installs depencies
+   - Applies migrations
+   - Seeds database
 
-> **_Note_:** Runs script located at `scripts/dev_install.sh`. Your database will be reset and seeded with mock data.
+> **_Note_:** Runs script located at `scripts/dev_install.sh`  
+> **_Note_:** If you want to use `Google` sign in see [production setup guide](./production-setup-guide.md)
 
 ### Start and stop project locally
 
@@ -96,8 +66,6 @@ Most importantly pull request should be linked to task or set of tasks.
     - `lib`: utilities, third party libs, etc.
 - TypeScript
   - Should not use `any` type unless it has good reason
-  - Imports should use module path aliases defined in `ts.config.json` section `paths`
-    - E.g. `import { Button } from '../../../components/button'` --> `import { Button } from '@/components/button'`
 - Form validation
   - Form validation should use Zod library
   - Schema is only defined once and its used in frontend and backend (api folder)
@@ -108,7 +76,6 @@ Most importantly pull request should be linked to task or set of tasks.
   - Errors should be handled, and the user informed of them (without sensitive data)
 - Tests
   - Feature has meaningful tests which cover edgecases
-  - Components and utilities require Jest tests
 - Documentation
   - Code itself should be documented (or refactored) if you have to ask yourself what does this do
   - If changes to code affect anything in `docs` folder, they should be updated
