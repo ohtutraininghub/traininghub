@@ -1,40 +1,87 @@
-# GitHub secrets
+# Production setup guide
 
-## Repository secrets
+Idea of this file is to provide necessary information for:
 
-GOOGLE_CLIENT_ID
-GOOGLE_CLIENT_SECRET
+- Setting up testing, staging and production environment in new Github repo
 
-HEROKU_API_KEY
-HEROKU_EMAIL
+## Things you'll need
 
-NEXTAUTH_SECRET
+These accounts are required to setup this project.
+It's easier to create one Google account handle all accounts.
 
-SENTRY_AUTH_TOKEN
-SENTRY_ORG
-SENTRY_PROJECT
+#### Google
 
-## Environemnts
+Google setup is required for Google sign in and Google calendar usage.
 
-### testing
+Follow the instructions in [Google's documentation on setting up OAuth 2.0 credentials](https://support.google.com/cloud/answer/6158849).
 
-DATABASE_URL
+- Library
+  - Enable Google Calendar API
+- Credentials (OAuth 2.0 Client IDs)
+  - Example authorized JavaScript origins in development environment: `http://localhost:3000`
+  - Example authorized redirect URIs in development envinronment: `http://localhost:3000/api/auth/callback/google`
+  - Here you can find secrets `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` which will be required by GitHub Actions
+- OAuth consent screen
+  - Scopes:
+    - /auth/userinfo.email
+    - /auth/userinfo.profile
+    - openid
+    - /auth/calendar.events.owned
+  - Test Users: add emails which are allowed in testing
 
-NEXTAUTH_SECRET
-NEXTAUTH_URL
+#### Sentry
 
-### staging
+[Sentry](https://sentry.io/) is required for error tracking.
 
-DATABASE_URL
+Before continuing know that Sentry has already been setup for this project.
+You will need to change DSN in configs and obtain `SENTRY_AUTH_TOKEN`.
 
-HEROKU_APP_NAME
+- Create new Sentry project
+- Obtain the DSN during creation
+  - Change Sentry configs DNSs to new one (at root `sentry.client.config.ts`, `sentry.edge.config.ts` and `sentry.server.config.ts`)
+- Create Sentry [auth token](https://docs.sentry.io/product/accounts/auth-tokens/) which will be required by GitHub Actions
 
-NEXTAUTH_URL
+#### Heroku
 
-### production
+`HEROKU_API_KEY`, `HEROKU_EMAIL` are required, use Google. `HEROKU_APP_NAME` is required for staging and production.
 
-DATABASE_URL
+#### PostgreSQL
 
-HEROKU_APP_NAME
+`DATABASE_URL` is required for staging and production, use any provider. Heroku offers PostgreSQL with the app.  
+Example: `postgresql://admin:password@localhost:5433/traininghub-db?schema=public`
 
-NEXTAUTH_URL
+## GitHub secrets
+
+#### Repository secrets
+
+GOOGLE_CLIENT_ID: refer to Google setup
+GOOGLE_CLIENT_SECRET: refer to Google setup
+
+HEROKU_API_KEY: refer to Heroku setup
+HEROKU_EMAIL: refer to Heroku setup
+
+NEXTAUTH_SECRET: e.g. run command openssl rand -base64 32
+
+SENTRY_AUTH_TOKEN: refer to Sentry setup
+SENTRY_ORG: defined when creating Sentry project
+SENTRY_PROJECT: defined when creating Sentry project
+
+### Environments
+
+This projects uses GitHub [environments](https://docs.github.com/en/actions/deployment/targeting-different-environments/using-environments-for-deployment) in actions.
+
+#### staging
+
+DATABASE_URL: refer to PostgreSQL setup
+
+HEROKU_APP_NAME: refer to Heroku seutp
+
+NEXTAUTH_URL: staging URL, refer to Heroku setup
+
+#### production
+
+DATABASE_URL: refer to PostgreSQL setup
+
+HEROKU_APP_NAME: refer to Heroku setup
+
+NEXTAUTH_URL: production URL, refer to Heroku setup
