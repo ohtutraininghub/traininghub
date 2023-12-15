@@ -33,7 +33,8 @@ describe('BackToTopToggle button', () => {
 
     cy.getCy('courseFormStartDate').type(course.startDate);
     cy.getCy('courseFormEndDate').type(course.endDate);
-    cy.getCy('courseFormMaxStudents').clear().type(course.maxStudents);
+    cy.getCy('courseFormMaxStudents').clear();
+    cy.getCy('courseFormMaxStudents').type(course.maxStudents);
     cy.getCy('courseFormSubmit').click();
     // view at top, button should not be visible
     cy.getCy('backToTopToggle').should('not.be.visible');

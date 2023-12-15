@@ -21,7 +21,7 @@ describe('Tag form tests', () => {
     cy.contains('A tag name is required');
   });
 
-  it('should display the correct error message when a tag with extra spaces is submitted', async () => {
+  it('should display the correct error message when a tag with extra spaces is submitted', () => {
     cy.login('admin@test.com', 'ADMIN');
     cy.visit('/admin/dashboard');
     cy.getCy('tagFormInput').type('Robot  Framework');

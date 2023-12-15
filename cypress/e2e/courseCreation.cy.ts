@@ -35,7 +35,8 @@ describe('Course creation', () => {
 
     cy.getCy('courseFormStartDate').type(course.startDate);
     cy.getCy('courseFormEndDate').type(course.endDate);
-    cy.getCy('courseFormMaxStudents').clear().type(course.maxStudents);
+    cy.getCy('courseFormMaxStudents').clear();
+    cy.getCy('courseFormMaxStudents').type(course.maxStudents);
     cy.getCy('courseFormImage').type(course.image);
     cy.getCy('courseFormSubmit').click();
     cy.contains(course.name).click();
@@ -61,12 +62,16 @@ describe('Course creation', () => {
     cy.contains(course.name).click();
     cy.getCy('EditIcon').click();
 
-    cy.getCy('courseFormName').clear().type(updatedCourse.name);
-    cy.get('.ProseMirror').clear().type(updatedCourse.description);
+    cy.getCy('courseFormName').clear();
+    cy.getCy('courseFormName').type(updatedCourse.name);
+    cy.get('.ProseMirror').clear();
+    cy.get('.ProseMirror').type(updatedCourse.description);
     cy.getCy('courseFormSummary').type(updatedCourse.summary);
     cy.getCy('courseFormStartDate').type(updatedCourse.startDate);
     cy.getCy('courseFormEndDate').type(updatedCourse.endDate);
-    cy.getCy('courseFormMaxStudents').clear().type(updatedCourse.maxStudents);
+
+    cy.getCy('courseFormMaxStudents').clear();
+    cy.getCy('courseFormMaxStudents').type(course.maxStudents);
     cy.getCy('courseFormSubmit').click();
 
     cy.contains(updatedCourse.summary);
