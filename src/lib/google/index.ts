@@ -18,6 +18,9 @@ export const insertCourseToCalendar = async (
   if (!isProduction()) {
     // Don't try to insert google calendar entries
     // in test or dev environment
+    console.info('=====');
+    console.info('Google calendar is disabled in development environment!');
+    console.info('=====');
     return;
   }
 
