@@ -21,6 +21,7 @@
     "cypress:build": "APP_ENV='test' next build",
     "cypress:start": "APP_ENV='test' next start",
     "cypress:open": "./scripts/dev_test_cypress.sh",
+    "cypress:run": "./scripts/dev_test_cypress.sh runMode",
     "_LINT SCRIPTS": "===",
     "lint:write": "next lint --fix",
     "lint:test": "next lint",
