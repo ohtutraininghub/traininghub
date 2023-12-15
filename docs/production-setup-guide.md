@@ -23,10 +23,10 @@ Follow the instructions in [Google's documentation on setting up OAuth 2.0 crede
   - Here you can find secrets `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` which will be required by GitHub Actions
 - OAuth consent screen
   - Scopes:
-    - /auth/userinfo.email
-    - /auth/userinfo.profile
-    - openid
-    - /auth/calendar.events.owned
+    - `/auth/userinfo.email`
+    - `/auth/userinfo.profile`
+    - `openid`
+    - `/auth/calendar.events.owned`
   - Test Users: add emails which are allowed in testing
 
 #### Sentry
@@ -43,7 +43,8 @@ You will need to change DSN in configs and obtain `SENTRY_AUTH_TOKEN`.
 
 #### Heroku
 
-`HEROKU_API_KEY`, `HEROKU_EMAIL` are required, use Google. `HEROKU_APP_NAME` is required for staging and production.
+`HEROKU_API_KEY`, `HEROKU_EMAIL` are required, use Google.  
+`HEROKU_APP_NAME` is required for both staging and production.
 
 #### PostgreSQL
 
@@ -54,17 +55,17 @@ Example: `postgresql://admin:password@localhost:5433/traininghub-db?schema=publi
 
 #### Repository secrets
 
-GOOGLE_CLIENT_ID: refer to Google setup
-GOOGLE_CLIENT_SECRET: refer to Google setup
+`GOOGLE_CLIENT_ID`: refer to Google setup  
+`GOOGLE_CLIENT_SECRET`: refer to Google setup
 
-HEROKU_API_KEY: refer to Heroku setup
-HEROKU_EMAIL: refer to Heroku setup
+`HEROKU_API_KEY`: refer to Heroku setup  
+`HEROKU_EMAIL`: refer to Heroku setup
 
-NEXTAUTH_SECRET: e.g. run command openssl rand -base64 32
+`NEXTAUTH_SECRET`: e.g. run command openssl rand -base64 32
 
-SENTRY_AUTH_TOKEN: refer to Sentry setup
-SENTRY_ORG: defined when creating Sentry project
-SENTRY_PROJECT: defined when creating Sentry project
+`SENTRY_AUTH_TOKEN`: refer to Sentry setup  
+`SENTRY_ORG`: defined when creating Sentry project  
+`SENTRY_PROJECT`: defined when creating Sentry project
 
 ### Environments
 
@@ -72,16 +73,12 @@ This projects uses GitHub [environments](https://docs.github.com/en/actions/depl
 
 #### staging
 
-DATABASE_URL: refer to PostgreSQL setup
-
-HEROKU_APP_NAME: refer to Heroku seutp
-
-NEXTAUTH_URL: staging URL, refer to Heroku setup
+`DATABASE_URL`: refer to PostgreSQL setup  
+`HEROKU_APP_NAME`: refer to Heroku setup  
+`NEXTAUTH_URL`: staging URL, refer to Heroku setup
 
 #### production
 
-DATABASE_URL: refer to PostgreSQL setup
-
-HEROKU_APP_NAME: refer to Heroku setup
-
-NEXTAUTH_URL: production URL, refer to Heroku setup
+`DATABASE_URL`: refer to PostgreSQL setup  
+`HEROKU_APP_NAME`: refer to Heroku setup  
+`NEXTAUTH_URL`: production URL, refer to Heroku setup
