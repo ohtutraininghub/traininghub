@@ -35,6 +35,7 @@ const course: CourseWithTagsAndStudentCount = {
   },
   tags: [],
   image: '',
+  summary: 'After this course you will know all about testing with Jest!',
 };
 
 beforeEach(() => {
@@ -54,5 +55,6 @@ describe('CourseCard tests', () => {
       screen.getByText(`0 / ${course.maxStudents}`, { exact: false })
     ).toBeVisible();
     expect(screen.queryByText(course.description)).not.toBeInTheDocument();
+    expect(screen.getByText(course.summary as string)).toBeVisible();
   });
 });
