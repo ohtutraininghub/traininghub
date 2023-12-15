@@ -1,7 +1,7 @@
 import { prisma } from '@/lib/prisma';
 import ProfileView from '@/components/ProfileView';
 import Container from '@mui/material/Container/Container';
-import CourseModal from '@/components/CourseModal/CourseModal';
+import CourseModal from '@/components/CourseModal';
 import { getServerAuthSession } from '@/lib/auth';
 import { notFound } from 'next/navigation';
 import { Locale } from '@i18n/i18n-config';

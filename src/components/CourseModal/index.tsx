@@ -70,7 +70,7 @@ export default function CourseModal({
     if (reason === 'backdropClick') {
       const params = new URLSearchParams(searchParams);
       params.delete('courseId');
-      router.replace(`${pathname}?` + params);
+      router.replace(`${pathname}?${params}`);
     }
   };
 
@@ -196,14 +196,14 @@ export default function CourseModal({
           ))}
         </Box>
 
-        {courseView == 'attendees' && (
+        {courseView === 'attendees' && (
           <AttendeeTable
             attendees={enrolledStudents}
             noAttendeesText={t('AttendeeList.noAttendeesText')}
           />
         )}
 
-        {courseView == 'details' && (
+        {courseView === 'details' && (
           <>
             <pre
               style={{

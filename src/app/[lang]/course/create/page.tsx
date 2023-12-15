@@ -1,4 +1,4 @@
-import CourseForm from '@/components/CourseForm/CourseForm';
+import CourseForm from '@/components/CourseForm';
 import { Locale } from '@i18n/i18n-config';
 import { getTags } from '@/lib/prisma/tags';
 import BackgroundContainer from '@/components/BackgroundContainer';

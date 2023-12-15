@@ -5,7 +5,7 @@ import ProfileCourseList from '@/components/ProfileView/ProfileCourseList';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import { Course, Role, User } from '@prisma/client';
-import { PropsWithChildren, useState } from 'react';
+import { PropsWithChildren, SyntheticEvent, useState } from 'react';
 import { useTheme } from '@mui/material/styles';
 import { useSession } from 'next-auth/react';
 import UserList from '@/components/UserList';
@@ -33,7 +33,10 @@ export default function ProfileView({
   const currentDate = new Date();
   const { data: session } = useSession();
 
-  const handleChangeTab = (event: React.ChangeEvent<{}>, newValue: number) => {
+  const handleChangeTab = (
+    event: SyntheticEvent<Element, Event>,
+    newValue: number
+  ) => {
     setSelectedTab(newValue);
   };
 

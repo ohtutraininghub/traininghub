@@ -1,4 +1,4 @@
-import CourseModal from './CourseModal';
+import CourseModal from '.';
 import { renderWithTheme } from '@/lib/test-utils';
 import { Role, User } from '@prisma/client';
 import { CourseWithTagsAndStudentCount } from '@/lib/prisma/courses';

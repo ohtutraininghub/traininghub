@@ -30,7 +30,7 @@ describe('User list', () => {
 
     // Wait for the intercepted request to complete
     cy.wait('@getUser').then((interception) => {
-      cy.wrap(interception.response.body.user.id).as('userId');
+      cy.wrap(interception?.response?.body?.user.id).as('userId');
     });
 
     // Visit the dashboard after login

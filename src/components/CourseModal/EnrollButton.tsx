@@ -50,7 +50,7 @@ export default function EnrollButton({ courseId, lang }: Props) {
     }
 
     const withDataJson = asResponseDataJson(responseJson);
-    const hasCalendarPermissions = withDataJson?.data;
+    const hasCalendarPermissions = !!withDataJson?.data;
 
     if (calendar === undefined) {
       // User requires prompt for calendar insert

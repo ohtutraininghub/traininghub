@@ -3,7 +3,7 @@ import '@testing-library/jest-dom';
 import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { renderWithTheme } from '@/lib/test-utils';
-import CourseForm from './CourseForm';
+import CourseForm from '.';
 import { dateToDateTimeLocal } from '@/lib/timedateutils';
 
 window.alert = jest.fn();

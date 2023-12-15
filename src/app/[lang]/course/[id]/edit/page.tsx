@@ -1,4 +1,4 @@
-import CourseForm from '@/components/CourseForm/CourseForm';
+import CourseForm from '@/components/CourseForm';
 import { getServerAuthSession } from '@/lib/auth';
 import { hasCourseEditRights } from '@/lib/auth-utils';
 import { getCourseById } from '@/lib/prisma/courses';

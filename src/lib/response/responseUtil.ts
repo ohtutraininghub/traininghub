@@ -16,7 +16,7 @@ export type MessageWithoutTypeResponseType = Omit<
 >;
 
 export type MessageWithDataResponseType = MessageResponseType & {
-  data: any;
+  data: unknown;
 };
 
 export enum MessageType {

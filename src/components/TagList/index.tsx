@@ -12,7 +12,7 @@ interface TagListProps extends DictProps {
 export default async function TagList({ lang, tags }: TagListProps) {
   const { t } = await translator('admin');
 
-  if (tags.length == 0) {
+  if (tags.length === 0) {
     return (
       <Typography variant="body1" mt={1}>
         {`(${t('TagList.noTagsAdded')})`}

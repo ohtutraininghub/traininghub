@@ -1,4 +1,4 @@
-import CourseList from '@/components/CourseList/CourseList';
+import CourseList from '@/components/CourseList';
 import { notFound } from 'next/navigation';
 import { getCourses, getEnrolledCourseIdsByUserId } from '@/lib/prisma/courses';
 import { getServerAuthSession } from '@/lib/auth';

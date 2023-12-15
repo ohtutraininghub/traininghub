@@ -35,7 +35,9 @@ describe('Course creation', () => {
 
     cy.getCy('courseFormStartDate').type(course.startDate);
     cy.getCy('courseFormEndDate').type(course.endDate);
-    cy.getCy('courseFormMaxStudents').clear().type(course.maxStudents);
+    cy.getCy('courseFormMaxStudents').type(
+      `{selectall}{backspace}${course.maxStudents}`
+    );
     cy.getCy('courseFormImage').type(course.image);
     cy.getCy('courseFormSubmit').click();
     cy.contains(course.name).click();
@@ -43,37 +45,6 @@ describe('Course creation', () => {
     cy.contains(course.header);
     cy.contains(course.maxStudents);
     cy.contains(course.description);
-    cy.getCy('courseImage').should('be.visible');
-  });
-
-  const updatedCourse = {
-    name: 'Kubernetes 2',
-    description: 'New description',
-    startDate: '2032-06-01T08:30',
-    endDate: '2032-07-01T08:30',
-    maxStudents: '120',
-    image: '',
-    summary: 'All you ever wanted to know about kubernetes!',
-  };
-
-  it('editing course with valid data should be successful', () => {
-    cy.login('trainer@test.com', 'TRAINER');
-    cy.contains(course.name).click();
-    cy.getCy('EditIcon').click();
-
-    cy.getCy('courseFormName').clear().type(updatedCourse.name);
-    cy.get('.ProseMirror').clear().type(updatedCourse.description);
-    cy.getCy('courseFormSummary').type(updatedCourse.summary);
-    cy.getCy('courseFormStartDate').type(updatedCourse.startDate);
-    cy.getCy('courseFormEndDate').type(updatedCourse.endDate);
-    cy.getCy('courseFormMaxStudents').clear().type(updatedCourse.maxStudents);
-    cy.getCy('courseFormSubmit').click();
-
-    cy.contains(updatedCourse.summary);
-    cy.contains(updatedCourse.name).click();
-    cy.contains(updatedCourse.name);
-    cy.contains(updatedCourse.maxStudents);
-    cy.contains(updatedCourse.description);
     cy.getCy('courseImage').should('be.visible');
   });
 

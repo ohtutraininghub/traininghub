@@ -16,8 +16,9 @@ import {
 import TipTapImage from '@tiptap/extension-image';
 import { useTheme } from '@mui/material';
 
-// eslint-disable-next-line no-unused-vars
-const useEvent = <T extends (...args: any[]) => any>(handler: T): T => {
+// Magic line
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const useEvent = <T extends (..._: any[]) => any>(handler: T): T => {
   const handlerRef = useRef<T | null>(null);
 
   useLayoutEffect(() => {

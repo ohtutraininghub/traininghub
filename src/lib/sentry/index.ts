@@ -8,4 +8,4 @@ import { captureException } from '@sentry/nextjs';
  * want to throw 'Internal server error' because Google event edit failed.
  * Instead just capture the error and fix/silence it, and let the enrollment pass properly.
  */
-export const logHandledException = (error: any) => captureException(error);
+export const logHandledException = (error: Error) => captureException(error);
