@@ -90,6 +90,13 @@ export default function ProfileView({
             )}
             open={false}
           />
+          <ProfileCourseList
+            headerText="My course templates"
+            courses={courses.filter(
+              (course: Course) => course.startDate > currentDate
+            )}
+            open={false}
+          />
         </>
       )}
       {selectedTab === 2 && (
