@@ -101,3 +101,39 @@ export async function PUT(request: NextRequest) {
     return await handleCommonErrors(error);
   }
 }
+
+export async function DELETE(request: NextRequest) {
+  try {
+    const { t } = await translator('api');
+    const { user } = await getServerAuthSession();
+    const body = courseSchemaWithId.parse(await request.json());
+    const course = await prisma.course.findFirst({
+      where: { id: body.id },
+    });
+
+    if (!course) {
+      return errorResponse({
+        message: t('Common.courseNotFound'),
+        statusCode: StatusCodeType.NOT_FOUND,
+      });
+    }
+
+    if (!hasCourseEditRights(user)) {
+      return errorResponse({
+        message: t('Common.forbidden'),
+        statusCode: StatusCodeType.FORBIDDEN,
+      });
+    }
+
+    await prisma.course.delete({
+      where: { id: body.id },
+    });
+
+    return successResponse({
+      message: t('Courses.courseDeleted'),
+      statusCode: StatusCodeType.OK,
+    });
+  } catch (error) {
+    return await handleCommonErrors(error);
+  }
+}
