@@ -19,17 +19,18 @@ enum Role {
 }
 
 model User {
-  id             String     @id @default(cuid())
-  name           String?
-  email          String?    @unique
-  emailVerified  DateTime?
-  image          String?
-  courses        Course[]
-  createdCourses Course[]   @relation(name: "createdCourses")
-  accounts       Account[]
-  sessions       Session[]
-  role           Role       @default(TRAINEE)
-  calendar       Calendar[]
+  id               String     @id @default(cuid())
+  name             String?
+  email            String?    @unique
+  emailVerified    DateTime?
+  image            String?
+  courses          Course[]
+  createdCourses   Course[]   @relation(name: "createdCourses")
+  createdTemplates Template[] @relation(name: "createdTemplates")
+  accounts         Account[]
+  sessions         Session[]
+  role             Role       @default(TRAINEE)
+  calendar         Calendar[]
 }
 
 model Course {
@@ -50,6 +51,19 @@ model Course {
   image          String?
 }
 
+model Template {
+  id          String     @id @default(cuid())
+  name        String
+  description String
+  summary     String?
+  maxStudents Int
+  tags        Tag[]
+  createdBy   User?      @relation(name: "createdTemplates", references: [id], fields: [createdById])
+  createdById String
+  calendar    Calendar[]
+  image       String?
+}
+
 model Calendar {
   userId String
   user   User   @relation(fields: [userId], references: [id])
@@ -57,15 +71,19 @@ model Calendar {
   courseId String
   course   Course @relation(fields: [courseId], references: [id])
 
+  templateId String
+  template   Template @relation(fields: [templateId], references: [id])
+
   googleEventId String
 
   @@unique([userId, courseId])
 }
 
 model Tag {
-  id      String   @id @default(cuid())
-  name    String   @unique @db.Citext
-  courses Course[]
+  id        String     @id @default(cuid())
+  name      String     @unique @db.Citext
+  courses   Course[]
+  templates Template[]
 }
 
 model Account {
