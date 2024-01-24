@@ -52,15 +52,14 @@ model Course {
 }
 
 model Template {
-  id          String     @id @default(cuid())
+  id          String  @id @default(cuid())
   name        String
   description String
   summary     String?
   maxStudents Int
   tags        Tag[]
-  createdBy   User?      @relation(name: "createdTemplates", references: [id], fields: [createdById])
+  createdBy   User?   @relation(name: "createdTemplates", references: [id], fields: [createdById])
   createdById String
-  calendar    Calendar[]
   image       String?
 }
 
@@ -70,9 +69,6 @@ model Calendar {
 
   courseId String
   course   Course @relation(fields: [courseId], references: [id])
-
-  templateId String
-  template   Template @relation(fields: [templateId], references: [id])
 
   googleEventId String
 
