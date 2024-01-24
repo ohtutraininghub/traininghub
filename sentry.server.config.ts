@@ -11,7 +11,7 @@ const environment =
 const isDevEnv = environment === 'development';
 
 Sentry.init({
-  dsn: 'https://81239b413f81f52390fe6a803d2e82de@o4506016471777280.ingest.sentry.io/4506016471842816',
+  dsn: 'https://cd9962ee2976ee9852cca9e3c16e5d41@o4506626307457024.ingest.sentry.io/4506626317746176',
 
   environment: environment,
 
