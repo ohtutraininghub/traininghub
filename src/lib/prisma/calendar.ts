@@ -4,13 +4,15 @@ import { Course } from '@prisma/client';
 export const createGoogleCalendarEntry = async (
   userId: string,
   courseId: string,
-  eventId: string
+  eventId: string,
+  templateId: string
 ) => {
   return await prisma.calendar.create({
     data: {
       userId: userId,
       courseId: courseId,
       googleEventId: eventId,
+      templateId: templateId,
     },
   });
 };
