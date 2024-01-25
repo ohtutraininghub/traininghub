@@ -96,7 +96,7 @@ export default function ProfileView({
           <ProfileTemplateList
             headerText="My course templates"
             templates={templates.filter(
-              (template: Template) => template.createdById
+              (template: Template) => template.createdById === session?.user.id
             )}
             open={true}
           />
