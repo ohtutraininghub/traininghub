@@ -31,6 +31,11 @@ export default async function ProfilePage({ searchParams, params }: Props) {
     include: {
       courses: {
         include: {
+          createdBy: {
+            select: {
+              name: true,
+            },
+          },
           tags: true,
           _count: {
             select: {
