@@ -18,6 +18,22 @@ export type CourseWithTagsAndStudentCount = prismaClient.CourseGetPayload<{
   };
 }>;
 
+export type CourseWithCreatedByInfo = prismaClient.CourseGetPayload<{
+  include: {
+    createdBy: {
+      select: {
+        name: true;
+      };
+    };
+    tags: true;
+    _count: {
+      select: {
+        students: true;
+      };
+    };
+  };
+}>;
+
 export type GetCoursesType = prismaClient.PromiseReturnType<typeof getCourses>;
 
 export const getCourseById = async (courseId: Course['id']) => {
@@ -32,6 +48,11 @@ export const getCourseById = async (courseId: Course['id']) => {
 export const getCourses = async () => {
   return await prisma.course.findMany({
     include: {
+      createdBy: {
+        select: {
+          name: true,
+        },
+      },
       _count: {
         select: {
           students: true,
