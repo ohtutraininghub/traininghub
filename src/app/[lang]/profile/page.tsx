@@ -40,6 +40,12 @@ export default async function ProfilePage({ searchParams, params }: Props) {
         },
         orderBy: [{ startDate: 'asc' }, { name: 'asc' }],
       },
+      createdTemplates: {
+        include: {
+          tags: true,
+        },
+        orderBy: [{ name: 'asc' }],
+      },
     },
   });
   const tags = await getTags();
@@ -79,6 +85,7 @@ export default async function ProfilePage({ searchParams, params }: Props) {
         }}
         courses={userData?.courses ?? []}
         users={allUsers}
+        templates={userData?.createdTemplates ?? []}
       >
         <CreateTag
           tagsHeader={t('admin:TagsSection.header')}
