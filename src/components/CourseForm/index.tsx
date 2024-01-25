@@ -31,6 +31,7 @@ import { useTranslation } from '@i18n/client';
 import { DictProps } from '@i18n/index';
 import RichTextEditor from '@/components/TextEditor';
 import StyledTooltip from '@/components/StyledTooltip';
+import BasicSelect from '../TemplateSelect';
 
 interface CourseFormProps extends DictProps {
   tags: Tag[];
@@ -118,6 +119,22 @@ export default function CourseForm({
           style={{ display: 'flex', flexDirection: 'column', gap: 10 }}
           onSubmit={handleSubmit(submitForm)}
         >
+          {!isEditMode ? (
+            <div>
+              <InputLabel htmlFor="templateSelection">
+                {t('Template.selectTemplate')}
+                <StyledTooltip
+                  data-testid="tooltipTemplates"
+                  lang={lang}
+                  title={t('Tooltip.selectTemplate')}
+                />
+              </InputLabel>
+              <BasicSelect />
+            </div>
+          ) : (
+            ''
+          )}
+
           <InputLabel htmlFor="courseFormName">
             {t('CourseForm.name')}
           </InputLabel>
