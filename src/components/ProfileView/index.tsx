@@ -10,6 +10,7 @@ import { PropsWithChildren, SyntheticEvent, useState } from 'react';
 import { useTheme } from '@mui/material/styles';
 import { useSession } from 'next-auth/react';
 import UserList from '@/components/UserList';
+import { isTrainerOrAdmin } from '@/lib/auth-utils';
 
 export interface userDetails {
   name: string;
@@ -93,13 +94,13 @@ export default function ProfileView({
             )}
             open={false}
           />
-          <ProfileTemplateList
-            headerText="My course templates"
-            templates={templates.filter(
-              (template: Template) => template.createdById === session?.user.id
-            )}
-            open={true}
-          />
+          {isTrainerOrAdmin((session?.user as User) || {}) && (
+            <ProfileTemplateList
+              headerText="My course templates"
+              templates={templates}
+              open={false}
+            />
+          )}
         </>
       )}
       {selectedTab === 2 && (

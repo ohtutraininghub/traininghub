@@ -41,9 +41,6 @@ export default async function ProfilePage({ searchParams, params }: Props) {
         orderBy: [{ startDate: 'asc' }, { name: 'asc' }],
       },
       createdTemplates: {
-        include: {
-          tags: true,
-        },
         orderBy: [{ name: 'asc' }],
       },
     },
