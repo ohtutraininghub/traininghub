@@ -1,7 +1,7 @@
 import CourseModal from '.';
 import { renderWithTheme } from '@/lib/test-utils';
 import { Role, User } from '@prisma/client';
-import { CourseWithCreatedByInfo } from '@/lib/prisma/courses';
+import { CourseWithInfo } from '@/lib/prisma/courses';
 import { screen } from '@testing-library/react';
 import { useSession } from 'next-auth/react';
 
@@ -32,7 +32,7 @@ const traineeUser: User = {
   role: Role.TRAINEE,
 };
 
-const testCourse: CourseWithCreatedByInfo = {
+const testCourse: CourseWithInfo = {
   id: '987654cba',
   name: 'Robot Framework Fundamentals',
   description:

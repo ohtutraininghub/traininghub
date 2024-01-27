@@ -18,7 +18,7 @@ export type CourseWithTagsAndStudentCount = prismaClient.CourseGetPayload<{
   };
 }>;
 
-export type CourseWithCreatedByInfo = prismaClient.CourseGetPayload<{
+export type CourseWithInfo = prismaClient.CourseGetPayload<{
   include: {
     createdBy: {
       select: {
