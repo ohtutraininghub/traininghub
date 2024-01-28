@@ -9,6 +9,14 @@ const traineeUser = {
   role: Role.TRAINEE,
 };
 
+const trainerUser = {
+  name: 'Tim Trainer',
+  email: 'tim@traininghub.org',
+  emailVerified: null,
+  image: '',
+  role: Role.TRAINER,
+};
+
 const currentDate = new Date().setHours(9, 0, 0, 0).valueOf();
 const msDay = 24 * 60 * 60 * 1000;
 const msHour = 60 * 60 * 1000;
@@ -173,6 +181,7 @@ export async function main() {
 
   const user = await prisma.user.create({ data: {} });
   const trainee = await prisma.user.create({ data: traineeUser });
+  const trainer = await prisma.user.create({ data: trainerUser });
 
   await prisma.tag.createMany({
     data: tagData,
@@ -208,7 +217,7 @@ export async function main() {
           name: template.name,
           description: template.description,
           maxStudents: template.maxStudents,
-          createdById: user.id,
+          createdById: trainer.id,
           tags: {
             connect: template.tags.map((tag) => ({ name: tag })),
           },
