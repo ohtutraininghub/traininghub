@@ -12,6 +12,7 @@ import { Box, Tooltip, Typography } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { useState } from 'react';
 
 export interface ProfileCourseListProps {
@@ -101,6 +102,7 @@ export default function ProfileTemplateList({
                         primary={template.name}
                         sx={{ color: palette.black.main }}
                       />
+                      <DeleteIcon />
                     </ListItem>
                   </Link>
                   {count < templates.length - 1 && <Divider />}
