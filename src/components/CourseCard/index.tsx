@@ -4,7 +4,7 @@ import Typography from '@mui/material/Typography';
 import CardContent from '@mui/material/CardContent';
 import Card from '@mui/material/Card';
 import Link from 'next/link';
-import { CourseWithTagsAndStudentCount } from '@/lib/prisma/courses';
+import { CourseWithInfo } from '@/lib/prisma/courses';
 import LocalizedDateTime from '../LocalizedDateTime';
 import { useTheme } from '@mui/material/styles';
 import { Box, Button, useMediaQuery } from '@mui/material';
@@ -17,7 +17,7 @@ import { DictProps } from '@/lib/i18n';
 import { ImageContainer } from '../ImageContainer';
 
 interface Props extends DictProps {
-  course: CourseWithTagsAndStudentCount;
+  course: CourseWithInfo;
   enrolls: string;
 }
 
