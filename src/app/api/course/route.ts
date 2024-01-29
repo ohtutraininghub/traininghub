@@ -1,5 +1,9 @@
 import { NextResponse, NextRequest } from 'next/server';
-import { courseSchema, courseSchemaWithId } from '@/lib/zod/courses';
+import {
+  courseSchema,
+  courseSchemaWithId,
+  courseDeleteSchema,
+} from '@/lib/zod/courses';
 import {
   StatusCodeType,
   errorResponse,
@@ -106,17 +110,6 @@ export async function DELETE(request: NextRequest) {
   try {
     const { t } = await translator('api');
     const { user } = await getServerAuthSession();
-    const body = courseSchemaWithId.parse(await request.json());
-    const course = await prisma.course.findFirst({
-      where: { id: body.id },
-    });
-
-    if (!course) {
-      return errorResponse({
-        message: t('Common.courseNotFound'),
-        statusCode: StatusCodeType.NOT_FOUND,
-      });
-    }
 
     if (!hasCourseEditRights(user)) {
       return errorResponse({
@@ -125,8 +118,24 @@ export async function DELETE(request: NextRequest) {
       });
     }
 
+    const reqData = await request.json();
+    const course = courseDeleteSchema.parse(reqData);
+
+    const course_exists = await prisma.course.findFirst({
+      where: { id: course.courseId },
+    });
+
+    if (!course_exists) {
+      return errorResponse({
+        message: t('Common.courseNotFound'),
+        statusCode: StatusCodeType.NOT_FOUND,
+      });
+    }
+
     await prisma.course.delete({
-      where: { id: body.id },
+      where: {
+        id: course.courseId,
+      },
     });
 
     return successResponse({
