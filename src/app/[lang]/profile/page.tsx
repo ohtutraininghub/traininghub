@@ -21,7 +21,6 @@ type Props = {
 };
 
 export default async function ProfilePage({ searchParams, params }: Props) {
-  console.log('halooooojaaaa 123--------------------------------');
   const session = await getServerAuthSession();
   const { t } = await translator(['components', 'admin']);
   const allUsers = await getAllUsers();

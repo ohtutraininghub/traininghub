@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { ConfirmCard } from '../ConfirmCard';
 import { useTranslation } from '@i18n/client';
 import { DictProps } from '@/lib/i18n';
+import { useRouter } from 'next/navigation';
 
 interface Props extends DictProps {
   courseId: string;
@@ -14,14 +15,16 @@ interface Props extends DictProps {
 }
 
 const RemoveButton = ({ courseId, hidden, lang }: Props) => {
-  console.log(lang);
   const { t } = useTranslation(lang, 'components');
   const [backdropOpen, setBackdropOpen] = useState(false);
   const { notify } = useMessage();
+  const router = useRouter();
 
   const handleClick = async () => {
-    const responseJson = await remove('url', { courseId: courseId });
+    const responseJson = await remove('/api/course', { courseId: courseId });
     notify(responseJson);
+    router.push('/');
+    router.refresh();
   };
 
   return (
