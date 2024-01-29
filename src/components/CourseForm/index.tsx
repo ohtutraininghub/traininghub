@@ -3,7 +3,6 @@
 import {
   Input,
   InputLabel,
-  Button,
   Box,
   Container,
   Typography,
@@ -32,6 +31,7 @@ import { DictProps } from '@i18n/index';
 import RichTextEditor from '@/components/TextEditor';
 import StyledTooltip from '@/components/StyledTooltip';
 import BasicSelect from '../TemplateSelect';
+import SubmitButton from './SubmitButton';
 
 interface CourseFormProps extends DictProps {
   tags: Tag[];
@@ -391,23 +391,7 @@ export default function CourseForm({
             }}
           />
           <FormFieldError error={errors.maxStudents} />
-          <Button
-            type="submit"
-            disabled={isSubmitting}
-            sx={{
-              display: 'block',
-              margin: 'auto',
-              mt: 2,
-              color: palette.white.main,
-              backgroundColor: palette.secondary.main,
-              '&:hover': {
-                backgroundColor: palette.secondary.light,
-              },
-            }}
-            data-testid="courseFormSubmit"
-          >
-            {isEditMode ? 'Update' : 'Submit'}
-          </Button>
+          <SubmitButton isEditMode={isEditMode} isSubmitting={isSubmitting} />
         </form>
       </Box>
     </Container>
