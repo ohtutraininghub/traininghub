@@ -46,6 +46,9 @@ You will need to change DSN in configs and obtain `SENTRY_AUTH_TOKEN`.
 `HEROKU_API_KEY`, `HEROKU_EMAIL` are required, use Google.  
 `HEROKU_APP_NAME` is required for both staging and production.
 
+`HEROKU_APP_NAME` is the name of the application without the URL hash, for example: `> **traininghub-staging**-7db9b0b9243c.herokuapp.com`
+For production, `staging` is not needed.
+
 #### PostgreSQL
 
 `DATABASE_URL` is required for staging and production, use any provider. Heroku offers PostgreSQL with the app.  

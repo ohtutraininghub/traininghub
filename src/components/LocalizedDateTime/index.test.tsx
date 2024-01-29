@@ -1,9 +1,9 @@
 import { screen } from '@testing-library/react';
 import LocalizedDateTime from '.';
-import { CourseWithTagsAndStudentCount } from '@/lib/prisma/courses';
+import { CourseWithInfo } from '@/lib/prisma/courses';
 import { renderWithTheme } from '@/lib/test-utils';
 
-const course: CourseWithTagsAndStudentCount = {
+const course: CourseWithInfo = {
   id: '22',
   name: 'Test course',
   description: 'A Test course',
