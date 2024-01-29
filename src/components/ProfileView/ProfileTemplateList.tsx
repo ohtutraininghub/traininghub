@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import Link from 'next/link';
 import { List } from '@mui/material';
 import { ListItem } from '@mui/material';
 import { ListItemText } from '@mui/material';
@@ -83,28 +82,27 @@ export default function ProfileTemplateList({
             >
               {templates.map((template: Template, count: number) => (
                 <React.Fragment key={template.id}>
-                  <Link
-                    href={`profile/?templateId=${template.id}`}
-                    style={{ textDecoration: 'none' }}
+                  <ListItem
+                    key={template.id}
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      backgroundColor: 'transparent',
+                      '&:hover': {
+                        backgroundColor: palette.surface.light,
+                      },
+                    }}
                   >
-                    <ListItem
-                      key={template.id}
-                      sx={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        backgroundColor: 'transparent',
-                        '&:hover': {
-                          backgroundColor: palette.surface.light,
-                        },
-                      }}
-                    >
-                      <ListItemText
-                        primary={template.name}
-                        sx={{ color: palette.black.main }}
-                      />
-                      <DeleteTemplateButton templateName={template.name} />
-                    </ListItem>
-                  </Link>
+                    <ListItemText
+                      primary={template.name}
+                      sx={{ color: palette.black.main }}
+                    />
+                    <DeleteTemplateButton
+                      templateName={template.name}
+                      lang="en"
+                    />
+                  </ListItem>
+
                   {count < templates.length - 1 && <Divider />}
                 </React.Fragment>
               ))}

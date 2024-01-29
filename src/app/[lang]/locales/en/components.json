@@ -104,6 +104,9 @@
       "closeTooltip": "Got it"
     }
   },
+  "TemplateDeleteButton": {
+    "delete": "Delete"
+  },
   "TextEditor": {
     "Dropdown": {
       "header1": "Header 1",

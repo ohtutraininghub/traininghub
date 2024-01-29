@@ -16,13 +16,15 @@ import DialogTitle from '@mui/material/DialogTitle';
 
 interface DeleteTemplateButtonProps {
   templateName: string;
+  lang: 'en';
 }
 
 export function DeleteTemplateButton({
   templateName,
+  lang,
 }: DeleteTemplateButtonProps) {
   const [open, setOpen] = useState(false);
-
+  const { t } = useTranslation(lang, 'components');
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -38,7 +40,7 @@ export function DeleteTemplateButton({
         color="secondary"
         onClick={handleClickOpen}
       >
-        Delete
+        {t('TemplateDeleteButton.delete')}
       </Button>
       <Dialog
         open={open}
