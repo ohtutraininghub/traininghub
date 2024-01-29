@@ -21,6 +21,7 @@ type Props = {
 };
 
 export default async function ProfilePage({ searchParams, params }: Props) {
+  console.log('halooooojaaaa 123--------------------------------');
   const session = await getServerAuthSession();
   const { t } = await translator(['components', 'admin']);
   const allUsers = await getAllUsers();
@@ -57,7 +58,6 @@ export default async function ProfilePage({ searchParams, params }: Props) {
   if (isTrainerOrAdmin(session.user) && openedCourse) {
     enrolledStudents = await getStudentNamesByCourseId(openedCourse.id);
   }
-
   return (
     <Container maxWidth="md">
       <CourseModal

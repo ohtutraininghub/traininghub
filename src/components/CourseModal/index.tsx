@@ -11,7 +11,7 @@ import Box from '@mui/material/Box';
 import PriorityHighOutlinedIcon from '@mui/icons-material/PriorityHighOutlined';
 import EnrollHolder from './EnrollHolder';
 import EditButton from './EditButton';
-import DeleteButton from './DeleteButton';
+import RemoveButton from './RemoveButton';
 import LocalizedDateTime from '../LocalizedDateTime';
 import { hasCourseEditRights } from '@/lib/auth-utils';
 import { DictProps } from '@/lib/i18n';
@@ -236,24 +236,23 @@ export default function CourseModal({
                 mt: 'auto',
                 pt: 3,
                 display: 'flex',
-                flexDirection: { xs: 'column-reverse', sm: 'row' },
-                alignItems: { xs: 'center', sm: 'flex-end' },
+                justifyContent: 'space-between',
                 gap: 1,
               }}
             >
               <Box
-                sx={{
-                  alignItems: 'baseline',
-                  flexFlow: 'flex-start',
-                  flexDirection: 'row',
-                }}
+                sx={{ alignItems: 'center', display: 'flex', gap: 3, flex: 1 }}
               >
                 <EditButton
                   editCourseLabel={editCourseLabel}
                   courseId={course.id}
                   hidden={!hasEditRights}
                 />
-                <DeleteButton courseId={course.id} hidden={!hasEditRights} />
+                <RemoveButton
+                  courseId={course.id}
+                  hidden={!hasEditRights}
+                  lang={lang}
+                />
               </Box>
               <Box sx={{ flex: 1 }}>
                 <Typography sx={{ mb: 1 }}>{enrolls}</Typography>

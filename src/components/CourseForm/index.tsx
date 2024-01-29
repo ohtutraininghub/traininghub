@@ -39,10 +39,6 @@ interface CourseFormProps extends DictProps {
 
 type FormType = CourseSchemaType | CourseSchemaWithIdType;
 
-const deleteTraining = () => {
-  console.log('asdifaosdhf ');
-};
-
 export default function CourseForm({
   courseData,
   lang,
@@ -395,7 +391,6 @@ export default function CourseForm({
           >
             {isEditMode ? 'Update' : 'Submit'}
           </Button>
-          <Button onClick={deleteTraining}>Delete</Button>
         </form>
       </Box>
     </Container>

@@ -3,15 +3,20 @@ import { remove } from '../../lib/response/fetchUtil';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useMessage } from '../Providers/MessageProvider';
 import Typography from '@mui/material/Typography';
+import { useState } from 'react';
+import { ConfirmCard } from '../ConfirmCard';
+import { useTranslation } from '@i18n/client';
+import { DictProps } from '@/lib/i18n';
 
-// 200 ja 403 tai 404
-
-interface Props {
+interface Props extends DictProps {
   courseId: string;
   hidden: boolean;
 }
 
-const DeleteButton = ({ courseId, hidden }: Props) => {
+const RemoveButton = ({ courseId, hidden, lang }: Props) => {
+  console.log(lang);
+  const { t } = useTranslation(lang, 'components');
+  const [backdropOpen, setBackdropOpen] = useState(false);
   const { notify } = useMessage();
 
   const handleClick = async () => {
@@ -20,16 +25,13 @@ const DeleteButton = ({ courseId, hidden }: Props) => {
   };
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        flex: 1,
-      }}
-    >
+    <Box sx={{ justifyContent: 'flex-start' }}>
       <Button
         style={{ textDecoration: 'none', color: 'inherit' }}
         hidden={hidden}
-        onClick={handleClick}
+        onClick={() => {
+          setBackdropOpen(true);
+        }}
       >
         <Box
           sx={{
@@ -45,11 +47,21 @@ const DeleteButton = ({ courseId, hidden }: Props) => {
           }}
         >
           <DeleteIcon />
-          <Typography>{'remove'}</Typography>
+          <Typography textTransform={'capitalize'}>
+            {t('RemoveCourse.button.text')}
+          </Typography>
         </Box>
       </Button>
+
+      <ConfirmCard
+        lang={lang}
+        backdropOpen={backdropOpen}
+        setBackdropOpen={setBackdropOpen}
+        confirmMessage={t('ConfirmRemoveCourse.button.text')}
+        handleClick={handleClick}
+      ></ConfirmCard>
     </Box>
   );
 };
 
-export default DeleteButton;
+export default RemoveButton;
