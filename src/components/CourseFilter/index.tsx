@@ -17,7 +17,7 @@ import {
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useCallback } from 'react';
-import { CourseWithTagsAndStudentCount } from '@/lib/prisma/courses';
+import { CourseWithInfo } from '@/lib/prisma/courses';
 import { usePathname, useSearchParams, useRouter } from 'next/navigation';
 import DatePicker from 'react-datepicker';
 import { Tag } from '@prisma/client';
@@ -28,7 +28,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import './datepicker-custom.css';
 
 interface CourseFilterProps extends DictProps {
-  initialCourses: CourseWithTagsAndStudentCount[];
+  initialCourses: CourseWithInfo[];
   initialTags: Tag[];
 }
 

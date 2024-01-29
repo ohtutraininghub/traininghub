@@ -12,7 +12,7 @@ import {
   ToggleButtonGroup,
   Typography,
 } from '@mui/material';
-import { CourseWithTagsAndStudentCount } from '@/lib/prisma/courses';
+import { CourseWithInfo } from '@/lib/prisma/courses';
 import CourseModal from '@/components/CourseModal';
 import { filterCourses } from '@/components/CourseFilter/CourseFilterLogic';
 import { useTranslation } from '@i18n/client';
@@ -30,8 +30,8 @@ import { UserNamesAndIds } from '@/lib/prisma/users';
 import { ImageContainer } from '../ImageContainer';
 
 interface CourseListProps extends DictProps {
-  courses: CourseWithTagsAndStudentCount[];
-  openedCourse: CourseWithTagsAndStudentCount | undefined;
+  courses: CourseWithInfo[];
+  openedCourse: CourseWithInfo | undefined;
   usersEnrolledCourseIds: string[];
   enrolledStudents: UserNamesAndIds | null;
   searchCourses: {

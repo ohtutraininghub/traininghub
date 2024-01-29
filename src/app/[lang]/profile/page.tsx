@@ -32,6 +32,11 @@ export default async function ProfilePage({ searchParams, params }: Props) {
     include: {
       courses: {
         include: {
+          createdBy: {
+            select: {
+              name: true,
+            },
+          },
           tags: true,
           _count: {
             select: {
@@ -40,6 +45,9 @@ export default async function ProfilePage({ searchParams, params }: Props) {
           },
         },
         orderBy: [{ startDate: 'asc' }, { name: 'asc' }],
+      },
+      createdTemplates: {
+        orderBy: [{ name: 'asc' }],
       },
     },
   });
@@ -79,6 +87,7 @@ export default async function ProfilePage({ searchParams, params }: Props) {
         }}
         courses={userData?.courses ?? []}
         users={allUsers}
+        templates={userData?.createdTemplates ?? []}
       >
         <CreateTag
           tagsHeader={t('admin:TagsSection.header')}

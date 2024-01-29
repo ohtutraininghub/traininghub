@@ -1,6 +1,6 @@
 'use client';
 
-import { CourseWithTagsAndStudentCount } from '@/lib/prisma/courses';
+import { CourseWithInfo } from '@/lib/prisma/courses';
 import { CourseModalCloseButton } from '@/components/Buttons/Buttons';
 import Modal from '@mui/material/Modal';
 import AttendeeTable from '@/components/AttendeeTable';
@@ -27,7 +27,7 @@ import { useMediaQuery, useTheme } from '@mui/material';
 import { ImageContainer } from '../ImageContainer';
 
 interface Props extends DictProps {
-  course: CourseWithTagsAndStudentCount | undefined;
+  course: CourseWithInfo | undefined;
   usersEnrolledCourseIds: string[];
   enrolledStudents: UserNamesAndIds | null;
   enrolls: string;
@@ -154,6 +154,9 @@ export default function CourseModal({
           />
         )}
         <Typography variant="h1">{course.name}</Typography>
+        <Typography variant="h6">
+          Created by: {course.createdBy?.name}
+        </Typography>
         <Typography sx={{ my: 2 }}>
           <LocalizedDateTime
             variant="range-long"

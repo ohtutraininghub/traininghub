@@ -1,8 +1,8 @@
 import { filterCourses } from '@/components/CourseFilter/CourseFilterLogic';
-import { CourseWithTagsAndStudentCount } from '@/lib/prisma/courses';
+import { CourseWithInfo } from '@/lib/prisma/courses';
 
 describe('filterCourses function', () => {
-  const courses: CourseWithTagsAndStudentCount[] = [
+  const courses: CourseWithInfo[] = [
     {
       _count: { students: 10 },
       id: '1',

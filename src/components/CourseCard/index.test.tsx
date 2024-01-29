@@ -1,5 +1,5 @@
 import { renderWithTheme } from '@/lib/test-utils';
-import { CourseWithTagsAndStudentCount } from '@/lib/prisma/courses';
+import { CourseWithInfo } from '@/lib/prisma/courses';
 import { screen } from '@testing-library/react';
 import CourseCard from '.';
 
@@ -20,7 +20,7 @@ jest.mock('../../lib/i18n/client', () => ({
   },
 }));
 
-const course: CourseWithTagsAndStudentCount = {
+const course: CourseWithInfo = {
   id: '22',
   name: 'Test course',
   description: 'A Test course',

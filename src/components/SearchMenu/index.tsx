@@ -4,7 +4,7 @@ import * as React from 'react';
 import Drawer from '@mui/material/Drawer';
 import Button from '@mui/material/Button';
 import CourseFilter from '../CourseFilter';
-import { CourseWithTagsAndStudentCount } from '@/lib/prisma/courses';
+import { CourseWithInfo } from '@/lib/prisma/courses';
 import { Tag } from '@prisma/client';
 import { Box, Tooltip, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
@@ -15,7 +15,7 @@ import { useTranslation } from '@i18n/client';
 import { keyframes } from '@mui/system';
 
 interface SearchMenuProps extends DictProps {
-  initialCourses: CourseWithTagsAndStudentCount[];
+  initialCourses: CourseWithInfo[];
   initialTags: Tag[];
 }
 
