@@ -85,6 +85,9 @@
     "signOut": "Sign out",
     "viewProfile": "View profile"
   },
+  "SaveTemplateButton": {
+    "saveButton": "Save as a template"
+  },
   "SearchMenu": {
     "button": {
       "clearSearch": "Clear Search",
