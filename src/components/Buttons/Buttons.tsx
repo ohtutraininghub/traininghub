@@ -13,18 +13,22 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import { remove } from '../../lib/response/fetchUtil';
+import { useMessage } from '../Providers/MessageProvider';
 
 interface DeleteTemplateButtonProps {
-  templateName: string;
+  templateId: string;
   lang: 'en';
 }
 
 export function DeleteTemplateButton({
-  templateName,
+  templateId,
   lang,
 }: DeleteTemplateButtonProps) {
   const [open, setOpen] = useState(false);
   const { t } = useTranslation(lang, 'components');
+  const router = useRouter();
+  const { notify } = useMessage();
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -34,24 +38,13 @@ export function DeleteTemplateButton({
   };
 
   const handleConfirm = async () => {
-    const templateId = 'clryw02tl000mz1s0kgcucy0o';
-    try {
-      const response = await fetch(`/api/template`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ id: templateId }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to delete template');
-      }
-
-      handleClose();
-    } catch (error) {
-      console.error(error);
-    }
+    const responseJson = await remove('/api/template', {
+      templateId: templateId,
+    });
+    notify(responseJson);
+    handleClose();
+    router.push('/en/profile');
+    router.refresh();
   };
 
   return (
@@ -70,7 +63,7 @@ export function DeleteTemplateButton({
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {`Are you sure you want to delete ${templateName}?`}
+          {`Are you sure you want to delete this template?`}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">

@@ -97,10 +97,7 @@ export default function ProfileTemplateList({
                       primary={template.name}
                       sx={{ color: palette.black.main }}
                     />
-                    <DeleteTemplateButton
-                      templateName={template.name}
-                      lang="en"
-                    />
+                    <DeleteTemplateButton templateId={template.id} lang="en" />
                   </ListItem>
 
                   {count < templates.length - 1 && <Divider />}

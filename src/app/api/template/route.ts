@@ -9,24 +9,32 @@ import { handleCommonErrors } from '@/lib/response/errorUtil';
 import { getServerAuthSession } from '@/lib/auth';
 import { isTrainerOrAdmin } from '@/lib/auth-utils';
 import { translator } from '@/lib/i18n';
-import { templateSchemaWithId } from '@/lib/zod/templates';
-import { remove } from '@/lib/response/fetchUtil';
+import { templateDeleteSchema } from '@/lib/zod/templates';
 
 export async function DELETE(request: NextRequest) {
+  console.log('template delete');
   try {
     const { t } = await translator('api');
     const { user } = await getServerAuthSession();
-    const body = templateSchemaWithId.parse(await request.json());
-    const template = await prisma.template.findFirst({
-      where: { id: body.id },
+    const reqData = await request.json();
+    const template = templateDeleteSchema.parse(reqData);
+
+    const template_exists = await prisma.template.findFirst({
+      where: { id: template.templateId },
     });
 
-    if (!template) {
+    if (!template_exists) {
       return errorResponse({
-        message: t('Common.templateNotFound'),
+        message: t('Common.courseNotFound'),
         statusCode: StatusCodeType.NOT_FOUND,
       });
     }
+
+    await prisma.template.delete({
+      where: {
+        id: template.templateId,
+      },
+    });
 
     if (!isTrainerOrAdmin(user)) {
       return errorResponse({
@@ -34,8 +42,6 @@ export async function DELETE(request: NextRequest) {
         statusCode: StatusCodeType.FORBIDDEN,
       });
     }
-
-    await remove(`/api/template/${body.id}`, { id: body.id });
 
     return successResponse({
       message: t('Templates.templateDeleted'),
