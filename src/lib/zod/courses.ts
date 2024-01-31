@@ -122,4 +122,10 @@ export const courseEnrollSchema = z
   })
   .strict();
 
+export const courseDeleteSchema = z
+  .object({
+    courseId: z.string().cuid(),
+  })
+  .strict();
+
 export type CourseEnrollSchemaType = z.infer<typeof courseEnrollSchema>;

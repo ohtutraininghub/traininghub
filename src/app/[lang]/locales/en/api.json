@@ -12,6 +12,7 @@
   "Courses": {
     "addedToCalendar": "Added course to calendar!",
     "courseCreated": "Course successfully created!",
+    "courseDeleted": "Course successfully deleted!",
     "courseUpdated": "Course successfully updated!",
     "idMissing": "Course id param missing!"
   },

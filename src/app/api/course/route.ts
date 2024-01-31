@@ -1,5 +1,9 @@
 import { NextResponse, NextRequest } from 'next/server';
-import { courseSchema, courseSchemaWithId } from '@/lib/zod/courses';
+import {
+  courseSchema,
+  courseSchemaWithId,
+  courseDeleteSchema,
+} from '@/lib/zod/courses';
 import {
   StatusCodeType,
   errorResponse,
@@ -95,6 +99,47 @@ export async function PUT(request: NextRequest) {
 
     return successResponse({
       message: t('Courses.courseUpdated'),
+      statusCode: StatusCodeType.OK,
+    });
+  } catch (error) {
+    return await handleCommonErrors(error);
+  }
+}
+
+export async function DELETE(request: NextRequest) {
+  try {
+    const { t } = await translator('api');
+    const { user } = await getServerAuthSession();
+
+    if (!hasCourseEditRights(user)) {
+      return errorResponse({
+        message: t('Common.forbidden'),
+        statusCode: StatusCodeType.FORBIDDEN,
+      });
+    }
+
+    const reqData = await request.json();
+    const course = courseDeleteSchema.parse(reqData);
+
+    const course_exists = await prisma.course.findFirst({
+      where: { id: course.courseId },
+    });
+
+    if (!course_exists) {
+      return errorResponse({
+        message: t('Common.courseNotFound'),
+        statusCode: StatusCodeType.NOT_FOUND,
+      });
+    }
+
+    await prisma.course.delete({
+      where: {
+        id: course.courseId,
+      },
+    });
+
+    return successResponse({
+      message: t('Courses.courseDeleted'),
       statusCode: StatusCodeType.OK,
     });
   } catch (error) {
