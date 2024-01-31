@@ -25,6 +25,9 @@ import TrainerTools from './TrainerTools';
 import { isTrainerOrAdmin } from '@/lib/auth-utils';
 import { useMediaQuery, useTheme } from '@mui/material';
 import { ImageContainer } from '../ImageContainer';
+import { hasCourseDeleteRights } from '@/lib/auth-utils';
+import { useMessage } from '../Providers/MessageProvider';
+import { remove } from '../../lib/response/fetchUtil';
 
 interface Props extends DictProps {
   course: CourseWithInfo | undefined;
@@ -50,6 +53,7 @@ export default function CourseModal({
   const [courseView, setCourseView] = useState<string | null>('details');
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const { notify } = useMessage();
 
   //Reset view to course description when modal is opened/closed
   useEffect(() => {
@@ -82,6 +86,12 @@ export default function CourseModal({
     setCourseView(newView);
   };
 
+  const handleRemove = async () => {
+    const responseJson = await remove('/api/course', { courseId: course.id });
+    notify(responseJson);
+    router.push('/');
+    router.refresh();
+  };
   return (
     <Modal
       open
@@ -251,11 +261,9 @@ export default function CourseModal({
                   courseId={course.id}
                   hidden={!hasEditRights}
                 />
-                <RemoveButton
-                  courseId={course.id}
-                  hidden={!hasEditRights}
-                  lang={lang}
-                />
+                {hasCourseDeleteRights(session.user, course) && (
+                  <RemoveButton handleDelete={handleRemove} lang={lang} />
+                )}
               </Box>
               <Box sx={{ flex: 1 }}>
                 <Typography sx={{ mb: 1 }}>{enrolls}</Typography>
