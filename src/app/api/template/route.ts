@@ -9,7 +9,8 @@ import { handleCommonErrors } from '@/lib/response/errorUtil';
 import { getServerAuthSession } from '@/lib/auth';
 import { isTrainerOrAdmin } from '@/lib/auth-utils';
 import { translator } from '@/lib/i18n';
-import { templateSchemaWithId } from '@/lib/validation/schemas';
+import { templateSchemaWithId } from '@/lib/zod/templates';
+import { remove } from '@/lib/response/fetchUtil';
 
 export async function DELETE(request: NextRequest) {
   try {
@@ -34,9 +35,7 @@ export async function DELETE(request: NextRequest) {
       });
     }
 
-    await prisma.template.delete({
-      where: { id: body.id },
-    });
+    await remove(`/api/template/${body.id}`, { id: body.id });
 
     return successResponse({
       message: t('Templates.templateDeleted'),

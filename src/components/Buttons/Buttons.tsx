@@ -33,6 +33,27 @@ export function DeleteTemplateButton({
     setOpen(false);
   };
 
+  const handleConfirm = async () => {
+    const templateId = 'clryw02tl000mz1s0kgcucy0o';
+    try {
+      const response = await fetch(`/api/template`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id: templateId }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to delete template');
+      }
+
+      handleClose();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <>
       <Button
@@ -61,7 +82,7 @@ export function DeleteTemplateButton({
           <Button onClick={handleClose} color="secondary">
             Cancel
           </Button>
-          <Button onClick={handleClose} color="secondary" autoFocus>
+          <Button onClick={handleConfirm} color="secondary" autoFocus>
             Confirm
           </Button>
         </DialogActions>

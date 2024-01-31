@@ -62,7 +62,7 @@ const courseData = [
 
 const templateData = [
   {
-    name: 'Kubernetes Fundamentals',
+    name: 'Kubernetes',
     description:
       'Take your first steps in using Kubernetes for container orchestration. This course will introduce you to the basic concepts and building blocks of Kubernetes and the architecture of the system. Get ready to start you cloud native journey!',
     maxStudents: 15,
