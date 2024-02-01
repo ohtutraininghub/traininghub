@@ -1,35 +1,30 @@
-import { useState } from 'react';
 import { useTranslation } from '@i18n/client';
 import { Button } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogTitle from '@mui/material/DialogTitle';
+import { DictProps } from '@/lib/i18n';
 
-interface SaveTemplateButtonProps {
+interface SaveTemplateButtonProps extends DictProps {
   isSubmitting: boolean;
-  lang: 'en';
+  handleDialogOpen: () => void;
+  dialogOpen: boolean;
 }
 
 export default function SaveTemplateButton({
   isSubmitting,
   lang,
+  handleDialogOpen,
+  dialogOpen,
 }: SaveTemplateButtonProps) {
-  const [open, setOpen] = useState(false);
   const { palette } = useTheme();
   const { t } = useTranslation(lang, 'components');
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
 
   return (
     <>
       <Button
-        onClick={handleClickOpen}
+        onClick={handleDialogOpen}
         disabled={isSubmitting}
         sx={{
           display: 'block',
@@ -41,12 +36,13 @@ export default function SaveTemplateButton({
             backgroundColor: palette.secondary.light,
           },
         }}
+        data-testid="saveTemplateButton"
       >
         {t('SaveTemplateButton.button.save')}
       </Button>
       <Dialog
-        open={open}
-        onClose={handleClose}
+        open={dialogOpen}
+        onClose={handleDialogOpen}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
@@ -54,10 +50,10 @@ export default function SaveTemplateButton({
           {t('SaveTemplateButton.confirmSave')}
         </DialogTitle>
         <DialogActions>
-          <Button onClick={handleClose} color="secondary">
+          <Button onClick={handleDialogOpen} color="secondary">
             {t('SaveTemplateButton.button.cancel')}
           </Button>
-          <Button onClick={handleClose} color="secondary" autoFocus>
+          <Button onClick={handleDialogOpen} color="secondary" autoFocus>
             {t('SaveTemplateButton.button.confirm')}
           </Button>
         </DialogActions>

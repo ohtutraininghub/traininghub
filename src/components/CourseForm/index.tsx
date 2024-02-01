@@ -33,6 +33,7 @@ import StyledTooltip from '@/components/StyledTooltip';
 import BasicSelect from '../TemplateSelect';
 import SubmitButton from './SubmitButton';
 import SaveTemplateButton from './SaveTemplateButton';
+import { useState } from 'react';
 
 interface CourseFormProps extends DictProps {
   tags: Tag[];
@@ -51,6 +52,7 @@ export default function CourseForm({
   const router = useRouter();
   const { palette } = useTheme();
   const { notify } = useMessage();
+  const [open, setOpen] = useState(false);
 
   const {
     control,
@@ -86,6 +88,10 @@ export default function CourseForm({
     }
     router.push('/');
     router.refresh();
+  };
+
+  const handleDialogOpen = () => {
+    setOpen(!open);
   };
   return (
     <Container>
@@ -392,7 +398,12 @@ export default function CourseForm({
             }}
           />
           <FormFieldError error={errors.maxStudents} />
-          <SaveTemplateButton isSubmitting={isSubmitting} lang={lang} />
+          <SaveTemplateButton
+            isSubmitting={isSubmitting}
+            handleDialogOpen={handleDialogOpen}
+            dialogOpen={open}
+            lang={lang}
+          />
           <SubmitButton isEditMode={isEditMode} isSubmitting={isSubmitting} />
         </form>
       </Box>
