@@ -97,7 +97,7 @@ export default function CourseForm({
   };
 
   const submitTemplate = async (data: FormType) => {
-    const responseJson = await post('api/template', data);
+    const responseJson = await post('/api/template', data);
 
     notify(responseJson);
 
