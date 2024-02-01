@@ -17,6 +17,7 @@ const RemoveButton = ({ handleDelete, lang }: Props) => {
   return (
     <Box sx={{ justifyContent: 'flex-start' }}>
       <Button
+        data-testid="removeCourseButton"
         style={{ textDecoration: 'none', color: 'inherit' }}
         onClick={() => {
           setBackdropOpen(true);
