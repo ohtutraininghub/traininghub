@@ -9,6 +9,7 @@ import { DictProps } from '@/lib/i18n';
 interface SaveTemplateButtonProps extends DictProps {
   isSubmitting: boolean;
   handleDialogOpen: () => void;
+  handleSubmit: () => void;
   dialogOpen: boolean;
 }
 
@@ -16,6 +17,7 @@ export default function SaveTemplateButton({
   isSubmitting,
   lang,
   handleDialogOpen,
+  handleSubmit,
   dialogOpen,
 }: SaveTemplateButtonProps) {
   const { palette } = useTheme();
@@ -50,10 +52,19 @@ export default function SaveTemplateButton({
           {t('SaveTemplateButton.confirmSave')}
         </DialogTitle>
         <DialogActions>
-          <Button onClick={handleDialogOpen} color="secondary">
+          <Button
+            onClick={handleDialogOpen}
+            color="secondary"
+            disabled={isSubmitting}
+          >
             {t('SaveTemplateButton.button.cancel')}
           </Button>
-          <Button onClick={handleDialogOpen} color="secondary" autoFocus>
+          <Button
+            onClick={handleSubmit}
+            color="secondary"
+            disabled={isSubmitting}
+            autoFocus
+          >
             {t('SaveTemplateButton.button.confirm')}
           </Button>
         </DialogActions>

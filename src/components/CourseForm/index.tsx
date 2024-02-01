@@ -81,6 +81,8 @@ export default function CourseForm({
       ? await update(`/api/course`, data)
       : await post('/api/course', data);
 
+    console.log('submit');
+
     notify(responseJson);
 
     if (!isEditMode) {
@@ -93,6 +95,17 @@ export default function CourseForm({
   const handleDialogOpen = () => {
     setOpen(!open);
   };
+
+  const submitTemplate = async (data: FormType) => {
+    const responseJson = await post('api/template', data);
+
+    notify(responseJson);
+
+    reset();
+    router.push('/');
+    router.refresh();
+  };
+
   return (
     <Container>
       <Box
@@ -400,6 +413,7 @@ export default function CourseForm({
           <FormFieldError error={errors.maxStudents} />
           <SaveTemplateButton
             isSubmitting={isSubmitting}
+            handleSubmit={handleSubmit(submitTemplate)}
             handleDialogOpen={handleDialogOpen}
             dialogOpen={open}
             lang={lang}
