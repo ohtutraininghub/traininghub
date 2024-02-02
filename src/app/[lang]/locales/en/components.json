@@ -85,6 +85,14 @@
     "signOut": "Sign out",
     "viewProfile": "View profile"
   },
+  "SaveTemplateButton": {
+    "button": {
+      "cancel": "Cancel",
+      "confirm": "Confirm",
+      "save": "Save as a template"
+    },
+    "confirmSave": "This course will be saved to your templates"
+  },
   "SearchMenu": {
     "button": {
       "clearSearch": "Clear Search",
