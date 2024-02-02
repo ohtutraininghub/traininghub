@@ -1,88 +1,12 @@
 'use client';
 
-import Button from '@mui/material/Button';
+import { Button } from '@mui/material';
 import { useState } from 'react';
 import { ConfirmCard } from '../ConfirmCard';
 import { signOut } from 'next-auth/react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { DictProps } from '@/lib/i18n';
 import { useTranslation } from '@i18n/client';
-import DeleteIcon from '@mui/icons-material/Delete';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import { remove } from '../../lib/response/fetchUtil';
-import { useMessage } from '../Providers/MessageProvider';
-
-interface DeleteTemplateButtonProps {
-  templateId: string;
-  lang: 'en';
-}
-
-export function DeleteTemplateButton({
-  templateId,
-  lang,
-}: DeleteTemplateButtonProps) {
-  const [open, setOpen] = useState(false);
-  const { t } = useTranslation(lang, 'components');
-  const router = useRouter();
-  const { notify } = useMessage();
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const handleConfirm = async () => {
-    const responseJson = await remove('/api/template', {
-      templateId: templateId,
-    });
-    notify(responseJson);
-    handleClose();
-    router.push('/en/profile');
-    router.refresh();
-  };
-
-  return (
-    <>
-      <Button
-        startIcon={<DeleteIcon />}
-        color="secondary"
-        onClick={handleClickOpen}
-      >
-        {t('TemplateDeleteButton.delete')}
-      </Button>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">
-          {`Are you sure you want to delete this template?`}
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Deleting this template will permanently remove it from your
-            templates.
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color="secondary">
-            Cancel
-          </Button>
-          <Button onClick={handleConfirm} color="secondary" autoFocus>
-            Confirm
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </>
-  );
-}
 
 interface SignOutButtonProps extends DictProps {}
 
