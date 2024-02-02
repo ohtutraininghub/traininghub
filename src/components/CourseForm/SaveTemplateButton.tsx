@@ -51,7 +51,7 @@ export default function SaveTemplateButton({
           setBackdropOpen={handleDialogOpen}
           confirmMessage={t('SaveTemplateButton.confirmSave')}
           handleClick={handleSaveTemplate}
-        ></ConfirmCard>
+        />
       </Box>
     </div>
   );
