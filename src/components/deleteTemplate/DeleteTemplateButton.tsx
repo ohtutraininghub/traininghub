@@ -7,7 +7,7 @@ import { Box, Button } from '@mui/material';
 import { DictProps } from '@/lib/i18n';
 import { ConfirmCard } from '../ConfirmCard';
 import { useRouter } from 'next/navigation';
-
+import DeleteIcon from '@mui/icons-material/Delete';
 interface DeleteTemplateButtonProps extends DictProps {
   templateId: string;
 }
@@ -41,7 +41,8 @@ export function DeleteTemplateButton({
       <Button
         onClick={handleDialogOpen}
         sx={{
-          display: 'block',
+          display: 'flex',
+          alignItems: 'center',
           margin: 'auto',
           mt: 'auto',
           color: palette.white.main,
@@ -52,6 +53,7 @@ export function DeleteTemplateButton({
         }}
         data-testid="DeleteTemplateButton"
       >
+        <DeleteIcon sx={{ mr: 1, fontSize: '25px' }} />
         {t('DeleteTemplateButton.button.delete')}
       </Button>
       <Box
