@@ -27,6 +27,7 @@ describe('SaveTemplateButton', () => {
     );
     const buttonElement = screen.getByTestId('saveTemplateButton');
     expect(buttonElement).toBeInTheDocument();
+    expect(buttonElement).toHaveTextContent('SaveTemplateButton.button.save');
   });
 });
 
