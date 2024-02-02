@@ -93,6 +93,10 @@ export default function CourseForm({
   const handleDialogOpen = () => {
     setOpen(!open);
   };
+  const handleSaveTemplate = () => {
+    setOpen(!open);
+  };
+
   return (
     <Container>
       <Box
@@ -401,6 +405,7 @@ export default function CourseForm({
           <SaveTemplateButton
             isSubmitting={isSubmitting}
             handleDialogOpen={handleDialogOpen}
+            handleSaveTemplate={handleSaveTemplate}
             dialogOpen={open}
             lang={lang}
           />
