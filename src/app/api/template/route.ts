@@ -5,11 +5,50 @@ import {
   successResponse,
 } from '@/lib/response/responseUtil';
 import { prisma } from '@/lib/prisma';
+import { Tag } from '@prisma/client';
 import { handleCommonErrors } from '@/lib/response/errorUtil';
 import { getServerAuthSession } from '@/lib/auth';
 import { isTrainerOrAdmin } from '@/lib/auth-utils';
 import { translator } from '@/lib/i18n';
-import { templateDeleteSchema } from '@/lib/zod/templates';
+import { templateSchema, templateDeleteSchema } from '@/lib/zod/templates';
+
+const parseTags = async (tags: string[]): Promise<Tag[]> => {
+  const allTags = await prisma.tag.findMany();
+  return allTags.filter((e) => tags.includes(e.name));
+};
+
+export async function POST(request: NextRequest) {
+  try {
+    const { t } = await translator('api');
+    const { user } = await getServerAuthSession();
+    if (!isTrainerOrAdmin(user)) {
+      return errorResponse({
+        message: t('Common.forbidden'),
+        statusCode: StatusCodeType.FORBIDDEN,
+      });
+    }
+    const data = await request.json();
+    const body = templateSchema.parse(data);
+    const parsedTags = await parseTags(body.tags);
+
+    await prisma.template.create({
+      data: {
+        ...body,
+        createdById: user.id,
+        tags: {
+          connect: parsedTags.map((tag) => ({ id: tag.id })),
+        },
+      },
+    });
+
+    return successResponse({
+      message: t('Templates.templateCreated'),
+      statusCode: StatusCodeType.CREATED,
+    });
+  } catch (error) {
+    return await handleCommonErrors(error);
+  }
+}
 
 export async function DELETE(request: NextRequest) {
   console.log('template delete');

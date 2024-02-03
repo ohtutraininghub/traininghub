@@ -30,6 +30,7 @@
     "tagDeleted": "The tag was succesfully deleted"
   },
   "Templates": {
+    "templateCreated": "Template succesfully created",
     "templateDeleted": "Template successfully deleted"
   },
   "Users": {

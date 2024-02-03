@@ -97,12 +97,18 @@ export default function CourseForm({
   };
 
   const submitTemplate = async (data: FormType) => {
-    const responseJson = await post('/api/template', data);
+    // Destructure the data object, omitting date information
+    const {
+      startDate: _startDate,
+      endDate: _endDate,
+      lastEnrollDate: _lastEnrollDate,
+      lastCancelDate: _lastCancelDate,
+      ...dataWithoutDates
+    } = data;
+    const responseJson = await post('/api/template', dataWithoutDates);
 
     notify(responseJson);
 
-    reset();
-    router.push('/');
     router.refresh();
   };
 
