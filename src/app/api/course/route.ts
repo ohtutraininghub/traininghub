@@ -13,7 +13,11 @@ import { prisma } from '@/lib/prisma';
 import { Tag } from '@prisma/client';
 import { handleCommonErrors } from '@/lib/response/errorUtil';
 import { getServerAuthSession } from '@/lib/auth';
-import { hasCourseEditRights, isTrainerOrAdmin } from '@/lib/auth-utils';
+import {
+  hasCourseEditRights,
+  hasCourseDeleteRights,
+  isTrainerOrAdmin,
+} from '@/lib/auth-utils';
 import { updateCourseToCalendars } from '@/lib/google';
 import { translator } from '@/lib/i18n';
 
@@ -111,30 +115,30 @@ export async function DELETE(request: NextRequest) {
     const { t } = await translator('api');
     const { user } = await getServerAuthSession();
 
-    if (!hasCourseEditRights(user)) {
-      return errorResponse({
-        message: t('Common.forbidden'),
-        statusCode: StatusCodeType.FORBIDDEN,
-      });
-    }
-
     const reqData = await request.json();
-    const course = courseDeleteSchema.parse(reqData);
+    const courseData = courseDeleteSchema.parse(reqData);
 
-    const course_exists = await prisma.course.findFirst({
-      where: { id: course.courseId },
+    const course = await prisma.course.findFirst({
+      where: { id: courseData.courseId },
     });
 
-    if (!course_exists) {
+    if (!course) {
       return errorResponse({
         message: t('Common.courseNotFound'),
         statusCode: StatusCodeType.NOT_FOUND,
       });
     }
 
+    if (!hasCourseDeleteRights(user, course)) {
+      return errorResponse({
+        message: t('Common.forbidden'),
+        statusCode: StatusCodeType.FORBIDDEN,
+      });
+    }
+
     await prisma.course.delete({
       where: {
-        id: course.courseId,
+        id: courseData.courseId,
       },
     });
 
