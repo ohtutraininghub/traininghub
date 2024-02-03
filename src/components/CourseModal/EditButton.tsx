@@ -15,7 +15,7 @@ export default function EditButton({
   hidden,
 }: Props) {
   return (
-    <Box sx={{ justifyContent: 'flex-start' }}>
+    <Box sx={{ display: 'flex', flex: 1, }}>
       <Link
         style={{ textDecoration: 'none', color: 'inherit' }}
         href={`/course/${courseId}/edit`}
