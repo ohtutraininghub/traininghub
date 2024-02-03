@@ -5,6 +5,29 @@ import ProfileTemplateList from './ProfileTemplateList';
 import { Template } from '@prisma/client';
 import userEvent from '@testing-library/user-event';
 
+// Mocking translation and fetch utilities
+jest.mock('../../lib/i18n/client', () => ({
+  useTranslation: () => ({
+    t: (str: string) => str,
+    i18n: {
+      changeLanguage: () => new Promise(() => {}),
+    },
+  }),
+}));
+
+// Providing mock implementations for useRouter, used by DeleteTemplateButton
+jest.mock('next/navigation', () => ({
+  useRouter: jest.fn().mockImplementation(() => ({
+    push: jest.fn(),
+    refresh: jest.fn(),
+  })),
+}));
+
+// Mocking the remove function, used by DeleteTemplateButton
+jest.mock('../../lib/response/fetchUtil', () => ({
+  remove: jest.fn().mockResolvedValue({ status: 200 }),
+}));
+
 const testTemplates: Template[] = [
   {
     id: '1',

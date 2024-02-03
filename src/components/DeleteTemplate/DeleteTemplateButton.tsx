@@ -8,6 +8,7 @@ import { DictProps } from '@/lib/i18n';
 import { ConfirmCard } from '../ConfirmCard';
 import { useRouter } from 'next/navigation';
 import DeleteIcon from '@mui/icons-material/Delete';
+
 interface DeleteTemplateButtonProps extends DictProps {
   templateId: string;
 }
