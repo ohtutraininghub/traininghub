@@ -37,6 +37,7 @@ const testCourse: CourseWithInfo = {
   name: 'Robot Framework Fundamentals',
   description:
     'This course will teach you how to automate the acceptance testing of your software using Robot Framework, a generic, open-source, Python-based automation framework. You will get an introduction to how Robot Framework works and learn how to write tasks utilising keywords, all in an easily readable and human-friendly syntax.',
+  summary: 'yesss',
   startDate: new Date(Date.now() + 24 * 60 * 60 * 1000),
   endDate: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000),
   lastEnrollDate: null,

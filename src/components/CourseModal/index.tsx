@@ -11,6 +11,7 @@ import Box from '@mui/material/Box';
 import PriorityHighOutlinedIcon from '@mui/icons-material/PriorityHighOutlined';
 import EnrollHolder from './EnrollHolder';
 import EditButton from './EditButton';
+import RemoveButton from './RemoveButton';
 import LocalizedDateTime from '../LocalizedDateTime';
 import { hasCourseEditRights } from '@/lib/auth-utils';
 import { DictProps } from '@/lib/i18n';
@@ -24,6 +25,9 @@ import TrainerTools from './TrainerTools';
 import { isTrainerOrAdmin } from '@/lib/auth-utils';
 import { useMediaQuery, useTheme } from '@mui/material';
 import { ImageContainer } from '../ImageContainer';
+import { hasCourseDeleteRights } from '@/lib/auth-utils';
+import { useMessage } from '../Providers/MessageProvider';
+import { remove } from '../../lib/response/fetchUtil';
 
 interface Props extends DictProps {
   course: CourseWithInfo | undefined;
@@ -49,6 +53,7 @@ export default function CourseModal({
   const [courseView, setCourseView] = useState<string | null>('details');
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const { notify } = useMessage();
 
   //Reset view to course description when modal is opened/closed
   useEffect(() => {
@@ -81,6 +86,12 @@ export default function CourseModal({
     setCourseView(newView);
   };
 
+  const handleRemove = async () => {
+    const responseJson = await remove('/api/course', { courseId: course.id });
+    notify(responseJson);
+    router.push('/');
+    router.refresh();
+  };
   return (
     <Modal
       open
@@ -238,17 +249,22 @@ export default function CourseModal({
                 mt: 'auto',
                 pt: 3,
                 display: 'flex',
-                flexDirection: { xs: 'column-reverse', sm: 'row' },
+                justifyContent: 'space-between',
+                flexDirection: { xs: 'row', sm: 'row' },
                 alignItems: { xs: 'center', sm: 'flex-end' },
                 gap: 1,
               }}
             >
-              <EditButton
-                editCourseLabel={editCourseLabel}
-                courseId={course.id}
-                hidden={!hasEditRights}
-              />
-              <Box sx={{ flex: 1 }}>
+              <Box
+                sx={{ alignItems: 'center', display: 'flex', gap: 3, flex: 1 }}
+              >
+                <EditButton
+                  editCourseLabel={editCourseLabel}
+                  courseId={course.id}
+                  hidden={!hasEditRights}
+                />
+              </Box>
+              <Box sx={{ flex: 1, justifyContent: 'center' }}>
                 <Typography sx={{ mb: 1 }}>{enrolls}</Typography>
                 <EnrollHolder
                   lang={lang}
@@ -259,7 +275,19 @@ export default function CourseModal({
                   lastCancelDate={course.lastCancelDate}
                 />
               </Box>
-              <Box sx={{ flex: 1 }}></Box>
+              <Box
+                sx={{
+                  justifyContent: 'flex-end',
+                  alignItems: 'center',
+                  display: 'flex',
+                  gap: 3,
+                  flex: 1,
+                }}
+              >
+                {hasCourseDeleteRights(session.user, course) && (
+                  <RemoveButton handleDelete={handleRemove} lang={lang} />
+                )}
+              </Box>
             </Box>
           </>
         )}

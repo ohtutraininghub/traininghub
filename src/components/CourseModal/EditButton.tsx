@@ -15,12 +15,7 @@ export default function EditButton({
   hidden,
 }: Props) {
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        flex: 1,
-      }}
-    >
+    <Box sx={{ display: 'flex', flex: 1 }}>
       <Link
         style={{ textDecoration: 'none', color: 'inherit' }}
         href={`/course/${courseId}/edit`}
@@ -29,7 +24,9 @@ export default function EditButton({
         <Box
           sx={{
             display: 'flex',
-            flexDirection: { xs: 'row-reverse', sm: 'column' },
+            flexDirection: 'column',
+            px: '8px',
+            py: '6px',
             alignItems: 'center',
             width: 'fit-content',
             gap: 1,
