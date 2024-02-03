@@ -25,6 +25,8 @@ export default function EditButton({
           sx={{
             display: 'flex',
             flexDirection: 'column',
+            px: '8px',
+            py: '6px',
             alignItems: 'center',
             width: 'fit-content',
             gap: 1,
