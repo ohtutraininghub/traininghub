@@ -1,5 +1,5 @@
 import { MessageType, StatusCodeType } from '@/lib/response/responseUtil';
-import { POST } from './route';
+import { POST, DELETE } from './route';
 import { prisma, clearDatabase } from '@/lib/prisma';
 import { NextRequest } from 'next/server';
 import { createMocks } from 'node-mocks-http';
@@ -16,10 +16,20 @@ const traineeUser = {
   role: Role.TRAINEE,
 };
 
+const TrainerUser1 = {
+  id: 'cls6jt0ck000k08lfdsrq9hll',
+  role: Role.TRAINER,
+};
+
+const TrainerUser2 = {
+  id: 'cls6jtdvk000l08lf22co7i75',
+  role: Role.TRAINER,
+};
+
 beforeEach(async () => {
   await clearDatabase();
   await prisma.user.createMany({
-    data: [adminUser, traineeUser],
+    data: [adminUser, traineeUser, TrainerUser1, TrainerUser2],
   });
 });
 
@@ -60,6 +70,13 @@ const getFirstTemplate = async () => {
 const mockPostRequest = (body: any) => {
   return createMocks<NextRequest>({
     method: 'POST',
+    json: () => body,
+  }).req;
+};
+
+const mockDeleteRequest = (body: any) => {
+  return createMocks<NextRequest>({
+    method: 'DELETE',
     json: () => body,
   }).req;
 };
@@ -139,6 +156,95 @@ describe('Template API tests', () => {
       expect(data.message).toBe('Forbidden');
       expect(data.messageType).toBe(MessageType.ERROR);
       expect(response.status).toBe(StatusCodeType.FORBIDDEN);
+    });
+  });
+
+  describe('DELETE', () => {
+    const newTemplateByTrainer1 = {
+      name: 'Kubernetes',
+      description:
+        'Take your first steps in using Kubernetes for container orchestration. This course will introduce you to the basic concepts and building blocks of Kubernetes and the architecture of the system. Get ready to start you cloud native journey!',
+      createdById: TrainerUser1.id,
+      maxStudents: 15,
+      tags: ['Kubernetes', 'Docker', 'CI/CD'],
+    };
+
+    const newTemplateByTrainer2 = {
+      name: 'Python Fundamentals',
+      description:
+        'Take your first steps in Python. This course will introduce you to the basic concepts of Python!',
+      createdById: TrainerUser2.id,
+      maxStudents: 15,
+      tags: ['Kubernetes', 'Docker', 'CI/CD'],
+    };
+
+    it('Succeeds when deleting existing template', async () => {
+      (getServerAuthSession as jest.Mock).mockImplementation(async () =>
+        Promise.resolve({
+          user: TrainerUser1,
+        })
+      );
+      await prisma.template.create({
+        data: {
+          ...newTemplateByTrainer1,
+          tags: {
+            connect: [],
+          },
+        },
+      });
+
+      const templateInDb = await prisma.template.findFirst({
+        where: { name: newTemplateByTrainer1.name },
+      });
+      const req = mockDeleteRequest({ templateId: templateInDb?.id });
+      const response = await DELETE(req);
+      const data = await response.json();
+
+      expect(data.message).toBe('Template successfully deleted');
+      expect(data.messageType).toBe(MessageType.SUCCESS);
+      expect(response.status).toBe(StatusCodeType.OK);
+    });
+
+    it('Fails when deleting template created by another user', async () => {
+      (getServerAuthSession as jest.Mock).mockImplementation(async () =>
+        Promise.resolve({
+          user: TrainerUser1,
+        })
+      );
+      await prisma.template.create({
+        data: {
+          ...newTemplateByTrainer2,
+          tags: {
+            connect: [],
+          },
+        },
+      });
+
+      const templateInDb = await prisma.template.findFirst();
+      const req = mockDeleteRequest({ templateId: templateInDb?.id });
+      const response = await DELETE(req);
+      const data = await response.json();
+
+      expect(data.message).toContain('Forbidden');
+      expect(data.messageType).toBe(MessageType.ERROR);
+      expect(response.status).toBe(403);
+    });
+
+    it('Fails when trying to delete nonexistent template', async () => {
+      (getServerAuthSession as jest.Mock).mockImplementation(async () =>
+        Promise.resolve({
+          user: TrainerUser1,
+        })
+      );
+      const req = mockDeleteRequest({
+        templateId: 'clryw94tr000008l5aol5bakq',
+      });
+      const response = await DELETE(req);
+      const data = await response.json();
+
+      expect(data.message).toContain('Template by given id was not found');
+      expect(data.messageType).toBe(MessageType.ERROR);
+      expect(response.status).toBe(404);
     });
   });
 });

@@ -67,6 +67,14 @@
   "CourseModalCloseButton": {
     "close": "Close"
   },
+  "DeleteTemplateButton": {
+    "button": {
+      "cancel": "Cancel",
+      "confirm": "Confirm",
+      "delete": "Delete"
+    },
+    "confirmDelete": "Are you sure you want to delete this template?"
+  },
   "EditButton": {
     "editCourse": "Edit"
   },

@@ -75,8 +75,22 @@ export async function DELETE(request: NextRequest) {
 
     if (!template_exists) {
       return errorResponse({
-        message: t('Common.courseNotFound'),
+        message: t('Common.templateNotFound'),
         statusCode: StatusCodeType.NOT_FOUND,
+      });
+    }
+
+    if (!isTrainerOrAdmin(user)) {
+      return errorResponse({
+        message: t('Common.forbidden'),
+        statusCode: StatusCodeType.FORBIDDEN,
+      });
+    }
+
+    if (user.id !== template_exists.createdById) {
+      return errorResponse({
+        message: t('Common.forbidden'),
+        statusCode: StatusCodeType.FORBIDDEN,
       });
     }
 
@@ -85,13 +99,6 @@ export async function DELETE(request: NextRequest) {
         id: template.templateId,
       },
     });
-
-    if (!isTrainerOrAdmin(user)) {
-      return errorResponse({
-        message: t('Common.forbidden'),
-        statusCode: StatusCodeType.FORBIDDEN,
-      });
-    }
 
     return successResponse({
       message: t('Templates.templateDeleted'),
