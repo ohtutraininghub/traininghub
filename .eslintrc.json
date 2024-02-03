@@ -9,9 +9,22 @@
   "parser": "@typescript-eslint/parser",
   "plugins": ["@typescript-eslint", "cypress"],
   "rules": {
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_"
+      }
+    ],
     "eqeqeq": "error",
     "no-else-return": "error",
-    "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+    "no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_"
+      }
+    ],
     "prefer-template": "error",
     "react-hooks/exhaustive-deps": "error"
   }
