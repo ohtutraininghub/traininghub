@@ -1,15 +1,13 @@
 import { useTranslation } from '@i18n/client';
-import { Button } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogTitle from '@mui/material/DialogTitle';
 import { DictProps } from '@/lib/i18n';
+import { ConfirmCard } from '../ConfirmCard';
 
 interface SaveTemplateButtonProps extends DictProps {
   isSubmitting: boolean;
   handleDialogOpen: () => void;
-  handleSubmit: () => void;
+  handleSaveTemplate: () => void;
   dialogOpen: boolean;
 }
 
@@ -17,14 +15,14 @@ export default function SaveTemplateButton({
   isSubmitting,
   lang,
   handleDialogOpen,
-  handleSubmit,
+  handleSaveTemplate,
   dialogOpen,
 }: SaveTemplateButtonProps) {
   const { palette } = useTheme();
   const { t } = useTranslation(lang, 'components');
 
   return (
-    <>
+    <div>
       <Button
         onClick={handleDialogOpen}
         disabled={isSubmitting}
@@ -42,33 +40,19 @@ export default function SaveTemplateButton({
       >
         {t('SaveTemplateButton.button.save')}
       </Button>
-      <Dialog
-        open={dialogOpen}
-        onClose={handleDialogOpen}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
+      <Box
+        sx={{
+          textAlign: 'center',
+        }}
       >
-        <DialogTitle id="alert-dialog-title">
-          {t('SaveTemplateButton.confirmSave')}
-        </DialogTitle>
-        <DialogActions>
-          <Button
-            onClick={handleDialogOpen}
-            color="secondary"
-            disabled={isSubmitting}
-          >
-            {t('SaveTemplateButton.button.cancel')}
-          </Button>
-          <Button
-            onClick={handleSubmit}
-            color="secondary"
-            disabled={isSubmitting}
-            autoFocus
-          >
-            {t('SaveTemplateButton.button.confirm')}
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </>
+        <ConfirmCard
+          lang={lang}
+          backdropOpen={dialogOpen}
+          setBackdropOpen={handleDialogOpen}
+          confirmMessage={t('SaveTemplateButton.confirmSave')}
+          handleClick={handleSaveTemplate}
+        />
+      </Box>
+    </div>
   );
 }

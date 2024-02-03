@@ -413,8 +413,8 @@ export default function CourseForm({
           <FormFieldError error={errors.maxStudents} />
           <SaveTemplateButton
             isSubmitting={isSubmitting}
-            handleSubmit={handleSubmit(submitTemplate)}
             handleDialogOpen={handleDialogOpen}
+            handleSaveTemplate={handleSubmit(submitTemplate)}
             dialogOpen={open}
             lang={lang}
           />
