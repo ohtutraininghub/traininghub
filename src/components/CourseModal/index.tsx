@@ -250,7 +250,7 @@ export default function CourseModal({
                 pt: 3,
                 display: 'flex',
                 justifyContent: 'space-between',
-                flexDirection: { xs: 'coumn', sm: 'row' },
+                flexDirection: { xs: 'row', sm: 'row' },
                 alignItems: { xs: 'center', sm: 'flex-end' },
                 gap: 1,
               }}
