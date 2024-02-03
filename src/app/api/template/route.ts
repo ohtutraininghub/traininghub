@@ -30,18 +30,25 @@ export async function DELETE(request: NextRequest) {
       });
     }
 
-    await prisma.template.delete({
-      where: {
-        id: template.templateId,
-      },
-    });
-
     if (!isTrainerOrAdmin(user)) {
       return errorResponse({
         message: t('Common.forbidden'),
         statusCode: StatusCodeType.FORBIDDEN,
       });
     }
+
+    if (user.id !== template_exists.createdById) {
+      return errorResponse({
+        message: t('Common.forbidden'),
+        statusCode: StatusCodeType.FORBIDDEN,
+      });
+    }
+
+    await prisma.template.delete({
+      where: {
+        id: template.templateId,
+      },
+    });
 
     return successResponse({
       message: t('Templates.templateDeleted'),
