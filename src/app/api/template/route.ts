@@ -25,7 +25,7 @@ export async function DELETE(request: NextRequest) {
 
     if (!template_exists) {
       return errorResponse({
-        message: t('Common.courseNotFound'),
+        message: t('Common.templateNotFound'),
         statusCode: StatusCodeType.NOT_FOUND,
       });
     }

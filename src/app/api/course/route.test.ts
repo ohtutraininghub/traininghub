@@ -413,14 +413,6 @@ describe('Course API tests', () => {
       tags: [],
     };
 
-    const courseData = {
-      ...courseDataWithDate,
-      startDate: courseDataWithDate.startDate.toString(),
-      endDate: courseDataWithDate.endDate.toString(),
-      lastEnrollDate: courseDataWithDate.lastEnrollDate.toString(),
-      lastCancelDate: courseDataWithDate.lastCancelDate.toString(),
-    };
-
     it('Succeeds when deleting existing course', async () => {
       await prisma.course.create({
         data: {
