@@ -15,7 +15,11 @@ const RemoveButton = ({ handleDelete, lang }: Props) => {
   const [backdropOpen, setBackdropOpen] = useState(false);
 
   return (
-    <Box sx={{ justifyContent: 'flex-start' }}>
+    <Box
+      sx={{
+        justifyContent: 'flex-start',
+      }}
+    >
       <Button
         data-testid="removeCourseButton"
         style={{ textDecoration: 'none', color: 'inherit' }}
@@ -26,7 +30,7 @@ const RemoveButton = ({ handleDelete, lang }: Props) => {
         <Box
           sx={{
             display: 'flex',
-            flexDirection: { xs: 'row-reverse', sm: 'column' },
+            flexDirection: 'column',
             alignItems: 'center',
             width: 'fit-content',
             gap: 1,

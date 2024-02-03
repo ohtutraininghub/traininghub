@@ -250,6 +250,8 @@ export default function CourseModal({
                 pt: 3,
                 display: 'flex',
                 justifyContent: 'space-between',
+                flexDirection: { xs: 'coumn', sm: 'row' },
+                alignItems: { xs: 'center', sm: 'flex-end' },
                 gap: 1,
               }}
             >
@@ -261,11 +263,8 @@ export default function CourseModal({
                   courseId={course.id}
                   hidden={!hasEditRights}
                 />
-                {hasCourseDeleteRights(session.user, course) && (
-                  <RemoveButton handleDelete={handleRemove} lang={lang} />
-                )}
               </Box>
-              <Box sx={{ flex: 1 }}>
+              <Box sx={{ flex: 1, justifyContent: 'center' }}>
                 <Typography sx={{ mb: 1 }}>{enrolls}</Typography>
                 <EnrollHolder
                   lang={lang}
@@ -276,7 +275,19 @@ export default function CourseModal({
                   lastCancelDate={course.lastCancelDate}
                 />
               </Box>
-              <Box sx={{ flex: 1 }}></Box>
+              <Box
+                sx={{
+                  justifyContent: 'flex-end',
+                  alignItems: 'center',
+                  display: 'flex',
+                  gap: 3,
+                  flex: 1,
+                }}
+              >
+                {hasCourseDeleteRights(session.user, course) && (
+                  <RemoveButton handleDelete={handleRemove} lang={lang} />
+                )}
+              </Box>
             </Box>
           </>
         )}
