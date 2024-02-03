@@ -24,11 +24,7 @@ const traineeUser = {
 beforeEach(async () => {
   await clearDatabase();
   await prisma.user.createMany({
-    data: [
-      { id: adminUser.id },
-      { id: trainerUser.id },
-      { id: traineeUser.id },
-    ],
+    data: [adminUser, trainerUser, traineeUser],
   });
 });
 
@@ -489,7 +485,7 @@ describe('Course API tests', () => {
     it("Fails when trying to delete another user's course", async () => {
       (getServerAuthSession as jest.Mock).mockImplementation(async () =>
         Promise.resolve({
-          user: traineeUser,
+          user: trainerUser,
         })
       );
 
