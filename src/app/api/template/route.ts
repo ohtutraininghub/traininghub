@@ -31,6 +31,17 @@ export async function POST(request: NextRequest) {
     const body = templateSchema.parse(data);
     const parsedTags = await parseTags(body.tags);
 
+    const templateNameInUse = await prisma.template.findFirst({
+      where: { name: body.name },
+    });
+
+    if (templateNameInUse) {
+      return errorResponse({
+        message: t('Templates.templateNameInUse'),
+        statusCode: StatusCodeType.BAD_REQUEST,
+      });
+    }
+
     await prisma.template.create({
       data: {
         ...body,
