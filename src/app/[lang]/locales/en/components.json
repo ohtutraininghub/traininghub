@@ -26,6 +26,11 @@
     "cancel": "Cancel",
     "confirm": "Confirm"
   },
+  "ConfirmRemoveCourse": {
+    "button": {
+      "text": "This course and all of its details will be removed"
+    }
+  },
   "CourseCard": {
     "enrolls": "Enrolls: {{studentCount}} / {{maxStudentCount}}"
   },
@@ -63,7 +68,7 @@
     "close": "Close"
   },
   "EditButton": {
-    "editCourse": "Edit course"
+    "editCourse": "Edit"
   },
   "EnrollButton": {
     "confirmEnroll": "Confirm enroll?",
@@ -84,6 +89,11 @@
     "profileTitle": "Profile",
     "signOut": "Sign out",
     "viewProfile": "View profile"
+  },
+  "RemoveCourse": {
+    "button": {
+      "text": "Remove"
+    }
   },
   "SaveTemplateButton": {
     "button": {
@@ -150,5 +160,9 @@
   "UnauthorizedError": {
     "backToHome": "Back to home",
     "unauthorizedMessage": "You are not authorized to view this page"
+  },
+  "button": {
+    "text": "Remove",
+    "tooltip": "Removes the course from the database"
   }
 }
