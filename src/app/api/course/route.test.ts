@@ -18,8 +18,8 @@ const traineeUser = {
 
 beforeEach(async () => {
   await clearDatabase();
-  await prisma.user.create({
-    data: { id: adminUser.id },
+  await prisma.user.createMany({
+    data: [adminUser, traineeUser],
   });
 });
 
