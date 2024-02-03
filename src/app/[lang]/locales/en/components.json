@@ -90,6 +90,11 @@
     "signOut": "Sign out",
     "viewProfile": "View profile"
   },
+  "RemoveCourse": {
+    "button": {
+      "text": "Remove"
+    }
+  },
   "SaveTemplateButton": {
     "button": {
       "cancel": "Cancel",
