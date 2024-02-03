@@ -13,4 +13,4 @@ export const hasCourseEditRights = (user: User) =>
   isAdmin(user) || isTrainer(user);
 
 export const hasCourseDeleteRights = (user: User, course: Course) =>
-  user.id === course.createdById;
+  user.id === course.createdById || isAdmin(user);

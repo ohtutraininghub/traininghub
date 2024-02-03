@@ -11,6 +11,11 @@ const adminUser = {
   role: Role.ADMIN,
 };
 
+const trainerUser = {
+  id: 'cls31nwpr000308jycjsj3em1',
+  role: Role.TRAINER,
+};
+
 const traineeUser = {
   id: 'cls1rqioq000008jlf156ate0',
   role: Role.TRAINEE,
@@ -18,8 +23,8 @@ const traineeUser = {
 
 beforeEach(async () => {
   await clearDatabase();
-  await prisma.user.create({
-    data: { id: adminUser.id },
+  await prisma.user.createMany({
+    data: [adminUser, trainerUser, traineeUser],
   });
 });
 
@@ -412,14 +417,6 @@ describe('Course API tests', () => {
       tags: [],
     };
 
-    const courseData = {
-      ...courseDataWithDate,
-      startDate: courseDataWithDate.startDate.toString(),
-      endDate: courseDataWithDate.endDate.toString(),
-      lastEnrollDate: courseDataWithDate.lastEnrollDate.toString(),
-      lastCancelDate: courseDataWithDate.lastCancelDate.toString(),
-    };
-
     it('Succeeds when deleting own course', async () => {
       (getServerAuthSession as jest.Mock).mockImplementation(async () =>
         Promise.resolve({
@@ -446,10 +443,49 @@ describe('Course API tests', () => {
       expect(response.status).toBe(StatusCodeType.OK);
     });
 
+    it("Admin can delete another user's course", async () => {
+      (getServerAuthSession as jest.Mock).mockImplementation(async () =>
+        Promise.resolve({
+          user: adminUser,
+        })
+      );
+
+      const courseByOtherUser = {
+        id: 'cloh5jr6h000008l40614d1vr',
+        name: 'Bad course',
+        description: 'Admins please delete this',
+        startDate: new Date(Date.now() + 1000 * 60 * 60 * 24),
+        endDate: new Date(Date.now() + 1000 * 60 * 60 * 24 * 2),
+        lastEnrollDate: new Date(Date.now() + 1000 * 60 * 60 * 24),
+        lastCancelDate: new Date(Date.now() + 1000 * 60 * 60 * 12),
+        maxStudents: 200,
+        createdById: trainerUser.id,
+        tags: [],
+      };
+
+      await prisma.course.create({
+        data: {
+          ...courseByOtherUser,
+          tags: {
+            connect: [],
+          },
+        },
+      });
+
+      const courseInDb = await prisma.course.findFirst();
+      const req = mockDeleteRequest({ courseId: courseInDb?.id });
+      const response = await DELETE(req);
+      const data = await response.json();
+
+      expect(data.message).toBe('Course successfully deleted!');
+      expect(data.messageType).toBe(MessageType.SUCCESS);
+      expect(response.status).toBe(StatusCodeType.OK);
+    });
+
     it("Fails when trying to delete another user's course", async () => {
       (getServerAuthSession as jest.Mock).mockImplementation(async () =>
         Promise.resolve({
-          user: traineeUser,
+          user: trainerUser,
         })
       );
 
