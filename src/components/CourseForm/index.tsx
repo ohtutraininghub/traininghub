@@ -81,6 +81,8 @@ export default function CourseForm({
       ? await update(`/api/course`, data)
       : await post('/api/course', data);
 
+    console.log('submit');
+
     notify(responseJson);
 
     if (!isEditMode) {
@@ -93,8 +95,21 @@ export default function CourseForm({
   const handleDialogOpen = () => {
     setOpen(!open);
   };
-  const handleSaveTemplate = () => {
-    setOpen(!open);
+
+  const submitTemplate = async (data: FormType) => {
+    // Destructure the data object, omitting date information
+    const {
+      startDate: _startDate,
+      endDate: _endDate,
+      lastEnrollDate: _lastEnrollDate,
+      lastCancelDate: _lastCancelDate,
+      ...dataWithoutDates
+    } = data;
+    const responseJson = await post('/api/template', dataWithoutDates);
+
+    notify(responseJson);
+
+    router.refresh();
   };
 
   return (
@@ -405,7 +420,7 @@ export default function CourseForm({
           <SaveTemplateButton
             isSubmitting={isSubmitting}
             handleDialogOpen={handleDialogOpen}
-            handleSaveTemplate={handleSaveTemplate}
+            handleSaveTemplate={handleSubmit(submitTemplate)}
             dialogOpen={open}
             lang={lang}
           />

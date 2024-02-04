@@ -30,7 +30,9 @@
     "tagDeleted": "The tag was succesfully deleted"
   },
   "Templates": {
-    "templateDeleted": "Template successfully deleted"
+    "templateCreated": "Template successfully created",
+    "templateDeleted": "Template successfully deleted",
+    "templateNameInUse": "Template name is already in use"
   },
   "Users": {
     "roleChanged": "User access role succesfully changed!"
