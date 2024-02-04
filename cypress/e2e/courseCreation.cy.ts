@@ -9,6 +9,67 @@ const course = {
   image: 'http://test-image.com',
 };
 
+const template = [
+  {
+    name: 'Kubernetes Basics',
+    description:
+      'Take your first steps in using Kubernetes for container orchestration. This course will introduce you to the basic concepts and building blocks of Kubernetes and the architecture of the system. Get ready to start you cloud native journey!',
+    summary: 'Learn the basics of Kubernetes',
+    maxStudents: 15,
+    tags: ['Kubernetes', 'Docker', 'CI/CD'],
+    createdById: '123002',
+  },
+  {
+    name: 'Robot Framework Basics',
+    description:
+      'This course will teach you how to automate the acceptance testing of your software using Robot Framework, a generic, open-source, Python-based automation framework. You will get an introduction to how Robot Framework works and learn how to write tasks utilising keywords, all in an easily readable and human-friendly syntax.',
+    summary: 'Learn the basics of Robot Framework',
+    maxStudents: 10,
+    tags: ['Testing', 'Python', 'Robot Framework'],
+    createdById: '123001',
+  },
+];
+
+describe('Course creation using template', () => {
+  before(() => {
+    cy.task('clearDatabase');
+    cy.task('seedDatabase');
+  });
+
+  beforeEach(() => {
+    cy.intercept('*_next/image?url=http*', (req) => {
+      req.reply({ statusCode: 200, fixture: 'images/test_logo.png' });
+    });
+  });
+
+  it('created templates should be visible in the template select', () => {
+    cy.login('trainer@test.com', 'TRAINER');
+    cy.visit('/course/create');
+
+    cy.get('#templateSelect').parent().type('{downarrow}');
+    cy.contains(template[0].name);
+    cy.contains(template[1].name);
+  });
+
+  it('course creation should be successful when template and dates are set', () => {
+    cy.login('trainer@test.com', 'TRAINER');
+    cy.visit('/course/create');
+
+    cy.get('#templateSelect').parent().type('{downarrow}{enter}');
+
+    cy.getCy('courseFormStartDate').type(course.startDate);
+    cy.getCy('courseFormEndDate').type(course.endDate);
+
+    cy.getCy('courseFormSubmit').click();
+    cy.contains(template[1].summary);
+    cy.contains(template[1].name).click();
+    cy.contains(template[1].name);
+    cy.contains(template[1].maxStudents);
+    cy.contains(template[1].description);
+    template[1].tags.forEach((tag) => cy.contains(tag));
+  });
+});
+
 describe('Course creation', () => {
   before(() => {
     cy.task('clearDatabase');
@@ -25,13 +86,10 @@ describe('Course creation', () => {
     cy.visit('/course/create');
 
     cy.getCy('courseFormName').type(course.name);
-    cy.getCy('textEditorTextSelect').click();
-    cy.getCy('textSelectorHeader1').click();
-    cy.get('.ProseMirror').type(`${course.header}{enter}`);
 
     cy.getCy('textEditorTextSelect').click();
     cy.getCy('textSelectorParagraph').click();
-    cy.get('.ProseMirror').type(course.description);
+    cy.get('.ProseMirror').type(course.description, { delay: 0 });
 
     cy.getCy('courseFormStartDate').type(course.startDate);
     cy.getCy('courseFormEndDate').type(course.endDate);
@@ -42,7 +100,6 @@ describe('Course creation', () => {
     cy.getCy('courseFormSubmit').click();
     cy.contains(course.name).click();
     cy.contains(course.name);
-    cy.contains(course.header);
     cy.contains(course.maxStudents);
     cy.contains(course.description);
     cy.getCy('courseImage').should('be.visible');

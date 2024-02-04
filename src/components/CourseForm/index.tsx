@@ -30,14 +30,16 @@ import { useTranslation } from '@i18n/client';
 import { DictProps } from '@i18n/index';
 import RichTextEditor from '@/components/TextEditor';
 import StyledTooltip from '@/components/StyledTooltip';
-import BasicSelect from '../TemplateSelect';
+import TemplateSelect from './TemplateSelect';
 import SubmitButton from './SubmitButton';
 import SaveTemplateButton from './SaveTemplateButton';
 import { useState } from 'react';
+import { TemplateWithTags } from '@/lib/prisma/templates';
 
 interface CourseFormProps extends DictProps {
   tags: Tag[];
   courseData?: CourseWithTags;
+  templates: TemplateWithTags[];
 }
 
 type FormType = CourseSchemaType | CourseSchemaWithIdType;
@@ -46,6 +48,7 @@ export default function CourseForm({
   courseData,
   lang,
   tags,
+  templates,
 }: CourseFormProps) {
   const { t } = useTranslation(lang);
   const isEditMode = !!courseData;
@@ -57,6 +60,7 @@ export default function CourseForm({
   const {
     control,
     register,
+    setValue,
     formState: { errors, isSubmitting },
     handleSubmit,
     reset,
@@ -140,27 +144,34 @@ export default function CourseForm({
             }
           />
         </Typography>
-        <form
-          id="courseForm"
-          style={{ display: 'flex', flexDirection: 'column', gap: 10 }}
-          onSubmit={handleSubmit(submitForm)}
-        >
-          {!isEditMode ? (
-            <div>
-              <InputLabel htmlFor="templateSelection">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+          {!isEditMode && templates.length > 0 ? (
+            <>
+              {/* Template select wont be shown if user is editing course or
+            if there is no templates */}
+              <InputLabel id="templateSelectLabel">
                 {t('Template.selectTemplate')}
                 <StyledTooltip
-                  data-testid="tooltipTemplates"
                   lang={lang}
                   title={t('Tooltip.selectTemplate')}
                 />
               </InputLabel>
-              <BasicSelect />
-            </div>
+              <TemplateSelect
+                id="templateSelect"
+                setValue={setValue}
+                templates={templates}
+              />
+            </>
           ) : (
-            ''
+            <></>
           )}
-
+        </div>
+        <form
+          id="courseForm"
+          data-testid="courseForm"
+          style={{ display: 'flex', flexDirection: 'column', gap: 10 }}
+          onSubmit={handleSubmit(submitForm)}
+        >
           <InputLabel htmlFor="courseFormName">
             {t('CourseForm.name')}
           </InputLabel>
