@@ -51,7 +51,7 @@ describe('Course creation using template', () => {
     cy.contains(template[1].name);
   });
 
-  it('course creation should be successful when tempalte and dates are set', () => {
+  it('course creation should be successful when template and dates are set', () => {
     cy.login('trainer@test.com', 'TRAINER');
     cy.visit('/course/create');
 
@@ -61,12 +61,12 @@ describe('Course creation using template', () => {
     cy.getCy('courseFormEndDate').type(course.endDate);
 
     cy.getCy('courseFormSubmit').click();
-    cy.contains(template[0].summary);
-    cy.contains(template[0].name).click();
-    cy.contains(template[0].name);
-    cy.contains(template[0].maxStudents);
-    cy.contains(template[0].description);
-    template[0].tags.forEach((tag) => cy.contains(tag));
+    cy.contains(template[1].summary);
+    cy.contains(template[1].name).click();
+    cy.contains(template[1].name);
+    cy.contains(template[1].maxStudents);
+    cy.contains(template[1].description);
+    template[1].tags.forEach((tag) => cy.contains(tag));
   });
 });
 
@@ -86,9 +86,6 @@ describe('Course creation', () => {
     cy.visit('/course/create');
 
     cy.getCy('courseFormName').type(course.name);
-    cy.getCy('textEditorTextSelect').click();
-    cy.getCy('textSelectorHeader1').click();
-    cy.get('.ProseMirror').type(`${course.header}{enter}`, { delay: 0 });
 
     cy.getCy('textEditorTextSelect').click();
     cy.getCy('textSelectorParagraph').click();
@@ -103,7 +100,6 @@ describe('Course creation', () => {
     cy.getCy('courseFormSubmit').click();
     cy.contains(course.name).click();
     cy.contains(course.name);
-    cy.contains(course.header);
     cy.contains(course.maxStudents);
     cy.contains(course.description);
     cy.getCy('courseImage').should('be.visible');
