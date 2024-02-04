@@ -1,6 +1,6 @@
 'use client';
 
-import Button from '@mui/material/Button';
+import { Button } from '@mui/material';
 import { useState } from 'react';
 import { ConfirmCard } from '../ConfirmCard';
 import { signOut } from 'next-auth/react';

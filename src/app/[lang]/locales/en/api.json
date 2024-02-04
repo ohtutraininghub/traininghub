@@ -6,6 +6,7 @@
     "courseNotFound": "Course by given id was not found!",
     "forbidden": "Forbidden",
     "notEnrolledError": "You have not enrolled to this course",
+    "templateNotFound": "Template by given id was not found",
     "unprocessableContent": "Unprocessable content"
   },
   "Courses": {
@@ -27,6 +28,9 @@
     "duplicateError": "Failed to create tag. A duplicate tag already exists.",
     "tagCreated": "The tag was succesfully created!",
     "tagDeleted": "The tag was succesfully deleted"
+  },
+  "Templates": {
+    "templateDeleted": "Template successfully deleted"
   },
   "Users": {
     "roleChanged": "User access role succesfully changed!"
