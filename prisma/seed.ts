@@ -65,15 +65,19 @@ const templateData = [
     name: 'Kubernetes',
     description:
       'Take your first steps in using Kubernetes for container orchestration. This course will introduce you to the basic concepts and building blocks of Kubernetes and the architecture of the system. Get ready to start you cloud native journey!',
+    summary: 'Learn the basics of Kubernetes',
     maxStudents: 15,
     tags: ['Kubernetes', 'Docker', 'CI/CD'],
+    createdById: '123002',
   },
   {
     name: 'Robot Framework Fundamentals',
     description:
       'This course will teach you how to automate the acceptance testing of your software using Robot Framework, a generic, open-source, Python-based automation framework. You will get an introduction to how Robot Framework works and learn how to write tasks utilising keywords, all in an easily readable and human-friendly syntax.',
+    summary: 'Learn the basics of Robot Framework',
     maxStudents: 10,
     tags: ['Testing', 'Python', 'Robot Framework'],
+    createdById: '123001',
   },
 ];
 
@@ -217,7 +221,8 @@ export async function main() {
           name: template.name,
           description: template.description,
           maxStudents: template.maxStudents,
-          createdById: trainer.id,
+          summary: template.summary,
+          createdById: user.id,
           tags: {
             connect: template.tags.map((tag) => ({ name: tag })),
           },
