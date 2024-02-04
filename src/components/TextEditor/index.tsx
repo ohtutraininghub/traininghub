@@ -53,6 +53,7 @@ const Tiptap = ({ lang, value, onChange }: TEditorProps) => {
         }}
       >
         <EditorProvider
+          key={value}
           slotBefore={<MenuBar lang={lang} />}
           extensions={extensions}
           content={value}
