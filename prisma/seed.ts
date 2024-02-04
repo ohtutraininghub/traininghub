@@ -222,7 +222,7 @@ export async function main() {
           description: template.description,
           maxStudents: template.maxStudents,
           summary: template.summary,
-          createdById: user.id,
+          createdById: trainer.id,
           tags: {
             connect: template.tags.map((tag) => ({ name: tag })),
           },
