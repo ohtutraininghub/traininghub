@@ -8,7 +8,7 @@ import { prisma } from '@/lib/prisma';
 import { Tag } from '@prisma/client';
 import { handleCommonErrors } from '@/lib/response/errorUtil';
 import { getServerAuthSession } from '@/lib/auth';
-import { isTrainerOrAdmin } from '@/lib/auth-utils';
+import { isTrainerOrAdmin, hasTemplateDeleteRights } from '@/lib/auth-utils';
 import { translator } from '@/lib/i18n';
 import { templateSchema, templateDeleteSchema } from '@/lib/zod/templates';
 
@@ -62,18 +62,17 @@ export async function POST(request: NextRequest) {
 }
 
 export async function DELETE(request: NextRequest) {
-  console.log('template delete');
   try {
     const { t } = await translator('api');
     const { user } = await getServerAuthSession();
     const reqData = await request.json();
     const template = templateDeleteSchema.parse(reqData);
 
-    const template_exists = await prisma.template.findFirst({
+    const templateExists = await prisma.template.findFirst({
       where: { id: template.templateId },
     });
 
-    if (!template_exists) {
+    if (!templateExists) {
       return errorResponse({
         message: t('Common.templateNotFound'),
         statusCode: StatusCodeType.NOT_FOUND,
@@ -87,7 +86,7 @@ export async function DELETE(request: NextRequest) {
       });
     }
 
-    if (user.id !== template_exists.createdById) {
+    if (!hasTemplateDeleteRights(user, templateExists)) {
       return errorResponse({
         message: t('Common.forbidden'),
         statusCode: StatusCodeType.FORBIDDEN,

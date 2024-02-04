@@ -16,12 +16,12 @@ const traineeUser = {
   role: Role.TRAINEE,
 };
 
-const TrainerUser1 = {
+const trainerUser1 = {
   id: 'cls6jt0ck000k08lfdsrq9hll',
   role: Role.TRAINER,
 };
 
-const TrainerUser2 = {
+const trainerUser2 = {
   id: 'cls6jtdvk000l08lf22co7i75',
   role: Role.TRAINER,
 };
@@ -29,7 +29,7 @@ const TrainerUser2 = {
 beforeEach(async () => {
   await clearDatabase();
   await prisma.user.createMany({
-    data: [adminUser, traineeUser, TrainerUser1, TrainerUser2],
+    data: [adminUser, traineeUser, trainerUser1, trainerUser2],
   });
 });
 
@@ -164,7 +164,7 @@ describe('Template API tests', () => {
       name: 'Kubernetes',
       description:
         'Take your first steps in using Kubernetes for container orchestration. This course will introduce you to the basic concepts and building blocks of Kubernetes and the architecture of the system. Get ready to start you cloud native journey!',
-      createdById: TrainerUser1.id,
+      createdById: trainerUser1.id,
       maxStudents: 15,
       tags: ['Kubernetes', 'Docker', 'CI/CD'],
     };
@@ -173,7 +173,7 @@ describe('Template API tests', () => {
       name: 'Python Fundamentals',
       description:
         'Take your first steps in Python. This course will introduce you to the basic concepts of Python!',
-      createdById: TrainerUser2.id,
+      createdById: trainerUser2.id,
       maxStudents: 15,
       tags: ['Kubernetes', 'Docker', 'CI/CD'],
     };
@@ -181,7 +181,7 @@ describe('Template API tests', () => {
     it('Succeeds when deleting existing template', async () => {
       (getServerAuthSession as jest.Mock).mockImplementation(async () =>
         Promise.resolve({
-          user: TrainerUser1,
+          user: trainerUser1,
         })
       );
       await prisma.template.create({
@@ -208,7 +208,7 @@ describe('Template API tests', () => {
     it('Fails when deleting template created by another user', async () => {
       (getServerAuthSession as jest.Mock).mockImplementation(async () =>
         Promise.resolve({
-          user: TrainerUser1,
+          user: trainerUser1,
         })
       );
       await prisma.template.create({
@@ -233,7 +233,7 @@ describe('Template API tests', () => {
     it('Fails when trying to delete nonexistent template', async () => {
       (getServerAuthSession as jest.Mock).mockImplementation(async () =>
         Promise.resolve({
-          user: TrainerUser1,
+          user: trainerUser1,
         })
       );
       const req = mockDeleteRequest({

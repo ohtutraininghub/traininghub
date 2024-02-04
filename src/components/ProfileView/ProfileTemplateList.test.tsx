@@ -5,6 +5,29 @@ import ProfileTemplateList from './ProfileTemplateList';
 import { Template } from '@prisma/client';
 import userEvent from '@testing-library/user-event';
 
+// Mocking translation and fetch utilities
+jest.mock('../../lib/i18n/client', () => ({
+  useTranslation: () => ({
+    t: (str: string) => str,
+    i18n: {
+      changeLanguage: () => new Promise(() => {}),
+    },
+  }),
+}));
+
+// Providing mock implementations for useRouter, used by DeleteTemplateButton
+jest.mock('next/navigation', () => ({
+  useRouter: jest.fn().mockImplementation(() => ({
+    push: jest.fn(),
+    refresh: jest.fn(),
+  })),
+}));
+
+// Mocking the remove function, used by DeleteTemplateButton
+jest.mock('../../lib/response/fetchUtil', () => ({
+  remove: jest.fn().mockResolvedValue({ status: 200 }),
+}));
+
 const testTemplates: Template[] = [
   {
     id: '1',
@@ -101,6 +124,25 @@ describe('ProfileTemplateList component', () => {
     await userEvent.click(controlButton);
     testTemplates.forEach((template) => {
       expect(screen.getByText(template.name)).toBeInTheDocument();
+    });
+  });
+
+  it('delete button visible when expanded', async () => {
+    renderWithTheme(
+      <ProfileTemplateList
+        headerText="Templates"
+        templates={testTemplates}
+        open={false}
+      />
+    );
+    const controlButton = screen.getByTestId('listControls');
+    testTemplates.forEach((template) => {
+      expect(screen.queryByText(template.name)).toBeNull();
+    });
+    await userEvent.click(controlButton);
+    const buttonElement = screen.getAllByTestId('DeleteTemplateButton');
+    testTemplates.forEach((template) => {
+      expect(buttonElement[0]).toBeInTheDocument();
     });
   });
 
