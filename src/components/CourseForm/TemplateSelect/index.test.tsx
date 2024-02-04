@@ -4,8 +4,9 @@ import { renderWithTheme } from '@/lib/test-utils';
 import userEvent from '@testing-library/user-event';
 import { waitFor } from '@testing-library/dom';
 
-describe('TemplateSelect', () => {
-  const mockSetValue = jest.fn();
+const mockSetValue = jest.fn();
+
+describe('TemplateSelect Tests', () => {
   const mockTemplates = [
     {
       id: '1',
@@ -35,36 +36,22 @@ describe('TemplateSelect', () => {
     },
   ];
 
-  it('renders without crashing', () => {
-    renderWithTheme(
-      <TemplateSelect
-        id="test"
-        setValue={mockSetValue}
-        templates={mockTemplates}
-      />
-    );
-  });
-
   it('calls handleTemplateChange when template is selected', async () => {
-    const mockHandleTemplateChange = jest.fn();
     renderWithTheme(
       <TemplateSelect
         id="template-select"
-        setValue={mockHandleTemplateChange}
+        setValue={mockSetValue}
         templates={mockTemplates}
       />
     );
     const select = screen.getByRole('combobox');
 
-    // Open the dropdown
     userEvent.click(select);
-
-    // Select the option
     const option = await screen.findByText('Template 2');
     userEvent.click(option);
 
     await waitFor(() => {
-      expect(mockHandleTemplateChange).toHaveBeenCalled();
+      expect(mockSetValue).toHaveBeenCalled();
     });
   });
 
@@ -79,7 +66,6 @@ describe('TemplateSelect', () => {
     );
     const select = screen.getByRole('combobox');
 
-    // Open the dropdown
     userEvent.click(select);
 
     const option1 = await screen.findByText('Template 1');
