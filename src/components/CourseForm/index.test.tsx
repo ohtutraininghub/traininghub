@@ -179,6 +179,17 @@ describe('Course Form Course Edit Tests', () => {
   const courseEnd = new Date(Date.now() + 2 * 24 * 60 * 60 * 1000);
   const oneDayBeforeStart = new Date();
 
+  const template = {
+    id: '',
+    name: '',
+    description: '',
+    summary: '',
+    tags: [],
+    maxStudents: 0,
+    createdById: '',
+    image: '',
+  };
+
   it('Template dropdown is not displayed in Edit Mode', async () => {
     const selectTemplate = screen.queryByText(/Template.selectTemplate/i);
     expect(selectTemplate).toBeNull();
@@ -197,17 +208,6 @@ describe('Course Form Course Edit Tests', () => {
       lastCancelDate: oneDayBeforeStart,
       maxStudents: 55,
       tags: [],
-      image: '',
-    };
-
-    const template = {
-      id: '',
-      name: '',
-      description: '',
-      summary: '',
-      tags: [],
-      maxStudents: 0,
-      createdById: '',
       image: '',
     };
 
@@ -267,17 +267,6 @@ describe('Course Form Course Edit Tests', () => {
       image: '',
     };
 
-    const template = {
-      id: '',
-      name: '',
-      description: '',
-      summary: '',
-      tags: [],
-      maxStudents: 0,
-      createdById: '',
-      image: '',
-    };
-
     const { container } = renderWithTheme(
       <CourseForm
         lang="en"
@@ -330,17 +319,6 @@ describe('Course Form Course Edit Tests', () => {
       image: '',
     };
 
-    const template = {
-      id: '',
-      name: '',
-      description: '',
-      summary: '',
-      tags: [],
-      maxStudents: 0,
-      createdById: '',
-      image: '',
-    };
-
     renderWithTheme(
       <CourseForm
         lang="en"
@@ -378,17 +356,6 @@ describe('Course Form Course Edit Tests', () => {
       lastCancelDate: null,
       maxStudents: 55,
       tags: [],
-      image: '',
-    };
-
-    const template = {
-      id: '',
-      name: '',
-      description: '',
-      summary: '',
-      tags: [],
-      maxStudents: 0,
-      createdById: '',
       image: '',
     };
 
