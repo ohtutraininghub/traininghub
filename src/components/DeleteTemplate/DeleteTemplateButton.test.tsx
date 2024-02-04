@@ -40,25 +40,25 @@ describe('DeleteTemplateButton', () => {
       'DeleteTemplateButton.button.delete'
     );
   });
-});
 
-test('opens the popup when the button is clicked', () => {
-  renderWithTheme(<DeleteTemplateButton templateId="1" lang="en" />);
-  const buttonElement = screen.getByTestId('DeleteTemplateButton');
-  fireEvent.click(buttonElement);
-  const confirmPopupElement = screen.getByTestId('confirmCard');
-  expect(confirmPopupElement).toBeInTheDocument();
-});
+  test('opens the popup when the button is clicked', () => {
+    renderWithTheme(<DeleteTemplateButton templateId="1" lang="en" />);
+    const buttonElement = screen.getByTestId('DeleteTemplateButton');
+    fireEvent.click(buttonElement);
+    const confirmPopupElement = screen.getByTestId('confirmCard');
+    expect(confirmPopupElement).toBeInTheDocument();
+  });
 
-test('calls the removal function when the button is pressed', async () => {
-  const { remove } = require('../../lib/response/fetchUtil');
-  renderWithTheme(<DeleteTemplateButton templateId="1" lang="en" />);
-  const deleteButton = screen.getByTestId('DeleteTemplateButton');
-  fireEvent.click(deleteButton);
-  const confirmButtonElement = screen.getByTestId('confirmCardConfirm');
-  fireEvent.click(confirmButtonElement);
+  test('calls the removal function when the button is pressed', async () => {
+    const { remove } = require('../../lib/response/fetchUtil');
+    renderWithTheme(<DeleteTemplateButton templateId="1" lang="en" />);
+    const deleteButton = screen.getByTestId('DeleteTemplateButton');
+    fireEvent.click(deleteButton);
+    const confirmButtonElement = screen.getByTestId('confirmCardConfirm');
+    fireEvent.click(confirmButtonElement);
 
-  await waitFor(() => {
-    expect(remove).toHaveBeenCalledWith('/api/template', { templateId: '1' });
+    await waitFor(() => {
+      expect(remove).toHaveBeenCalledWith('/api/template', { templateId: '1' });
+    });
   });
 });

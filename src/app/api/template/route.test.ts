@@ -6,12 +6,12 @@ import { createMocks } from 'node-mocks-http';
 import { Role } from '@prisma/client';
 import { getServerAuthSession } from '@/lib/auth';
 
-const TrainerUser1 = {
+const trainerUser1 = {
   id: 'clo079ls3000108jsbdbsc8pv',
   role: Role.TRAINER,
 };
 
-const TrainerUser2 = {
+const trainerUser2 = {
   id: 'clo079ls4000108jsbdbsc8pv',
   role: Role.TRAINER,
 };
@@ -26,10 +26,10 @@ const mockDeleteRequest = (body: any) => {
 beforeEach(async () => {
   await clearDatabase();
   await prisma.user.create({
-    data: { id: TrainerUser1.id },
+    data: { id: trainerUser1.id },
   });
   await prisma.user.create({
-    data: { id: TrainerUser2.id },
+    data: { id: trainerUser2.id },
   });
 });
 
@@ -40,7 +40,7 @@ jest.mock('../../../lib/auth', () => ({
 describe('DELETE', () => {
   (getServerAuthSession as jest.Mock).mockImplementation(async () =>
     Promise.resolve({
-      user: TrainerUser1,
+      user: trainerUser1,
     })
   );
 
@@ -48,7 +48,7 @@ describe('DELETE', () => {
     name: 'Kubernetes',
     description:
       'Take your first steps in using Kubernetes for container orchestration. This course will introduce you to the basic concepts and building blocks of Kubernetes and the architecture of the system. Get ready to start you cloud native journey!',
-    createdById: TrainerUser1.id,
+    createdById: trainerUser1.id,
     maxStudents: 15,
     tags: ['Kubernetes', 'Docker', 'CI/CD'],
   };
@@ -57,7 +57,7 @@ describe('DELETE', () => {
     name: 'Python Fundamentals',
     description:
       'Take your first steps in Python. This course will introduce you to the basic concepts of Python!',
-    createdById: TrainerUser2.id,
+    createdById: trainerUser2.id,
     maxStudents: 15,
     tags: ['Kubernetes', 'Docker', 'CI/CD'],
   };
