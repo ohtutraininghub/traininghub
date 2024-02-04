@@ -12,7 +12,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import IconButton from '@mui/material/IconButton';
 import { useState } from 'react';
-import { DeleteTemplateButton } from '@/components/deleteTemplate/DeleteTemplateButton';
+import { DeleteTemplateButton } from '@/components/DeleteTemplate/DeleteTemplateButton';
 
 export interface ProfileCourseListProps {
   headerText: string;
