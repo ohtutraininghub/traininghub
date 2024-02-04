@@ -27,5 +27,12 @@ export default async function CourseEditPage({ params }: Props) {
     redirect('/');
   }
 
-  return <CourseForm lang={params.lang} tags={tags} courseData={course} />;
+  return (
+    <CourseForm
+      lang={params.lang}
+      tags={tags}
+      courseData={course}
+      templates={[]}
+    />
+  );
 }
