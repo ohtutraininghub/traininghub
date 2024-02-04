@@ -7,7 +7,7 @@ import {
 import { prisma } from '@/lib/prisma';
 import { handleCommonErrors } from '@/lib/response/errorUtil';
 import { getServerAuthSession } from '@/lib/auth';
-import { isTrainerOrAdmin } from '@/lib/auth-utils';
+import { isTrainerOrAdmin, hasTemplateDeleteRights } from '@/lib/auth-utils';
 import { translator } from '@/lib/i18n';
 import { templateDeleteSchema } from '@/lib/zod/templates';
 
@@ -37,7 +37,7 @@ export async function DELETE(request: NextRequest) {
       });
     }
 
-    if (user.id !== template_exists.createdById) {
+    if (!hasTemplateDeleteRights(user, template_exists)) {
       return errorResponse({
         message: t('Common.forbidden'),
         statusCode: StatusCodeType.FORBIDDEN,

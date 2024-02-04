@@ -14,3 +14,8 @@ export const hasCourseEditRights = (user: User) =>
 
 export const hasCourseDeleteRights = (user: User, course: Course) =>
   user.id === course.createdById;
+
+export const hasTemplateDeleteRights = (
+  user: User,
+  template: { createdById: string }
+) => user.id === template.createdById;
