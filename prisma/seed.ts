@@ -62,7 +62,7 @@ const courseData = [
 
 const templateData = [
   {
-    name: 'Kubernetes',
+    name: 'Kubernetes Basics',
     description:
       'Take your first steps in using Kubernetes for container orchestration. This course will introduce you to the basic concepts and building blocks of Kubernetes and the architecture of the system. Get ready to start you cloud native journey!',
     summary: 'Learn the basics of Kubernetes',
@@ -71,7 +71,7 @@ const templateData = [
     createdById: '123002',
   },
   {
-    name: 'Robot Framework Fundamentals',
+    name: 'Robot Framework Basics',
     description:
       'This course will teach you how to automate the acceptance testing of your software using Robot Framework, a generic, open-source, Python-based automation framework. You will get an introduction to how Robot Framework works and learn how to write tasks utilising keywords, all in an easily readable and human-friendly syntax.',
     summary: 'Learn the basics of Robot Framework',

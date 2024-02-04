@@ -39,7 +39,7 @@ describe('TemplateSelect Tests', () => {
   it('calls handleTemplateChange when template is selected', async () => {
     renderWithTheme(
       <TemplateSelect
-        id="template-select"
+        id="templateSelect"
         setValue={mockSetValue}
         templates={mockTemplates}
       />
@@ -59,7 +59,7 @@ describe('TemplateSelect Tests', () => {
     const mockHandleTemplateChange = jest.fn();
     renderWithTheme(
       <TemplateSelect
-        id="template-select"
+        id="templateSelect"
         setValue={mockHandleTemplateChange}
         templates={mockTemplates}
       />

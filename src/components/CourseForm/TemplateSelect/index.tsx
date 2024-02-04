@@ -61,8 +61,9 @@ export default function TemplateSelect({
       <Select
         labelId={id}
         id={id}
-        data-type="template-select"
-        role="template-select"
+        data-testid="templateSelect"
+        data-type="templateSelect"
+        role="templateSelect"
         style={{ display: 'flex', flexWrap: 'wrap', marginBottom: 10 }}
         color="secondary"
         onChange={handleTemplateChange}

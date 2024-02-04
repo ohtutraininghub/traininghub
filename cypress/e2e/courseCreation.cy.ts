@@ -11,7 +11,7 @@ const course = {
 
 const template = [
   {
-    name: 'Kubernetes Fundamentals',
+    name: 'Kubernetes Basics',
     description:
       'Take your first steps in using Kubernetes for container orchestration. This course will introduce you to the basic concepts and building blocks of Kubernetes and the architecture of the system. Get ready to start you cloud native journey!',
     summary: 'Learn the basics of Kubernetes',
@@ -20,7 +20,7 @@ const template = [
     createdById: '123002',
   },
   {
-    name: 'Robot Framework Fundamentals',
+    name: 'Robot Framework Basics',
     description:
       'This course will teach you how to automate the acceptance testing of your software using Robot Framework, a generic, open-source, Python-based automation framework. You will get an introduction to how Robot Framework works and learn how to write tasks utilising keywords, all in an easily readable and human-friendly syntax.',
     summary: 'Learn the basics of Robot Framework',
@@ -46,7 +46,7 @@ describe('Course creation using template', () => {
     cy.login('trainer@test.com', 'TRAINER');
     cy.visit('/course/create');
 
-    cy.get('#template-select').parent().type('{downarrow}');
+    cy.get('#templateSelect').parent().type('{downarrow}');
     cy.contains(template[0].name);
     cy.contains(template[1].name);
   });
@@ -55,7 +55,7 @@ describe('Course creation using template', () => {
     cy.login('trainer@test.com', 'TRAINER');
     cy.visit('/course/create');
 
-    cy.get('#template-select').parent().type('{downarrow}{enter}');
+    cy.get('#templateSelect').parent().type('{downarrow}{enter}');
 
     cy.getCy('courseFormStartDate').type(course.startDate);
     cy.getCy('courseFormEndDate').type(course.endDate);
@@ -88,11 +88,11 @@ describe('Course creation', () => {
     cy.getCy('courseFormName').type(course.name);
     cy.getCy('textEditorTextSelect').click();
     cy.getCy('textSelectorHeader1').click();
-    cy.get('.ProseMirror').type(`${course.header}{enter}`);
+    cy.get('.ProseMirror').type(`${course.header}{enter}`, { delay: 0 });
 
     cy.getCy('textEditorTextSelect').click();
     cy.getCy('textSelectorParagraph').click();
-    cy.get('.ProseMirror').type(course.description);
+    cy.get('.ProseMirror').type(course.description, { delay: 0 });
 
     cy.getCy('courseFormStartDate').type(course.startDate);
     cy.getCy('courseFormEndDate').type(course.endDate);

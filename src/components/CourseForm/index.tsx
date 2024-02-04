@@ -149,7 +149,7 @@ export default function CourseForm({
             <>
               {/* Template select wont be shown if user is editing course or
             if there is no templates */}
-              <InputLabel id="template-select-label">
+              <InputLabel id="templateSelectLabel">
                 {t('Template.selectTemplate')}
                 <StyledTooltip
                   lang={lang}
@@ -157,7 +157,7 @@ export default function CourseForm({
                 />
               </InputLabel>
               <TemplateSelect
-                id="template-select"
+                id="templateSelect"
                 setValue={setValue}
                 templates={templates}
               />
