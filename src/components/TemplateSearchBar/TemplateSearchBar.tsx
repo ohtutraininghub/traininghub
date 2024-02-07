@@ -32,6 +32,7 @@ export function TemplateSearchBar({}: TemplateSearchBarProps) {
       InputProps={{
         startAdornment: <SearchIcon />,
       }}
+      data-testid="TemplateSearchBar"
     />
   );
 }

@@ -54,7 +54,7 @@ export function DeleteTemplateButton({
         }}
         data-testid="DeleteTemplateButton"
       >
-        <DeleteIcon sx={{ mr: 1, fontSize: '25px' }} />
+        <DeleteIcon sx={{ mr: 1, fontSize: '22px' }} />
         {t('DeleteTemplateButton.button.delete')}
       </Button>
       <Box
