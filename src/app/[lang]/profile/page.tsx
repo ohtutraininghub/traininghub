@@ -14,7 +14,7 @@ import {
 import { getTemplates } from '@/lib/prisma/templates';
 import CreateTag from '../admin/dashboard/CreateTag';
 import { getTags } from '@/lib/prisma/tags';
-import { isTrainerOrAdmin } from '@/lib/auth-utils';
+import { isAdmin, isTrainerOrAdmin } from '@/lib/auth-utils';
 
 type Props = {
   searchParams: { courseId?: string };
@@ -62,7 +62,7 @@ export default async function ProfilePage({ searchParams, params }: Props) {
     (course) => course.id === searchParams.courseId
   );
 
-  const templates = isTrainerOrAdmin(session.user)
+  const templates = isAdmin(session.user)
     ? await getTemplates()
     : userData?.createdTemplates ?? [];
 

@@ -68,7 +68,7 @@ const templateData = [
     summary: 'Learn the basics of Kubernetes',
     maxStudents: 15,
     tags: ['Kubernetes', 'Docker', 'CI/CD'],
-    createdById: '123002',
+    createdById: '123004',
   },
   {
     name: 'Robot Framework Basics',
@@ -186,6 +186,8 @@ export async function main() {
   const user = await prisma.user.create({ data: {} });
   const trainee = await prisma.user.create({ data: traineeUser });
   const trainer = await prisma.user.create({ data: trainerUser });
+
+  seedUsers();
 
   await prisma.tag.createMany({
     data: tagData,
