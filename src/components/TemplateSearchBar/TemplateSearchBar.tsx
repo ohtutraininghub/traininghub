@@ -3,16 +3,18 @@ import { DictProps } from '@/lib/i18n';
 import TextField from '@mui/material/TextField';
 import SearchIcon from '@mui/icons-material/Search';
 import { useTheme } from '@mui/material/styles';
+import { useTranslation } from '@i18n/client';
 
 interface TemplateSearchBarProps extends DictProps {}
 
-export function TemplateSearchBar({}: TemplateSearchBarProps) {
+export function TemplateSearchBar({ lang }: TemplateSearchBarProps) {
   const { palette } = useTheme();
-
+  const { t } = useTranslation(lang, 'components');
+  const searchBarLabel = t('TemplateSearchBar.Label.text');
   return (
     <TextField
       variant="outlined"
-      label="Search templates by name or creator"
+      label={searchBarLabel}
       size="small"
       sx={{
         width: '97%',

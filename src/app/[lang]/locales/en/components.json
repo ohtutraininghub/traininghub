@@ -130,6 +130,11 @@
       "closeTooltip": "Got it"
     }
   },
+  "TemplateSearchBar": {
+    "Label": {
+      "text": "Search templates by name or creator"
+    }
+  },
   "TextEditor": {
     "Dropdown": {
       "header1": "Header 1",
