@@ -11,6 +11,7 @@ import {
   getAllUsers,
   getStudentNamesByCourseId,
 } from '@/lib/prisma/users';
+import { getTemplates } from '@/lib/prisma/templates';
 import CreateTag from '../admin/dashboard/CreateTag';
 import { getTags } from '@/lib/prisma/tags';
 import { isTrainerOrAdmin } from '@/lib/auth-utils';
@@ -61,6 +62,10 @@ export default async function ProfilePage({ searchParams, params }: Props) {
     (course) => course.id === searchParams.courseId
   );
 
+  const templates = isTrainerOrAdmin(session.user)
+    ? await getTemplates()
+    : userData?.createdTemplates ?? [];
+
   let enrolledStudents: UserNamesAndIds | null = null;
   if (isTrainerOrAdmin(session.user) && openedCourse) {
     enrolledStudents = await getStudentNamesByCourseId(openedCourse.id);
@@ -86,7 +91,7 @@ export default async function ProfilePage({ searchParams, params }: Props) {
         }}
         courses={userData?.courses ?? []}
         users={allUsers}
-        templates={userData?.createdTemplates ?? []}
+        templates={templates}
       >
         <CreateTag
           tagsHeader={t('admin:TagsSection.header')}
