@@ -1,4 +1,4 @@
-import { Button, Box } from '@mui/material';
+import { Button, Box, useMediaQuery } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import { useTranslation } from '@/lib/i18n/client';
 import { DictProps } from '@/lib/i18n';
@@ -11,6 +11,8 @@ interface EditTemplateButtonProps extends DictProps {
 export function EditTemplateButton({ lang }: EditTemplateButtonProps) {
   const { t } = useTranslation(lang, 'components');
   const { palette } = useTheme();
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
   return (
     <Box sx={{ display: 'flex', flex: 1 }}>
@@ -29,7 +31,7 @@ export function EditTemplateButton({ lang }: EditTemplateButtonProps) {
         data-testid="EditTemplateButton"
       >
         <EditIcon sx={{ mr: 1, fontSize: '25px' }} />
-        {t('EditTemplateButton.button.edit')}
+        {!isSmallScreen && t('EditTemplateButton.button.edit')}
       </Button>
     </Box>
   );
