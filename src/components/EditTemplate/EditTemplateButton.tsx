@@ -1,45 +1,36 @@
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Link from 'next/link';
+import { Button, Box } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import { useTranslation } from '@/lib/i18n/client';
 import { DictProps } from '@/lib/i18n';
+import { useTheme } from '@mui/material/styles';
 
 interface EditTemplateButtonProps extends DictProps {
   templateId: string;
 }
 
-export function EditTemplateButton({
-  templateId,
-  lang,
-}: EditTemplateButtonProps) {
+export function EditTemplateButton({ lang }: EditTemplateButtonProps) {
   const { t } = useTranslation(lang, 'components');
+  const { palette } = useTheme();
 
   return (
     <Box sx={{ display: 'flex', flex: 1 }}>
-      <Link
-        style={{ textDecoration: 'none', color: 'inherit' }}
-        href={`/template/${templateId}/edit`}
+      <Button
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          margin: 'auto',
+          mt: 'auto',
+          color: palette.white.main,
+          backgroundColor: palette.secondary.main,
+          '&:hover': {
+            backgroundColor: palette.secondary.light,
+          },
+        }}
+        data-testid="EditTemplateButton"
       >
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            px: '8px',
-            py: '6px',
-            alignItems: 'center',
-            width: 'fit-content',
-            gap: 1,
-            cursor: 'pointer',
-            '&:hover': {
-              color: 'info.main',
-            },
-          }}
-        >
-          <EditIcon />
-          <Typography>{t('EditTemplateButton.button.edit')}</Typography>
-        </Box>
-      </Link>
+        <EditIcon sx={{ mr: 1, fontSize: '25px' }} />
+        {t('EditTemplateButton.button.edit')}
+      </Button>
     </Box>
   );
 }
