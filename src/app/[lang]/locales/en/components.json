@@ -78,6 +78,11 @@
   "EditButton": {
     "editCourse": "Edit"
   },
+  "EditTemplateButton": {
+    "button": {
+      "edit": "Edit"
+    }
+  },
   "EnrollButton": {
     "confirmEnroll": "Confirm enroll?",
     "enroll": "Enroll"
@@ -128,6 +133,11 @@
   "StyledTooltip": {
     "button": {
       "closeTooltip": "Got it"
+    }
+  },
+  "TemplateSearchBar": {
+    "Label": {
+      "text": "Search templates by name or creator"
     }
   },
   "TextEditor": {
