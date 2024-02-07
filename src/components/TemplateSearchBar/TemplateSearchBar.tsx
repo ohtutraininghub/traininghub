@@ -13,9 +13,11 @@ export function TemplateSearchBar({}: TemplateSearchBarProps) {
     <TextField
       variant="outlined"
       label="Search templates by name or creator"
+      size="small"
       sx={{
-        width: '50%',
+        width: '97%',
         margin: '10px',
+
         // Override the styles for the InputLabel when focused
         '& .MuiInputLabel-root.Mui-focused': {
           color: palette.secondary.main,
