@@ -13,6 +13,7 @@ import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import IconButton from '@mui/material/IconButton';
 import { useState } from 'react';
 import { DeleteTemplateButton } from '@/components/DeleteTemplate/DeleteTemplateButton';
+import { TemplateSearchBar } from '@/components/TemplateSearchBar/TemplateSearchBar';
 import { EditTemplateButton } from '@/components/EditTemplate/EditTemplateButton';
 
 export interface ProfileCourseListProps {
@@ -82,6 +83,7 @@ export default function ProfileTemplateList({
                 backgroundColor: palette.surface.main,
               }}
             >
+              <TemplateSearchBar lang="en" />
               {templates.map((template: Template, count: number) => (
                 <React.Fragment key={template.id}>
                   <ListItem
