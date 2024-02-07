@@ -146,6 +146,24 @@ describe('ProfileTemplateList component', () => {
     });
   });
 
+  it('search bar visible when expanded', async () => {
+    renderWithTheme(
+      <ProfileTemplateList
+        headerText="Templates"
+        templates={testTemplates}
+        open={false}
+      />
+    );
+    const controlButton = screen.getByTestId('listControls');
+    testTemplates.forEach((template) => {
+      expect(screen.queryByText(template.name)).toBeNull();
+    });
+    await userEvent.click(controlButton);
+
+    const searchBar = screen.getByTestId('TemplateSearchBar');
+    expect(searchBar).toBeInTheDocument();
+  });
+
   it('list collapses when collapse button is clicked', async () => {
     renderWithTheme(
       <ProfileTemplateList
