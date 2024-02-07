@@ -66,11 +66,3 @@ export const getUsersWithGoogleCalendar = async (course: Course) => {
     },
   });
 };
-
-export const deleteGoogleCalendarEntryByCourseId = async (courseId: string) => {
-  return await prisma.calendar.deleteMany({
-    where: {
-      courseId: courseId,
-    },
-  });
-};

@@ -18,7 +18,10 @@ import {
   hasCourseDeleteRights,
   isTrainerOrAdmin,
 } from '@/lib/auth-utils';
-import { updateCourseToCalendars } from '@/lib/google';
+import {
+  updateCourseToCalendars,
+  deleteEventFromCalendarWhenCourseDeleted,
+} from '@/lib/google';
 import { translator } from '@/lib/i18n';
 
 const parseTags = async (tags: string[]): Promise<Tag[]> => {
@@ -136,11 +139,21 @@ export async function DELETE(request: NextRequest) {
       });
     }
 
-    await prisma.course.delete({
+    await deleteEventFromCalendarWhenCourseDeleted(course);
+
+    const deleteCalendarEvents = prisma.calendar.deleteMany({
+      where: {
+        courseId: courseData.courseId,
+      },
+    });
+
+    const deleteCourse = prisma.course.delete({
       where: {
         id: courseData.courseId,
       },
     });
+
+    await prisma.$transaction([deleteCalendarEvents, deleteCourse]);
 
     return successResponse({
       message: t('Courses.courseDeleted'),
