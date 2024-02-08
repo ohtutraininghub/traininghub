@@ -21,6 +21,7 @@ export function EditTemplateButton({ lang }: EditTemplateButtonProps) {
           display: 'flex',
           alignItems: 'center',
           margin: 'auto',
+          padding: isSmallScreen ? '5px' : 'auto',
           mt: 'auto',
           color: palette.white.main,
           backgroundColor: palette.secondary.main,
@@ -30,7 +31,7 @@ export function EditTemplateButton({ lang }: EditTemplateButtonProps) {
         }}
         data-testid="EditTemplateButton"
       >
-        <EditIcon sx={{ mr: 1, fontSize: '22px' }} />
+        <EditIcon sx={{ mr: isSmallScreen ? 0 : 1, fontSize: '22px' }} />
         {!isSmallScreen && t('EditTemplateButton.button.edit')}
       </Button>
     </Box>
