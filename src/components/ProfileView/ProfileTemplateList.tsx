@@ -15,7 +15,7 @@ import { useState } from 'react';
 import { DeleteTemplateButton } from '@/components/DeleteTemplate/DeleteTemplateButton';
 import { TemplateSearchBar } from '@/components/TemplateSearchBar/TemplateSearchBar';
 import { EditTemplateButton } from '@/components/EditTemplate/EditTemplateButton';
-import { CourseTemplateModal } from '@/components/CourseTemplateModal';
+import CourseTemplateModal from '@/components/CourseTemplateModal';
 
 export interface ProfileCourseListProps {
   headerText: string;
@@ -134,11 +134,12 @@ export default function ProfileTemplateList({
           )}
         </>
       )}
-      <CourseTemplateModal
-        templateId={selectedTemplate}
-        open={isTemplateModalOpen}
-        onClose={handleCloseTemplateModal}
-      />
+      {isTemplateModalOpen && (
+        <CourseTemplateModal
+          templateId={selectedTemplate}
+          onClose={handleCloseTemplateModal}
+        />
+      )}
     </Box>
   );
 }
