@@ -127,6 +127,25 @@ describe('ProfileTemplateList component', () => {
     });
   });
 
+  it('edit button visible when expanded', async () => {
+    renderWithTheme(
+      <ProfileTemplateList
+        headerText="Templates"
+        templates={testTemplates}
+        open={false}
+      />
+    );
+    const controlButton = screen.getByTestId('listControls');
+    testTemplates.forEach((template) => {
+      expect(screen.queryByText(template.name)).toBeNull();
+    });
+    await userEvent.click(controlButton);
+    const buttonElement = screen.getAllByTestId('EditTemplateButton');
+    testTemplates.forEach((template) => {
+      expect(buttonElement[0]).toBeInTheDocument();
+    });
+  });
+
   it('delete button visible when expanded', async () => {
     renderWithTheme(
       <ProfileTemplateList

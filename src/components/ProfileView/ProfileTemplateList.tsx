@@ -15,6 +15,7 @@ import { useState } from 'react';
 import { DeleteTemplateButton } from '@/components/DeleteTemplate/DeleteTemplateButton';
 import { TemplateSearchBar } from '@/components/TemplateSearchBar/TemplateSearchBar';
 import { EditTemplateButton } from '@/components/EditTemplate/EditTemplateButton';
+import { Locale, i18n } from '@/lib/i18n/i18n-config';
 
 export interface ProfileCourseListProps {
   headerText: string;
@@ -34,7 +35,8 @@ export default function ProfileTemplateList({
   const handleToggleCollapse = () => {
     setIsCollapsed(!isCollapsed);
   };
-  const lang = 'en';
+
+  const lang: Locale = i18n.defaultLocale;
 
   return (
     <Box
@@ -83,7 +85,7 @@ export default function ProfileTemplateList({
                 backgroundColor: palette.surface.main,
               }}
             >
-              <TemplateSearchBar lang="en" />
+              <TemplateSearchBar lang={lang} />
               {templates.map((template: Template, count: number) => (
                 <React.Fragment key={template.id}>
                   <ListItem
@@ -108,7 +110,7 @@ export default function ProfileTemplateList({
                       />
                       <DeleteTemplateButton
                         templateId={template.id}
-                        lang="en"
+                        lang={lang}
                       />
                     </Box>
                   </ListItem>
