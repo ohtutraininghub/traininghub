@@ -83,6 +83,29 @@ export const deleteCourseFromCalendar = async (
     );
 };
 
+export const deleteEventFromCalendarWhenCourseDeleted = async (
+  course: Course
+) => {
+  const googleCalendarsInCourse = await getUsersWithGoogleCalendar(course);
+  googleCalendarsInCourse.forEach(async (user) => {
+    const eventId = user.googleEventId;
+    if (!eventId) {
+      // Not google calendar entry or no permissions to calendar
+      return;
+    }
+
+    const refreshTokenAuth = await getRefreshTokenAuth(user.userId);
+    const calendar = googlecalendar({ version: 'v3', auth: refreshTokenAuth });
+
+    calendar.events
+      .delete({ calendarId: 'primary', eventId: eventId })
+      .catch(
+        async (error) =>
+          await handleGoogleError(error, user.userId, course.id, eventId)
+      );
+  });
+};
+
 export const updateCourseToCalendars = async (course: Course) => {
   const googleCalendarsInCourse = await getUsersWithGoogleCalendar(course);
   googleCalendarsInCourse.forEach(async (user) => {
