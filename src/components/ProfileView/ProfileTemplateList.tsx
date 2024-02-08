@@ -13,6 +13,8 @@ import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import IconButton from '@mui/material/IconButton';
 import { useState } from 'react';
 import { DeleteTemplateButton } from '@/components/DeleteTemplate/DeleteTemplateButton';
+import { TemplateSearchBar } from '@/components/TemplateSearchBar/TemplateSearchBar';
+import { EditTemplateButton } from '@/components/EditTemplate/EditTemplateButton';
 
 export interface ProfileCourseListProps {
   headerText: string;
@@ -32,6 +34,7 @@ export default function ProfileTemplateList({
   const handleToggleCollapse = () => {
     setIsCollapsed(!isCollapsed);
   };
+  const lang = 'en';
 
   return (
     <Box
@@ -80,6 +83,7 @@ export default function ProfileTemplateList({
                 backgroundColor: palette.surface.main,
               }}
             >
+              <TemplateSearchBar lang="en" />
               {templates.map((template: Template, count: number) => (
                 <React.Fragment key={template.id}>
                   <ListItem
@@ -97,7 +101,16 @@ export default function ProfileTemplateList({
                       primary={template.name}
                       sx={{ color: palette.black.main }}
                     />
-                    <DeleteTemplateButton templateId={template.id} lang="en" />
+                    <Box sx={{ display: 'flex', gap: 1 }}>
+                      <EditTemplateButton
+                        templateId={template.id}
+                        lang={lang}
+                      />
+                      <DeleteTemplateButton
+                        templateId={template.id}
+                        lang="en"
+                      />
+                    </Box>
                   </ListItem>
 
                   {count < templates.length - 1 && <Divider />}
