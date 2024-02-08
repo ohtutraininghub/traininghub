@@ -3,7 +3,7 @@ import { remove } from '@/lib/response/fetchUtil';
 import { useMessage } from '../Providers/MessageProvider';
 import { useTheme } from '@mui/material/styles';
 import { useTranslation } from '@i18n/client';
-import { Box, Button } from '@mui/material';
+import { Box, Button, useMediaQuery } from '@mui/material';
 import { DictProps } from '@/lib/i18n';
 import { ConfirmCard } from '../ConfirmCard';
 import { useRouter } from 'next/navigation';
@@ -20,6 +20,8 @@ export function DeleteTemplateButton({
   const [dialogOpen, setDialogOpen] = useState(false);
   const { palette } = useTheme();
   const { t } = useTranslation(lang, 'components');
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const router = useRouter();
   const { notify } = useMessage();
 
@@ -45,6 +47,7 @@ export function DeleteTemplateButton({
           display: 'flex',
           alignItems: 'center',
           margin: 'auto',
+          padding: isSmallScreen ? '5px' : 'auto',
           mt: 'auto',
           color: palette.white.main,
           backgroundColor: palette.secondary.main,
@@ -54,8 +57,8 @@ export function DeleteTemplateButton({
         }}
         data-testid="DeleteTemplateButton"
       >
-        <DeleteIcon sx={{ mr: 1, fontSize: '22px' }} />
-        {t('DeleteTemplateButton.button.delete')}
+        <DeleteIcon sx={{ mr: isSmallScreen ? 0 : 1, fontSize: '22px' }} />
+        {!isSmallScreen && t('DeleteTemplateButton.button.delete')}
       </Button>
       <Box
         sx={{
