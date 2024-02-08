@@ -6,9 +6,10 @@ import { useTheme } from '@mui/material/styles';
 
 interface EditTemplateButtonProps extends DictProps {
   templateId: string;
+  onClick: () => void;
 }
 
-export function EditTemplateButton({ lang }: EditTemplateButtonProps) {
+export function EditTemplateButton({ lang, onClick }: EditTemplateButtonProps) {
   const { t } = useTranslation(lang, 'components');
   const { palette } = useTheme();
   const theme = useTheme();
@@ -17,6 +18,7 @@ export function EditTemplateButton({ lang }: EditTemplateButtonProps) {
   return (
     <Box sx={{ display: 'flex', flex: 1 }}>
       <Button
+        onClick={onClick}
         sx={{
           display: 'flex',
           alignItems: 'center',
