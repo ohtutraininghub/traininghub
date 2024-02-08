@@ -33,9 +33,25 @@ jest.mock('../../lib/response/fetchUtil', () => ({
 
 describe('EditTemplateButton', () => {
   test('renders the button with the correct text', () => {
-    renderWithTheme(<EditTemplateButton templateId="1" lang="en" />);
+    renderWithTheme(
+      <EditTemplateButton
+        templateId="1"
+        lang="en"
+        onClick={function (): void {}}
+      />
+    );
     const buttonElement = screen.getByTestId('EditTemplateButton');
     expect(buttonElement).toBeInTheDocument();
     expect(buttonElement).toHaveTextContent('EditTemplateButton.button.edit');
+  });
+
+  test('calls the onClick function when clicked', () => {
+    const onClick = jest.fn();
+    renderWithTheme(
+      <EditTemplateButton templateId="1" lang="en" onClick={onClick} />
+    );
+    const buttonElement = screen.getByTestId('EditTemplateButton');
+    fireEvent.click(buttonElement);
+    expect(onClick).toHaveBeenCalled();
   });
 });
