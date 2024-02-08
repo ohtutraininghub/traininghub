@@ -11,6 +11,7 @@ import { useTheme } from '@mui/material/styles';
 import { useSession } from 'next-auth/react';
 import UserList from '@/components/UserList';
 import { isTrainerOrAdmin } from '@/lib/auth-utils';
+import { Locale } from '@/lib/i18n/i18n-config';
 
 export interface userDetails {
   name: string;
@@ -23,6 +24,7 @@ export interface ProfileViewProps extends PropsWithChildren {
   courses: Course[];
   users: User[];
   templates: Template[];
+  lang: Locale;
 }
 
 export default function ProfileView({
@@ -31,12 +33,12 @@ export default function ProfileView({
   users,
   children,
   templates,
+  lang,
 }: ProfileViewProps) {
   const [selectedTab, setSelectedTab] = useState(0);
   const { palette } = useTheme();
   const currentDate = new Date();
   const { data: session } = useSession();
-
   const handleChangeTab = (
     event: SyntheticEvent<Element, Event>,
     newValue: number
@@ -99,6 +101,7 @@ export default function ProfileView({
               headerText="My course templates"
               templates={templates}
               open={false}
+              lang={lang}
             />
           )}
         </>
