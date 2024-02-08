@@ -15,26 +15,27 @@ import { useState } from 'react';
 import { DeleteTemplateButton } from '@/components/DeleteTemplate/DeleteTemplateButton';
 import { TemplateSearchBar } from '@/components/TemplateSearchBar/TemplateSearchBar';
 import { EditTemplateButton } from '@/components/EditTemplate/EditTemplateButton';
+import { Locale } from '@/lib/i18n/i18n-config';
 
 export interface ProfileCourseListProps {
   headerText: string;
   templates: Template[];
   open: boolean;
   timer?: boolean;
+  lang: Locale;
 }
 
 export default function ProfileTemplateList({
   headerText,
   templates,
   open,
+  lang,
 }: ProfileCourseListProps) {
   const { palette } = useTheme();
   const [isCollapsed, setIsCollapsed] = useState(open);
-
   const handleToggleCollapse = () => {
     setIsCollapsed(!isCollapsed);
   };
-  const lang = 'en';
 
   return (
     <Box
@@ -83,7 +84,7 @@ export default function ProfileTemplateList({
                 backgroundColor: palette.surface.main,
               }}
             >
-              <TemplateSearchBar lang="en" />
+              <TemplateSearchBar lang={lang} />
               {templates.map((template: Template, count: number) => (
                 <React.Fragment key={template.id}>
                   <ListItem
