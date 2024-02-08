@@ -108,7 +108,7 @@ export default function ProfileTemplateList({
                       />
                       <DeleteTemplateButton
                         templateId={template.id}
-                        lang="en"
+                        lang={lang}
                       />
                     </Box>
                   </ListItem>
