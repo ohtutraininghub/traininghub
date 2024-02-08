@@ -44,6 +44,17 @@ export const findGoogleCalendarEntry = async (
   });
 };
 
+export const findGoogleCalendarEntryByCourseId = async (courseId: string) => {
+  return await prisma.calendar.findMany({
+    where: {
+      courseId: courseId,
+    },
+    select: {
+      googleEventId: true,
+    },
+  });
+};
+
 export const getUsersWithGoogleCalendar = async (course: Course) => {
   return await prisma.calendar.findMany({
     where: {
