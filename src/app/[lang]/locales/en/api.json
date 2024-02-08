@@ -32,7 +32,8 @@
   "Templates": {
     "templateCreated": "Template successfully created",
     "templateDeleted": "Template successfully deleted",
-    "templateNameInUse": "Template name is already in use"
+    "templateNameInUse": "Template name is already in use",
+    "templateUpdated": "Template successfully updated"
   },
   "Users": {
     "roleChanged": "User access role succesfully changed!"

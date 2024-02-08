@@ -8,9 +8,17 @@ import { prisma } from '@/lib/prisma';
 import { Tag } from '@prisma/client';
 import { handleCommonErrors } from '@/lib/response/errorUtil';
 import { getServerAuthSession } from '@/lib/auth';
-import { isTrainerOrAdmin, hasTemplateDeleteRights } from '@/lib/auth-utils';
+import {
+  isTrainerOrAdmin,
+  hasTemplateDeleteRights,
+  isAdmin,
+} from '@/lib/auth-utils';
 import { translator } from '@/lib/i18n';
-import { templateSchema, templateDeleteSchema } from '@/lib/zod/templates';
+import {
+  templateSchema,
+  templateDeleteSchema,
+  templateSchemaWithId,
+} from '@/lib/zod/templates';
 
 const parseTags = async (tags: string[]): Promise<Tag[]> => {
   const allTags = await prisma.tag.findMany();
@@ -119,10 +127,30 @@ export async function PUT(request: NextRequest) {
       });
     }
     const data = await request.json();
-    const body = templateSchema.parse(data);
+    console.log(data);
+    const body = templateSchemaWithId.parse(data);
+    console.log(7);
     const parsedTags = await parseTags(body.tags);
+    console.log(`createdById !== user.id ${body.createdById !== user.id}`);
+    console.log(
+      `createdById === undefined && !isAdmin(user) ${
+        body.createdById === undefined && !isAdmin(user)
+      }`
+    );
+    if (
+      body.createdById !== user.id ||
+      (body.createdById === undefined && !isAdmin(user))
+    ) {
+      return errorResponse({
+        message: t('Common.forbidden'),
+        statusCode: StatusCodeType.FORBIDDEN,
+      });
+    }
+
+    // TODO check if new name in use
+    console.log(3);
     prisma.template.update({
-      where: { id: body.id, createdById: user.id },
+      where: { id: body.id },
       data: {
         ...body,
         tags: {
@@ -130,7 +158,13 @@ export async function PUT(request: NextRequest) {
         },
       },
     });
+    console.log(4);
+    return successResponse({
+      message: t('Templates.templateUpdated'),
+      statusCode: StatusCodeType.CREATED,
+    });
   } catch (error) {
+    console.log(5);
     return await handleCommonErrors(error);
   }
 }
