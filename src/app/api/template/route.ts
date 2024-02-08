@@ -122,7 +122,7 @@ export async function PUT(request: NextRequest) {
     const body = templateSchema.parse(data);
     const parsedTags = await parseTags(body.tags);
     prisma.template.update({
-      where: { id: user.id },
+      where: { id: body.id, createdById: user.id },
       data: {
         ...body,
         tags: {

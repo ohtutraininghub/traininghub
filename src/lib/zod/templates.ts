@@ -3,6 +3,7 @@ import { z } from 'zod';
 
 export const templateSchema = z
   .object({
+    id: z.string().cuid().optional(),
     name: z.string().min(1),
     description: z
       .string()
@@ -11,6 +12,8 @@ export const templateSchema = z
     image: z.union([z.string().url().nullish(), z.literal('')]),
     maxStudents: z.number().min(1),
     tags: z.array(z.string().min(1)),
+    createBy: z.string().nullish().optional(),
+    createdById: z.string().optional(),
     summary: z.string().max(150).nullish(),
   })
   .strict();
