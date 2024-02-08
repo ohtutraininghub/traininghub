@@ -32,7 +32,7 @@ export default function ProfileTemplateList({
   const { palette } = useTheme();
   const [isCollapsed, setIsCollapsed] = useState(open);
   const [isTemplateModalOpen, setIsTemplateModalOpen] = useState(false);
-  const [selectedTemplate, setSelectedTemplate] = useState(null);
+  const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null);
 
   const handleToggleCollapse = () => {
     setIsCollapsed(!isCollapsed);
@@ -134,9 +134,10 @@ export default function ProfileTemplateList({
           )}
         </>
       )}
-      {isTemplateModalOpen && (
+      {isTemplateModalOpen && selectedTemplate && (
         <CourseTemplateModal
           templateId={selectedTemplate}
+          open={isTemplateModalOpen}
           onClose={handleCloseTemplateModal}
         />
       )}
