@@ -73,8 +73,9 @@ describe('Course Form Course Create Tests', () => {
     const selectTemplateText = screen.queryByText(/Template.selectTemplate/i);
     expect(selectTemplateText).toBeInTheDocument();
 
-    const comboboxes = screen.getAllByRole('combobox');
-    const templateSelectBox = comboboxes[0];
+    const templateSelectBox = screen.getByRole('combobox', {
+      name: /Template.selectTemplate/i,
+    });
     expect(templateSelectBox).toBeInTheDocument();
   });
 
@@ -82,8 +83,9 @@ describe('Course Form Course Create Tests', () => {
     const { container } = renderWithTheme(
       <CourseForm lang="en" tags={[]} templates={[template]} />
     );
-    const comboboxes = screen.getAllByRole('combobox');
-    const select = comboboxes[0];
+    const select = screen.getByRole('combobox', {
+      name: /Template.selectTemplate/i,
+    });
 
     userEvent.click(select);
 
@@ -121,8 +123,9 @@ describe('Course Form Course Create Tests', () => {
 
     renderWithTheme(<CourseForm lang="en" tags={[]} templates={[template]} />);
 
-    const comboboxes = screen.getAllByRole('combobox');
-    const select = comboboxes[0];
+    const select = screen.getByRole('combobox', {
+      name: /Template.selectTemplate/i,
+    });
 
     userEvent.click(select);
 
