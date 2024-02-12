@@ -6,8 +6,7 @@ describe('Template list', () => {
 
   describe('when logged in as an admin', () => {
     beforeEach(() => {
-      cy.login('john.doe@example.org', 'ADMIN');
-      cy.get('[aria-label^="SpeedDial"]').click();
+      cy.login('john.doe@example.com', 'ADMIN');
       cy.getCy('avatarIconButton').click();
       cy.getCy('viewProfileMenuItem').click();
       cy.getCy('templateListControls').click();
@@ -16,14 +15,14 @@ describe('Template list', () => {
     it("should display all users' templates", () => {
       cy.getCy('templateListHeader').contains('All course templates');
       cy.getCy('templateList').as('templateListTag');
-      cy.get('@templateListTag').contains('Kubernetes').contains('Robot');
+      cy.get('@templateListTag').contains('Kubernetes');
+      cy.get('@templateListTag').contains('Robot');
     });
   });
 
   describe('when logged in as a trainer', () => {
     beforeEach(() => {
       cy.login('emily.davis@example.com', 'TRAINER');
-      cy.get('[aria-label^="SpeedDial"]').click();
       cy.getCy('avatarIconButton').click();
       cy.getCy('viewProfileMenuItem').click();
       cy.getCy('templateListControls').click();
