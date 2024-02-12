@@ -31,7 +31,7 @@ export function EditTemplateButton({ lang, onClick }: EditTemplateButtonProps) {
             backgroundColor: palette.secondary.light,
           },
         }}
-        data-testid="EditTemplateButton"
+        data-testid="editTemplateButton"
       >
         <EditIcon sx={{ mr: isSmallScreen ? 0 : 1, fontSize: '22px' }} />
         {!isSmallScreen && t('EditTemplateButton.button.edit')}
