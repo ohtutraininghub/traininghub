@@ -136,6 +136,9 @@
     }
   },
   "TemplateSearchBar": {
+    "Filter": {
+      "notFound": "No templates to show"
+    },
     "Label": {
       "text": "Search templates by name or creator"
     }

@@ -15,6 +15,7 @@ import { DeleteTemplateButton } from '@/components/DeleteTemplate/DeleteTemplate
 import { TemplateSearchBar } from '@/components/TemplateSearchBar/TemplateSearchBar';
 import { EditTemplateButton } from '@/components/EditTemplate/EditTemplateButton';
 import { Locale, i18n } from '@/lib/i18n/i18n-config';
+import { useTranslation } from '@i18n/client';
 
 export interface ProfileCourseListProps {
   headerText: string;
@@ -32,6 +33,7 @@ export default function ProfileTemplateList({
   const [searchTerm, setSearchTerm] = useState('');
   const { palette } = useTheme();
   const lang: Locale = i18n.defaultLocale;
+  const { t } = useTranslation(lang, 'components');
 
   const handleToggleCollapse = () => {
     setIsCollapsed(!isCollapsed);
@@ -72,7 +74,7 @@ export default function ProfileTemplateList({
           <TemplateSearchBar lang={lang} onSearchTermChange={setSearchTerm} />
           {filteredTemplates.length === 0 ? (
             <Typography sx={{ padding: '10px' }} variant="body2">
-              No templates to show.
+              {t('TemplateSearchBar.Filter.notFound')}
             </Typography>
           ) : (
             <List style={{ backgroundColor: palette.surface.main }}>
