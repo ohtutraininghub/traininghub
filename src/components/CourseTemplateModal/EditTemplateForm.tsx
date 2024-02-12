@@ -2,22 +2,32 @@
 
 import { DictProps } from '@i18n/index';
 import { useTranslation } from '@i18n/client';
-import { Button, InputLabel, Input } from '@mui/material';
+import {
+  Button,
+  InputLabel,
+  Input,
+  Select,
+  Box,
+  Chip,
+  MenuItem,
+} from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { Controller, useForm } from 'react-hook-form';
 import { TemplateSchemaType } from '@/lib/zod/templates';
 import FormFieldError from '../FormFieldError';
 import StyledTooltip from '@/components/StyledTooltip';
 import RichTextEditor from '@/components/TextEditor';
+import { Tag } from '@prisma/client';
 
 interface Props extends DictProps {
   templateId: string;
   submitTemplate: () => void;
+  tags: Tag[];
 }
 
 type FormType = TemplateSchemaType;
 
-export function EditTemplateForm({ lang, submitTemplate }: Props) {
+export function EditTemplateForm({ lang, submitTemplate, tags }: Props) {
   const { t } = useTranslation(lang, 'components');
   const { palette } = useTheme();
   const {
@@ -105,6 +115,92 @@ export function EditTemplateForm({ lang, submitTemplate }: Props) {
             'data-testid': 'courseFormImage',
           }}
         />
+        <Controller
+          name="tags"
+          control={control}
+          defaultValue={[]}
+          render={({ field }) => {
+            return (
+              <>
+                <InputLabel htmlFor="tagSelection">
+                  {t('CourseForm.tags')}
+                  <StyledTooltip
+                    data-testid="tooltipTags"
+                    lang={lang}
+                    title={t('Tooltip.tags')}
+                  />
+                </InputLabel>
+                <Select
+                  {...field}
+                  id="tagSelection"
+                  color="secondary"
+                  multiple
+                  renderValue={(field) => (
+                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                      {field.map((tag, idx) => (
+                        <Chip
+                          key={idx}
+                          label={tag}
+                          variant="outlined"
+                          sx={{
+                            backgroundColor: palette.surface.light,
+                            borderColor: palette.black.light,
+                          }}
+                        />
+                      ))}
+                    </Box>
+                  )}
+                >
+                  {tags.map((tag) => (
+                    <MenuItem
+                      key={tag.id}
+                      value={tag.name}
+                      divider
+                      sx={{
+                        '&.Mui-selected': {
+                          backgroundColor: palette.surface.main,
+                        },
+                        '&.Mui-selected.Mui-focusVisible': {
+                          backgroundColor: palette.surface.dark,
+                        },
+                        '&:hover': {
+                          backgroundColor: palette.surface.light,
+                        },
+                        '&.Mui-selected:hover': {
+                          backgroundColor: palette.surface.main,
+                        },
+                      }}
+                    >
+                      {tag.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </>
+            );
+          }}
+        />
+        <InputLabel htmlFor="courseFormMaxStudents">
+          {t('CourseForm.maxStudents')}
+          <StyledTooltip
+            data-testid="maxStudents"
+            lang={lang}
+            title={t('Tooltip.maxStudents')}
+          />
+        </InputLabel>
+        <Input
+          {...register('maxStudents', {
+            setValueAs: (value) => Number(value),
+          })}
+          color="secondary"
+          id="courseFormMaxStudents"
+          type="number"
+          error={!!errors.maxStudents}
+          inputProps={{
+            min: 1,
+            'data-testid': 'courseFormMaxStudents',
+          }}
+        />
+        <FormFieldError error={errors.maxStudents} />
         <Button
           type="submit"
           variant="contained"

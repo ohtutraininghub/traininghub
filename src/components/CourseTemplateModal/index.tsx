@@ -8,17 +8,20 @@ import { DictProps } from '@/lib/i18n';
 import { EditTemplateForm } from './EditTemplateForm';
 import { useTheme } from '@mui/material/styles';
 import CloseIcon from '@mui/icons-material/Close';
+import { Tag } from '@prisma/client';
 
 interface CourseTemplateModalProps extends DictProps {
   templateId: string;
   open: boolean;
   onClose: () => void;
+  tags: Tag[];
 }
 
 export default function CourseTemplateModal({
   lang,
   templateId,
   onClose,
+  tags,
 }: CourseTemplateModalProps) {
   const { palette } = useTheme();
   const handleClick = (event: object, reason: string) => {
@@ -87,6 +90,7 @@ export default function CourseTemplateModal({
             Edit Template Details
           </Typography>
           <EditTemplateForm
+            tags={tags}
             templateId={templateId}
             lang={lang}
             submitTemplate={submitTemplate}

@@ -92,6 +92,7 @@ export default async function ProfilePage({ searchParams, params }: Props) {
         courses={userData?.courses ?? []}
         users={allUsers}
         templates={templates}
+        tags={tags}
       >
         <CreateTag
           tagsHeader={t('admin:TagsSection.header')}
