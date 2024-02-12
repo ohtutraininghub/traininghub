@@ -2,11 +2,12 @@
 
 import React from 'react';
 import Modal from '@mui/material/Modal';
-import { Typography } from '@mui/material';
+import { Box, IconButton, Typography } from '@mui/material';
 import Card from '@mui/material/Card';
 import { DictProps } from '@/lib/i18n';
 import { EditTemplateForm } from './EditTemplateForm';
 import { useTheme } from '@mui/material/styles';
+import CloseIcon from '@mui/icons-material/Close';
 
 interface CourseTemplateModalProps extends DictProps {
   templateId: string;
@@ -65,6 +66,18 @@ export default function CourseTemplateModal({
             overflowWrap: 'break-word',
           }}
         >
+          <Box
+            sx={{
+              position: 'absolute',
+              top: 8,
+              right: 8,
+              padding: 1,
+            }}
+          >
+            <IconButton onClick={onClose}>
+              <CloseIcon sx={{ fontSize: '25px' }} />
+            </IconButton>
+          </Box>
           <Typography
             variant="h2"
             color={palette.black.main}
