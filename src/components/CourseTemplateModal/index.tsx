@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Modal from '@mui/material/Modal';
-import { Box, IconButton, Typography } from '@mui/material';
+import { Box, IconButton } from '@mui/material';
 import Card from '@mui/material/Card';
 import { DictProps } from '@/lib/i18n';
 import { EditTemplateForm } from './EditTemplateForm';
@@ -81,14 +81,6 @@ export default function CourseTemplateModal({
               <CloseIcon sx={{ fontSize: '25px' }} />
             </IconButton>
           </Box>
-          <Typography
-            variant="h2"
-            color={palette.black.main}
-            textAlign="center"
-            marginBottom={1}
-          >
-            Edit Template Details
-          </Typography>
           <EditTemplateForm
             tags={tags}
             templateId={templateId}

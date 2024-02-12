@@ -10,6 +10,7 @@ import {
   Box,
   Chip,
   MenuItem,
+  Typography,
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { Controller, useForm } from 'react-hook-form';
@@ -40,6 +41,15 @@ export function EditTemplateForm({ lang, submitTemplate, tags }: Props) {
 
   return (
     <>
+      <Typography
+        variant="h2"
+        color={palette.black.main}
+        textAlign="center"
+        marginBottom={1}
+      >
+        Edit Template Details
+        <StyledTooltip lang={lang} title={t('Tooltip.editTemplate')} />
+      </Typography>
       <form
         id="templateForm"
         style={{ display: 'flex', flexDirection: 'column', gap: 10 }}
