@@ -58,8 +58,8 @@ describe('ProfileTemplateList component', () => {
         open={true}
       />
     );
-    const headerText = screen.getByTestId('listHeader');
-    const controlButton = screen.getByTestId('listControls');
+    const headerText = screen.getByTestId('templateListHeader');
+    const controlButton = screen.getByTestId('templateListControls');
     expect(headerText).toBeInTheDocument();
     expect(controlButton).toBeInTheDocument();
   });
@@ -117,7 +117,7 @@ describe('ProfileTemplateList component', () => {
         open={false}
       />
     );
-    const controlButton = screen.getByTestId('listControls');
+    const controlButton = screen.getByTestId('templateListControls');
     testTemplates.forEach((template) => {
       expect(screen.queryByText(template.name)).toBeNull();
     });
@@ -135,7 +135,7 @@ describe('ProfileTemplateList component', () => {
         open={false}
       />
     );
-    const controlButton = screen.getByTestId('listControls');
+    const controlButton = screen.getByTestId('templateListControls');
     testTemplates.forEach((template) => {
       expect(screen.queryByText(template.name)).toBeNull();
     });
@@ -154,12 +154,31 @@ describe('ProfileTemplateList component', () => {
         open={false}
       />
     );
-    const controlButton = screen.getByTestId('listControls');
+    const controlButton = screen.getByTestId('templateListControls');
     testTemplates.forEach((template) => {
       expect(screen.queryByText(template.name)).toBeNull();
     });
     await userEvent.click(controlButton);
     const buttonElement = screen.getAllByTestId('DeleteTemplateButton');
+    testTemplates.forEach((template) => {
+      expect(buttonElement[0]).toBeInTheDocument();
+    });
+  });
+
+  it('edit button visible when expanded', async () => {
+    renderWithTheme(
+      <ProfileTemplateList
+        headerText="Templates"
+        templates={testTemplates}
+        open={false}
+      />
+    );
+    const controlButton = screen.getByTestId('templateListControls');
+    testTemplates.forEach((template) => {
+      expect(screen.queryByText(template.name)).toBeNull();
+    });
+    await userEvent.click(controlButton);
+    const buttonElement = screen.getAllByTestId('EditTemplateButton');
     testTemplates.forEach((template) => {
       expect(buttonElement[0]).toBeInTheDocument();
     });
@@ -173,7 +192,7 @@ describe('ProfileTemplateList component', () => {
         open={false}
       />
     );
-    const controlButton = screen.getByTestId('listControls');
+    const controlButton = screen.getByTestId('templateListControls');
     testTemplates.forEach((template) => {
       expect(screen.queryByText(template.name)).toBeNull();
     });
@@ -181,6 +200,29 @@ describe('ProfileTemplateList component', () => {
 
     const searchBar = screen.getByTestId('TemplateSearchBar');
     expect(searchBar).toBeInTheDocument();
+  });
+
+  it('Template modal is opened when edit button is clicked', async () => {
+    renderWithTheme(
+      <ProfileTemplateList
+        headerText="Templates"
+        templates={testTemplates}
+        open={false}
+      />
+    );
+    const controlButton = screen.getByTestId('templateListControls');
+    testTemplates.forEach((template) => {
+      expect(screen.queryByText(template.name)).toBeNull();
+    });
+    await userEvent.click(controlButton);
+
+    const buttonElement = screen.getAllByTestId('EditTemplateButton');
+    testTemplates.forEach((template) => {
+      expect(buttonElement[0]).toBeInTheDocument();
+    });
+
+    await userEvent.click(buttonElement[0]);
+    expect(screen.getByTestId('template-modal')).toBeInTheDocument();
   });
 
   it('list collapses when collapse button is clicked', async () => {
@@ -191,7 +233,7 @@ describe('ProfileTemplateList component', () => {
         open={true}
       />
     );
-    const controlButton = screen.getByTestId('listControls');
+    const controlButton = screen.getByTestId('templateListControls');
     testTemplates.forEach((template) => {
       expect(screen.getByText(template.name)).toBeInTheDocument();
     });
