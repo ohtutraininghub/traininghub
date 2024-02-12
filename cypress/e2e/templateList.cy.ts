@@ -16,7 +16,9 @@ describe('Template list', () => {
       cy.getCy('templateListHeader').contains('All course templates');
       cy.getCy('templateList').as('templateListTag');
       cy.get('@templateListTag').contains('Kubernetes');
+      cy.get('@templateListTag').contains('Emily Davis');
       cy.get('@templateListTag').contains('Robot');
+      cy.get('@templateListTag').contains('John Doe');
     });
   });
 
@@ -32,7 +34,9 @@ describe('Template list', () => {
       cy.getCy('templateListHeader').contains('My course templates');
       cy.getCy('templateList').as('templateListTag');
       cy.get('@templateListTag').contains('Kubernetes');
+      cy.get('@templateListTag').contains('Emily Davis');
       cy.get('@templateListTag').contains('Robot').should('not.exist');
+      cy.get('@templateListTag').contains('John Doe').should('not.exist');
     });
   });
 });

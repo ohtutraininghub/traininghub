@@ -11,7 +11,10 @@ import {
   getAllUsers,
   getStudentNamesByCourseId,
 } from '@/lib/prisma/users';
-import { getTemplates } from '@/lib/prisma/templates';
+import {
+  getTemplatesWithCreator,
+  getTemplatesByUserIdWithCreator,
+} from '@/lib/prisma/templates';
 import CreateTag from '../admin/dashboard/CreateTag';
 import { getTags } from '@/lib/prisma/tags';
 import { isAdmin, isTrainerOrAdmin } from '@/lib/auth-utils';
@@ -63,8 +66,8 @@ export default async function ProfilePage({ searchParams, params }: Props) {
   );
 
   const templates = isAdmin(session.user)
-    ? await getTemplates()
-    : userData?.createdTemplates ?? [];
+    ? await getTemplatesWithCreator()
+    : await getTemplatesByUserIdWithCreator(session.user.id);
 
   let enrolledStudents: UserNamesAndIds | null = null;
   if (isTrainerOrAdmin(session.user) && openedCourse) {
