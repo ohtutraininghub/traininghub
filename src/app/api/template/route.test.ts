@@ -5,7 +5,6 @@ import { NextRequest } from 'next/server';
 import { createMocks } from 'node-mocks-http';
 import { Role } from '@prisma/client';
 import { getServerAuthSession } from '@/lib/auth';
-import { NOTFOUND } from 'dns';
 
 const adminUser = {
   id: 'clo079ls3000108jsbdbsc8pv',
