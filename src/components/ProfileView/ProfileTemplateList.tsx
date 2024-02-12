@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { List } from '@mui/material';
 import { ListItem } from '@mui/material';
 import { ListItemText } from '@mui/material';
@@ -11,7 +11,6 @@ import { Box, Tooltip, Typography } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import IconButton from '@mui/material/IconButton';
-import { useState } from 'react';
 import { DeleteTemplateButton } from '@/components/DeleteTemplate/DeleteTemplateButton';
 import { TemplateSearchBar } from '@/components/TemplateSearchBar/TemplateSearchBar';
 import { EditTemplateButton } from '@/components/EditTemplate/EditTemplateButton';
@@ -29,21 +28,21 @@ export default function ProfileTemplateList({
   templates,
   open,
 }: ProfileCourseListProps) {
-  const { palette } = useTheme();
   const [isCollapsed, setIsCollapsed] = useState(open);
+  const [searchTerm, setSearchTerm] = useState('');
+  const { palette } = useTheme();
+  const lang: Locale = i18n.defaultLocale;
 
   const handleToggleCollapse = () => {
     setIsCollapsed(!isCollapsed);
   };
 
-  const lang: Locale = i18n.defaultLocale;
+  const filteredTemplates = templates.filter((template) =>
+    template.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
-    <Box
-      sx={{
-        paddingTop: '10px',
-      }}
-    >
+    <Box sx={{ marginTop: '10px', backgroundColor: palette.surface.main }}>
       <Typography
         sx={{
           backgroundColor: palette.secondary.main,
@@ -53,7 +52,7 @@ export default function ProfileTemplateList({
         variant="subtitle2"
         data-testid="listHeader"
       >
-        {`${headerText} (${templates.length})`}
+        {`${headerText} (${filteredTemplates.length})`}
         <Tooltip
           title={isCollapsed ? 'Close' : 'Expand'}
           arrow
@@ -68,28 +67,18 @@ export default function ProfileTemplateList({
           </IconButton>
         </Tooltip>
       </Typography>
-      {!isCollapsed ? null : (
+      {isCollapsed && (
         <>
-          {templates.length === 0 ? (
-            <Typography
-              sx={{
-                padding: '10px',
-              }}
-              variant="body2"
-            >
+          <TemplateSearchBar lang={lang} onSearchTermChange={setSearchTerm} />
+          {filteredTemplates.length === 0 ? (
+            <Typography sx={{ padding: '10px' }} variant="body2">
               No templates to show.
             </Typography>
           ) : (
-            <List
-              style={{
-                backgroundColor: palette.surface.main,
-              }}
-            >
-              <TemplateSearchBar lang={lang} />
-              {templates.map((template: Template, count: number) => (
+            <List style={{ backgroundColor: palette.surface.main }}>
+              {filteredTemplates.map((template: Template, index: number) => (
                 <React.Fragment key={template.id}>
                   <ListItem
-                    key={template.id}
                     sx={{
                       display: 'flex',
                       justifyContent: 'space-between',
@@ -114,8 +103,7 @@ export default function ProfileTemplateList({
                       />
                     </Box>
                   </ListItem>
-
-                  {count < templates.length - 1 && <Divider />}
+                  {index < filteredTemplates.length - 1 && <Divider />}
                 </React.Fragment>
               ))}
             </List>
