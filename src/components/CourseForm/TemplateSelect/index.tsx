@@ -38,21 +38,21 @@ export default function TemplateSelect({
 
   const handleTemplateChange = (event: SelectChangeEvent<string>) => {
     const selectedId = event.target.value as string;
-    const selectedTemplate =
+    const templateData =
       templates.find((template) => template.id === selectedId) || template;
 
-    if (selectedTemplate) {
-      setSelectedTemplate(selectedTemplate);
+    if (templateData) {
+      setSelectedTemplate(templateData);
 
-      setValue('name', selectedTemplate.name);
-      setValue('description', selectedTemplate.description);
-      setValue('summary', selectedTemplate.summary);
+      setValue('name', templateData.name);
+      setValue('description', templateData.description);
+      setValue('summary', templateData.summary);
       setValue(
         'tags',
-        selectedTemplate.tags.map((tag) => tag.name)
+        templateData.tags.map((tag) => tag.name)
       );
-      setValue('maxStudents', selectedTemplate.maxStudents);
-      setValue('image', selectedTemplate.image);
+      setValue('maxStudents', templateData.maxStudents);
+      setValue('image', templateData.image);
     }
   };
 
@@ -60,10 +60,6 @@ export default function TemplateSelect({
     <Box>
       <Select
         labelId={id}
-        id={id}
-        data-testid="templateSelect"
-        data-type="templateSelect"
-        role="templateSelect"
         style={{ display: 'flex', flexWrap: 'wrap', marginBottom: 10 }}
         color="secondary"
         onChange={handleTemplateChange}
