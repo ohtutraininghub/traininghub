@@ -6,7 +6,7 @@ import {
   SelectChangeEvent,
   Typography,
 } from '@mui/material';
-import { useCurrentEditor } from '@tiptap/react';
+import { Editor } from '@tiptap/core';
 import FormatBoldIcon from '@mui/icons-material/FormatBold';
 import FormatItalicIcon from '@mui/icons-material/FormatItalic';
 import UndoIcon from '@mui/icons-material/Undo';
@@ -30,8 +30,11 @@ import { PromptWindow, type AnchorWithContext, CallbackObj } from './urlPrompt';
 import { TextSelection } from '@tiptap/pm/state';
 import { ClickHandler, MenuBarItem } from './MenuBarItem';
 
-export const MenuBar = ({ lang }: DictProps) => {
-  const { editor } = useCurrentEditor();
+interface MenuProps extends DictProps {
+  editor: Editor;
+}
+
+export const MenuBar = ({ editor, lang }: MenuProps) => {
   const { t } = useTranslation(lang, 'components');
   const [anchorObj, setAnchorObj] = useState<null | AnchorWithContext>(null);
   const promptOpen = !!anchorObj;
