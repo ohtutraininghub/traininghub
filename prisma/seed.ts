@@ -68,7 +68,7 @@ const templateData = [
     summary: 'Learn the basics of Kubernetes',
     maxStudents: 15,
     tags: ['Kubernetes', 'Docker', 'CI/CD'],
-    createdById: '123004',
+    createdById: 'clsiom8xf000008k12bgf6bw6', // Emily Davis
   },
   {
     name: 'Robot Framework Basics',
@@ -77,7 +77,7 @@ const templateData = [
     summary: 'Learn the basics of Robot Framework',
     maxStudents: 10,
     tags: ['Testing', 'Python', 'Robot Framework'],
-    createdById: '123001',
+    createdById: 'clsiortzr000008k10sundybm', // John Doe
   },
 ];
 
@@ -95,7 +95,7 @@ const tagData = [
 
 const userData: User[] = [
   {
-    id: '123001',
+    id: 'clsiortzr000008k10sundybm',
     name: 'John Doe',
     email: 'john.doe@example.com',
     emailVerified: null,
@@ -119,7 +119,7 @@ const userData: User[] = [
     role: 'TRAINEE',
   },
   {
-    id: '123004',
+    id: 'clsiom8xf000008k12bgf6bw6',
     name: 'Emily Davis',
     email: 'emily.davis@example.com',
     emailVerified: null,
@@ -185,7 +185,7 @@ export async function main() {
 
   const user = await prisma.user.create({ data: {} });
   const trainee = await prisma.user.create({ data: traineeUser });
-  const trainer = await prisma.user.create({ data: trainerUser });
+  await prisma.user.create({ data: trainerUser });
 
   seedUsers();
 
@@ -224,7 +224,7 @@ export async function main() {
           description: template.description,
           maxStudents: template.maxStudents,
           summary: template.summary,
-          createdById: trainer.id,
+          createdById: template.createdById,
           tags: {
             connect: template.tags.map((tag) => ({ name: tag })),
           },
