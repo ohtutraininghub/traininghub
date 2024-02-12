@@ -5,7 +5,6 @@ import { List } from '@mui/material';
 import { ListItem } from '@mui/material';
 import { ListItemText } from '@mui/material';
 import { Divider } from '@mui/material';
-import { Template } from '@prisma/client';
 import { useTheme } from '@mui/material/styles';
 import { Box, Tooltip, Typography } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -17,10 +16,11 @@ import { EditTemplateButton } from '@/components/EditTemplate/EditTemplateButton
 import CourseTemplateModal from '@/components/CourseTemplateModal';
 import { Locale, i18n } from '@/lib/i18n/i18n-config';
 import { useTranslation } from '@i18n/client';
+import { TemplateWithCreator } from '@/lib/prisma/templates';
 
 export interface ProfileCourseListProps {
   headerText: string;
-  templates: Template[];
+  templates: TemplateWithCreator[];
   open: boolean;
   timer?: boolean;
 }
@@ -42,8 +42,10 @@ export default function ProfileTemplateList({
     setIsCollapsed(!isCollapsed);
   };
 
-  const filteredTemplates = templates.filter((template) =>
-    template.name.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredTemplates = templates.filter(
+    (template) =>
+      template.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      template.createdBy?.name?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const handleEditButtonClick = (templateId: string) => {
@@ -94,37 +96,40 @@ export default function ProfileTemplateList({
               style={{ backgroundColor: palette.surface.main }}
               data-testid="templateList"
             >
-              {filteredTemplates.map((template: Template, index: number) => (
-                <React.Fragment key={template.id}>
-                  <ListItem
-                    sx={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      backgroundColor: 'transparent',
-                      '&:hover': {
-                        backgroundColor: palette.surface.light,
-                      },
-                    }}
-                  >
-                    <ListItemText
-                      primary={template.name}
-                      sx={{ color: palette.black.main }}
-                    />
-                    <Box sx={{ display: 'flex', gap: 1 }}>
-                      <EditTemplateButton
-                        templateId={template.id}
-                        lang={lang}
-                        onClick={() => handleEditButtonClick(template.id)}
+              {filteredTemplates.map(
+                (template: TemplateWithCreator, index: number) => (
+                  <React.Fragment key={template.id}>
+                    <ListItem
+                      sx={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        backgroundColor: 'transparent',
+                        '&:hover': {
+                          backgroundColor: palette.surface.light,
+                        },
+                      }}
+                    >
+                      <ListItemText
+                        primary={template.name}
+                        secondary={template.createdBy?.name}
+                        sx={{ color: palette.black.main }}
                       />
-                      <DeleteTemplateButton
-                        templateId={template.id}
-                        lang={lang}
-                      />
-                    </Box>
-                  </ListItem>
-                  {index < filteredTemplates.length - 1 && <Divider />}
-                </React.Fragment>
-              ))}
+                      <Box sx={{ display: 'flex', gap: 1 }}>
+                        <EditTemplateButton
+                          templateId={template.id}
+                          lang={lang}
+                          onClick={() => handleEditButtonClick(template.id)}
+                        />
+                        <DeleteTemplateButton
+                          templateId={template.id}
+                          lang={lang}
+                        />
+                      </Box>
+                    </ListItem>
+                    {index < filteredTemplates.length - 1 && <Divider />}
+                  </React.Fragment>
+                )
+              )}
             </List>
           )}
         </>
