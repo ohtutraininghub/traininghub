@@ -15,6 +15,8 @@ import { useState } from 'react';
 import { DeleteTemplateButton } from '@/components/DeleteTemplate/DeleteTemplateButton';
 import { TemplateSearchBar } from '@/components/TemplateSearchBar/TemplateSearchBar';
 import { EditTemplateButton } from '@/components/EditTemplate/EditTemplateButton';
+import CourseTemplateModal from '@/components/CourseTemplateModal';
+import { Locale, i18n } from '@/lib/i18n/i18n-config';
 
 export interface ProfileCourseListProps {
   headerText: string;
@@ -30,11 +32,24 @@ export default function ProfileTemplateList({
 }: ProfileCourseListProps) {
   const { palette } = useTheme();
   const [isCollapsed, setIsCollapsed] = useState(open);
+  const [isTemplateModalOpen, setIsTemplateModalOpen] = useState(false);
+  const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null);
 
   const handleToggleCollapse = () => {
     setIsCollapsed(!isCollapsed);
   };
-  const lang = 'en';
+
+  const lang: Locale = i18n.defaultLocale;
+
+  const handleEditButtonClick = (templateId: string) => {
+    setSelectedTemplate(templateId);
+    setIsTemplateModalOpen(true);
+  };
+
+  const handleCloseTemplateModal = () => {
+    setIsTemplateModalOpen(false);
+    setSelectedTemplate(null);
+  };
 
   return (
     <Box
@@ -84,7 +99,7 @@ export default function ProfileTemplateList({
               }}
               data-testid="templateList"
             >
-              <TemplateSearchBar lang="en" />
+              <TemplateSearchBar lang={lang} />
               {templates.map((template: Template, count: number) => (
                 <React.Fragment key={template.id}>
                   <ListItem
@@ -106,10 +121,11 @@ export default function ProfileTemplateList({
                       <EditTemplateButton
                         templateId={template.id}
                         lang={lang}
+                        onClick={() => handleEditButtonClick(template.id)}
                       />
                       <DeleteTemplateButton
                         templateId={template.id}
-                        lang="en"
+                        lang={lang}
                       />
                     </Box>
                   </ListItem>
@@ -120,6 +136,13 @@ export default function ProfileTemplateList({
             </List>
           )}
         </>
+      )}
+      {isTemplateModalOpen && selectedTemplate && (
+        <CourseTemplateModal
+          templateId={selectedTemplate}
+          open={isTemplateModalOpen}
+          onClose={handleCloseTemplateModal}
+        />
       )}
     </Box>
   );
