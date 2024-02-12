@@ -66,7 +66,7 @@ export default function ProfileTemplateList({
           paddingLeft: '10px',
         }}
         variant="subtitle2"
-        data-testid="listHeader"
+        data-testid="templateListHeader"
       >
         {`${headerText} (${templates.length})`}
         <Tooltip
@@ -77,7 +77,7 @@ export default function ProfileTemplateList({
           <IconButton
             sx={{ color: palette.white.main }}
             onClick={handleToggleCollapse}
-            data-testid="listControls"
+            data-testid="templateListControls"
           >
             {isCollapsed ? <ExpandLessIcon /> : <ExpandMoreIcon />}
           </IconButton>
@@ -99,6 +99,7 @@ export default function ProfileTemplateList({
               style={{
                 backgroundColor: palette.surface.main,
               }}
+              data-testid="templateList"
             >
               <TemplateSearchBar lang={lang} />
               {templates.map((template: Template, count: number) => (

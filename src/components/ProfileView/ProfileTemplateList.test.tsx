@@ -58,8 +58,8 @@ describe('ProfileTemplateList component', () => {
         open={true}
       />
     );
-    const headerText = screen.getByTestId('listHeader');
-    const controlButton = screen.getByTestId('listControls');
+    const headerText = screen.getByTestId('templateListHeader');
+    const controlButton = screen.getByTestId('templateListControls');
     expect(headerText).toBeInTheDocument();
     expect(controlButton).toBeInTheDocument();
   });
@@ -117,7 +117,7 @@ describe('ProfileTemplateList component', () => {
         open={false}
       />
     );
-    const controlButton = screen.getByTestId('listControls');
+    const controlButton = screen.getByTestId('templateListControls');
     testTemplates.forEach((template) => {
       expect(screen.queryByText(template.name)).toBeNull();
     });
@@ -135,7 +135,7 @@ describe('ProfileTemplateList component', () => {
         open={false}
       />
     );
-    const controlButton = screen.getByTestId('listControls');
+    const controlButton = screen.getByTestId('templateListControls');
     testTemplates.forEach((template) => {
       expect(screen.queryByText(template.name)).toBeNull();
     });
@@ -154,7 +154,7 @@ describe('ProfileTemplateList component', () => {
         open={false}
       />
     );
-    const controlButton = screen.getByTestId('listControls');
+    const controlButton = screen.getByTestId('templateListControls');
     testTemplates.forEach((template) => {
       expect(screen.queryByText(template.name)).toBeNull();
     });
@@ -173,7 +173,7 @@ describe('ProfileTemplateList component', () => {
         open={false}
       />
     );
-    const controlButton = screen.getByTestId('listControls');
+    const controlButton = screen.getByTestId('templateListControls');
     testTemplates.forEach((template) => {
       expect(screen.queryByText(template.name)).toBeNull();
     });
@@ -192,7 +192,7 @@ describe('ProfileTemplateList component', () => {
         open={false}
       />
     );
-    const controlButton = screen.getByTestId('listControls');
+    const controlButton = screen.getByTestId('templateListControls');
     testTemplates.forEach((template) => {
       expect(screen.queryByText(template.name)).toBeNull();
     });
@@ -210,7 +210,7 @@ describe('ProfileTemplateList component', () => {
         open={false}
       />
     );
-    const controlButton = screen.getByTestId('listControls');
+    const controlButton = screen.getByTestId('templateListControls');
     testTemplates.forEach((template) => {
       expect(screen.queryByText(template.name)).toBeNull();
     });
@@ -233,7 +233,7 @@ describe('ProfileTemplateList component', () => {
         open={true}
       />
     );
-    const controlButton = screen.getByTestId('listControls');
+    const controlButton = screen.getByTestId('templateListControls');
     testTemplates.forEach((template) => {
       expect(screen.getByText(template.name)).toBeInTheDocument();
     });

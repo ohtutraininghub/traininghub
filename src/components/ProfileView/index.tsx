@@ -96,7 +96,11 @@ export default function ProfileView({
           />
           {isTrainerOrAdmin((session?.user as User) || {}) && (
             <ProfileTemplateList
-              headerText="My course templates"
+              headerText={
+                session?.user.role === Role.ADMIN
+                  ? 'All course templates'
+                  : 'My course templates'
+              }
               templates={templates}
               open={false}
             />

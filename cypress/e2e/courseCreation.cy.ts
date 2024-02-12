@@ -86,10 +86,13 @@ describe('Course creation', () => {
     cy.visit('/course/create');
 
     cy.getCy('courseFormName').type(course.name);
+    cy.getCy('textEditorTextSelect').click();
+    cy.getCy('textSelectorHeader1').click();
+    cy.get('.ProseMirror').type(`${course.header}{enter}`);
 
     cy.getCy('textEditorTextSelect').click();
     cy.getCy('textSelectorParagraph').click();
-    cy.get('.ProseMirror').type(course.description, { delay: 0 });
+    cy.get('.ProseMirror').type(course.description);
 
     cy.getCy('courseFormStartDate').type(course.startDate);
     cy.getCy('courseFormEndDate').type(course.endDate);
@@ -100,6 +103,7 @@ describe('Course creation', () => {
     cy.getCy('courseFormSubmit').click();
     cy.contains(course.name).click();
     cy.contains(course.name);
+    cy.contains(course.header);
     cy.contains(course.maxStudents);
     cy.contains(course.description);
     cy.getCy('courseImage').should('be.visible');

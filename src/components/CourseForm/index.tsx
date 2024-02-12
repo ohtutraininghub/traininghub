@@ -85,8 +85,6 @@ export default function CourseForm({
       ? await update(`/api/course`, data)
       : await post('/api/course', data);
 
-    console.log('submit');
-
     notify(responseJson);
 
     if (!isEditMode) {
@@ -149,7 +147,7 @@ export default function CourseForm({
             <>
               {/* Template select wont be shown if user is editing course or
             if there is no templates */}
-              <InputLabel id="templateSelectLabel">
+              <InputLabel id="templateSelect">
                 {t('Template.selectTemplate')}
                 <StyledTooltip
                   lang={lang}
