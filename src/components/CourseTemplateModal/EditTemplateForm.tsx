@@ -22,13 +22,13 @@ import { Tag } from '@prisma/client';
 
 interface Props extends DictProps {
   templateId: string;
-  submitTemplate: () => void;
+  updateTemplate: () => void;
   tags: Tag[];
 }
 
 type FormType = TemplateSchemaType;
 
-export function EditTemplateForm({ lang, submitTemplate, tags }: Props) {
+export function EditTemplateForm({ lang, updateTemplate, tags }: Props) {
   const { t } = useTranslation(lang, 'components');
   const { palette } = useTheme();
   const {
@@ -53,7 +53,7 @@ export function EditTemplateForm({ lang, submitTemplate, tags }: Props) {
       <form
         id="templateForm"
         style={{ display: 'flex', flexDirection: 'column', gap: 10 }}
-        onSubmit={submitTemplate}
+        onSubmit={updateTemplate}
       >
         <InputLabel htmlFor="courseFormName">{t('CourseForm.name')}</InputLabel>
         <Input
@@ -225,7 +225,7 @@ export function EditTemplateForm({ lang, submitTemplate, tags }: Props) {
             },
           }}
         >
-          {t('EditTemplate.button.submit')}
+          {t('EditTemplate.button.update')}
         </Button>
       </form>
     </>

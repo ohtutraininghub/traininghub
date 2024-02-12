@@ -29,7 +29,7 @@ export default function CourseTemplateModal({
       onClose();
     }
   };
-  const submitTemplate = () => {
+  const updateTemplate = () => {
     onClose();
   };
 
@@ -85,7 +85,7 @@ export default function CourseTemplateModal({
             tags={tags}
             templateId={templateId}
             lang={lang}
-            submitTemplate={submitTemplate}
+            updateTemplate={updateTemplate}
           />
         </Card>
       </Modal>

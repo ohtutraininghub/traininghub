@@ -82,7 +82,7 @@
     "button": {
       "edit": "Edit",
       "message": "Form here",
-      "submit": "Submit"
+      "update": "Update"
     },
     "confirmEdit": "Are you sure you want to edit this template?"
   },
