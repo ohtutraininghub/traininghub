@@ -55,7 +55,7 @@ export function DeleteTemplateButton({
             backgroundColor: palette.secondary.light,
           },
         }}
-        data-testid="deleteTemplateButton"
+        data-testid="DeleteTemplateButton"
       >
         <DeleteIcon sx={{ mr: isSmallScreen ? 0 : 1, fontSize: '22px' }} />
         {!isSmallScreen && t('DeleteTemplateButton.button.delete')}

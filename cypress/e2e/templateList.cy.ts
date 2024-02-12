@@ -22,11 +22,11 @@ describe('Template list', () => {
     });
 
     it('should allow admin to delete any template', () => {
-      cy.getCy('deleteTemplateButton').first().click();
+      cy.getCy('DeleteTemplateButton').first().click();
       cy.get('[data-testid="confirmCardConfirm"]:visible').first().click();
       cy.getCy('templateList').as('templateListTag');
       cy.get('@templateListTag').contains('Kubernetes').should('not.exist');
-      cy.getCy('deleteTemplateButton').first().click();
+      cy.getCy('DeleteTemplateButton').first().click();
       cy.get('[data-testid="confirmCardConfirm"]:visible').first().click();
       cy.getCy('templateList').as('templateListTag');
       // Last template removed so list component is gone
