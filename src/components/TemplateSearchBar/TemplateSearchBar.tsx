@@ -29,6 +29,8 @@ export function TemplateSearchBar({
       sx={{
         width: '97%',
         margin: '10px',
+        paddingTop: '10px',
+        '& .MuiInputLabel-root': { paddingTop: '10px' },
         '& .MuiInputLabel-root.Mui-focused': { color: palette.secondary.main },
         '& .MuiOutlinedInput-root': {
           '&.Mui-focused fieldset': { borderColor: palette.secondary.main },
