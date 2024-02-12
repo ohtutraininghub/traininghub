@@ -205,7 +205,7 @@ describe('Template API tests', () => {
       expect(response.status).toBe(StatusCodeType.OK);
     });
 
-    it('Fails when deleting template created by another user', async () => {
+    it('Fails when trainer tries to delete template created by another user', async () => {
       (getServerAuthSession as jest.Mock).mockImplementation(async () =>
         Promise.resolve({
           user: trainerUser1,
@@ -227,7 +227,32 @@ describe('Template API tests', () => {
 
       expect(data.message).toContain('Forbidden');
       expect(data.messageType).toBe(MessageType.ERROR);
-      expect(response.status).toBe(403);
+      expect(response.status).toBe(StatusCodeType.FORBIDDEN);
+    });
+
+    it('Succeeds when admin tries to delete template created by another user', async () => {
+      (getServerAuthSession as jest.Mock).mockImplementation(async () =>
+        Promise.resolve({
+          user: adminUser,
+        })
+      );
+      await prisma.template.create({
+        data: {
+          ...newTemplateByTrainer2,
+          tags: {
+            connect: [],
+          },
+        },
+      });
+
+      const templateInDb = await prisma.template.findFirst();
+      const req = mockDeleteRequest({ templateId: templateInDb?.id });
+      const response = await DELETE(req);
+      const data = await response.json();
+
+      expect(data.message).toContain('Template successfully deleted');
+      expect(data.messageType).toBe(MessageType.SUCCESS);
+      expect(response.status).toBe(StatusCodeType.OK);
     });
 
     it('Fails when trying to delete nonexistent template', async () => {
@@ -244,7 +269,7 @@ describe('Template API tests', () => {
 
       expect(data.message).toContain('Template by given id was not found');
       expect(data.messageType).toBe(MessageType.ERROR);
-      expect(response.status).toBe(404);
+      expect(response.status).toBe(StatusCodeType.NOT_FOUND);
     });
   });
 });
