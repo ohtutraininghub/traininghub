@@ -18,4 +18,4 @@ export const hasCourseDeleteRights = (user: User, course: Course) =>
 export const hasTemplateDeleteRights = (
   user: User,
   template: { createdById: string }
-) => user.id === template.createdById;
+) => user.id === template.createdById || isAdmin(user);
