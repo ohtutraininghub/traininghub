@@ -5,12 +5,13 @@ import ProfileCourseList from '@/components/ProfileView/ProfileCourseList';
 import ProfileTemplateList from '@/components/ProfileView/ProfileTemplateList';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import { Course, Role, User, Template } from '@prisma/client';
+import { Course, Role, User } from '@prisma/client';
 import { PropsWithChildren, SyntheticEvent, useState } from 'react';
 import { useTheme } from '@mui/material/styles';
 import { useSession } from 'next-auth/react';
 import UserList from '@/components/UserList';
 import { isTrainerOrAdmin } from '@/lib/auth-utils';
+import { TemplateWithCreator } from '@/lib/prisma/templates';
 
 export interface userDetails {
   name: string;
@@ -22,7 +23,7 @@ export interface ProfileViewProps extends PropsWithChildren {
   userDetails: userDetails;
   courses: Course[];
   users: User[];
-  templates: Template[];
+  templates: TemplateWithCreator[];
 }
 
 export default function ProfileView({
@@ -96,7 +97,11 @@ export default function ProfileView({
           />
           {isTrainerOrAdmin((session?.user as User) || {}) && (
             <ProfileTemplateList
-              headerText="My course templates"
+              headerText={
+                session?.user.role === Role.ADMIN
+                  ? 'All course templates'
+                  : 'My course templates'
+              }
               templates={templates}
               open={false}
             />

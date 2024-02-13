@@ -7,6 +7,49 @@ export type TemplateWithTags = prismaClient.TemplateGetPayload<{
   };
 }>;
 
+export type TemplateWithCreator = prismaClient.TemplateGetPayload<{
+  include: {
+    createdBy: {
+      select: {
+        name: true;
+      };
+    };
+    tags: true;
+  };
+}>;
+
+export const getTemplatesWithCreator = async () => {
+  return await prisma.template.findMany({
+    include: {
+      createdBy: {
+        select: {
+          name: true,
+        },
+      },
+      tags: true,
+    },
+    orderBy: { name: 'asc' },
+  });
+};
+
+export const getTemplatesByUserIdWithCreator = async (
+  userId: Template['createdById']
+) => {
+  return await prisma.template.findMany({
+    where: {
+      createdById: userId,
+    },
+    include: {
+      createdBy: {
+        select: {
+          name: true,
+        },
+      },
+      tags: true,
+    },
+  });
+};
+
 export const getTemplatesByUserId = async (userId: Template['createdById']) => {
   const userTemplates = await prisma.template.findMany({
     where: {
