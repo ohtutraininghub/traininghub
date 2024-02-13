@@ -58,6 +58,15 @@ const newTemplateWithScript = {
   tags: [],
 };
 
+const newTemplateByTrainer2 = {
+  name: 'Python Fundamentals',
+  description:
+    'Take your first steps in Python. This course will introduce you to the basic concepts of Python!',
+  createdById: trainerUser2.id,
+  maxStudents: 15,
+  tags: ['Kubernetes', 'Docker', 'CI/CD'],
+};
+
 const getTableLength = async () => {
   const allTemplates = await prisma.template.findMany();
   return allTemplates.length;
@@ -65,6 +74,18 @@ const getTableLength = async () => {
 
 const getFirstTemplate = async () => {
   return await prisma.template.findFirst();
+};
+
+const createTags = async () => {
+  await prisma.tag.createMany({
+    data: [
+      { name: 'Unit Testing' },
+      { name: 'Jest' },
+      { name: 'Kubernetes' },
+      { name: 'Docker' },
+      { name: 'CI/CD' },
+    ],
+  });
 };
 
 const mockPostRequest = (body: any) => {
@@ -113,9 +134,7 @@ describe('Template API tests', () => {
           user: adminUser,
         })
       );
-      await prisma.tag.createMany({
-        data: [{ name: 'Unit Testing' }, { name: 'Jest' }],
-      });
+      await createTags();
       const req = mockPostRequest(newTemplateWithTags);
       const response = await POST(req);
       const data = await response.json();
@@ -171,15 +190,6 @@ describe('Template API tests', () => {
       description:
         'Take your first steps in using Kubernetes for container orchestration. This course will introduce you to the basic concepts and building blocks of Kubernetes and the architecture of the system. Get ready to start you cloud native journey!',
       createdById: trainerUser1.id,
-      maxStudents: 15,
-      tags: ['Kubernetes', 'Docker', 'CI/CD'],
-    };
-
-    const newTemplateByTrainer2 = {
-      name: 'Python Fundamentals',
-      description:
-        'Take your first steps in Python. This course will introduce you to the basic concepts of Python!',
-      createdById: trainerUser2.id,
       maxStudents: 15,
       tags: ['Kubernetes', 'Docker', 'CI/CD'],
     };
@@ -273,7 +283,7 @@ describe('Template API tests', () => {
       const response = await DELETE(req);
       const data = await response.json();
 
-      expect(data.message).toContain('Template by given id was not found');
+      expect(data.message).toContain('Template by the given id was not found');
       expect(data.messageType).toBe(MessageType.ERROR);
       expect(response.status).toBe(StatusCodeType.NOT_FOUND);
     });
@@ -291,15 +301,7 @@ describe('Template API tests', () => {
           user: trainerUser1,
         })
       );
-      await prisma.tag.createMany({
-        data: [
-          { name: 'Unit Testing' },
-          { name: 'Jest' },
-          { name: 'Kubernetes' },
-          { name: 'Docker' },
-          { name: 'CI/CD' },
-        ],
-      });
+      await createTags();
       await prisma.template.create({
         data: {
           ...newTemplateByTrainer1,
@@ -338,34 +340,108 @@ describe('Template API tests', () => {
         tags: ['Unit Testing', 'Jest'],
       });
     });
-
-    /* it('Fails when updating nonexistent template', async () => {
+    it('Fails when trainer tries to update template created by another user', async () => {
       (getServerAuthSession as jest.Mock).mockImplementation(async () =>
         Promise.resolve({
-          user: adminUser,
+          user: trainerUser1,
         })
       );
-
-      const req = mockPostRequest(newTemplate);
-      const response = await POST(req);
-      const data = await response.json();
-
-      expect(data.message).toBe('Template successfully created');
-      expect(data.messageType).toBe(MessageType.SUCCESS);
-      expect(response.status).toBe(StatusCodeType.CREATED);
-
+      await createTags();
+      await prisma.template.create({
+        data: {
+          ...newTemplateByTrainer2,
+          tags: {
+            connect: [],
+          },
+        },
+      });
+      const templateInDb = await prisma.template.findFirst();
+      const name = 'Updated Python';
+      const description = 'PYTHON MEGA CRACKING CRASH COURSE';
       const updatedTemplate = {
-        ...newTemplate,
-        name: 'Updated Python',
+        ...templateInDb,
+        name,
+        description,
+        tags: ['Unit Testing', 'Jest', 'I do not exist'],
       };
+      const req = mockPutRequest(updatedTemplate);
+      const response = await PUT(req);
+      const data = await response.json();
+      expect(data.message).toContain('Forbidden');
+      expect(data.messageType).toBe(MessageType.ERROR);
+      expect(response.status).toBe(StatusCodeType.FORBIDDEN);
+    });
 
-      const req2 = mockPostRequest(updatedTemplate);
-      const response2 = await POST(req2);
-      const data2 = await response2.json();
-
-      expect(data2.message).toContain('Template by given id was not found');
-      expect(data2.messageType).toBe(MessageType.ERROR);
-      expect(response2.status).toBe(404);
-    }); */
+    it('Fails when trying to update nonexistent template', async () => {
+      (getServerAuthSession as jest.Mock).mockImplementation(async () =>
+        Promise.resolve({
+          user: trainerUser1,
+        })
+      );
+      const req = mockPutRequest({
+        id: 'clryw94tr000008l5aol5bakq',
+        name: 'Updated Python',
+        description: 'PYTHON MEGA CRACKING CRASH COURSE',
+        maxStudents: 20,
+        tags: ['Unit Testing', 'Jest', 'I do not exist'],
+      });
+      const response = await PUT(req);
+      const data = await response.json();
+      expect(data.message).toContain('Template by the given id was not found');
+      expect(data.messageType).toBe(MessageType.ERROR);
+      expect(response.status).toBe(StatusCodeType.NOT_FOUND);
+    });
+    it('Fails when user is not an admin or trainer', async () => {
+      (getServerAuthSession as jest.Mock).mockImplementation(async () =>
+        Promise.resolve({
+          user: traineeUser,
+        })
+      );
+      const req = mockPutRequest(newTemplate);
+      const response = await PUT(req);
+      const data = await response.json();
+      expect(data.message).toBe('Forbidden');
+      expect(data.messageType).toBe(MessageType.ERROR);
+      expect(response.status).toBe(StatusCodeType.FORBIDDEN);
+    });
+    it("Fails when trying to update template's name to an existing one", async () => {
+      (getServerAuthSession as jest.Mock).mockImplementation(async () =>
+        Promise.resolve({
+          user: trainerUser1,
+        })
+      );
+      const newName: string = 'Python updated';
+      await createTags();
+      await prisma.template.create({
+        data: {
+          ...newTemplateByTrainer1,
+          tags: {
+            connect: [],
+          },
+        },
+      });
+      await prisma.template.create({
+        data: {
+          ...newTemplateByTrainer1,
+          name: newName,
+          tags: { connect: [] },
+        },
+      });
+      const templateInDb = await prisma.template.findFirst({
+        where: { name: 'Python' },
+      });
+      const updatedTemplate = {
+        ...templateInDb,
+        name: newName,
+        tags: ['Unit Testing', 'Jest', 'I do not exist'],
+      };
+      console.log('UUUGA BUUUUGA MAN');
+      const req = mockPutRequest(updatedTemplate);
+      const response = await PUT(req);
+      const data = await response.json();
+      expect(data.message).toContain('Template name is already in use');
+      expect(data.messageType).toBe(MessageType.ERROR);
+      expect(response.status).toBe(StatusCodeType.BAD_REQUEST);
+    });
   });
 });

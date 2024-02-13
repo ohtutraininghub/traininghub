@@ -25,6 +25,10 @@ const parseTags = async (tags: string[]): Promise<Tag[]> => {
   return allTags.filter((e) => tags.includes(e.name));
 };
 
+const getTemplateById = async (id: string) => {
+  return await prisma.template.findFirst({ where: { id } });
+};
+
 export async function POST(request: NextRequest) {
   try {
     const { t } = await translator('api');
@@ -76,9 +80,7 @@ export async function DELETE(request: NextRequest) {
     const reqData = await request.json();
     const template = templateDeleteSchema.parse(reqData);
 
-    const templateExists = await prisma.template.findFirst({
-      where: { id: template.templateId },
-    });
+    const templateExists = await getTemplateById(template.templateId);
 
     if (!templateExists) {
       return errorResponse({
@@ -129,6 +131,14 @@ export async function PUT(request: NextRequest) {
     const data = await request.json();
     const body = templateSchemaWithId.parse(data);
     const parsedTags = await parseTags(body.tags);
+    const templateExists = await getTemplateById(body.id);
+    if (!templateExists) {
+      return errorResponse({
+        message: t('Common.templateNotFound'),
+        statusCode: StatusCodeType.NOT_FOUND,
+      });
+    }
+    // checks if the user has editing rights
     if (
       body.createdById !== user.id ||
       (body.createdById === undefined && !isAdmin(user))
@@ -138,11 +148,9 @@ export async function PUT(request: NextRequest) {
         statusCode: StatusCodeType.FORBIDDEN,
       });
     }
-
     const templatesWithSameName = await prisma.template.findMany({
       where: { name: body.name, NOT: { id: body.id } },
     });
-
     // checks if the tampalte name is in current user's templates (excluding the current template)
     if (
       templatesWithSameName.reduce(
