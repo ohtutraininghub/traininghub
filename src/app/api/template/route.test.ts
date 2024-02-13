@@ -126,7 +126,6 @@ describe('Template API tests', () => {
       const templateInDb = await prisma.template.findFirst({
         include: { tags: true },
       });
-
       expect(templateInDb).not.toBeNull();
       expect(templateInDb).toBeDefined();
 
@@ -267,6 +266,15 @@ describe('Template API tests', () => {
           user: trainerUser1,
         })
       );
+      await prisma.tag.createMany({
+        data: [
+          { name: 'Unit Testing' },
+          { name: 'Jest' },
+          { name: 'Kubernetes' },
+          { name: 'Docker' },
+          { name: 'CI/CD' },
+        ],
+      });
       await prisma.template.create({
         data: {
           ...newTemplateByTrainer1,
@@ -286,10 +294,8 @@ describe('Template API tests', () => {
         ...templateInDb,
         name,
         description,
+        tags: ['Unit Testing', 'Jest', 'I do not exist'],
       };
-      console.log(templateInDb);
-      console.log('tamaaaarreeeeee');
-      console.log(updatedTemplate);
       const req = mockPutRequest(updatedTemplate);
       const response = await PUT(req);
       const data = await response.json();
@@ -299,10 +305,13 @@ describe('Template API tests', () => {
       expect(response.status).toBe(StatusCodeType.CREATED);
 
       const updatedTemplateInDb = await prisma.template.findFirst({
-        where: { name: updatedTemplate.name },
+        include: { tags: { select: { name: true } } },
       });
-
-      expect(updatedTemplateInDb).toBe(updatedTemplate);
+      const tags = updatedTemplateInDb?.tags.map((tag) => tag.name);
+      expect({ ...updatedTemplate, tags }).toStrictEqual({
+        ...updatedTemplate,
+        tags: ['Unit Testing', 'Jest'],
+      });
     });
 
     /* it('Fails when updating nonexistent template', async () => {

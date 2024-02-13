@@ -127,16 +127,8 @@ export async function PUT(request: NextRequest) {
       });
     }
     const data = await request.json();
-    console.log(data);
     const body = templateSchemaWithId.parse(data);
-    console.log(7);
     const parsedTags = await parseTags(body.tags);
-    console.log(`createdById !== user.id ${body.createdById !== user.id}`);
-    console.log(
-      `createdById === undefined && !isAdmin(user) ${
-        body.createdById === undefined && !isAdmin(user)
-      }`
-    );
     if (
       body.createdById !== user.id ||
       (body.createdById === undefined && !isAdmin(user))
@@ -147,24 +139,37 @@ export async function PUT(request: NextRequest) {
       });
     }
 
-    // TODO check if new name in use
-    console.log(3);
-    prisma.template.update({
+    const templatesWithSameName = await prisma.template.findMany({
+      where: { name: body.name, NOT: { id: body.id } },
+    });
+
+    // checks if the tampalte name is in current user's templates (excluding the current template)
+    if (
+      templatesWithSameName.reduce(
+        (acc, curr) =>
+          acc || curr.createdById === undefined || curr.createdById === user.id,
+        false
+      )
+    ) {
+      return errorResponse({
+        message: t('Templates.templateNameInUse'),
+        statusCode: StatusCodeType.BAD_REQUEST,
+      });
+    }
+    await prisma.template.update({
       where: { id: body.id },
       data: {
         ...body,
         tags: {
-          set: parsedTags.map((tag) => ({ id: tag.id })),
+          connect: parsedTags.map((tag) => ({ id: tag.id })),
         },
       },
     });
-    console.log(4);
     return successResponse({
       message: t('Templates.templateUpdated'),
       statusCode: StatusCodeType.CREATED,
     });
   } catch (error) {
-    console.log(5);
     return await handleCommonErrors(error);
   }
 }
