@@ -335,7 +335,7 @@ describe('Template API tests', () => {
         include: { tags: { select: { name: true } } },
       });
       const tags = updatedTemplateInDb?.tags.map((tag) => tag.name);
-      expect({ ...updatedTemplate, tags }).toStrictEqual({
+      expect({ ...updatedTemplateInDb, tags }).toStrictEqual({
         ...updatedTemplate,
         tags: ['Unit Testing', 'Jest'],
       });
@@ -435,13 +435,45 @@ describe('Template API tests', () => {
         name: newName,
         tags: ['Unit Testing', 'Jest', 'I do not exist'],
       };
-      console.log('UUUGA BUUUUGA MAN');
       const req = mockPutRequest(updatedTemplate);
       const response = await PUT(req);
       const data = await response.json();
       expect(data.message).toContain('Template name is already in use');
       expect(data.messageType).toBe(MessageType.ERROR);
       expect(response.status).toBe(StatusCodeType.BAD_REQUEST);
+    });
+    it('Sanitizes description when updating template', async () => {
+      (getServerAuthSession as jest.Mock).mockImplementation(async () =>
+        Promise.resolve({
+          user: trainerUser1,
+        })
+      );
+      await createTags();
+      await prisma.template.create({
+        data: {
+          ...newTemplateByTrainer1,
+          tags: {
+            connect: [],
+          },
+        },
+      });
+      const templateInDb = await prisma.template.findFirst({
+        where: { name: 'Python' },
+      });
+      const updatedTemplate = {
+        ...templateInDb,
+        description: 'Python fundamentals<script>alert("yeet")</script>',
+        tags: ['Unit Testing', 'Jest', 'I do not exist'],
+      };
+      const req = mockPutRequest(updatedTemplate);
+      const response = await PUT(req);
+      const data = await response.json();
+      expect(data.message).toBe('Template successfully updated');
+      expect(data.messageType).toBe(MessageType.SUCCESS);
+      expect(response.status).toBe(StatusCodeType.CREATED);
+
+      const updatedTemplateInDb = await prisma.template.findFirst();
+      expect(updatedTemplateInDb?.description).toBe('Python fundamentals');
     });
   });
 });

@@ -59,7 +59,6 @@ export default async function ProfilePage({ searchParams, params }: Props) {
   if (!userData) {
     notFound();
   }
-  console.log(userData);
   const courseIds = userData?.courses.map((course) => course.id) ?? [];
   const openedCourse = userData?.courses.find(
     (course) => course.id === searchParams.courseId
