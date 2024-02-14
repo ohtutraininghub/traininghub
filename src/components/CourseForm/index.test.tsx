@@ -94,7 +94,10 @@ describe('Course Form Course Create Tests', () => {
     lastEnrollDate: oneDayBeforeStart,
     lastCancelDate: oneDayBeforeStart,
     maxStudents: 55,
-    tags: [],
+    tags: [
+      { id: '1', name: 'Testing' },
+      { id: '2', name: 'Git' },
+    ],
     image: 'http://test-image.com',
   };
 
@@ -114,8 +117,21 @@ describe('Course Form Course Create Tests', () => {
     element.dispatchEvent(event);
   };
 
+  it('Form wont be submitted if the required fields are empty', async () => {
+    renderWithTheme(<CourseForm lang="en" tags={[]} templates={[]} />);
+
+    const submitButton = screen.getByTestId('courseFormSubmit');
+    await userEvent.click(submitButton);
+
+    await waitFor(() => {
+      expect(mockFetch).not.toBeCalled();
+    });
+  });
+
   it('Form fields can be filled with values in Create Mode', async () => {
-    renderWithTheme(<CourseForm lang="en" tags={[]} templates={[template]} />);
+    renderWithTheme(
+      <CourseForm lang="en" tags={course.tags} templates={[template]} />
+    );
 
     // find all input fields
     const nameInput = screen.getByTestId('courseFormName') as HTMLInputElement;
@@ -129,6 +145,9 @@ describe('Course Form Course Create Tests', () => {
     const imageInput = screen.getByTestId(
       'courseFormImage'
     ) as HTMLInputElement;
+    const tagsInput = screen.getByRole('combobox', {
+      name: /CourseForm.tags/i,
+    });
 
     // fill in the input fields
     await user.type(nameInput, course.name);
@@ -138,6 +157,13 @@ describe('Course Form Course Create Tests', () => {
     await userEvent.clear(maxStudentsInput);
     await user.type(maxStudentsInput, course.maxStudents.toString());
     await user.type(imageInput, course.image);
+
+    await user.click(tagsInput);
+
+    course.tags.forEach((tag) => {
+      const option = screen.getByText(tag.name);
+      user.click(option);
+    });
 
     const startDateInput = screen.getByTestId(
       'courseFormStartDate'
@@ -159,10 +185,16 @@ describe('Course Form Course Create Tests', () => {
     expect(summaryInput.value).toBe(course.summary);
     expect(maxStudentsInput.value).toBe(course.maxStudents.toString());
     expect(imageInput.value).toBe(course.image);
+    course.tags.forEach((tag) => {
+      const chip = screen.getByText(tag.name);
+      expect(chip).toBeInTheDocument();
+    });
   });
 
   it('Form is submitted with correct values in Create Mode', async () => {
-    renderWithTheme(<CourseForm lang="en" tags={[]} templates={[template]} />);
+    renderWithTheme(
+      <CourseForm lang="en" tags={course.tags} templates={[template]} />
+    );
 
     // find all input fields
     const nameInput = screen.getByTestId('courseFormName') as HTMLInputElement;
@@ -176,6 +208,9 @@ describe('Course Form Course Create Tests', () => {
     const imageInput = screen.getByTestId(
       'courseFormImage'
     ) as HTMLInputElement;
+    const tagsInput = screen.getByRole('combobox', {
+      name: /CourseForm.tags/i,
+    });
 
     // fill in the input fields
     await user.type(nameInput, course.name);
@@ -185,6 +220,13 @@ describe('Course Form Course Create Tests', () => {
     await userEvent.clear(maxStudentsInput);
     await user.type(maxStudentsInput, course.maxStudents.toString());
     await user.type(imageInput, course.image);
+
+    await user.click(tagsInput);
+
+    course.tags.forEach((tag) => {
+      const option = screen.getByText(tag.name);
+      user.click(option);
+    });
 
     const startDateInput = screen.getByTestId(
       'courseFormStartDate'
@@ -209,7 +251,7 @@ describe('Course Form Course Create Tests', () => {
       expect(mockFetch).toBeCalledWith('/api/course', {
         name: course.name,
         description: course.description,
-        tags: [],
+        tags: course.tags.map((tag) => tag.name),
         summary: course.summary,
         image: course.image,
         startDate: new Date(course.startDate.toISOString().slice(0, 16)),
@@ -306,11 +348,11 @@ describe('Course Form Course Create Tests', () => {
 
     await waitFor(() => {
       expect(mockFetch).toBeCalledWith('/api/course', {
-        name: 'New course',
-        description: 'A test course',
-        summary: 'All you ever wanted to know about testing!',
+        name: template.name,
+        description: template.description,
+        summary: template.summary,
         maxStudents: 55,
-        image: 'http://test-image.com',
+        image: template.image,
         endDate: new Date(courseEnd.toISOString().slice(0, 16)),
         startDate: new Date(courseStart.toISOString().slice(0, 16)),
         lastCancelDate: null,
