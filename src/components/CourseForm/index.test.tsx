@@ -67,6 +67,8 @@ jest.mock('../TextEditor', () => ({
 }));
 
 describe('Course Form Course Create Tests', () => {
+  const user = userEvent.setup();
+
   const template = {
     id: '1234',
     name: 'New course',
@@ -96,28 +98,28 @@ describe('Course Form Course Create Tests', () => {
     image: 'http://test-image.com',
   };
 
-  it('Form is submitted with correct values in Create Mode', async () => {
+  const setNativeValue = (element: HTMLInputElement, value: string) => {
+    // sets date and time input values
+    let lastValue = element.value;
+    element.value = value;
+
+    let event = new Event('input', { bubbles: true });
+
+    (event as any).simulated = true;
+
+    let tracker = (element as any)['_valueTracker'];
+    if (tracker) {
+      tracker.setValue(lastValue);
+    }
+    element.dispatchEvent(event);
+  };
+
+  it('Form fields can be filled with values in Create Mode', async () => {
     renderWithTheme(<CourseForm lang="en" tags={[]} templates={[template]} />);
 
-    const setNativeValue = (element: HTMLInputElement, value: string) => {
-      // sets date and time for course
-      let lastValue = element.value;
-      element.value = value;
-
-      let event = new Event('input', { bubbles: true });
-
-      (event as any).simulated = true;
-
-      let tracker = (element as any)['_valueTracker'];
-      if (tracker) {
-        tracker.setValue(lastValue);
-      }
-      element.dispatchEvent(event);
-    };
-
+    // find all input fields
     const nameInput = screen.getByTestId('courseFormName') as HTMLInputElement;
     const descriptionInput = screen.getByTestId('courseFormDescription');
-
     const summaryInput = screen.getByTestId(
       'courseFormSummary'
     ) as HTMLInputElement;
@@ -128,17 +130,14 @@ describe('Course Form Course Create Tests', () => {
       'courseFormImage'
     ) as HTMLInputElement;
 
-    fireEvent.change(nameInput, { target: { value: course.name } });
-
-    fireEvent.change(descriptionInput, {
-      target: { value: course.description },
-    });
-
-    fireEvent.change(summaryInput, { target: { value: course.summary } });
-    fireEvent.change(maxStudentsInput, {
-      target: { value: course.maxStudents },
-    });
-    fireEvent.change(imageInput, { target: { value: course.image } });
+    // fill in the input fields
+    await user.type(nameInput, course.name);
+    await user.type(descriptionInput, course.description);
+    await user.type(summaryInput, course.summary);
+    // clear the default value before typing
+    await userEvent.clear(maxStudentsInput);
+    await user.type(maxStudentsInput, course.maxStudents.toString());
+    await user.type(imageInput, course.image);
 
     const startDateInput = screen.getByTestId(
       'courseFormStartDate'
@@ -150,9 +149,52 @@ describe('Course Form Course Create Tests', () => {
     ) as HTMLInputElement;
     setNativeValue(endDateInput, courseEnd.toISOString().slice(0, 16));
 
+    // check if the input fields have the correct values
     expect(startDateInput.value).toBe(
       course.startDate.toISOString().slice(0, 16)
     );
+    expect(endDateInput.value).toBe(course.endDate.toISOString().slice(0, 16));
+    expect(nameInput.value).toBe(course.name);
+    expect(descriptionInput).toHaveTextContent(course.description);
+    expect(summaryInput.value).toBe(course.summary);
+    expect(maxStudentsInput.value).toBe(course.maxStudents.toString());
+    expect(imageInput.value).toBe(course.image);
+  });
+
+  it('Form is submitted with correct values in Create Mode', async () => {
+    renderWithTheme(<CourseForm lang="en" tags={[]} templates={[template]} />);
+
+    // find all input fields
+    const nameInput = screen.getByTestId('courseFormName') as HTMLInputElement;
+    const descriptionInput = screen.getByTestId('courseFormDescription');
+    const summaryInput = screen.getByTestId(
+      'courseFormSummary'
+    ) as HTMLInputElement;
+    const maxStudentsInput = screen.getByTestId(
+      'courseFormMaxStudents'
+    ) as HTMLInputElement;
+    const imageInput = screen.getByTestId(
+      'courseFormImage'
+    ) as HTMLInputElement;
+
+    // fill in the input fields
+    await user.type(nameInput, course.name);
+    await user.type(descriptionInput, course.description);
+    await user.type(summaryInput, course.summary);
+    // clear the default value before typing
+    await userEvent.clear(maxStudentsInput);
+    await user.type(maxStudentsInput, course.maxStudents.toString());
+    await user.type(imageInput, course.image);
+
+    const startDateInput = screen.getByTestId(
+      'courseFormStartDate'
+    ) as HTMLInputElement;
+    setNativeValue(startDateInput, courseStart.toISOString().slice(0, 16));
+
+    const endDateInput = screen.getByTestId(
+      'courseFormEndDate'
+    ) as HTMLInputElement;
+    setNativeValue(endDateInput, courseEnd.toISOString().slice(0, 16));
     expect(endDateInput.value).toBe(course.endDate.toISOString().slice(0, 16));
     expect(nameInput.value).toBe(course.name);
     expect(descriptionInput).toHaveTextContent(course.description);
@@ -164,7 +206,18 @@ describe('Course Form Course Create Tests', () => {
     await userEvent.click(submitButton);
 
     await waitFor(() => {
-      expect(mockFetch).toHaveBeenCalled();
+      expect(mockFetch).toBeCalledWith('/api/course', {
+        name: course.name,
+        description: course.description,
+        tags: [],
+        summary: course.summary,
+        image: course.image,
+        startDate: new Date(course.startDate.toISOString().slice(0, 16)),
+        endDate: new Date(course.endDate.toISOString().slice(0, 16)),
+        lastEnrollDate: null,
+        lastCancelDate: null,
+        maxStudents: Number(course.maxStudents),
+      });
     });
   });
 
@@ -226,10 +279,6 @@ describe('Course Form Course Create Tests', () => {
   });
 
   it('Form is submitted with correct values after selecting template', async () => {
-    // dates are not present in a template, so we need to set them manually
-    const courseStart = new Date(Date.now() + 24 * 60 * 60 * 1000);
-    const courseEnd = new Date(Date.now() + 2 * 24 * 60 * 60 * 1000);
-
     renderWithTheme(<CourseForm lang="en" tags={[]} templates={[template]} />);
 
     const select = screen.getByRole('combobox', {
@@ -241,21 +290,7 @@ describe('Course Form Course Create Tests', () => {
     const option = await screen.findByText('New course');
     userEvent.click(option);
 
-    const setNativeValue = (element: HTMLInputElement, value: string) => {
-      let lastValue = element.value;
-      element.value = value;
-
-      let event = new Event('input', { bubbles: true });
-
-      (event as any).simulated = true;
-
-      let tracker = (element as any)['_valueTracker'];
-      if (tracker) {
-        tracker.setValue(lastValue);
-      }
-      element.dispatchEvent(event);
-    };
-
+    // dates are not present in a template, so we need to set them manually
     const startDateInput = screen.getByTestId(
       'courseFormStartDate'
     ) as HTMLInputElement;
@@ -483,22 +518,6 @@ describe('Course Form Course Edit Tests', () => {
         templates={[template]}
       />
     );
-
-    const name = screen.getByTestId('courseFormName') as HTMLInputElement;
-    const startDate = screen.getByTestId(
-      'courseFormStartDate'
-    ) as HTMLInputElement;
-    const endDate = screen.getByTestId('courseFormEndDate') as HTMLInputElement;
-    const lastEnrollDate = screen.getByTestId(
-      'courseFormLastEnrollDate'
-    ) as HTMLInputElement;
-    const lastCancelDate = screen.getByTestId(
-      'courseFormLastCancelDate'
-    ) as HTMLInputElement;
-    const maxStudents = screen.getByTestId(
-      'courseFormMaxStudents'
-    ) as HTMLInputElement;
-    const summary = screen.getByTestId('courseFormSummary') as HTMLInputElement;
 
     const submitButton = screen.getByTestId('courseFormSubmit');
     await userEvent.click(submitButton);
