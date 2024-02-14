@@ -49,6 +49,23 @@ jest.mock('../../lib/i18n/client', () => ({
   },
 }));
 
+jest.mock('../TextEditor', () => ({
+  __esModule: true,
+  default: jest.fn(({ value, onChange }) => {
+    React.useEffect(() => {
+      onChange(value);
+    }, [value]);
+
+    return (
+      <textarea
+        data-testid="courseFormDescription"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+      />
+    );
+  }),
+}));
+
 describe('Course Form Course Create Tests', () => {
   const template = {
     id: '1234',
@@ -60,6 +77,96 @@ describe('Course Form Course Create Tests', () => {
     createdById: '30',
     image: 'http://test-image.com',
   };
+  const courseStart = new Date(Date.now() + 24 * 60 * 60 * 1000);
+  const courseEnd = new Date(Date.now() + 2 * 24 * 60 * 60 * 1000);
+  const oneDayBeforeStart = new Date();
+
+  const course = {
+    id: '1234',
+    createdById: '30',
+    name: 'New course',
+    description: 'A test course',
+    summary: 'All you ever wanted to know about testing!',
+    startDate: courseStart,
+    endDate: courseEnd,
+    lastEnrollDate: oneDayBeforeStart,
+    lastCancelDate: oneDayBeforeStart,
+    maxStudents: 55,
+    tags: [],
+    image: 'http://test-image.com',
+  };
+
+  it('Form is submitted with correct values in Create Mode', async () => {
+    renderWithTheme(<CourseForm lang="en" tags={[]} templates={[template]} />);
+
+    const setNativeValue = (element: HTMLInputElement, value: string) => {
+      // sets date and time for course
+      let lastValue = element.value;
+      element.value = value;
+
+      let event = new Event('input', { bubbles: true });
+
+      (event as any).simulated = true;
+
+      let tracker = (element as any)['_valueTracker'];
+      if (tracker) {
+        tracker.setValue(lastValue);
+      }
+      element.dispatchEvent(event);
+    };
+
+    const nameInput = screen.getByTestId('courseFormName') as HTMLInputElement;
+    const descriptionInput = screen.getByTestId('courseFormDescription');
+
+    const summaryInput = screen.getByTestId(
+      'courseFormSummary'
+    ) as HTMLInputElement;
+    const maxStudentsInput = screen.getByTestId(
+      'courseFormMaxStudents'
+    ) as HTMLInputElement;
+    const imageInput = screen.getByTestId(
+      'courseFormImage'
+    ) as HTMLInputElement;
+
+    fireEvent.change(nameInput, { target: { value: course.name } });
+
+    fireEvent.change(descriptionInput, {
+      target: { value: course.description },
+    });
+
+    fireEvent.change(summaryInput, { target: { value: course.summary } });
+    fireEvent.change(maxStudentsInput, {
+      target: { value: course.maxStudents },
+    });
+    fireEvent.change(imageInput, { target: { value: course.image } });
+
+    const startDateInput = screen.getByTestId(
+      'courseFormStartDate'
+    ) as HTMLInputElement;
+    setNativeValue(startDateInput, courseStart.toISOString().slice(0, 16));
+
+    const endDateInput = screen.getByTestId(
+      'courseFormEndDate'
+    ) as HTMLInputElement;
+    setNativeValue(endDateInput, courseEnd.toISOString().slice(0, 16));
+
+    expect(startDateInput.value).toBe(
+      course.startDate.toISOString().slice(0, 16)
+    );
+    expect(endDateInput.value).toBe(course.endDate.toISOString().slice(0, 16));
+    expect(nameInput.value).toBe(course.name);
+    expect(descriptionInput).toHaveTextContent(course.description);
+    expect(summaryInput.value).toBe(course.summary);
+    expect(maxStudentsInput.value).toBe(course.maxStudents.toString());
+    expect(imageInput.value).toBe(course.image);
+
+    const submitButton = screen.getByTestId('courseFormSubmit');
+    await userEvent.click(submitButton);
+
+    await waitFor(() => {
+      expect(mockFetch).toHaveBeenCalled();
+    });
+  });
 
   it('Template select wont be displayed if there is no saved templates', async () => {
     renderWithTheme(<CourseForm lang="en" tags={[]} templates={[]} />);
@@ -94,7 +201,9 @@ describe('Course Form Course Create Tests', () => {
 
     await waitFor(() => {
       const name = screen.getByTestId('courseFormName') as HTMLInputElement;
-      const description = container.querySelector('.tiptap');
+      const description = screen.getByTestId(
+        'courseFormDescription'
+      ) as HTMLInputElement;
       const summary = screen.getByTestId(
         'courseFormSummary'
       ) as HTMLInputElement;
@@ -224,7 +333,9 @@ describe('Course Form Course Edit Tests', () => {
     );
 
     const name = screen.getByTestId('courseFormName') as HTMLInputElement;
-    const description = container.querySelector('.tiptap');
+    const description = screen.getByTestId(
+      'courseFormDescription'
+    ) as HTMLInputElement;
     const startDate = screen.getByTestId(
       'courseFormStartDate'
     ) as HTMLInputElement;
@@ -280,7 +391,9 @@ describe('Course Form Course Edit Tests', () => {
     );
 
     const name = screen.getByTestId('courseFormName') as HTMLInputElement;
-    const description = container.querySelector('.tiptap');
+    const description = screen.getByTestId(
+      'courseFormDescription'
+    ) as HTMLInputElement;
     const startDate = screen.getByTestId(
       'courseFormStartDate'
     ) as HTMLInputElement;
