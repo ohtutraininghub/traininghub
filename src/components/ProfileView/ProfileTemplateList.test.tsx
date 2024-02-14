@@ -4,6 +4,7 @@ import { renderWithTheme } from '@/lib/test-utils';
 import ProfileTemplateList from './ProfileTemplateList';
 import { Template } from '@prisma/client';
 import userEvent from '@testing-library/user-event';
+import { TemplateWithCreator } from '@/lib/prisma/templates';
 
 // Mocking translation and fetch utilities
 jest.mock('../../lib/i18n/client', () => ({
@@ -28,7 +29,7 @@ jest.mock('../../lib/response/fetchUtil', () => ({
   remove: jest.fn().mockResolvedValue({ status: 200 }),
 }));
 
-const testTemplates: Template[] = [
+const testTemplates: TemplateWithCreator[] = [
   {
     id: '1',
     name: 'Kubernetes Fundamentals',
@@ -37,6 +38,9 @@ const testTemplates: Template[] = [
     maxStudents: 15,
     tags: ['Kubernetes', 'Docker', 'CI/CD'],
     createdById: '1',
+    createdBy: {
+      name: 'Timmy',
+    },
   },
   {
     id: '2',
@@ -46,6 +50,9 @@ const testTemplates: Template[] = [
     maxStudents: 10,
     tags: ['Testing', 'Python', 'Robot Framework'],
     createdById: '2',
+    createdBy: {
+      name: 'Tommy',
+    },
   },
 ];
 
@@ -116,6 +123,21 @@ describe('ProfileTemplateList component', () => {
       />
     );
     expect(screen.getByText('(2)', { exact: false })).toBeInTheDocument();
+  });
+
+  it.only('shows name of template creator', () => {
+    renderWithTheme(
+      <ProfileTemplateList
+        headerText="Templates"
+        templates={testTemplates}
+        open={true}
+      />
+    );
+    testTemplates.forEach((template) => {
+      if (template.createdBy?.name) {
+        expect(screen.getByText(template.createdBy.name)).toBeInTheDocument();
+      }
+    });
   });
 
   it('expands when the toggle button is clicked', async () => {
