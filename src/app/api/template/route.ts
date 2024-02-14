@@ -11,7 +11,7 @@ import { getServerAuthSession } from '@/lib/auth';
 import {
   isTrainerOrAdmin,
   hasTemplateDeleteRights,
-  isAdmin,
+  hasTemplateEditRights,
 } from '@/lib/auth-utils';
 import { translator } from '@/lib/i18n';
 import {
@@ -122,12 +122,14 @@ export async function PUT(request: NextRequest) {
   try {
     const { t } = await translator('api');
     const { user } = await getServerAuthSession();
+
     if (!isTrainerOrAdmin(user)) {
       return errorResponse({
         message: t('Common.forbidden'),
         statusCode: StatusCodeType.FORBIDDEN,
       });
     }
+
     const data = await request.json();
     const body = templateSchemaWithId.parse(data);
     const parsedTags = await parseTags(body.tags);
@@ -138,11 +140,8 @@ export async function PUT(request: NextRequest) {
         statusCode: StatusCodeType.NOT_FOUND,
       });
     }
-    // checks if the user has editing rights
-    if (
-      body.createdById !== user.id ||
-      (body.createdById === undefined && !isAdmin(user))
-    ) {
+
+    if (!hasTemplateEditRights(user, body)) {
       return errorResponse({
         message: t('Common.forbidden'),
         statusCode: StatusCodeType.FORBIDDEN,
@@ -152,13 +151,7 @@ export async function PUT(request: NextRequest) {
       where: { name: body.name, NOT: { id: body.id } },
     });
     // checks if the tampalte name is in current user's templates (excluding the current template)
-    if (
-      templatesWithSameName.reduce(
-        (acc, curr) =>
-          acc || curr.createdById === undefined || curr.createdById === user.id,
-        false
-      )
-    ) {
+    if (templatesWithSameName.length > 0) {
       return errorResponse({
         message: t('Templates.templateNameInUse'),
         statusCode: StatusCodeType.BAD_REQUEST,
