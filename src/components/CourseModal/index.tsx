@@ -99,7 +99,7 @@ export default function CourseModal({
       slotProps={{
         backdrop: {
           sx: {
-            backgroundColor: 'rgba(0, 0, 0, 0.75)',
+            backgroundColor: 'modal.main',
           },
         },
       }}
