@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { screen, fireEvent } from '@testing-library/react';
 import { TemplateSearchBar } from './TemplateSearchBar';
 import { renderWithTheme } from '@/lib/test-utils';
 
