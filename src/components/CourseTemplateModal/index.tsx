@@ -77,7 +77,7 @@ export default function CourseTemplateModal({
               padding: 1,
             }}
           >
-            <IconButton onClick={onClose}>
+            <IconButton onClick={onClose} data-testid={'closeButton'}>
               <CloseIcon sx={{ fontSize: '25px' }} />
             </IconButton>
           </Box>

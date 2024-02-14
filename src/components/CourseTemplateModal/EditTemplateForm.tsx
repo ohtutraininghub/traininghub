@@ -59,16 +59,16 @@ export function EditTemplateForm({ lang, updateTemplate, tags }: Props) {
         <Input
           {...register('name')}
           color="secondary"
-          id="courseFormName"
+          id="templateFormName"
           error={!!errors.name}
           autoComplete="off"
           inputProps={{
-            'data-testid': 'courseFormName',
+            'data-testid': 'templateFormName',
           }}
         />
         <FormFieldError error={errors.name} />
 
-        <InputLabel htmlFor="courseFormDescription">
+        <InputLabel>
           {t('CourseForm.description')}
           <StyledTooltip
             testid="tooltipCourseDescription"
@@ -77,7 +77,7 @@ export function EditTemplateForm({ lang, updateTemplate, tags }: Props) {
           />
         </InputLabel>
         <Controller
-          data-testid="courseFormDescription"
+          data-testid="templateFormDescription"
           name="description"
           control={control}
           defaultValue=""
@@ -90,7 +90,7 @@ export function EditTemplateForm({ lang, updateTemplate, tags }: Props) {
         <InputLabel htmlFor="courseFormSummary">
           {t('CourseForm.summary')}
           <StyledTooltip
-            testid="tooltipCourseSummary"
+            data-testid="tooltipCourseSummary"
             lang={lang}
             title={t('Tooltip.summary')}
           />
@@ -98,12 +98,12 @@ export function EditTemplateForm({ lang, updateTemplate, tags }: Props) {
         <Input
           {...register('summary')}
           color="secondary"
-          id="courseFormSummary"
+          id="templateFormSummary"
           error={!!errors.summary}
           autoComplete="off"
           inputProps={{
             maxLength: 150,
-            'data-testid': 'courseFormSummary',
+            'data-testid': 'templateFormSummary',
           }}
         />
         <FormFieldError error={errors.summary} />
@@ -111,18 +111,18 @@ export function EditTemplateForm({ lang, updateTemplate, tags }: Props) {
         <InputLabel htmlFor="courseFormImage">
           {t('CourseForm.courseImage')}
           <StyledTooltip
-            testid="tooltipCourseImage"
+            data-testid="tooltipCourseImage"
             lang={lang}
             title={t('Tooltip.image')}
           />
         </InputLabel>
         <Input
           {...register('image')}
-          id="courseFormImage"
+          id="templateFormImage"
           color="secondary"
           error={!!errors.image}
           inputProps={{
-            'data-testid': 'courseFormImage',
+            'data-testid': 'templateFormImage',
           }}
         />
         <Controller
@@ -192,7 +192,7 @@ export function EditTemplateForm({ lang, updateTemplate, tags }: Props) {
         <InputLabel htmlFor="courseFormMaxStudents">
           {t('CourseForm.maxStudents')}
           <StyledTooltip
-            data-testid="maxStudents"
+            data-testid="tooltipMaxStudents"
             lang={lang}
             title={t('Tooltip.maxStudents')}
           />
@@ -202,18 +202,19 @@ export function EditTemplateForm({ lang, updateTemplate, tags }: Props) {
             setValueAs: (value) => Number(value),
           })}
           color="secondary"
-          id="courseFormMaxStudents"
+          id="templateFormMaxStudents"
           type="number"
           error={!!errors.maxStudents}
           inputProps={{
             min: 1,
-            'data-testid': 'courseFormMaxStudents',
+            'data-testid': 'templateFormMaxStudents',
           }}
         />
         <FormFieldError error={errors.maxStudents} />
         <Button
           type="submit"
           variant="contained"
+          data-testid="updateTemplateButton"
           sx={{
             display: 'block',
             margin: 'auto',
