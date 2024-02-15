@@ -55,7 +55,9 @@ export function EditTemplateForm({ lang, updateTemplate, tags }: Props) {
         style={{ display: 'flex', flexDirection: 'column', gap: 10 }}
         onSubmit={updateTemplate}
       >
-        <InputLabel htmlFor="courseFormName">{t('CourseForm.name')}</InputLabel>
+        <InputLabel htmlFor="templateFormName">
+          {t('CourseForm.name')}
+        </InputLabel>
         <Input
           {...register('name')}
           color="secondary"
@@ -68,7 +70,7 @@ export function EditTemplateForm({ lang, updateTemplate, tags }: Props) {
         />
         <FormFieldError error={errors.name} />
 
-        <InputLabel>
+        <InputLabel htmlFor="templateFormDescription">
           {t('CourseForm.description')}
           <StyledTooltip
             testid="tooltipCourseDescription"
@@ -87,7 +89,7 @@ export function EditTemplateForm({ lang, updateTemplate, tags }: Props) {
         />
         <FormFieldError error={errors.description} />
 
-        <InputLabel htmlFor="courseFormSummary">
+        <InputLabel htmlFor="templateFormSummary">
           {t('CourseForm.summary')}
           <StyledTooltip
             data-testid="tooltipCourseSummary"
@@ -108,7 +110,7 @@ export function EditTemplateForm({ lang, updateTemplate, tags }: Props) {
         />
         <FormFieldError error={errors.summary} />
 
-        <InputLabel htmlFor="courseFormImage">
+        <InputLabel htmlFor="templateFormImage">
           {t('CourseForm.courseImage')}
           <StyledTooltip
             data-testid="tooltipCourseImage"
@@ -189,7 +191,7 @@ export function EditTemplateForm({ lang, updateTemplate, tags }: Props) {
             );
           }}
         />
-        <InputLabel htmlFor="courseFormMaxStudents">
+        <InputLabel htmlFor="templateFormMaxStudents">
           {t('CourseForm.maxStudents')}
           <StyledTooltip
             data-testid="tooltipMaxStudents"
