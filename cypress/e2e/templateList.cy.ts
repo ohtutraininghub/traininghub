@@ -51,4 +51,36 @@ describe('Template list', () => {
       cy.get('@templateListTag').contains('John Doe').should('not.exist');
     });
   });
+
+  describe('TemplateSearchBar Functionality', () => {
+    beforeEach(() => {
+      cy.login('john.doe@example.com', 'ADMIN');
+      cy.getCy('avatarIconButton').click();
+      cy.getCy('viewProfileMenuItem').click();
+      cy.getCy('templateListControls').click();
+    });
+
+    it('should show the search bar', () => {
+      cy.getCy('TemplateSearchBar').should('exist');
+    });
+
+    it('should filter templates based on search input', () => {
+      cy.get('[data-testid="TemplateSearchBar"]').type('Kubernetes');
+
+      cy.get('[data-testid="templateList"]').should('have.length', 1);
+      cy.get('[data-testid="templateList"]')
+        .first()
+        .should('contain', 'Kubernetes');
+    });
+
+    it('should show a message when no templates match the search', () => {
+      cy.get('[data-testid="TemplateSearchBar"]').type('nonexistent query');
+
+      cy.get('[data-testid="noTemplatesMessage"]').should('be.visible');
+      cy.get('[data-testid="noTemplatesMessage"]').should(
+        'contain',
+        'No templates to show'
+      );
+    });
+  });
 });

@@ -88,7 +88,11 @@ export default function ProfileTemplateList({
         <>
           <TemplateSearchBar lang={lang} onSearchTermChange={setSearchTerm} />
           {filteredTemplates.length === 0 ? (
-            <Typography sx={{ padding: '10px' }} variant="body2">
+            <Typography
+              sx={{ padding: '10px' }}
+              variant="body2"
+              data-testid="noTemplatesMessage"
+            >
               {t('TemplateSearchBar.Filter.notFound')}
             </Typography>
           ) : (
