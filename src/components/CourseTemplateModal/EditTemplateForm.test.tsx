@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import { EditTemplateForm } from './EditTemplateForm';
 import { renderWithTheme } from '@/lib/test-utils';
 

@@ -29,7 +29,7 @@ interface Props extends DictProps {
 type FormType = TemplateSchemaType;
 
 export function EditTemplateForm({ lang, updateTemplate, tags }: Props) {
-  const { t } = useTranslation(lang, 'components');
+  const { t } = useTranslation(lang);
   const { palette } = useTheme();
   const {
     control,
