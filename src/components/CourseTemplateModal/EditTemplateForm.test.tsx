@@ -52,12 +52,12 @@ describe('EditTemplateForm', () => {
     const tagsLabel = screen.getByText(/CourseForm\.tags/i);
     const maxStudentsLabel = screen.getByText(/CourseForm\.maxStudents/i);
     // Assert that the names are rendered correctly
-    expect(nameLabel).toBeInTheDocument();
-    expect(descriptionLabel).toBeInTheDocument();
-    expect(summaryLabel).toBeInTheDocument();
-    expect(imageLabel).toBeInTheDocument();
-    expect(tagsLabel).toBeInTheDocument();
-    expect(maxStudentsLabel).toBeInTheDocument();
+    expect(nameLabel).toHaveTextContent('CourseForm.name');
+    expect(descriptionLabel).toHaveTextContent('CourseForm.description');
+    expect(summaryLabel).toHaveTextContent('CourseForm.summary');
+    expect(imageLabel).toHaveTextContent('CourseForm.courseImage');
+    expect(tagsLabel).toHaveTextContent('CourseForm.tags');
+    expect(maxStudentsLabel).toHaveTextContent('CourseForm.maxStudents');
   });
 
   it('renders the update button with the correct text', () => {
