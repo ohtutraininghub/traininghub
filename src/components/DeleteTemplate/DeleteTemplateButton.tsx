@@ -26,7 +26,6 @@ export function DeleteTemplateButton({
   const { notify } = useMessage();
 
   const handleDialogOpen = () => {
-    console.log('handleDialogOpen');
     setDialogOpen(!dialogOpen);
   };
 

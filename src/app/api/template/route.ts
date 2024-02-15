@@ -8,13 +8,25 @@ import { prisma } from '@/lib/prisma';
 import { Tag } from '@prisma/client';
 import { handleCommonErrors } from '@/lib/response/errorUtil';
 import { getServerAuthSession } from '@/lib/auth';
-import { isTrainerOrAdmin, hasTemplateDeleteRights } from '@/lib/auth-utils';
+import {
+  isTrainerOrAdmin,
+  hasTemplateDeleteRights,
+  hasTemplateEditRights,
+} from '@/lib/auth-utils';
 import { translator } from '@/lib/i18n';
-import { templateSchema, templateDeleteSchema } from '@/lib/zod/templates';
+import {
+  templateSchema,
+  templateDeleteSchema,
+  templateSchemaWithId,
+} from '@/lib/zod/templates';
 
 const parseTags = async (tags: string[]): Promise<Tag[]> => {
   const allTags = await prisma.tag.findMany();
   return allTags.filter((e) => tags.includes(e.name));
+};
+
+const getTemplateById = async (id: string) => {
+  return await prisma.template.findFirst({ where: { id } });
 };
 
 export async function POST(request: NextRequest) {
@@ -68,9 +80,7 @@ export async function DELETE(request: NextRequest) {
     const reqData = await request.json();
     const template = templateDeleteSchema.parse(reqData);
 
-    const templateExists = await prisma.template.findFirst({
-      where: { id: template.templateId },
-    });
+    const templateExists = await getTemplateById(template.templateId);
 
     if (!templateExists) {
       return errorResponse({
@@ -102,6 +112,63 @@ export async function DELETE(request: NextRequest) {
     return successResponse({
       message: t('Templates.templateDeleted'),
       statusCode: StatusCodeType.OK,
+    });
+  } catch (error) {
+    return await handleCommonErrors(error);
+  }
+}
+
+export async function PUT(request: NextRequest) {
+  try {
+    const { t } = await translator('api');
+    const { user } = await getServerAuthSession();
+
+    if (!isTrainerOrAdmin(user)) {
+      return errorResponse({
+        message: t('Common.forbidden'),
+        statusCode: StatusCodeType.FORBIDDEN,
+      });
+    }
+
+    const data = await request.json();
+    const body = templateSchemaWithId.parse(data);
+    const parsedTags = await parseTags(body.tags);
+    const templateExists = await getTemplateById(body.id);
+    if (!templateExists) {
+      return errorResponse({
+        message: t('Common.templateNotFound'),
+        statusCode: StatusCodeType.NOT_FOUND,
+      });
+    }
+
+    if (!hasTemplateEditRights(user, body)) {
+      return errorResponse({
+        message: t('Common.forbidden'),
+        statusCode: StatusCodeType.FORBIDDEN,
+      });
+    }
+    const templatesWithSameName = await prisma.template.findMany({
+      where: { name: body.name, NOT: { id: body.id } },
+    });
+    // checks if the tampalte name is in current user's templates (excluding the current template)
+    if (templatesWithSameName.length > 0) {
+      return errorResponse({
+        message: t('Templates.templateNameInUse'),
+        statusCode: StatusCodeType.BAD_REQUEST,
+      });
+    }
+    await prisma.template.update({
+      where: { id: body.id },
+      data: {
+        ...body,
+        tags: {
+          connect: parsedTags.map((tag) => ({ id: tag.id })),
+        },
+      },
+    });
+    return successResponse({
+      message: t('Templates.templateUpdated'),
+      statusCode: StatusCodeType.CREATED,
     });
   } catch (error) {
     return await handleCommonErrors(error);
