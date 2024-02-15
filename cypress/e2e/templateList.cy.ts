@@ -64,8 +64,35 @@ describe('Template list', () => {
       cy.getCy('TemplateSearchBar').should('exist');
     });
 
-    it('should filter templates based on search input', () => {
+    it('should filter templates based on search input on partial name of template', () => {
+      cy.get('[data-testid="TemplateSearchBar"]').type('Kube');
+
+      cy.get('[data-testid="templateList"]').should('have.length', 1);
+      cy.get('[data-testid="templateList"]')
+        .first()
+        .should('contain', 'Kubernetes');
+    });
+
+    it('should filter templates based on search input on name of template', () => {
       cy.get('[data-testid="TemplateSearchBar"]').type('Kubernetes');
+
+      cy.get('[data-testid="templateList"]').should('have.length', 1);
+      cy.get('[data-testid="templateList"]')
+        .first()
+        .should('contain', 'Kubernetes');
+    });
+
+    it('should filter templates based on search input on partial name of creator', () => {
+      cy.get('[data-testid="TemplateSearchBar"]').type('Emil');
+
+      cy.get('[data-testid="templateList"]').should('have.length', 1);
+      cy.get('[data-testid="templateList"]')
+        .first()
+        .should('contain', 'Kubernetes');
+    });
+
+    it('should filter templates based on search input on name of creator', () => {
+      cy.get('[data-testid="TemplateSearchBar"]').type('Emily Davis');
 
       cy.get('[data-testid="templateList"]').should('have.length', 1);
       cy.get('[data-testid="templateList"]')
