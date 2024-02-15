@@ -59,7 +59,6 @@ export default async function ProfilePage({ searchParams, params }: Props) {
   if (!userData) {
     notFound();
   }
-
   const courseIds = userData?.courses.map((course) => course.id) ?? [];
   const openedCourse = userData?.courses.find(
     (course) => course.id === searchParams.courseId
@@ -73,6 +72,7 @@ export default async function ProfilePage({ searchParams, params }: Props) {
   if (isTrainerOrAdmin(session.user) && openedCourse) {
     enrolledStudents = await getStudentNamesByCourseId(openedCourse.id);
   }
+
   return (
     <Container maxWidth="md">
       <CourseModal

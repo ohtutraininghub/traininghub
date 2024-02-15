@@ -17,7 +17,7 @@ export const templateSchema = z
 
 export const templateSchemaWithId = templateSchema.extend({
   id: z.string().min(1),
-  createdById: z.string(),
+  createdById: z.string().optional(),
 });
 
 export const templateDeleteSchema = z
