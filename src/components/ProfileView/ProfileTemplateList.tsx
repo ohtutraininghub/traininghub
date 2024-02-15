@@ -5,6 +5,7 @@ import { List } from '@mui/material';
 import { ListItem } from '@mui/material';
 import { ListItemText } from '@mui/material';
 import { Divider } from '@mui/material';
+import { Tag } from '@prisma/client';
 import { useTheme } from '@mui/material/styles';
 import { Box, Tooltip, Typography } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -23,12 +24,14 @@ export interface ProfileCourseListProps {
   templates: TemplateWithCreator[];
   open: boolean;
   timer?: boolean;
+  tags: Tag[];
 }
 
 export default function ProfileTemplateList({
   headerText,
   templates,
   open,
+  tags,
 }: ProfileCourseListProps) {
   const { palette } = useTheme();
   const [isCollapsed, setIsCollapsed] = useState(open);
@@ -140,6 +143,8 @@ export default function ProfileTemplateList({
       )}
       {isTemplateModalOpen && selectedTemplate && (
         <CourseTemplateModal
+          tags={tags}
+          lang={lang}
           templateId={selectedTemplate}
           open={isTemplateModalOpen}
           onClose={handleCloseTemplateModal}

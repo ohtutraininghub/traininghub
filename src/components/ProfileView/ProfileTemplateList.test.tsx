@@ -63,6 +63,7 @@ describe('ProfileTemplateList component', () => {
         headerText="Templates"
         templates={testTemplates}
         open={true}
+        tags={[]}
       />
     );
     const headerText = screen.getByTestId('templateListHeader');
@@ -73,7 +74,12 @@ describe('ProfileTemplateList component', () => {
 
   it('displays a message if the templates list is empty', () => {
     renderWithTheme(
-      <ProfileTemplateList headerText="Templates" templates={[]} open={true} />
+      <ProfileTemplateList
+        headerText="Templates"
+        templates={[]}
+        open={true}
+        tags={[]}
+      />
     );
     const noTemplatesText = screen.getByText('No templates to show.');
     expect(noTemplatesText).toBeInTheDocument();
@@ -85,6 +91,7 @@ describe('ProfileTemplateList component', () => {
         headerText="Templates"
         templates={testTemplates}
         open={true}
+        tags={[]}
       />
     );
     testTemplates.forEach((template) => {
@@ -98,6 +105,7 @@ describe('ProfileTemplateList component', () => {
         headerText="Templates"
         templates={testTemplates}
         open={false}
+        tags={[]}
       />
     );
     testTemplates.forEach((template) => {
@@ -111,6 +119,7 @@ describe('ProfileTemplateList component', () => {
         headerText="Templates"
         templates={testTemplates}
         open={false}
+        tags={[]}
       />
     );
     expect(screen.getByText('(2)', { exact: false })).toBeInTheDocument();
@@ -137,6 +146,7 @@ describe('ProfileTemplateList component', () => {
         headerText="Templates"
         templates={testTemplates}
         open={false}
+        tags={[]}
       />
     );
     const controlButton = screen.getByTestId('templateListControls');
@@ -155,6 +165,7 @@ describe('ProfileTemplateList component', () => {
         headerText="Templates"
         templates={testTemplates}
         open={false}
+        tags={[]}
       />
     );
     const controlButton = screen.getByTestId('templateListControls');
@@ -174,6 +185,7 @@ describe('ProfileTemplateList component', () => {
         headerText="Templates"
         templates={testTemplates}
         open={false}
+        tags={[]}
       />
     );
     const controlButton = screen.getByTestId('templateListControls');
@@ -193,6 +205,7 @@ describe('ProfileTemplateList component', () => {
         headerText="Templates"
         templates={testTemplates}
         open={false}
+        tags={[]}
       />
     );
     const controlButton = screen.getByTestId('templateListControls');
@@ -212,6 +225,7 @@ describe('ProfileTemplateList component', () => {
         headerText="Templates"
         templates={testTemplates}
         open={false}
+        tags={[]}
       />
     );
     const controlButton = screen.getByTestId('templateListControls');
@@ -230,6 +244,7 @@ describe('ProfileTemplateList component', () => {
         headerText="Templates"
         templates={testTemplates}
         open={false}
+        tags={[]}
       />
     );
     const controlButton = screen.getByTestId('templateListControls');
@@ -253,6 +268,7 @@ describe('ProfileTemplateList component', () => {
         headerText="Templates"
         templates={testTemplates}
         open={true}
+        tags={[]}
       />
     );
     const controlButton = screen.getByTestId('templateListControls');

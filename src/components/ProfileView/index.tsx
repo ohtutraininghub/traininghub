@@ -12,6 +12,7 @@ import { useSession } from 'next-auth/react';
 import UserList from '@/components/UserList';
 import { isTrainerOrAdmin } from '@/lib/auth-utils';
 import { TemplateWithCreator } from '@/lib/prisma/templates';
+import { Tag } from '@prisma/client';
 
 export interface userDetails {
   name: string;
@@ -20,6 +21,7 @@ export interface userDetails {
 }
 
 export interface ProfileViewProps extends PropsWithChildren {
+  tags: Tag[];
   userDetails: userDetails;
   courses: Course[];
   users: User[];
@@ -32,6 +34,7 @@ export default function ProfileView({
   users,
   children,
   templates,
+  tags,
 }: ProfileViewProps) {
   const [selectedTab, setSelectedTab] = useState(0);
   const { palette } = useTheme();
@@ -103,6 +106,7 @@ export default function ProfileView({
                   : 'My course templates'
               }
               templates={templates}
+              tags={tags}
               open={false}
             />
           )}

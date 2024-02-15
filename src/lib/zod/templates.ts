@@ -25,3 +25,5 @@ export const templateDeleteSchema = z
     templateId: z.string().cuid(),
   })
   .strict();
+
+export type TemplateSchemaType = z.infer<typeof templateSchema>;
