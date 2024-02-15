@@ -2,23 +2,35 @@
 
 import React from 'react';
 import Modal from '@mui/material/Modal';
-import { Typography } from '@mui/material';
+import { Box, IconButton } from '@mui/material';
 import Card from '@mui/material/Card';
+import { DictProps } from '@/lib/i18n';
+import { EditTemplateForm } from './EditTemplateForm';
+import { useTheme } from '@mui/material/styles';
+import CloseIcon from '@mui/icons-material/Close';
+import { Tag } from '@prisma/client';
 
-interface CourseTemplateModalProps {
+interface CourseTemplateModalProps extends DictProps {
   templateId: string;
   open: boolean;
   onClose: () => void;
+  tags: Tag[];
 }
 
 export default function CourseTemplateModal({
+  lang,
   templateId,
   onClose,
+  tags,
 }: CourseTemplateModalProps) {
+  const { palette } = useTheme();
   const handleClick = (event: object, reason: string) => {
     if (reason === 'backdropClick' || reason === 'escapeKeyDown') {
       onClose();
     }
+  };
+  const updateTemplate = () => {
+    onClose();
   };
 
   return (
@@ -34,6 +46,7 @@ export default function CourseTemplateModal({
           },
         }}
         sx={{
+          zIndex: 1200,
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
@@ -41,28 +54,39 @@ export default function CourseTemplateModal({
       >
         <Card
           sx={{
+            p: 4,
+            mb: 4,
+            borderRadius: 2,
+            backgroundColor: palette.surface.main,
+            boxShadow: 8,
             position: 'relative',
             display: 'flex',
             flexDirection: 'column',
             width: '1000px',
-            height: '900px',
             maxWidth: '100%',
             maxHeight: '100%',
             overflow: 'auto',
             overflowWrap: 'break-word',
-            borderRadius: '10px',
-            m: 2,
-            p: 3,
-            color: 'white.main',
-            backgroundColor: 'secondary.main',
-            textAlign: 'center',
-            outline: 0,
           }}
         >
-          {/* The following is just test text */}
-          <Typography variant="h1" sx={{ textAlign: 'center' }}>
-            Template ID: {templateId}
-          </Typography>
+          <Box
+            sx={{
+              position: 'absolute',
+              top: 8,
+              right: 8,
+              padding: 1,
+            }}
+          >
+            <IconButton onClick={onClose} data-testid={'closeButton'}>
+              <CloseIcon sx={{ fontSize: '25px' }} />
+            </IconButton>
+          </Box>
+          <EditTemplateForm
+            tags={tags}
+            templateId={templateId}
+            lang={lang}
+            updateTemplate={updateTemplate}
+          />
         </Card>
       </Modal>
     </div>
