@@ -47,7 +47,8 @@ export function EditTemplateForm({ lang, updateTemplate, tags }: Props) {
         textAlign="center"
         marginBottom={1}
       >
-        Edit Template Details
+        {/* Edit Template Details */}
+        {t('TemplateForm.title')}
         <StyledTooltip lang={lang} title={t('Tooltip.editTemplate')} />
       </Typography>
       <form
@@ -228,7 +229,7 @@ export function EditTemplateForm({ lang, updateTemplate, tags }: Props) {
             },
           }}
         >
-          {t('CourseForm.update')}
+          {t('TemplateForm.update')}
         </Button>
       </form>
     </>

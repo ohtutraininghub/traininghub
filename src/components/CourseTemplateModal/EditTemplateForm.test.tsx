@@ -45,6 +45,7 @@ describe('EditTemplateForm', () => {
       />
     );
     // Find the labels by their associated text
+    const formTitle = screen.getByText(/TemplateForm\.title/i);
     const nameLabel = screen.getByText(/CourseForm\.name/i);
     const descriptionLabel = screen.getByText(/CourseForm\.description/i);
     const summaryLabel = screen.getByText(/CourseForm\.summary/i);
@@ -52,6 +53,7 @@ describe('EditTemplateForm', () => {
     const tagsLabel = screen.getByText(/CourseForm\.tags/i);
     const maxStudentsLabel = screen.getByText(/CourseForm\.maxStudents/i);
     // Assert that the names are rendered correctly
+    expect(formTitle).toHaveTextContent('TemplateForm.title');
     expect(nameLabel).toHaveTextContent('CourseForm.name');
     expect(descriptionLabel).toHaveTextContent('CourseForm.description');
     expect(summaryLabel).toHaveTextContent('CourseForm.summary');
@@ -73,6 +75,6 @@ describe('EditTemplateForm', () => {
 
     // Assert that the update button is rendered correctly
     expect(buttonElement).toBeInTheDocument();
-    expect(buttonElement).toHaveTextContent('CourseForm.update');
+    expect(buttonElement).toHaveTextContent('TemplateForm.update');
   });
 });

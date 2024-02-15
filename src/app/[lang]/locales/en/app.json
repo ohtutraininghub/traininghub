@@ -11,8 +11,7 @@
     "startDate": "Start date",
     "submit": "Submit",
     "summary": "Summary (optional)",
-    "tags": "Tags",
-    "update": "Update"
+    "tags": "Tags"
   },
   "Error": {
     "somethingWrong": "Something went wrong... Try again"
@@ -29,6 +28,10 @@
   },
   "Template": {
     "selectTemplate": "Select template"
+  },
+  "TemplateForm": {
+    "title": "Edit Template Details",
+    "update": "Update"
   },
   "Tooltip": {
     "courseDescription": "The course description is visible to all users upon opening the course details page. Utilize the online text editor for formatting. Hover over buttons for tooltips on each functionality.",
