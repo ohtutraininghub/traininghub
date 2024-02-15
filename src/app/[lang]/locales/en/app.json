@@ -11,7 +11,8 @@
     "startDate": "Start date",
     "submit": "Submit",
     "summary": "Summary (optional)",
-    "tags": "Tags"
+    "tags": "Tags",
+    "update": "Update"
   },
   "Error": {
     "somethingWrong": "Something went wrong... Try again"

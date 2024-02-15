@@ -80,8 +80,7 @@
   },
   "EditTemplate": {
     "button": {
-      "edit": "Edit",
-      "update": "Update"
+      "edit": "Edit"
     },
     "confirmEdit": "Are you sure you want to edit this template?"
   },

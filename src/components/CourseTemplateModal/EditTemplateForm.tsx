@@ -228,7 +228,7 @@ export function EditTemplateForm({ lang, updateTemplate, tags }: Props) {
             },
           }}
         >
-          {t('EditTemplate.button.update')}
+          {t('CourseForm.update')}
         </Button>
       </form>
     </>

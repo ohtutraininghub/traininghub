@@ -73,6 +73,6 @@ describe('EditTemplateForm', () => {
 
     // Assert that the update button is rendered correctly
     expect(buttonElement).toBeInTheDocument();
-    expect(buttonElement).toHaveTextContent('EditTemplate.button.update');
+    expect(buttonElement).toHaveTextContent('CourseForm.update');
   });
 });
