@@ -45,13 +45,11 @@ export default function ProfileTemplateList({
   const lang: Locale = i18n.defaultLocale;
 
   const handleEditButtonClick = (templateId: string) => {
-    console.log('handleEditButtonClick');
     setSelectedTemplate(templateId);
     setIsTemplateModalOpen(true);
   };
 
   const handleCloseTemplateModal = () => {
-    console.log('handleCloseTemplateModal');
     setIsTemplateModalOpen(false);
     setSelectedTemplate(null);
   };
