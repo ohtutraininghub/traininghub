@@ -167,7 +167,7 @@ describe('EditTemplateForm Autofill Tests', () => {
   });
 
   it('autofills with tags', () => {
-    const { container } = renderWithTheme(
+    renderWithTheme(
       <EditTemplateForm
         templateData={allFields}
         updateTemplate={() => {}}
