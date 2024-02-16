@@ -17,7 +17,7 @@ import { TemplateSearchBar } from '@/components/TemplateSearchBar/TemplateSearch
 import { EditTemplateButton } from '@/components/EditTemplate/EditTemplateButton';
 import CourseTemplateModal from '@/components/CourseTemplateModal';
 import { Locale, i18n } from '@/lib/i18n/i18n-config';
-import { TemplateWithCreator } from '@/lib/prisma/templates';
+import { TemplateWithCreator, TemplateWithTags } from '@/lib/prisma/templates';
 
 export interface ProfileCourseListProps {
   headerText: string;
@@ -36,7 +36,8 @@ export default function ProfileTemplateList({
   const { palette } = useTheme();
   const [isCollapsed, setIsCollapsed] = useState(open);
   const [isTemplateModalOpen, setIsTemplateModalOpen] = useState(false);
-  const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null);
+  const [selectedTemplate, setSelectedTemplate] =
+    useState<TemplateWithTags | null>(null);
 
   const handleToggleCollapse = () => {
     setIsCollapsed(!isCollapsed);
@@ -44,8 +45,8 @@ export default function ProfileTemplateList({
 
   const lang: Locale = i18n.defaultLocale;
 
-  const handleEditButtonClick = (templateId: string) => {
-    setSelectedTemplate(templateId);
+  const handleEditButtonClick = (template: TemplateWithTags) => {
+    setSelectedTemplate(template);
     setIsTemplateModalOpen(true);
   };
 
@@ -125,7 +126,7 @@ export default function ProfileTemplateList({
                       <EditTemplateButton
                         templateId={template.id}
                         lang={lang}
-                        onClick={() => handleEditButtonClick(template.id)}
+                        onClick={() => handleEditButtonClick(template)}
                       />
                       <DeleteTemplateButton
                         templateId={template.id}
@@ -145,7 +146,7 @@ export default function ProfileTemplateList({
         <CourseTemplateModal
           tags={tags}
           lang={lang}
-          templateId={selectedTemplate}
+          template={selectedTemplate}
           open={isTemplateModalOpen}
           onClose={handleCloseTemplateModal}
         />

@@ -9,9 +9,10 @@ import { EditTemplateForm } from './EditTemplateForm';
 import { useTheme } from '@mui/material/styles';
 import CloseIcon from '@mui/icons-material/Close';
 import { Tag } from '@prisma/client';
+import { TemplateWithTags } from '@/lib/prisma/templates';
 
 interface CourseTemplateModalProps extends DictProps {
-  templateId: string;
+  template: TemplateWithTags;
   open: boolean;
   onClose: () => void;
   tags: Tag[];
@@ -19,7 +20,7 @@ interface CourseTemplateModalProps extends DictProps {
 
 export default function CourseTemplateModal({
   lang,
-  templateId,
+  template,
   onClose,
   tags,
 }: CourseTemplateModalProps) {
@@ -83,7 +84,7 @@ export default function CourseTemplateModal({
           </Box>
           <EditTemplateForm
             tags={tags}
-            templateId={templateId}
+            templateData={template}
             lang={lang}
             updateTemplate={updateTemplate}
           />

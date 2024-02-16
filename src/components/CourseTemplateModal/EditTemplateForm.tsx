@@ -14,21 +14,27 @@ import {
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { Controller, useForm } from 'react-hook-form';
-import { TemplateSchemaType } from '@/lib/zod/templates';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { templateSchema, TemplateSchemaType } from '@/lib/zod/templates';
 import FormFieldError from '../FormFieldError';
 import StyledTooltip from '@/components/StyledTooltip';
 import RichTextEditor from '@/components/TextEditor';
 import { Tag } from '@prisma/client';
+import { TemplateWithTags } from '@/lib/prisma/templates';
 
 interface Props extends DictProps {
-  templateId: string;
   updateTemplate: () => void;
   tags: Tag[];
+  templateData: TemplateWithTags;
 }
-
 type FormType = TemplateSchemaType;
 
-export function EditTemplateForm({ lang, updateTemplate, tags }: Props) {
+export function EditTemplateForm({
+  lang,
+  updateTemplate,
+  tags,
+  templateData,
+}: Props) {
   const { t } = useTranslation(lang);
   const { palette } = useTheme();
   const {
@@ -36,7 +42,15 @@ export function EditTemplateForm({ lang, updateTemplate, tags }: Props) {
     register,
     formState: { errors },
   } = useForm<FormType>({
-    defaultValues: {},
+    resolver: zodResolver(templateSchema),
+    defaultValues: {
+      ...(templateData
+        ? {
+            ...templateData,
+            tags: templateData.tags.map((tag) => tag.name),
+          }
+        : { maxStudents: 10 }),
+    },
   });
 
   return (
