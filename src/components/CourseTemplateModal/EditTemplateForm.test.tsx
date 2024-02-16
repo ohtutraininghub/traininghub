@@ -90,8 +90,9 @@ describe('EditTemplateForm Form Appearance Tests', () => {
 });
 
 describe('EditTemplateForm Autofill Tests', () => {
-  const template = {
-    id: '1234',
+  //Template data with all fields:
+  const allFields = {
+    id: '1',
     name: 'New course',
     description: 'A test course',
     summary: 'All you ever wanted to know about testing!',
@@ -100,10 +101,23 @@ describe('EditTemplateForm Autofill Tests', () => {
     createdById: '30',
     image: 'http://test-image.com',
   };
-  it('form autofills correct template data', () => {
+
+  //Template data with only required fields (name and description):
+  const onlyRequiredFields = {
+    id: '2',
+    name: 'New course',
+    description: 'A test course',
+    summary: null,
+    tags: [],
+    maxStudents: 10, //default value
+    createdById: '30',
+    image: null,
+  };
+
+  it('autofills correct values when template had all fields filled', () => {
     const { container } = renderWithTheme(
       <EditTemplateForm
-        templateData={template}
+        templateData={allFields}
         updateTemplate={() => {}}
         tags={[]}
         lang="en"
@@ -119,15 +133,64 @@ describe('EditTemplateForm Autofill Tests', () => {
     ) as HTMLInputElement;
     const image = screen.getByTestId('templateFormImage') as HTMLInputElement;
 
-    expect(name.value).toBe(template.name);
-    expect(description).toHaveTextContent(template.description);
-    expect(summary.value).toBe(template.summary);
-    expect(maxStudents.value).toBe(template.maxStudents.toString());
-    expect(image.value).toBe(template.image);
+    expect(name.value).toBe(allFields.name);
+    expect(description).toHaveTextContent(allFields.description);
+    expect(summary.value).toBe(allFields.summary);
+    expect(maxStudents.value).toBe(allFields.maxStudents.toString());
+    expect(image.value).toBe(allFields.image);
+  });
 
-    template.tags.forEach((tag) => {
+  it('autofills correct values when template had only required fields filled', () => {
+    const { container } = renderWithTheme(
+      <EditTemplateForm
+        templateData={onlyRequiredFields}
+        updateTemplate={() => {}}
+        tags={[]}
+        lang="en"
+      />
+    );
+    const name = screen.getByTestId('templateFormName') as HTMLInputElement;
+    const description = container.querySelector('.tiptap');
+    const summary = screen.getByTestId(
+      'templateFormSummary'
+    ) as HTMLInputElement;
+    const maxStudents = screen.getByTestId(
+      'templateFormMaxStudents'
+    ) as HTMLInputElement;
+    const image = screen.getByTestId('templateFormImage') as HTMLInputElement;
+
+    expect(name.value).toBe(onlyRequiredFields.name);
+    expect(description).toHaveTextContent(onlyRequiredFields.description);
+    expect(summary.value).toBe('');
+    expect(maxStudents.value).toBe(onlyRequiredFields.maxStudents.toString());
+    expect(image.value).toBe('');
+  });
+
+  it('autofills with tags', () => {
+    const { container } = renderWithTheme(
+      <EditTemplateForm
+        templateData={allFields}
+        updateTemplate={() => {}}
+        tags={[]}
+        lang="en"
+      />
+    );
+    allFields.tags.forEach((tag) => {
       const chip = screen.getByText(tag.name);
       expect(chip).toBeInTheDocument();
     });
+  });
+
+  it('autofills without tags', () => {
+    const { container } = renderWithTheme(
+      <EditTemplateForm
+        templateData={onlyRequiredFields}
+        updateTemplate={() => {}}
+        tags={[]}
+        lang="en"
+      />
+    );
+    const tags = container.querySelectorAll('.tag');
+    expect(tags).toHaveLength(0);
   });
 });
