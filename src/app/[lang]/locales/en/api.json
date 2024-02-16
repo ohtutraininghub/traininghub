@@ -3,10 +3,10 @@
     "noPermissionsToInsertEntry": "Can not insert calendar entry without calendar permissions"
   },
   "Common": {
-    "courseNotFound": "Course by given id was not found!",
+    "courseNotFound": "Course by the given id was not found!",
     "forbidden": "Forbidden",
     "notEnrolledError": "You have not enrolled to this course",
-    "templateNotFound": "Template by given id was not found",
+    "templateNotFound": "Template by the given id was not found",
     "unprocessableContent": "Unprocessable content"
   },
   "Courses": {
@@ -32,7 +32,8 @@
   "Templates": {
     "templateCreated": "Template successfully created",
     "templateDeleted": "Template successfully deleted",
-    "templateNameInUse": "Template name is already in use"
+    "templateNameInUse": "Template name is already in use",
+    "templateUpdated": "Template successfully updated"
   },
   "Users": {
     "roleChanged": "User access role succesfully changed!"

@@ -78,10 +78,11 @@
   "EditButton": {
     "editCourse": "Edit"
   },
-  "EditTemplateButton": {
+  "EditTemplate": {
     "button": {
       "edit": "Edit"
-    }
+    },
+    "confirmEdit": "Are you sure you want to edit this template?"
   },
   "EnrollButton": {
     "confirmEnroll": "Confirm enroll?",

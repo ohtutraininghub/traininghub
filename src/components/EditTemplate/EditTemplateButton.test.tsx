@@ -42,7 +42,7 @@ describe('EditTemplateButton', () => {
     );
     const buttonElement = screen.getByTestId('EditTemplateButton');
     expect(buttonElement).toBeInTheDocument();
-    expect(buttonElement).toHaveTextContent('EditTemplateButton.button.edit');
+    expect(buttonElement).toHaveTextContent('EditTemplate.button.edit');
   });
 
   test('calls the onClick function when clicked', () => {

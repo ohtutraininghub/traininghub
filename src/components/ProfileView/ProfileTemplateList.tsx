@@ -5,6 +5,7 @@ import { List } from '@mui/material';
 import { ListItem } from '@mui/material';
 import { ListItemText } from '@mui/material';
 import { Divider } from '@mui/material';
+import { Tag } from '@prisma/client';
 import { useTheme } from '@mui/material/styles';
 import { Box, Tooltip, Typography } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -17,18 +18,21 @@ import CourseTemplateModal from '@/components/CourseTemplateModal';
 import { Locale, i18n } from '@/lib/i18n/i18n-config';
 import { useTranslation } from '@i18n/client';
 import { TemplateWithCreator } from '@/lib/prisma/templates';
+import { TemplateWithCreator, TemplateWithTags } from '@/lib/prisma/templates';
 
 export interface ProfileCourseListProps {
   headerText: string;
   templates: TemplateWithCreator[];
   open: boolean;
   timer?: boolean;
+  tags: Tag[];
 }
 
 export default function ProfileTemplateList({
   headerText,
   templates,
   open,
+  tags,
 }: ProfileCourseListProps) {
   const [isCollapsed, setIsCollapsed] = useState(open);
   const [searchTerm, setSearchTerm] = useState('');
@@ -36,7 +40,8 @@ export default function ProfileTemplateList({
   const lang: Locale = i18n.defaultLocale;
   const { t } = useTranslation(lang, 'components');
   const [isTemplateModalOpen, setIsTemplateModalOpen] = useState(false);
-  const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null);
+  const [selectedTemplate, setSelectedTemplate] =
+    useState<TemplateWithTags | null>(null);
 
   const handleToggleCollapse = () => {
     setIsCollapsed(!isCollapsed);
@@ -48,8 +53,8 @@ export default function ProfileTemplateList({
       template.createdBy?.name?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const handleEditButtonClick = (templateId: string) => {
-    setSelectedTemplate(templateId);
+  const handleEditButtonClick = (template: TemplateWithTags) => {
+    setSelectedTemplate(template);
     setIsTemplateModalOpen(true);
   };
 
@@ -104,6 +109,7 @@ export default function ProfileTemplateList({
                 (template: TemplateWithCreator, index: number) => (
                   <React.Fragment key={template.id}>
                     <ListItem
+                      key={template.id}
                       sx={{
                         display: 'flex',
                         justifyContent: 'space-between',
@@ -122,7 +128,7 @@ export default function ProfileTemplateList({
                         <EditTemplateButton
                           templateId={template.id}
                           lang={lang}
-                          onClick={() => handleEditButtonClick(template.id)}
+                          onClick={() => handleEditButtonClick(template)}
                         />
                         <DeleteTemplateButton
                           templateId={template.id}
@@ -140,7 +146,9 @@ export default function ProfileTemplateList({
       )}
       {isTemplateModalOpen && selectedTemplate && (
         <CourseTemplateModal
-          templateId={selectedTemplate}
+          tags={tags}
+          lang={lang}
+          template={selectedTemplate}
           open={isTemplateModalOpen}
           onClose={handleCloseTemplateModal}
         />

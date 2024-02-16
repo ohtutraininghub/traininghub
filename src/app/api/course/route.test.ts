@@ -297,7 +297,7 @@ describe('Course API tests', () => {
 
       const response = await PUT(req);
       const data = await response.json();
-      expect(data.message).toContain('Course by given id was not found');
+      expect(data.message).toContain('Course by the given id was not found');
       expect(data.messageType).toBe(MessageType.ERROR);
       expect(response.status).toBe(404);
     });
@@ -519,7 +519,7 @@ describe('Course API tests', () => {
       const response = await DELETE(req);
       const data = await response.json();
 
-      expect(data.message).toContain('Course by given id was not found');
+      expect(data.message).toContain('Course by the given id was not found');
       expect(data.messageType).toBe(MessageType.ERROR);
       expect(response.status).toBe(404);
     });
