@@ -250,7 +250,7 @@ export default function CourseForm({
             render={({ field }) => {
               return (
                 <>
-                  <InputLabel htmlFor="tagSelection">
+                  <InputLabel htmlFor="tagSelection" id="tagSelection">
                     {t('CourseForm.tags')}
                     <StyledTooltip
                       data-testid="tooltipTags"
@@ -261,6 +261,7 @@ export default function CourseForm({
                   <Select
                     {...field}
                     id="tagSelection"
+                    labelId="tagSelection"
                     color="secondary"
                     multiple
                     renderValue={(field) => (
