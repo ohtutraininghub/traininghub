@@ -14,7 +14,8 @@ import {
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { Controller, useForm } from 'react-hook-form';
-import { TemplateSchemaType } from '@/lib/zod/templates';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { templateSchema, TemplateSchemaType } from '@/lib/zod/templates';
 import FormFieldError from '../FormFieldError';
 import StyledTooltip from '@/components/StyledTooltip';
 import RichTextEditor from '@/components/TextEditor';
@@ -43,10 +44,17 @@ export function EditTemplateForm({ lang, tags, templateData }: Props) {
     formState: { errors },
     handleSubmit,
   } = useForm<FormType>({
-    defaultValues: {},
+    resolver: zodResolver(templateSchema),
+    defaultValues: {
+      ...(templateData
+        ? {
+            ...templateData,
+            tags: templateData.tags.map((tag) => tag.name),
+          }
+        : { maxStudents: 10 }),
+    },
   });
-
-  async function submitTemplate(template: TemplateSchemaType): Promise<void> {
+  const submitTemplate = async (template: FormType) => {
     const response = await update('/api/template', {
       ...template,
       tags: template.tags.map((tag) => ({ name: tag })),
@@ -58,7 +66,7 @@ export function EditTemplateForm({ lang, tags, templateData }: Props) {
       router.push('/en/profile');
       router.refresh();
     }
-  }
+  };
   return (
     <>
       <Typography
