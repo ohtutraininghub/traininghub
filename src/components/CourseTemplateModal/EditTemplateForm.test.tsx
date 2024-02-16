@@ -17,10 +17,24 @@ jest.mock('../../lib/i18n/client', () => ({
   },
 }));
 
-// const mockPut = jest.fn();
-// jest.mock('../../app/api/template/', () => {
-//   PUT: (req: NextRequest) => mockPut(req);
-// });
+jest.mock('next/navigation', () => ({
+  useRouter() {
+    return {
+      replace: jest.fn(),
+    };
+  },
+  useSearchParams: jest.fn(),
+  usePathname: jest.fn(),
+}));
+
+const mockFetch = jest.fn();
+jest.mock('../../lib/response/fetchUtil', () => ({
+  update: (...args: any[]) => mockFetch(...args),
+}));
+
+jest.mock('next-auth/react', () => ({
+  useSession: jest.fn(),
+}));
 
 const testTemplate = {
   id: '123456789',
