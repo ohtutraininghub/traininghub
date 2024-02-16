@@ -2,6 +2,9 @@ import { screen } from '@testing-library/react';
 import { EditTemplateForm } from './EditTemplateForm';
 import { renderWithTheme } from '@/lib/test-utils';
 
+import path from 'path';
+import { NextRequest } from 'next/server';
+
 jest.mock('../../lib/i18n/client', () => ({
   // this mock makes sure any components using the translate hook can use it without a warning being shown
   useTranslation: () => {
@@ -14,16 +17,34 @@ jest.mock('../../lib/i18n/client', () => ({
   },
 }));
 
+// const mockPut = jest.fn();
+// jest.mock('../../app/api/template/', () => {
+//   PUT: (req: NextRequest) => mockPut(req);
+// });
+
+const testTemplate = {
+  id: '123456789',
+  name: 'testTemplate',
+  description: 'templateDescription',
+  summary: 'templateSummary',
+  tags: [{ name: 'tag1', id: 'tagId' }],
+  image: '',
+  maxStudents: 0,
+  createdById: 'userId',
+};
+
 describe('EditTemplateForm', () => {
+  beforeEach(() => {
+    console.log();
+  });
   it('renders the input sections to the form', () => {
+    console.log('current path: ', path.resolve(__dirname));
+    console.log('next path: ', path.resolve(__dirname, '..', '..'));
+
     renderWithTheme(
-      <EditTemplateForm
-        templateId="templateId"
-        updateTemplate={() => {}}
-        tags={[]}
-        lang="en"
-      />
+      <EditTemplateForm templateData={testTemplate} tags={[]} lang="en" />
     );
+
     const name = screen.getByTestId('templateFormName');
     const summary = screen.getByTestId('templateFormSummary');
     const image = screen.getByTestId('templateFormImage');
@@ -37,12 +58,7 @@ describe('EditTemplateForm', () => {
 
   it('renders the form labels with correct text', () => {
     renderWithTheme(
-      <EditTemplateForm
-        templateId="templateId"
-        updateTemplate={() => {}}
-        tags={[]}
-        lang="en"
-      />
+      <EditTemplateForm templateData={testTemplate} tags={[]} lang="en" />
     );
     // Find the labels by their associated text
     const formTitle = screen.getByText(/TemplateForm\.title/i);
@@ -64,12 +80,7 @@ describe('EditTemplateForm', () => {
 
   it('renders the update button with the correct text', () => {
     renderWithTheme(
-      <EditTemplateForm
-        templateId="templateId"
-        updateTemplate={() => {}}
-        tags={[]}
-        lang="en"
-      />
+      <EditTemplateForm templateData={testTemplate} tags={[]} lang="en" />
     );
     const buttonElement = screen.getByTestId('updateTemplateButton');
 

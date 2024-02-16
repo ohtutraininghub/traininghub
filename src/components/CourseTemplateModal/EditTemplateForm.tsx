@@ -49,6 +49,7 @@ export function EditTemplateForm({ lang, tags, templateData }: Props) {
   async function submitTemplate(template: TemplateSchemaType): Promise<void> {
     const response = await update('/api/template', {
       ...template,
+      tags: template.tags.map((tag) => ({ name: tag })),
       id: templateData.id,
       createdById: templateData.createdById,
     });
