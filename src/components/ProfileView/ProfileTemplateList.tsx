@@ -17,7 +17,6 @@ import { EditTemplateButton } from '@/components/EditTemplate/EditTemplateButton
 import CourseTemplateModal from '@/components/CourseTemplateModal';
 import { Locale, i18n } from '@/lib/i18n/i18n-config';
 import { useTranslation } from '@i18n/client';
-import { TemplateWithCreator } from '@/lib/prisma/templates';
 import { TemplateWithCreator, TemplateWithTags } from '@/lib/prisma/templates';
 
 export interface ProfileCourseListProps {
