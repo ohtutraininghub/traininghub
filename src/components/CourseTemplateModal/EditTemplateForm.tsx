@@ -19,26 +19,45 @@ import FormFieldError from '../FormFieldError';
 import StyledTooltip from '@/components/StyledTooltip';
 import RichTextEditor from '@/components/TextEditor';
 import { Tag } from '@prisma/client';
-
-interface Props extends DictProps {
-  templateId: string;
-  updateTemplate: () => void;
-  tags: Tag[];
-}
+import { update } from '@/lib/response/fetchUtil';
+import { useMessage } from '../Providers/MessageProvider';
+import { useRouter } from 'next/navigation';
+import { StatusCodeType } from '@/lib/response/responseUtil';
+import { TemplateWithTags } from '@/lib/prisma/templates';
 
 type FormType = TemplateSchemaType;
 
-export function EditTemplateForm({ lang, updateTemplate, tags }: Props) {
+interface Props extends DictProps {
+  tags: Tag[];
+  templateData: TemplateWithTags;
+}
+
+export function EditTemplateForm({ lang, tags, templateData }: Props) {
   const { t } = useTranslation(lang);
   const { palette } = useTheme();
+  const { notify } = useMessage();
+  const router = useRouter();
   const {
     control,
     register,
     formState: { errors },
+    handleSubmit,
   } = useForm<FormType>({
     defaultValues: {},
   });
 
+  async function submitTemplate(template: TemplateSchemaType): Promise<void> {
+    const response = await update('/api/template', {
+      ...template,
+      id: templateData.id,
+      createdById: templateData.createdById,
+    });
+    notify(response);
+    if (response.statusCode === StatusCodeType.CREATED) {
+      router.push('/en/profile');
+      router.refresh();
+    }
+  }
   return (
     <>
       <Typography
@@ -53,7 +72,7 @@ export function EditTemplateForm({ lang, updateTemplate, tags }: Props) {
       <form
         id="templateForm"
         style={{ display: 'flex', flexDirection: 'column', gap: 10 }}
-        onSubmit={updateTemplate}
+        onSubmit={handleSubmit(submitTemplate)}
       >
         <InputLabel htmlFor="templateFormName">
           {t('CourseForm.name')}
