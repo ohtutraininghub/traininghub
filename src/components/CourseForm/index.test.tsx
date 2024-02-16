@@ -454,6 +454,7 @@ describe('Course Form Course Create Tests', () => {
 });
 
 describe('Course Form Course Edit Tests', () => {
+  const user = userEvent.setup();
   const courseStart = new Date(Date.now() + 24 * 60 * 60 * 1000);
   const courseEnd = new Date(Date.now() + 2 * 24 * 60 * 60 * 1000);
   const oneDayBeforeStart = new Date();
@@ -469,22 +470,22 @@ describe('Course Form Course Edit Tests', () => {
     image: 'http://test-image.com',
   };
 
-  it('Template dropdown is not displayed in Edit Mode', async () => {
-    const course = {
-      id: '1234',
-      createdById: '30',
-      name: 'New course',
-      description: 'A test course',
-      summary: 'All you ever wanted to know about testing!',
-      startDate: courseStart,
-      endDate: courseEnd,
-      lastEnrollDate: oneDayBeforeStart,
-      lastCancelDate: oneDayBeforeStart,
-      maxStudents: 55,
-      tags: [],
-      image: '',
-    };
+  const course = {
+    id: '1234',
+    createdById: '30',
+    name: 'New course',
+    description: 'A test course',
+    summary: 'All you ever wanted to know about testing!',
+    startDate: courseStart,
+    endDate: courseEnd,
+    lastEnrollDate: oneDayBeforeStart,
+    lastCancelDate: oneDayBeforeStart,
+    maxStudents: 55,
+    tags: [],
+    image: '',
+  };
 
+  it('Template dropdown is not displayed in Edit Mode', async () => {
     renderWithTheme(
       <CourseForm
         lang="en"
@@ -498,21 +499,6 @@ describe('Course Form Course Edit Tests', () => {
   });
 
   it('Form is filled with course values in Edit Mode', async () => {
-    const course = {
-      id: '1234',
-      createdById: '30',
-      name: 'New course',
-      description: 'A test course',
-      summary: 'All you ever wanted to know about testing!',
-      startDate: courseStart,
-      endDate: courseEnd,
-      lastEnrollDate: oneDayBeforeStart,
-      lastCancelDate: oneDayBeforeStart,
-      maxStudents: 55,
-      tags: [],
-      image: '',
-    };
-
     renderWithTheme(
       <CourseForm
         lang="en"
@@ -610,21 +596,6 @@ describe('Course Form Course Edit Tests', () => {
   });
 
   it('Form is submitted with correct values in Edit Mode', async () => {
-    const course = {
-      id: '1234',
-      createdById: '30',
-      name: 'New course',
-      description: '<p>A test course</p>',
-      summary: 'All you ever wanted to know about testing!',
-      startDate: courseStart,
-      endDate: courseEnd,
-      lastEnrollDate: oneDayBeforeStart,
-      lastCancelDate: oneDayBeforeStart,
-      maxStudents: 55,
-      tags: [],
-      image: '',
-    };
-
     renderWithTheme(
       <CourseForm
         lang="en"
@@ -691,22 +662,7 @@ describe('Course Form Course Edit Tests', () => {
 
   it('Form is submitted with correct values in Edit Mode when values have been edited', async () => {
     mockFetch.mockClear();
-    const user = userEvent.setup();
 
-    const course = {
-      id: '1234',
-      createdById: '30',
-      name: 'New course',
-      description: 'A test course',
-      summary: 'All you ever wanted to know about testing!',
-      startDate: courseStart,
-      endDate: courseEnd,
-      lastEnrollDate: oneDayBeforeStart,
-      lastCancelDate: oneDayBeforeStart,
-      maxStudents: 55,
-      tags: [],
-      image: '',
-    };
     const tags = [
       { id: '1', name: 'Testing' },
       { id: '2', name: 'Git' },
@@ -776,22 +732,6 @@ describe('Course Form Course Edit Tests', () => {
 
   it('should not be possible to clear name field and submit', async () => {
     mockFetch.mockClear();
-    const user = userEvent.setup();
-
-    const course = {
-      id: '1234',
-      createdById: '30',
-      name: 'New course',
-      description: 'A test course',
-      summary: 'All you ever wanted to know about testing!',
-      startDate: courseStart,
-      endDate: courseEnd,
-      lastEnrollDate: oneDayBeforeStart,
-      lastCancelDate: oneDayBeforeStart,
-      maxStudents: 55,
-      tags: [],
-      image: '',
-    };
 
     renderWithTheme(
       <CourseForm lang="en" tags={[]} courseData={course} templates={[]} />
