@@ -23,7 +23,6 @@ import { Tag } from '@prisma/client';
 import { update } from '@/lib/response/fetchUtil';
 import { useMessage } from '../Providers/MessageProvider';
 import { useRouter } from 'next/navigation';
-import { StatusCodeType } from '@/lib/response/responseUtil';
 import { TemplateWithTags } from '@/lib/prisma/templates';
 
 type FormType = TemplateSchemaType;
@@ -31,9 +30,10 @@ type FormType = TemplateSchemaType;
 interface Props extends DictProps {
   tags: Tag[];
   templateData: TemplateWithTags;
+  onClose: () => void;
 }
 
-export function EditTemplateForm({ lang, tags, templateData }: Props) {
+export function EditTemplateForm({ lang, tags, templateData, onClose }: Props) {
   const { t } = useTranslation(lang);
   const { palette } = useTheme();
   const { notify } = useMessage();
@@ -46,27 +46,27 @@ export function EditTemplateForm({ lang, tags, templateData }: Props) {
   } = useForm<FormType>({
     resolver: zodResolver(templateSchema),
     defaultValues: {
-      ...(templateData
-        ? {
-            ...templateData,
-            tags: templateData.tags.map((tag) => tag.name),
-          }
-        : { maxStudents: 10 }),
+      name: templateData.name,
+      description: templateData.description,
+      summary: templateData.summary,
+      image: templateData.image,
+      maxStudents: templateData.maxStudents,
+      tags: templateData.tags.map((tag) => tag.name),
     },
   });
   const submitTemplate = async (template: FormType) => {
     const response = await update('/api/template', {
       ...template,
-      tags: template.tags.map((tag) => ({ name: tag })),
-      id: templateData.id,
       createdById: templateData.createdById,
+      id: templateData.id,
     });
     notify(response);
-    if (response.statusCode === StatusCodeType.CREATED) {
-      router.push('/en/profile');
+    if (response.messageType === 'success') {
+      onClose();
       router.refresh();
     }
   };
+
   return (
     <>
       <Typography

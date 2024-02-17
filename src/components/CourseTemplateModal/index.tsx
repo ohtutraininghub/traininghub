@@ -79,7 +79,12 @@ export default function CourseTemplateModal({
               <CloseIcon sx={{ fontSize: '25px' }} />
             </IconButton>
           </Box>
-          <EditTemplateForm tags={tags} templateData={template} lang={lang} />
+          <EditTemplateForm
+            tags={tags}
+            templateData={template}
+            lang={lang}
+            onClose={onClose}
+          />
         </Card>
       </Modal>
     </div>
