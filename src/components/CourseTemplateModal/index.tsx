@@ -13,7 +13,6 @@ import { TemplateWithTags } from '@/lib/prisma/templates';
 
 interface CourseTemplateModalProps extends DictProps {
   template: TemplateWithTags;
-  open: boolean;
   onClose: () => void;
   tags: Tag[];
 }

@@ -14,6 +14,36 @@ jest.mock('../../lib/i18n/client', () => ({
     };
   },
 }));
+jest.mock('next/navigation', () => ({
+  useRouter() {
+    return {
+      refresh: jest.fn(),
+    };
+  },
+}));
+
+let mockUpdate = jest.fn(async (...args) => {
+  return Promise.resolve({
+    message: 'Template successfully updated',
+    status: 201,
+    messageType: 'success',
+  });
+});
+
+jest.mock('../../lib/response/fetchUtil', () => ({
+  update: () => mockUpdate,
+}));
+
+const testTemplate = {
+  id: '123456789',
+  name: 'testTemplate',
+  description: 'templateDescription',
+  summary: 'templateSummary',
+  tags: [{ name: 'tag1', id: 'tagId' }],
+  image: '',
+  maxStudents: 0,
+  createdById: 'userId',
+};
 
 describe('CourseTemplateModal', () => {
   it('closes modal when close button is clicked', () => {
@@ -24,8 +54,7 @@ describe('CourseTemplateModal', () => {
     const { getByTestId } = renderWithTheme(
       <CourseTemplateModal
         lang="en"
-        templateId="template_id"
-        open={true}
+        template={testTemplate}
         onClose={onCloseMock}
         tags={[]}
       />

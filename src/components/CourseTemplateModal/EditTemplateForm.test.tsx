@@ -1,8 +1,9 @@
-import { screen } from '@testing-library/react';
+import { RenderResult, screen } from '@testing-library/react';
 import { EditTemplateForm } from './EditTemplateForm';
 import { renderWithTheme } from '@/lib/test-utils';
 
 import path from 'path';
+import { before, mock } from 'node:test';
 
 jest.mock('../../lib/i18n/client', () => ({
   // this mock makes sure any components using the translate hook can use it without a warning being shown
@@ -19,16 +20,25 @@ jest.mock('../../lib/i18n/client', () => ({
 jest.mock('next/navigation', () => ({
   useRouter() {
     return {
-      replace: jest.fn(),
+      refresh: jest.fn(),
     };
   },
-  useSearchParams: jest.fn(),
-  usePathname: jest.fn(),
 }));
 
-const mockFetch = jest.fn();
+let mockUpdate = jest.fn(async (...args) => {
+  return Promise.resolve({
+    message: 'Template successfully updated',
+    status: 201,
+    messageType: 'success',
+  });
+});
+
 jest.mock('../../lib/response/fetchUtil', () => ({
-  update: (...args: any[]) => mockFetch(...args),
+  update: () => mockUpdate,
+}));
+
+jest.mock('../Providers/MessageProvider', () => ({
+  useMessage: jest.fn(() => ({ notify: jest.fn() })),
 }));
 
 jest.mock('next-auth/react', () => ({
@@ -48,10 +58,37 @@ const testTemplate = {
   createdById: 'userId',
 };
 
-describe('EditTemplateForm', () => {
-  beforeEach(() => {
-    console.log();
-  });
+let displayContainer: RenderResult<
+  typeof import('/home/aare/koulukoodi/traininghub/node_modules/@testing-library/dom/types/queries'),
+  HTMLElement,
+  HTMLElement
+>;
+
+//Template data with all fields:
+const allFields = {
+  id: '1',
+  name: 'New course',
+  description: 'A test course',
+  summary: 'All you ever wanted to know about testing!',
+  tags: [{ id: '1', name: 'Testing' }],
+  maxStudents: 55,
+  createdById: '30',
+  image: 'http://test-image.com',
+};
+
+//Template data with only required fields (name and description):
+const onlyRequiredFields = {
+  id: '2',
+  name: 'New course',
+  description: 'A test course',
+  summary: null,
+  tags: [],
+  maxStudents: 10, //default value
+  createdById: '30',
+  image: null,
+};
+
+describe("EdiitTemplateForm's tests", () => {
   describe('EditTemplateForm Form Appearance Tests', () => {
     const template = {
       id: '',
@@ -73,10 +110,8 @@ describe('EditTemplateForm', () => {
         />
       );
     });
-    it('renders the input sections to the form', () => {
-      console.log('current path: ', path.resolve(__dirname));
-      console.log('next path: ', path.resolve(__dirname, '..', '..'));
 
+    it('renders the input sections to the form', () => {
       const name = screen.getByTestId('templateFormName');
       const summary = screen.getByTestId('templateFormSummary');
       const image = screen.getByTestId('templateFormImage');
@@ -115,39 +150,14 @@ describe('EditTemplateForm', () => {
       expect(buttonElement).toHaveTextContent('TemplateForm.update');
     });
   });
-
   describe('EditTemplateForm Autofill Tests', () => {
-    //Template data with all fields:
-    const allFields = {
-      id: '1',
-      name: 'New course',
-      description: 'A test course',
-      summary: 'All you ever wanted to know about testing!',
-      tags: [{ id: '1', name: 'Testing' }],
-      maxStudents: 55,
-      createdById: '30',
-      image: 'http://test-image.com',
-    };
-
-    //Template data with only required fields (name and description):
-    const onlyRequiredFields = {
-      id: '2',
-      name: 'New course',
-      description: 'A test course',
-      summary: null,
-      tags: [],
-      maxStudents: 10, //default value
-      createdById: '30',
-      image: null,
-    };
-
     it('autofills correct values when template had all fields filled', () => {
       const { container } = renderWithTheme(
         <EditTemplateForm
           templateData={allFields}
+          onClose={mockOnClose}
           tags={[]}
           lang="en"
-          onClose={mockOnClose}
         />
       );
       const name = screen.getByTestId('templateFormName') as HTMLInputElement;
@@ -171,9 +181,9 @@ describe('EditTemplateForm', () => {
       const { container } = renderWithTheme(
         <EditTemplateForm
           templateData={onlyRequiredFields}
+          onClose={mockOnClose}
           tags={[]}
           lang="en"
-          onClose={mockOnClose}
         />
       );
       const name = screen.getByTestId('templateFormName') as HTMLInputElement;
@@ -194,6 +204,14 @@ describe('EditTemplateForm', () => {
     });
 
     it('autofills with tags', () => {
+      renderWithTheme(
+        <EditTemplateForm
+          templateData={allFields}
+          onClose={mockOnClose}
+          tags={[]}
+          lang="en"
+        />
+      );
       allFields.tags.forEach((tag) => {
         const chip = screen.getByText(tag.name);
         expect(chip).toBeInTheDocument();
@@ -204,13 +222,34 @@ describe('EditTemplateForm', () => {
       const { container } = renderWithTheme(
         <EditTemplateForm
           templateData={onlyRequiredFields}
+          onClose={mockOnClose}
+          tags={[]}
+          lang="en"
+        />
+      );
+      const tags = container.querySelectorAll('.tag');
+      expect(tags).toHaveLength(0);
+    });
+  });
+
+  describe("EditTemplateForm's Update Functinoality Tests", () => {
+    const mockTest = jest.fn();
+    beforeEach(() => {
+      displayContainer = renderWithTheme(
+        <EditTemplateForm
+          templateData={onlyRequiredFields}
           tags={[]}
           lang="en"
           onClose={mockOnClose}
         />
       );
-      const tags = container.querySelectorAll('.tag');
-      expect(tags).toHaveLength(0);
+    });
+    it('calls the update function when the update button is clicked', () => {
+      const updateButton = screen.getByTestId('updateTemplateButton');
+      mockTest();
+      mockUpdate();
+      updateButton.click();
+      expect(mockUpdate.mock.calls).toHaveLength(1);
     });
   });
 });
