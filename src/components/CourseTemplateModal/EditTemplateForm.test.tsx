@@ -3,7 +3,6 @@ import { EditTemplateForm } from './EditTemplateForm';
 import { renderWithTheme } from '@/lib/test-utils';
 
 import path from 'path';
-import { NextRequest } from 'next/server';
 
 jest.mock('../../lib/i18n/client', () => ({
   // this mock makes sure any components using the translate hook can use it without a warning being shown
@@ -36,6 +35,8 @@ jest.mock('next-auth/react', () => ({
   useSession: jest.fn(),
 }));
 
+const mockOnClose = jest.fn();
+
 const testTemplate = {
   id: '123456789',
   name: 'testTemplate',
@@ -62,13 +63,19 @@ describe('EditTemplateForm', () => {
       createdById: '',
       image: '',
     };
+    beforeEach(() => {
+      renderWithTheme(
+        <EditTemplateForm
+          templateData={template}
+          tags={[]}
+          lang="en"
+          onClose={mockOnClose}
+        />
+      );
+    });
     it('renders the input sections to the form', () => {
       console.log('current path: ', path.resolve(__dirname));
       console.log('next path: ', path.resolve(__dirname, '..', '..'));
-
-      renderWithTheme(
-        <EditTemplateForm templateData={template} tags={[]} lang="en" />
-      );
 
       const name = screen.getByTestId('templateFormName');
       const summary = screen.getByTestId('templateFormSummary');
@@ -82,9 +89,6 @@ describe('EditTemplateForm', () => {
     });
 
     it('renders the form labels with correct text', () => {
-      renderWithTheme(
-        <EditTemplateForm templateData={testTemplate} tags={[]} lang="en" />
-      );
       // Find the labels by their associated text
       const formTitle = screen.getByText(/TemplateForm\.title/i);
       const nameLabel = screen.getByText(/CourseForm\.name/i);
@@ -104,9 +108,6 @@ describe('EditTemplateForm', () => {
     });
 
     it('renders the update button with the correct text', () => {
-      renderWithTheme(
-        <EditTemplateForm templateData={testTemplate} tags={[]} lang="en" />
-      );
       const buttonElement = screen.getByTestId('updateTemplateButton');
 
       // Assert that the update button is rendered correctly
@@ -142,7 +143,12 @@ describe('EditTemplateForm', () => {
 
     it('autofills correct values when template had all fields filled', () => {
       const { container } = renderWithTheme(
-        <EditTemplateForm templateData={allFields} tags={[]} lang="en" />
+        <EditTemplateForm
+          templateData={allFields}
+          tags={[]}
+          lang="en"
+          onClose={mockOnClose}
+        />
       );
       const name = screen.getByTestId('templateFormName') as HTMLInputElement;
       const description = container.querySelector('.tiptap');
@@ -167,6 +173,7 @@ describe('EditTemplateForm', () => {
           templateData={onlyRequiredFields}
           tags={[]}
           lang="en"
+          onClose={mockOnClose}
         />
       );
       const name = screen.getByTestId('templateFormName') as HTMLInputElement;
@@ -187,9 +194,6 @@ describe('EditTemplateForm', () => {
     });
 
     it('autofills with tags', () => {
-      renderWithTheme(
-        <EditTemplateForm templateData={allFields} tags={[]} lang="en" />
-      );
       allFields.tags.forEach((tag) => {
         const chip = screen.getByText(tag.name);
         expect(chip).toBeInTheDocument();
@@ -202,6 +206,7 @@ describe('EditTemplateForm', () => {
           templateData={onlyRequiredFields}
           tags={[]}
           lang="en"
+          onClose={mockOnClose}
         />
       );
       const tags = container.querySelectorAll('.tag');
