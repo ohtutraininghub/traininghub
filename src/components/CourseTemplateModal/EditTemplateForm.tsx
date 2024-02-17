@@ -61,7 +61,9 @@ export function EditTemplateForm({ lang, tags, templateData, onClose }: Props) {
       id: templateData.id,
     });
     notify(response);
+    console.log('123');
     if (response.messageType === 'success') {
+      console.log('wohoooo');
       onClose();
       router.refresh();
     }
