@@ -4,9 +4,6 @@ import { renderWithTheme } from '@/lib/test-utils';
 import { waitFor } from '@testing-library/react';
 import { update } from '../../lib/response/fetchUtil';
 
-import path from 'path';
-import { before, mock } from 'node:test';
-
 jest.mock('../../lib/i18n/client', () => ({
   // this mock makes sure any components using the translate hook can use it without a warning being shown
   useTranslation: () => {
@@ -232,6 +229,7 @@ describe('EditTemplateForm Autofill Tests', () => {
 describe("EditTemplateForm's Update Functinoality Tests", () => {
   beforeEach(() => {
     mockOnClose.mockClear();
+    (update as jest.Mock).mockClear();
     displayContainer = renderWithTheme(
       <EditTemplateForm
         templateData={onlyRequiredFields}
@@ -254,6 +252,18 @@ describe("EditTemplateForm's Update Functinoality Tests", () => {
     fireEvent.click(updateButton);
     await waitFor(() => {
       expect(mockOnClose).toHaveBeenCalled();
+    });
+  });
+  it('does not close the modal when the update is unsuccessful', async () => {
+    (update as jest.Mock).mockResolvedValue({
+      status: 400,
+      messageType: 'error',
+      message: 'Template update failed',
+    });
+    const updateButton = screen.getByTestId('updateTemplateButton');
+    fireEvent.click(updateButton);
+    await waitFor(() => {
+      expect(mockOnClose).not.toHaveBeenCalled();
     });
   });
 });
