@@ -93,7 +93,9 @@ describe('ProfileTemplateList component', () => {
         tags={[]}
       />
     );
-    const noTemplatesText = screen.getByText('No templates to show.');
+    const noTemplatesText = screen.getByText(
+      'TemplateSearchBar.Filter.notFound'
+    );
     expect(noTemplatesText).toBeInTheDocument();
   });
 
