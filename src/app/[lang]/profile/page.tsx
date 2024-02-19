@@ -68,6 +68,7 @@ export default async function ProfilePage({ searchParams, params }: Props) {
           image: userData.image ?? '',
         }}
         courses={userData?.courses ?? []}
+        createdCourses={userData?.createdCourses ?? []}
         users={allUsers}
         templates={templates}
         tags={tags}
