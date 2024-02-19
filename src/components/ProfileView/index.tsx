@@ -13,6 +13,8 @@ import UserList from '@/components/UserList';
 import { isTrainerOrAdmin } from '@/lib/auth-utils';
 import { TemplateWithCreator } from '@/lib/prisma/templates';
 import { Tag } from '@prisma/client';
+import { Locale, i18n } from '@/lib/i18n/i18n-config';
+import { useTranslation } from '@i18n/client';
 
 export interface userDetails {
   name: string;
@@ -38,6 +40,8 @@ export default function ProfileView({
 }: ProfileViewProps) {
   const [selectedTab, setSelectedTab] = useState(0);
   const { palette } = useTheme();
+  const lang: Locale = i18n.defaultLocale;
+  const { t } = useTranslation(lang, 'components');
   const currentDate = new Date();
   const { data: session } = useSession();
 
@@ -68,15 +72,17 @@ export default function ProfileView({
           },
         }}
       >
-        <Tab label="My courses" />
-        <Tab label="Additional information" />
-        {session?.user.role === Role.ADMIN && <Tab label="Admin dashboard" />}
+        <Tab label={t('ProfileView.label.myCourses')} />
+        <Tab label={t('ProfileView.label.additionalInfo')} />
+        {session?.user.role === Role.ADMIN && (
+          <Tab label={t('ProfileView.label.adminDashboard')} />
+        )}
       </Tabs>
 
       {selectedTab === 0 && (
         <>
           <ProfileCourseList
-            headerText="Courses in progress"
+            headerText={t('ProfileView.header.coursesInprogress')}
             courses={courses.filter(
               (course: Course) =>
                 course.startDate <= currentDate && course.endDate >= currentDate
@@ -84,7 +90,7 @@ export default function ProfileView({
             open={true}
           />
           <ProfileCourseList
-            headerText="Upcoming courses"
+            headerText={t('ProfileView.header.upcomingCourses')}
             courses={courses.filter(
               (course: Course) => course.startDate > currentDate
             )}
@@ -92,7 +98,7 @@ export default function ProfileView({
             timer={true}
           />
           <ProfileCourseList
-            headerText="Ended courses"
+            headerText={t('ProfileView.header.endedCourses')}
             courses={courses.filter(
               (course: Course) => course.endDate < currentDate
             )}
@@ -102,8 +108,8 @@ export default function ProfileView({
             <ProfileTemplateList
               headerText={
                 session?.user.role === Role.ADMIN
-                  ? 'All course templates'
-                  : 'My course templates'
+                  ? t('ProfileView.header.templatesAdmin')
+                  : t('ProfileView.header.templatesTrainer')
               }
               templates={templates}
               tags={tags}
