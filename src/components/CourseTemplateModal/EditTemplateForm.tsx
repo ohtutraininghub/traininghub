@@ -20,38 +20,52 @@ import FormFieldError from '../FormFieldError';
 import StyledTooltip from '@/components/StyledTooltip';
 import RichTextEditor from '@/components/TextEditor';
 import { Tag } from '@prisma/client';
+import { update } from '@/lib/response/fetchUtil';
+import { useMessage } from '../Providers/MessageProvider';
+import { useRouter } from 'next/navigation';
 import { TemplateWithTags } from '@/lib/prisma/templates';
 
-interface Props extends DictProps {
-  updateTemplate: () => void;
-  tags: Tag[];
-  templateData: TemplateWithTags;
-}
 type FormType = TemplateSchemaType;
 
-export function EditTemplateForm({
-  lang,
-  updateTemplate,
-  tags,
-  templateData,
-}: Props) {
+interface Props extends DictProps {
+  tags: Tag[];
+  templateData: TemplateWithTags;
+  onClose: () => void;
+}
+
+export function EditTemplateForm({ lang, tags, templateData, onClose }: Props) {
   const { t } = useTranslation(lang);
   const { palette } = useTheme();
+  const { notify } = useMessage();
+  const router = useRouter();
   const {
     control,
     register,
     formState: { errors },
+    handleSubmit,
   } = useForm<FormType>({
     resolver: zodResolver(templateSchema),
     defaultValues: {
-      ...(templateData
-        ? {
-            ...templateData,
-            tags: templateData.tags.map((tag) => tag.name),
-          }
-        : { maxStudents: 10 }),
+      name: templateData.name,
+      description: templateData.description,
+      summary: templateData.summary,
+      image: templateData.image,
+      maxStudents: templateData.maxStudents,
+      tags: templateData.tags.map((tag) => tag.name),
     },
   });
+  const submitTemplate = async (template: FormType) => {
+    const response = await update('/api/template', {
+      ...template,
+      createdById: templateData.createdById,
+      id: templateData.id,
+    });
+    notify(response);
+    if (response.messageType === 'success') {
+      onClose();
+      router.refresh();
+    }
+  };
 
   return (
     <>
@@ -67,7 +81,7 @@ export function EditTemplateForm({
       <form
         id="templateForm"
         style={{ display: 'flex', flexDirection: 'column', gap: 10 }}
-        onSubmit={updateTemplate}
+        onSubmit={handleSubmit(submitTemplate)}
       >
         <InputLabel htmlFor="templateFormName">
           {t('CourseForm.name')}

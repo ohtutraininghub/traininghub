@@ -148,7 +148,6 @@ export default function ProfileTemplateList({
           tags={tags}
           lang={lang}
           template={selectedTemplate}
-          open={isTemplateModalOpen}
           onClose={handleCloseTemplateModal}
         />
       )}

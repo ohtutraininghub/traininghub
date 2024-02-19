@@ -13,7 +13,6 @@ import { TemplateWithTags } from '@/lib/prisma/templates';
 
 interface CourseTemplateModalProps extends DictProps {
   template: TemplateWithTags;
-  open: boolean;
   onClose: () => void;
   tags: Tag[];
 }
@@ -25,13 +24,10 @@ export default function CourseTemplateModal({
   tags,
 }: CourseTemplateModalProps) {
   const { palette } = useTheme();
-  const handleClick = (event: object, reason: string) => {
+  const handleClick = (_event: object, reason: string) => {
     if (reason === 'backdropClick' || reason === 'escapeKeyDown') {
       onClose();
     }
-  };
-  const updateTemplate = () => {
-    onClose();
   };
 
   return (
@@ -86,7 +82,7 @@ export default function CourseTemplateModal({
             tags={tags}
             templateData={template}
             lang={lang}
-            updateTemplate={updateTemplate}
+            onClose={onClose}
           />
         </Card>
       </Modal>
