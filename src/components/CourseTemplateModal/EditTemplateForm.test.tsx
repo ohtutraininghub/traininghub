@@ -53,12 +53,6 @@ const testTemplate = {
   createdById: 'userId',
 };
 
-let displayContainer: RenderResult<
-  typeof import('/home/aare/koulukoodi/traininghub/node_modules/@testing-library/dom/types/queries'),
-  HTMLElement,
-  HTMLElement
->;
-
 //Template data with all fields:
 const allFields = {
   id: '1',
@@ -230,7 +224,7 @@ describe("EditTemplateForm's Update Functinoality Tests", () => {
   beforeEach(() => {
     mockOnClose.mockClear();
     (update as jest.Mock).mockClear();
-    displayContainer = renderWithTheme(
+    renderWithTheme(
       <EditTemplateForm
         templateData={onlyRequiredFields}
         tags={[]}
