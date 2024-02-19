@@ -28,6 +28,9 @@ export async function getUserData(userId: string) {
         },
         orderBy: [{ startDate: 'asc' }, { name: 'asc' }],
       },
+      createdCourses: {
+        orderBy: [{ name: 'asc' }],
+      },
       createdTemplates: {
         orderBy: [{ name: 'asc' }],
       },
