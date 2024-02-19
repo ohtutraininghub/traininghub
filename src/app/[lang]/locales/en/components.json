@@ -110,7 +110,8 @@
       "endedCourses": "Ended courses",
       "templatesAdmin": "All course templates",
       "templatesTrainer": "My course templates",
-      "upcomingCourses": "Upcoming courses"
+      "upcomingCourses": "Upcoming courses",
+      "upcomingCreatedCourses": "Upcoming created courses"
     },
     "label": {
       "additionalInfo": "Additional information",
