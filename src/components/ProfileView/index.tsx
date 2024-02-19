@@ -26,6 +26,7 @@ export interface ProfileViewProps extends PropsWithChildren {
   tags: Tag[];
   userDetails: userDetails;
   courses: Course[];
+  createdCourses: Course[];
   users: User[];
   templates: TemplateWithCreator[];
 }
@@ -33,6 +34,7 @@ export interface ProfileViewProps extends PropsWithChildren {
 export default function ProfileView({
   userDetails,
   courses,
+  createdCourses,
   users,
   children,
   templates,
@@ -81,6 +83,15 @@ export default function ProfileView({
 
       {selectedTab === 0 && (
         <>
+          {isTrainerOrAdmin((session?.user as User) || {}) && (
+            <ProfileCourseList
+              headerText={t('ProfileView.header.upcomingCreatedCourses')}
+              courses={createdCourses.filter(
+                (createdCourse: Course) => createdCourse.startDate > currentDate
+              )}
+              open={true}
+            />
+          )}
           <ProfileCourseList
             headerText={t('ProfileView.header.coursesInprogress')}
             courses={courses.filter(
