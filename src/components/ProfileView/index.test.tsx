@@ -282,4 +282,38 @@ describe('ProfileView Tests', () => {
     expect(tempaltesAdmin).toBeInTheDocument();
     expect(tempaltesTrainer).not.toBeInTheDocument();
   });
+  it('should be possible to access admin dashboard as an admin', async () => {
+    (useSession as jest.Mock).mockReturnValue({
+      data: {
+        user: adminUser,
+      },
+      status: 'authenticated',
+    });
+
+    renderWithTheme(
+      <ProfileView
+        lang="en"
+        userDetails={{
+          name: adminUser.name,
+          email: adminUser.email,
+          image: adminUser.image,
+        }}
+        courses={[]}
+        createdCourses={[]}
+        users={[traineeUser, trainerUser]}
+        children={[]}
+        templates={[]}
+        tags={[
+          { id: '1', name: 'Testing' },
+          { id: '2', name: 'Git' },
+        ]}
+      />
+    );
+
+    const adminDashboard = screen.getByText('ProfileView.label.adminDashboard');
+    fireEvent.click(adminDashboard);
+
+    const users = screen.getByText('EditUsers.label');
+    expect(users).toBeInTheDocument();
+  });
 });
