@@ -4,8 +4,24 @@ import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { renderWithTheme } from '@/lib/test-utils';
 import { User, Role } from '@prisma/client';
-import ProfileCourseList from './ProfileCourseList';
 import ProfileView from './index';
+import { useSession } from 'next-auth/react';
+
+// Mocking translation and fetch utilities
+jest.mock('../../lib/i18n/client', () => ({
+  useTranslation: () => {
+    return {
+      t: (str: string) => str,
+      i18n: {
+        changeLanguage: () => new Promise(() => {}),
+      },
+    };
+  },
+}));
+
+jest.mock('next-auth/react', () => ({
+  useSession: jest.fn(),
+}));
 
 const adminUser: User = {
   id: '123a',
@@ -109,6 +125,13 @@ const traineeUser = {
 
 describe('ProfileView Tests', () => {
   it('should render courses in the correct dropdowns', async () => {
+    (useSession as jest.Mock).mockReturnValue({
+      data: {
+        user: traineeUser,
+      },
+      status: 'authenticated',
+    });
+
     renderWithTheme(
       <ProfileView
         lang="en"
@@ -126,9 +149,13 @@ describe('ProfileView Tests', () => {
       />
     );
 
-    const myCourses = screen.getByText('My Courses');
-    const upcomingCourses = screen.getByText('Upcoming Ccurses');
-    const inProgressCourses = screen.getByText('Courses in progress');
+    const myCourses = screen.getByText('ProfileView.label.myCourses');
+    const upcomingCourses = screen.getByText(
+      'ProfileView.header.upcomingCourses (1)'
+    );
+    const inProgressCourses = screen.getByText(
+      'ProfileView.header.coursesInprogress (1)'
+    );
     expect(myCourses).toBeInTheDocument();
     expect(upcomingCourses).toBeInTheDocument();
     expect(inProgressCourses).toBeInTheDocument();
