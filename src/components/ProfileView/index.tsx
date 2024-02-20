@@ -13,7 +13,7 @@ import UserList from '@/components/UserList';
 import { isTrainerOrAdmin } from '@/lib/auth-utils';
 import { TemplateWithCreator } from '@/lib/prisma/templates';
 import { Tag } from '@prisma/client';
-import { Locale, i18n } from '@/lib/i18n/i18n-config';
+import { DictProps } from '@i18n/index';
 import { useTranslation } from '@i18n/client';
 
 export interface userDetails {
@@ -22,7 +22,7 @@ export interface userDetails {
   image: string;
 }
 
-export interface ProfileViewProps extends PropsWithChildren {
+export interface ProfileViewProps extends PropsWithChildren, DictProps {
   tags: Tag[];
   userDetails: userDetails;
   courses: Course[];
@@ -32,6 +32,7 @@ export interface ProfileViewProps extends PropsWithChildren {
 }
 
 export default function ProfileView({
+  lang,
   userDetails,
   courses,
   createdCourses,
@@ -42,7 +43,6 @@ export default function ProfileView({
 }: ProfileViewProps) {
   const [selectedTab, setSelectedTab] = useState(0);
   const { palette } = useTheme();
-  const lang: Locale = i18n.defaultLocale;
   const { t } = useTranslation(lang, 'components');
   const currentDate = new Date();
   const { data: session } = useSession();

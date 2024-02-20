@@ -62,6 +62,7 @@ export default async function ProfilePage({ searchParams, params }: Props) {
         editCourseLabel={t('EditButton.editCourse')}
       />
       <ProfileView
+        lang={params.lang}
         userDetails={{
           name: userData.name ?? '',
           email: userData.email ?? '',
