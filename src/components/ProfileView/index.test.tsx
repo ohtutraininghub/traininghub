@@ -29,6 +29,10 @@ jest.mock('next/navigation', () => ({
   })),
 }));
 
+jest.mock('../../lib/response/responseUtil', () => ({
+  MessageType: {},
+}));
+
 const adminUser = {
   id: '123a',
   name: 'Ada Admin',
