@@ -22,7 +22,7 @@ const adminUser = {
   email: 'anna@traininghub.org',
   emailVerified: null,
   image: '',
-  role: Role.TRAINER,
+  role: Role.ADMIN,
 };
 
 const currentDate = new Date().setHours(9, 0, 0, 0).valueOf();
