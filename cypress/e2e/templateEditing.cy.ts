@@ -18,9 +18,18 @@ describe('Template editing', () => {
       cy.getCy('templateFormName').clear();
       cy.getCy('templateFormName').type('Kubernetes Basics for beginners');
       cy.getCy('updateTemplateButton').should('exist').click();
-      cy.getCy('templateListControls').click();
       cy.getCy('templateList').as('templateListTag');
-      cy.get('@templateListTag').contains('Kubernetes Basics'); // as no database integration yet
+      cy.get('@templateListTag').contains('Kubernetes Basics for beginners');
+    });
+
+    it('should not edit the template if the form is closed', () => {
+      cy.getCy('EditTemplateButton').first().click();
+      cy.getCy('templateFormName').should('have.value', 'Kubernetes Basics');
+      cy.getCy('templateFormName').clear();
+      cy.getCy('templateFormName').type('Kubernetes Basics for beginners');
+      cy.getCy('closeButton').click();
+      cy.getCy('templateList').as('templateListTag');
+      cy.get('@templateListTag').contains('Kubernetes Basics');
     });
   });
 
@@ -53,9 +62,8 @@ describe('Template editing', () => {
       cy.getCy('templateFormName').clear();
       cy.getCy('templateFormName').type('Kubernetes Basics for beginners');
       cy.getCy('updateTemplateButton').should('exist').click();
-      cy.getCy('templateListControls').click();
       cy.getCy('templateList').as('templateListTag');
-      cy.get('@templateListTag').contains('Kubernetes Basics'); // as no database integration yet the name should not change
+      cy.get('@templateListTag').contains('Kubernetes Basics for beginners');
     });
   });
 });
