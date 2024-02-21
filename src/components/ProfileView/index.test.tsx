@@ -170,6 +170,9 @@ describe('ProfileView Tests', () => {
     const upcomingCreatedCourses = screen.queryByText(
       'ProfileView.header.upcomingCreatedCourses'
     );
+    const endedCreatedCourses = screen.queryByText(
+      'ProfileView.header.endedCreatedCourses'
+    );
     const tempaltesAdmin = screen.queryByText(
       'ProfileView.header.templatesAdmin'
     );
@@ -180,6 +183,7 @@ describe('ProfileView Tests', () => {
     expect(upcomingCourses).toBeInTheDocument();
     expect(inProgressCourses).toBeInTheDocument();
     expect(upcomingCreatedCourses).not.toBeInTheDocument();
+    expect(endedCreatedCourses).not.toBeInTheDocument();
     expect(tempaltesAdmin).not.toBeInTheDocument();
     expect(tempaltesTrainer).not.toBeInTheDocument();
   });
@@ -222,6 +226,9 @@ describe('ProfileView Tests', () => {
     const upcomingCreatedCourses = screen.getByText(
       'ProfileView.header.upcomingCreatedCourses (0)' // trainers created courses are in the past
     );
+    const endedCreatedCourses = screen.getByText(
+      'ProfileView.header.endedCreatedCourses (1)'
+    );
     const tempaltesAdmin = screen.queryByText(
       'ProfileView.header.templatesAdmin (1)'
     );
@@ -232,6 +239,7 @@ describe('ProfileView Tests', () => {
     expect(upcomingCourses).toBeInTheDocument();
     expect(inProgressCourses).toBeInTheDocument();
     expect(upcomingCreatedCourses).toBeInTheDocument();
+    expect(endedCreatedCourses).toBeInTheDocument();
     expect(tempaltesAdmin).not.toBeInTheDocument();
     expect(tempaltesTrainer).toBeInTheDocument();
   });
@@ -273,6 +281,9 @@ describe('ProfileView Tests', () => {
     const upcomingCreatedCourses = screen.getByText(
       'ProfileView.header.upcomingCreatedCourses (1)'
     );
+    const endedCreatedCourses = screen.getByText(
+      'ProfileView.header.endedCreatedCourses (0)' // there are no ended courses that were created by the admin
+    );
     const tempaltesAdmin = screen.getByText(
       'ProfileView.header.templatesAdmin (1)'
     );
@@ -283,6 +294,7 @@ describe('ProfileView Tests', () => {
     expect(upcomingCourses).toBeInTheDocument();
     expect(inProgressCourses).toBeInTheDocument();
     expect(upcomingCreatedCourses).toBeInTheDocument();
+    expect(endedCreatedCourses).toBeInTheDocument();
     expect(tempaltesAdmin).toBeInTheDocument();
     expect(tempaltesTrainer).not.toBeInTheDocument();
   });
