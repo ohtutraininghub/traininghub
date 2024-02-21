@@ -17,6 +17,14 @@ const trainerUser = {
   role: Role.TRAINER,
 };
 
+const adminUser = {
+  name: 'Anna Admin',
+  email: 'anna@traininghub.org',
+  emailVerified: null,
+  image: '',
+  role: Role.TRAINER,
+};
+
 const currentDate = new Date().setHours(9, 0, 0, 0).valueOf();
 const msDay = 24 * 60 * 60 * 1000;
 const msHour = 60 * 60 * 1000;
@@ -26,8 +34,8 @@ const courseData = [
     name: 'Git Fundamentals',
     description:
       'This course will walk you through the fundamentals of using Git for version control. You will learn how to create a local Git repository, commit files and push your changes to a remote repository. The course will introduce you to concepts like the working copy and the staging area and teach you how to organise you repository using tags and branches. You will learn how to make pull requests and merge branches, and tackle merge conflicts when they arise.',
-    startDate: new Date(currentDate + 7 * msDay),
-    endDate: new Date(currentDate + 7 * msDay + 8 * msHour),
+    startDate: new Date(currentDate - 7 * msDay), // course is in the past
+    endDate: new Date(currentDate - 7 * msDay + 8 * msHour),
     maxStudents: 12,
     tags: ['Git'],
   },
@@ -35,8 +43,8 @@ const courseData = [
     name: 'Jenkins Fundamentals',
     description:
       'Learn how to automate building, testing and deploying your code using Jenkins, a popular open-source server for setting up continuous integration and continuous delivery pipelines. During this two-day course you will get a lot of hands-on experience in Jenkins basics like setting up a Jenkins server, choosing and installing Jenkins plugins and building a Jenkins CI/CD pipeline.',
-    startDate: new Date(currentDate + 30 * msDay),
-    endDate: new Date(currentDate + 32 * msDay + 7.5 * msHour),
+    startDate: new Date(currentDate - 2 * msDay), // course is inprogress
+    endDate: new Date(currentDate + 1 * msDay + 7.5 * msHour),
     maxStudents: 8,
     tags: ['CI/CD', 'Jenkins'],
   },
@@ -44,7 +52,7 @@ const courseData = [
     name: 'Robot Framework Fundamentals',
     description:
       'This course will teach you how to automate the acceptance testing of your software using Robot Framework, a generic, open-source, Python-based automation framework. You will get an introduction to how Robot Framework works and learn how to write tasks utilising keywords, all in an easily readable and human-friendly syntax.',
-    startDate: new Date(currentDate + 180 * msDay),
+    startDate: new Date(currentDate + 180 * msDay), // course is in the future
     endDate: new Date(currentDate + 183 * msDay + 6.5 * msHour),
     maxStudents: 10,
     tags: ['Testing', 'Python', 'Robot Framework'],
@@ -53,7 +61,7 @@ const courseData = [
     name: 'Kubernetes Fundamentals',
     description:
       'Take your first steps in using Kubernetes for container orchestration. This course will introduce you to the basic concepts and building blocks of Kubernetes and the architecture of the system. Get ready to start you cloud native journey!',
-    startDate: new Date(currentDate + 365 * msDay),
+    startDate: new Date(currentDate + 365 * msDay), // course is in the future
     endDate: new Date(currentDate + 366 * msDay + 7 * msHour),
     maxStudents: 15,
     tags: ['Kubernetes', 'Docker', 'CI/CD'],
@@ -183,9 +191,10 @@ export async function seedUsers() {
 export async function main() {
   await clearDatabase();
 
-  const user = await prisma.user.create({ data: {} });
+  await prisma.user.create({ data: {} });
   const trainee = await prisma.user.create({ data: traineeUser });
-  await prisma.user.create({ data: trainerUser });
+  const trainer = await prisma.user.create({ data: trainerUser });
+  await prisma.user.create({ data: adminUser });
 
   seedUsers();
 
@@ -202,7 +211,7 @@ export async function main() {
           startDate: course.startDate,
           endDate: course.endDate,
           maxStudents: course.maxStudents,
-          createdById: user.id,
+          createdById: trainer.id,
           students: {
             connect: {
               id: trainee.id,
