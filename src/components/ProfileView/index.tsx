@@ -100,6 +100,7 @@ export default function ProfileView({
                 (createdCourse: Course) => createdCourse.endDate < currentDate
               )}
               open={true}
+              id={'endedCreated'}
             />
           )}
           <ProfileCourseList
