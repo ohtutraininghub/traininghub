@@ -64,7 +64,7 @@ describe('Profile View', () => {
     cy.task('seedDatabase');
   });
 
-  describe('when logged in as a trainer', () => {
+  describe('when logged in as a trainee', () => {
     beforeEach(() => {
       cy.login(traineeUser.email, traineeUser.role);
       cy.visit('/profile');
@@ -91,6 +91,9 @@ describe('Profile View', () => {
       cy.getCy('listControls\\.endedCourses').click();
       cy.contains(testCourses[0].name);
     });
+    it('should not show upcoming created courses for trainee', () => {
+      cy.contains('Upcoming created courses').should('not.exist');
+    });
     it('should not show template list for trainee', () => {
       cy.contains('My course templates').should('not.exist');
     });
@@ -102,11 +105,14 @@ describe('Profile View', () => {
       // close automatically opened dropdowns
       cy.getCy('listControls\\.inprogressCourses').click();
       cy.getCy('listControls\\.upcomingCourses').click();
+      cy.getCy('listControls\\.endedCreated').click();
     });
     it('should not show admin dashboard for trainer', () => {
       cy.contains('Admin dashboard').should('not.exist');
     });
     it('should show upcoming created courses for trainer', () => {
+      // trainer user is the creator of 2 upcoming courses
+      cy.contains('Upcoming created courses (2)');
       cy.contains(testCourses[0].name).should('not.exist');
       cy.contains(testCourses[1].name).should('not.exist');
       cy.contains(testCourses[2].name);
@@ -142,6 +148,8 @@ describe('Profile View', () => {
       cy.contains('Admin dashboard');
     });
     it('should not show upcoming created courses for admin', () => {
+      // admin isn't the creator of any courses
+      cy.contains('Upcoming created courses (0)');
       cy.contains('No courses to show.');
     });
     it('should show all templates for admin', () => {
