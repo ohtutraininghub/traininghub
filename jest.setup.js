@@ -1,10 +1,6 @@
 import '@testing-library/jest-dom';
 import dotenv from 'dotenv';
 import { TextEncoder, TextDecoder } from 'util';
-import fetch from 'node-fetch';
-
-global.fetch = fetch;
-global.Response = fetch.Response;
 
 Object.assign(global, { TextDecoder, TextEncoder });
 
