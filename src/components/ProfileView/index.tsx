@@ -92,6 +92,15 @@ export default function ProfileView({
               open={true}
             />
           )}
+          {isTrainerOrAdmin((session?.user as User) || {}) && (
+            <ProfileCourseList
+              headerText={t('ProfileView.header.endedCreatedCourses')}
+              courses={createdCourses.filter(
+                (createdCourse: Course) => createdCourse.endDate < currentDate
+              )}
+              open={true}
+            />
+          )}
           <ProfileCourseList
             headerText={t('ProfileView.header.coursesInprogress')}
             courses={courses.filter(
