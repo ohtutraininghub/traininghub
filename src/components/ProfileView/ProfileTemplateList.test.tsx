@@ -2,7 +2,6 @@ import React from 'react';
 import { screen } from '@testing-library/react';
 import { renderWithTheme } from '@/lib/test-utils';
 import ProfileTemplateList from './ProfileTemplateList';
-import { Template } from '@prisma/client';
 import userEvent from '@testing-library/user-event';
 import { TemplateWithCreator } from '@/lib/prisma/templates';
 
@@ -36,11 +35,18 @@ const testTemplates: TemplateWithCreator[] = [
     description:
       'Take your first steps in using Kubernetes for container orchestration. This course will introduce you to the basic concepts and building blocks of Kubernetes and the architecture of the system. Get ready to start you cloud native journey!',
     maxStudents: 15,
-    tags: ['Kubernetes', 'Docker', 'CI/CD'],
+    tags: [
+      { id: '1', name: 'Kubernetes' },
+      { id: '2', name: 'Docker' },
+      { id: '3', name: 'CI/CD' },
+    ],
     createdById: '1',
     createdBy: {
       name: 'Timmy',
     },
+    summary:
+      'Learn the basics of Kubernetes and start your cloud native journey!',
+    image: 'http://test-image.com',
   },
   {
     id: '2',
@@ -48,11 +54,17 @@ const testTemplates: TemplateWithCreator[] = [
     description:
       'This course will teach you how to automate the acceptance testing of your software using Robot Framework, a generic, open-source, Python-based automation framework. You will get an introduction to how Robot Framework works and learn how to write tasks utilising keywords, all in an easily readable and human-friendly syntax.',
     maxStudents: 10,
-    tags: ['Testing', 'Python', 'Robot Framework'],
+    tags: [
+      { id: '4', name: 'Testing' },
+      { id: '5', name: 'Python' },
+      { id: '6', name: 'Robot Framework' },
+    ],
     createdById: '2',
     createdBy: {
       name: 'Tommy',
     },
+    summary: 'Automate your acceptance testing with Robot Framework!',
+    image: 'http://test-image.com',
   },
 ];
 
@@ -81,7 +93,9 @@ describe('ProfileTemplateList component', () => {
         tags={[]}
       />
     );
-    const noTemplatesText = screen.getByText('No templates to show.');
+    const noTemplatesText = screen.getByText(
+      'TemplateSearchBar.Filter.notFound'
+    );
     expect(noTemplatesText).toBeInTheDocument();
   });
 
@@ -125,12 +139,13 @@ describe('ProfileTemplateList component', () => {
     expect(screen.getByText('(2)', { exact: false })).toBeInTheDocument();
   });
 
-  it.only('shows name of template creator', () => {
+  it('shows name of template creator', () => {
     renderWithTheme(
       <ProfileTemplateList
         headerText="Templates"
         templates={testTemplates}
         open={true}
+        tags={[]}
       />
     );
     testTemplates.forEach((template) => {
