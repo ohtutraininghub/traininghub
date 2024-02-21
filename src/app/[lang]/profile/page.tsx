@@ -1,4 +1,3 @@
-import { prisma } from '@/lib/prisma';
 import ProfileView from '@/components/ProfileView';
 import Container from '@mui/material/Container/Container';
 import CourseModal from '@/components/CourseModal';
@@ -10,6 +9,7 @@ import {
   UserNamesAndIds,
   getAllUsers,
   getStudentNamesByCourseId,
+  getUserData,
 } from '@/lib/prisma/users';
 import {
   getTemplatesWithCreator,
@@ -28,32 +28,7 @@ export default async function ProfilePage({ searchParams, params }: Props) {
   const session = await getServerAuthSession();
   const { t } = await translator(['components', 'admin']);
   const allUsers = await getAllUsers();
-  const userData = await prisma.user.findUnique({
-    where: {
-      id: session.user.id,
-    },
-    include: {
-      courses: {
-        include: {
-          createdBy: {
-            select: {
-              name: true,
-            },
-          },
-          tags: true,
-          _count: {
-            select: {
-              students: true,
-            },
-          },
-        },
-        orderBy: [{ startDate: 'asc' }, { name: 'asc' }],
-      },
-      createdTemplates: {
-        orderBy: [{ name: 'asc' }],
-      },
-    },
-  });
+  const userData = await getUserData(session.user.id);
   const tags = await getTags();
 
   if (!userData) {
@@ -87,12 +62,14 @@ export default async function ProfilePage({ searchParams, params }: Props) {
         editCourseLabel={t('EditButton.editCourse')}
       />
       <ProfileView
+        lang={params.lang}
         userDetails={{
           name: userData.name ?? '',
           email: userData.email ?? '',
           image: userData.image ?? '',
         }}
         courses={userData?.courses ?? []}
+        createdCourses={userData?.createdCourses ?? []}
         users={allUsers}
         templates={templates}
         tags={tags}
