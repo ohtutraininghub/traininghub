@@ -108,6 +108,7 @@
     "header": {
       "coursesInprogress": "Courses in progress",
       "endedCourses": "Ended courses",
+      "endedCreatedCourses": "Ended created courses",
       "templatesAdmin": "All course templates",
       "templatesTrainer": "My course templates",
       "upcomingCourses": "Upcoming courses",
