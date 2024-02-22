@@ -104,6 +104,22 @@
     "signOut": "Sign out",
     "viewProfile": "View profile"
   },
+  "ProfileView": {
+    "header": {
+      "coursesInprogress": "Courses in progress",
+      "endedCourses": "Ended courses",
+      "endedCreatedCourses": "Ended created courses",
+      "templatesAdmin": "All course templates",
+      "templatesTrainer": "My course templates",
+      "upcomingCourses": "Upcoming courses",
+      "upcomingCreatedCourses": "Upcoming created courses"
+    },
+    "label": {
+      "additionalInfo": "Additional information",
+      "adminDashboard": "Admin dashboard",
+      "myCourses": "My courses"
+    }
+  },
   "RemoveCourse": {
     "button": {
       "text": "Remove"

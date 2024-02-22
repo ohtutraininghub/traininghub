@@ -6,6 +6,39 @@ export async function getAllUsers() {
   return users;
 }
 
+export async function getUserData(userId: string) {
+  const userData = await prisma.user.findUnique({
+    where: {
+      id: userId,
+    },
+    include: {
+      courses: {
+        include: {
+          createdBy: {
+            select: {
+              name: true,
+            },
+          },
+          tags: true,
+          _count: {
+            select: {
+              students: true,
+            },
+          },
+        },
+        orderBy: [{ startDate: 'asc' }, { name: 'asc' }],
+      },
+      createdCourses: {
+        orderBy: [{ name: 'asc' }],
+      },
+      createdTemplates: {
+        orderBy: [{ name: 'asc' }],
+      },
+    },
+  });
+  return userData;
+}
+
 export async function getStudentNamesByCourseId(courseId: string) {
   const students = await prisma.user.findMany({
     where: {
