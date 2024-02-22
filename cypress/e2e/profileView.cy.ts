@@ -105,18 +105,29 @@ describe('Profile View', () => {
       // close automatically opened dropdowns
       cy.getCy('listControls\\.inprogressCourses').click();
       cy.getCy('listControls\\.upcomingCourses').click();
-      cy.getCy('listControls\\.endedCreated').click();
     });
     it('should not show admin dashboard for trainer', () => {
       cy.contains('Admin dashboard').should('not.exist');
     });
     it('should show upcoming created courses for trainer', () => {
+      // close ended created courses dropdown
+      cy.getCy('listControls\\.endedCreated').click();
       // trainer user is the creator of 2 upcoming courses
       cy.contains('Upcoming created courses (2)');
       cy.contains(testCourses[0].name).should('not.exist');
       cy.contains(testCourses[1].name).should('not.exist');
       cy.contains(testCourses[2].name);
       cy.contains(testCourses[3].name);
+    });
+    it('should show ended created courses for trainer', () => {
+      // close upcoming created courses dropdown
+      cy.getCy('listControls\\.upcomingCreated').click();
+      // trainer user is the creator of one upcoming course
+      cy.contains('Ended created courses (1)');
+      cy.contains(testCourses[0].name);
+      cy.contains(testCourses[1].name).should('not.exist');
+      cy.contains(testCourses[2].name).should('not.exist');
+      cy.contains(testCourses[3].name).should('not.exist');
     });
     it('should not show any enrolled courses for trainer', () => {
       // open and close one by one because they each contain the same text
