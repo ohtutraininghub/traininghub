@@ -5,7 +5,7 @@ interface Block {
   type: string;
   text?: {
     type: string;
-    text: string;
+    text?: string;
     emoji?: boolean;
   };
 }
@@ -64,9 +64,6 @@ export const sendCoursePoster = async (course: Course) => {
       },
     },
     {
-      type: 'divider',
-    },
-    {
       type: 'header',
       text: {
         type: 'plain_text',
@@ -77,7 +74,7 @@ export const sendCoursePoster = async (course: Course) => {
       type: 'section',
       text: {
         type: 'mrkdwn',
-        text: course.description,
+        text: course.summary || course.description,
       },
     },
     {
@@ -98,7 +95,7 @@ export const sendCoursePoster = async (course: Course) => {
       elements: [
         {
           type: 'mrkdwn',
-          text: ':clock3:',
+          text: ':calendar:',
         },
         {
           type: 'mrkdwn',
@@ -119,11 +116,25 @@ export const sendCoursePoster = async (course: Course) => {
         },
       ],
     },
-    {
-      type: 'divider',
-    },
   ];
-  const channel = 'test';
+  if (course.lastEnrollDate) {
+    message.push({
+      type: 'context',
+      elements: [
+        {
+          type: 'mrkdwn',
+          text: ':bangbang:',
+        },
+        {
+          type: 'mrkdwn',
+          text: `*Do it before:* <!date^${dateToUnixTimestamp(
+            course.lastEnrollDate
+          )}^{date_short} {time}|${course.lastEnrollDate.toLocaleDateString()}>`,
+        },
+      ],
+    });
+  }
+  const channel = 'new-trainings';
   await sendMessage(channel, message);
 };
 
