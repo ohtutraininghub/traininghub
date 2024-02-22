@@ -163,6 +163,11 @@ describe('Profile View', () => {
       cy.contains('Upcoming created courses (0)');
       cy.contains('No courses to show.');
     });
+    it('should not show ended created courses for admin', () => {
+      // admin isn't the creator of any courses
+      cy.contains('Ended created courses (0)');
+      cy.contains('No courses to show.');
+    });
     it('should show all templates for admin', () => {
       cy.contains('All course templates (2)');
 
