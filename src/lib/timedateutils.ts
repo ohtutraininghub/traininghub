@@ -62,3 +62,7 @@ export const dateToDateTimeLocal = (date: Date) => {
     .toISOString()
     .slice(0, -1);
 };
+
+export const dateToUnixTimestamp = (date: Date) => {
+  return date.getTime() / 1000;
+};
