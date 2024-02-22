@@ -90,6 +90,7 @@ export default function ProfileView({
                 (createdCourse: Course) => createdCourse.startDate > currentDate
               )}
               open={true}
+              id={'upcomingCreated'}
             />
           )}
           {isTrainerOrAdmin((session?.user as User) || {}) && (
@@ -99,6 +100,7 @@ export default function ProfileView({
                 (createdCourse: Course) => createdCourse.endDate < currentDate
               )}
               open={true}
+              id={'endedCreated'}
             />
           )}
           <ProfileCourseList
@@ -108,6 +110,7 @@ export default function ProfileView({
                 course.startDate <= currentDate && course.endDate >= currentDate
             )}
             open={true}
+            id={'inprogressCourses'}
           />
           <ProfileCourseList
             headerText={t('ProfileView.header.upcomingCourses')}
@@ -116,6 +119,7 @@ export default function ProfileView({
             )}
             open={true}
             timer={true}
+            id={'upcomingCourses'}
           />
           <ProfileCourseList
             headerText={t('ProfileView.header.endedCourses')}
@@ -123,6 +127,7 @@ export default function ProfileView({
               (course: Course) => course.endDate < currentDate
             )}
             open={false}
+            id={'endedCourses'}
           />
           {isTrainerOrAdmin((session?.user as User) || {}) && (
             <ProfileTemplateList
