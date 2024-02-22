@@ -6,6 +6,7 @@ export const sendMessageToUser = async (userEmail: string, message: string) => {
 };
 
 export const sendMessage = async (channel: string, message: string) => {
+  // Channel can be a user id or a channel id/name
   const payload = {
     channel: channel,
     text: message,
@@ -22,7 +23,7 @@ export const sendMessage = async (channel: string, message: string) => {
   });
 };
 
-export const findUserIdByEmail = async (email: string) => {
+const findUserIdByEmail = async (email: string) => {
   const res = await fetch(
     `https://slack.com/api/users.lookupByEmail?email=${email}`,
     {
