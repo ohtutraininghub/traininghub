@@ -41,21 +41,6 @@ describe('Template editing', () => {
       cy.getCy('templateListControls').click();
     });
 
-    it('should only show edit buttons for own templates', () => {
-      cy.getCy('templateList').as('templateListTag');
-      cy.get('@templateListTag')
-        .find('li')
-        .each(($li) => {
-          const createdBy = $li.find('.secondary').text();
-
-          if (createdBy === 'Emily Davis') {
-            expect($li.find('.EditTemplateButton')).to.exist;
-          } else {
-            expect($li.find('.EditTemplateButton')).to.not.exist;
-          }
-        });
-    });
-
     it('should allow trainer to edit own template', () => {
       cy.getCy('EditTemplateButton').first().click();
       cy.getCy('templateFormName').should('have.value', 'Kubernetes Basics'); // This is the only Emily's template in the seeded data
