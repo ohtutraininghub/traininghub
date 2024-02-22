@@ -14,6 +14,7 @@ import { isPastDeadline } from '@/lib/timedateutils';
 import { deleteCourseFromCalendar, insertCourseToCalendar } from '@/lib/google';
 import { hasGoogleCalendarScope } from '@/lib/prisma/account';
 import { translator } from '@/lib/i18n';
+import { sendFullCourseMessage } from '@/lib/slack';
 
 export async function POST(request: NextRequest) {
   try {
@@ -33,6 +34,7 @@ export async function POST(request: NextRequest) {
       },
       where: { id: courseId },
     });
+
     if (!course) {
       return errorResponse({
         message: t('Common.courseNotFound'),
@@ -84,6 +86,16 @@ export async function POST(request: NextRequest) {
         },
       },
     });
+
+    const courseCreator = await prisma.user.findFirst({
+      where: { id: course.createdById },
+    });
+
+    if (courseCreator && courseCreator.email) {
+      if (course._count.students + 1 === course.maxStudents) {
+        await sendFullCourseMessage(courseCreator.email, course);
+      }
+    }
 
     const hasCalendarPermissions = await hasGoogleCalendarScope(userId);
 

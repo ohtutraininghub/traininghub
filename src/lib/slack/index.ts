@@ -1,15 +1,26 @@
+import { Course } from '@prisma/client';
+
+interface Block {
+  type: string;
+  text?: {
+    type: string;
+    text: string;
+    emoji?: boolean;
+  };
+}
+
 const token = process.env.SLACK_BOT_TOKEN;
 
-export const sendMessageToUser = async (userEmail: string, message: string) => {
+export const sendMessageToUser = async (userEmail: string, blocks: Block[]) => {
   const userId = await findUserIdByEmail(userEmail);
-  await sendMessage(userId, message);
+  await sendMessage(userId, blocks);
 };
 
-export const sendMessage = async (channel: string, message: string) => {
+export const sendMessage = async (channel: string, blocks: Block[]) => {
   // Channel can be a user id or a channel id/name
   const payload = {
     channel: channel,
-    text: message,
+    blocks: blocks,
   };
 
   await fetch('https://slack.com/api/chat.postMessage', {
@@ -21,6 +32,43 @@ export const sendMessage = async (channel: string, message: string) => {
       Accept: 'application/json',
     },
   });
+};
+
+export const sendFullCourseMessage = async (
+  userEmail: string,
+  course: Course
+) => {
+  const blocks = [
+    {
+      type: 'header',
+      text: {
+        type: 'plain_text',
+        text: 'Your course is full! :tada:',
+        emoji: true,
+      },
+    },
+    {
+      type: 'section',
+      text: {
+        type: 'mrkdwn',
+        text: `*<https://google.com|${course.name}>* has reached full capacity *(${course.maxStudents}/${course.maxStudents})*`,
+      },
+    },
+    {
+      type: 'context',
+      elements: [
+        {
+          type: 'mrkdwn',
+          text: '🕒',
+        },
+        {
+          type: 'mrkdwn',
+          text: '20.8.2024 09.00 - 21.8.2024 15.00',
+        },
+      ],
+    },
+  ];
+  sendMessageToUser(userEmail, blocks);
 };
 
 const findUserIdByEmail = async (email: string) => {
