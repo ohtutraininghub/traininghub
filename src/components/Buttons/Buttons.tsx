@@ -53,3 +53,17 @@ export function CourseModalCloseButton({ lang }: CourseModalCloseButtonProps) {
     <Button onClick={handleClick}>{t('CourseModalCloseButton.close')}</Button>
   );
 }
+
+export function ToggleTrainingsButton({
+  text,
+  onClick,
+}: {
+  text: string;
+  onClick: () => void;
+}) {
+  return (
+    <Button variant="contained" onClick={onClick}>
+      {text}
+    </Button>
+  );
+}

@@ -28,6 +28,7 @@ import Link from 'next/link';
 import CourseCard from '@/components/CourseCard';
 import { UserNamesAndIds } from '@/lib/prisma/users';
 import { ImageContainer } from '../ImageContainer';
+import { ToggleTrainingsButton } from '../Buttons/Buttons';
 
 interface CourseListProps extends DictProps {
   courses: CourseWithInfo[];
@@ -77,56 +78,74 @@ export default function CourseList({
         })}
         editCourseLabel={t('EditButton.editCourse')}
       />
-      <div style={{ paddingTop: '1em' }}>
-        <ToggleButtonGroup
-          value={viewStyle}
-          exclusive
-          onChange={handleViewToggle}
-          aria-label="course view style"
-          sx={{
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
-          }}
-        >
-          <ToggleButton value="grid" aria-label="grid view">
-            <WindowIcon style={{ color: palette.white.main }} />
-          </ToggleButton>
-          <ToggleButton value="list" aria-label="list view">
-            <ViewHeadlineIcon style={{ color: palette.white.main }} />
-          </ToggleButton>
-        </ToggleButtonGroup>
-      </div>
-      <div
+      <Box
         style={{
-          display: 'flex',
-          justifyContent: 'center',
-          paddingBottom: '1em',
+          justifyContent: 'spaceBetween',
+          flexDirection: 'row',
+          flexWrap: 'nowrap',
         }}
       >
-        <Typography
-          variant="caption"
-          style={{
-            fontWeight: 500,
-            textTransform: 'uppercase',
-            color: palette.white.main,
-            marginRight: '20px',
-          }}
-        >
-          {t('CourseList.gridControlLabel')}
-        </Typography>
-        <Typography
-          variant="caption"
-          style={{
-            fontWeight: 500,
-            color: palette.white.main,
-            textTransform: 'uppercase',
-          }}
-        >
-          {t('CourseList.listControlLabel')}
-        </Typography>
-      </div>
+        <Box style={{ flexGrow: 1 }}></Box>
+        <Box style={{ flexGrow: 1 }}>
+          <div style={{ paddingTop: '1em' }}>
+            <ToggleButtonGroup
+              value={viewStyle}
+              exclusive
+              onChange={handleViewToggle}
+              aria-label="course view style"
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
+              }}
+            >
+              <ToggleButton value="grid" aria-label="grid view">
+                <WindowIcon style={{ color: palette.white.main }} />
+              </ToggleButton>
+              <ToggleButton value="list" aria-label="list view">
+                <ViewHeadlineIcon style={{ color: palette.white.main }} />
+              </ToggleButton>
+            </ToggleButtonGroup>
+          </div>
+
+          {/* {<div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              paddingBottom: '1em',
+            }}
+          >} */}
+          <Typography
+            variant="caption"
+            style={{
+              fontWeight: 500,
+              textTransform: 'uppercase',
+              color: palette.white.main,
+              marginRight: '20px',
+            }}
+          >
+            {t('CourseList.gridControlLabel')}
+          </Typography>
+          <Typography
+            variant="caption"
+            style={{
+              fontWeight: 500,
+              color: palette.white.main,
+              textTransform: 'uppercase',
+            }}
+          >
+            {t('CourseList.listControlLabel')}
+          </Typography>
+          {/* {</div>} */}
+        </Box>
+        <Box style={{ flexGrow: 1 }}>
+          <ToggleTrainingsButton
+            text={t('ToggleTrainingsButton.requestsTrainings')}
+            onClick={() => {}}
+          />
+        </Box>
+      </Box>
       {filteredCourses.length === 0 ? (
         <Box
           style={{

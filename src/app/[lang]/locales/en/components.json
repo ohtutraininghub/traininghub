@@ -195,6 +195,10 @@
       "urlLabel": "URL"
     }
   },
+  "ToggleTrainingsButton": {
+    "requestsTrainings": "Request trainings",
+    "trainings": "Trainings"
+  },
   "UnauthorizedError": {
     "backToHome": "Back to home",
     "unauthorizedMessage": "You are not authorized to view this page"
