@@ -3,6 +3,7 @@
 import * as React from 'react';
 import {
   Box,
+  Container,
   Grid,
   List,
   ListItem,
@@ -100,7 +101,10 @@ export default function CourseList({
           alignItems: 'center',
         }}
       >
-        <Box sx={{ flex: 1, display: 'flex' }}></Box>
+        <Box
+          sx={{ flex: { xd: 0, sm: 0, md: 1, lg: 1, xl: 1 }, display: 'flex' }}
+          id="testi"
+        ></Box>
         <Box sx={{}}>
           <div style={{ paddingTop: '1em' }}>
             <ToggleButtonGroup
@@ -187,30 +191,37 @@ export default function CourseList({
           </Typography>
         </Box>
       ) : (
-        <div ref={rowRef}>
-          {viewStyle === 'grid' && (
-            <Grid
-              container
-              spacing={2}
-              maxWidth={1600}
-              width="100%"
-              sx={{ margin: 'auto' }}
-              columns={{ xs: 1, sm: 2, md: 3 }}
-            >
-              {filteredCourses.map((course) => (
-                <Grid key={course.id} item xs={1} sx={{ marginBottom: '50px' }}>
-                  <CourseCard
-                    lang={lang}
-                    enrolls={t('CourseCard.enrolls', {
-                      studentCount: course._count.students,
-                      maxStudentCount: course.maxStudents,
-                    })}
-                    course={course}
-                  />
-                </Grid>
-              ))}
-            </Grid>
-          )}
+        <>
+          <Container ref={rowRef} disableGutters>
+            {viewStyle === 'grid' && (
+              <Grid
+                container
+                spacing={2}
+                maxWidth={1600}
+                width="100%"
+                sx={{ margin: 'auto' }}
+                columns={{ xs: 1, sm: 2, md: 3 }}
+              >
+                {filteredCourses.map((course) => (
+                  <Grid
+                    key={course.id}
+                    item
+                    xs={1}
+                    sx={{ marginBottom: '50px' }}
+                  >
+                    <CourseCard
+                      lang={lang}
+                      enrolls={t('CourseCard.enrolls', {
+                        studentCount: course._count.students,
+                        maxStudentCount: course.maxStudents,
+                      })}
+                      course={course}
+                    />
+                  </Grid>
+                ))}
+              </Grid>
+            )}
+          </Container>
           {viewStyle === 'list' && (
             <Box
               style={{
@@ -303,7 +314,7 @@ export default function CourseList({
               </List>
             </Box>
           )}
-        </div>
+        </>
       )}
     </>
   );
