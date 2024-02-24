@@ -90,7 +90,7 @@ export default function CourseList({
           alignItems: 'center',
         }}
       >
-        <Box sx={{}}></Box>
+        <Box sx={{ flex: 1, display: 'flex' }}></Box>
         <Box sx={{}}>
           <div style={{ paddingTop: '1em' }}>
             <ToggleButtonGroup
@@ -146,7 +146,10 @@ export default function CourseList({
         </Box>
         <Box
           sx={{
-            transform: '0.1',
+            display: 'flex',
+            flex: 1,
+            justifyContent: 'flex-end',
+            alightItems: 'center',
           }}
         >
           <ToggleTrainingsButton
