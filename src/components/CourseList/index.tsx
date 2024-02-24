@@ -78,15 +78,20 @@ export default function CourseList({
         })}
         editCourseLabel={t('EditButton.editCourse')}
       />
+
       <Box
-        style={{
-          justifyContent: 'spaceBetween',
+        sx={{
+          margin: 'auto',
+          display: 'flex',
+          justifyContent: 'space-between',
           flexDirection: 'row',
-          flexWrap: 'nowrap',
+          width: '100%',
+          maxWidth: '1600px',
+          alignItems: 'center',
         }}
       >
-        <Box style={{ flexGrow: 1 }}></Box>
-        <Box style={{ flexGrow: 1 }}>
+        <Box sx={{}}></Box>
+        <Box sx={{}}>
           <div style={{ paddingTop: '1em' }}>
             <ToggleButtonGroup
               value={viewStyle}
@@ -109,37 +114,41 @@ export default function CourseList({
             </ToggleButtonGroup>
           </div>
 
-          {/* {<div
+          <div
             style={{
               display: 'flex',
               justifyContent: 'center',
               paddingBottom: '1em',
             }}
-          >} */}
-          <Typography
-            variant="caption"
-            style={{
-              fontWeight: 500,
-              textTransform: 'uppercase',
-              color: palette.white.main,
-              marginRight: '20px',
-            }}
           >
-            {t('CourseList.gridControlLabel')}
-          </Typography>
-          <Typography
-            variant="caption"
-            style={{
-              fontWeight: 500,
-              color: palette.white.main,
-              textTransform: 'uppercase',
-            }}
-          >
-            {t('CourseList.listControlLabel')}
-          </Typography>
-          {/* {</div>} */}
+            <Typography
+              variant="caption"
+              style={{
+                fontWeight: 500,
+                textTransform: 'uppercase',
+                color: palette.white.main,
+                marginRight: '20px',
+              }}
+            >
+              {t('CourseList.gridControlLabel')}
+            </Typography>
+            <Typography
+              variant="caption"
+              style={{
+                fontWeight: 500,
+                color: palette.white.main,
+                textTransform: 'uppercase',
+              }}
+            >
+              {t('CourseList.listControlLabel')}
+            </Typography>
+          </div>
         </Box>
-        <Box style={{ flexGrow: 1 }}>
+        <Box
+          sx={{
+            transform: '0.1',
+          }}
+        >
           <ToggleTrainingsButton
             text={t('ToggleTrainingsButton.requestsTrainings')}
             onClick={() => {}}

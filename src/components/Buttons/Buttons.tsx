@@ -62,7 +62,15 @@ export function ToggleTrainingsButton({
   onClick: () => void;
 }) {
   return (
-    <Button variant="contained" onClick={onClick}>
+    <Button
+      sx={{
+        fontSize: ['0.8rem', '1rem'],
+        paddingX: ['0.8rem', '1rem'],
+        paddingY: ['0.3rem', '0.375rem'],
+      }}
+      variant="contained"
+      onClick={onClick}
+    >
       {text}
     </Button>
   );
