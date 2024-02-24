@@ -29,6 +29,7 @@ import CourseCard from '@/components/CourseCard';
 import { UserNamesAndIds } from '@/lib/prisma/users';
 import { ImageContainer } from '../ImageContainer';
 import { ToggleTrainingsButton } from '../Buttons/Buttons';
+import { useEffect, useRef, useState } from 'react';
 
 interface CourseListProps extends DictProps {
   courses: CourseWithInfo[];
@@ -55,6 +56,15 @@ export default function CourseList({
   const { t } = useTranslation(lang, 'components');
   const { palette } = useTheme();
   const [viewStyle, setViewStyle] = React.useState<string | null>('grid');
+  const [rowWidth, setRowWidth] = useState<number | null>(null);
+  const rowRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (rowRef.current) {
+      setRowWidth(rowRef.current.clientWidth);
+    }
+  }, [viewStyle]);
+
   const handleViewToggle = (
     // eslint-disable-next-line
     event: React.MouseEvent<HTMLElement>,
@@ -86,7 +96,7 @@ export default function CourseList({
           justifyContent: 'space-between',
           flexDirection: 'row',
           width: '100%',
-          maxWidth: '1600px',
+          maxWidth: rowWidth,
           alignItems: 'center',
         }}
       >
@@ -177,7 +187,7 @@ export default function CourseList({
           </Typography>
         </Box>
       ) : (
-        <>
+        <div ref={rowRef}>
           {viewStyle === 'grid' && (
             <Grid
               container
@@ -293,7 +303,7 @@ export default function CourseList({
               </List>
             </Box>
           )}
-        </>
+        </div>
       )}
     </>
   );
