@@ -58,7 +58,7 @@ export async function POST(request: NextRequest) {
       },
     });
     // Send course poster to slack
-    sendCoursePoster(course);
+    await sendCoursePoster(course);
 
     return successResponse({
       message: t('Courses.courseCreated'),
