@@ -36,7 +36,7 @@ export const sendMessage = async (channel: string, blocks: Block[]) => {
   });
 };
 
-export const sendFullCourseMessage = async (
+export const sendCourseFullMessage = async (
   userEmail: string,
   course: Course
 ) => {

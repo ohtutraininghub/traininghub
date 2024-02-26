@@ -14,7 +14,7 @@ import { isPastDeadline } from '@/lib/timedateutils';
 import { deleteCourseFromCalendar, insertCourseToCalendar } from '@/lib/google';
 import { hasGoogleCalendarScope } from '@/lib/prisma/account';
 import { translator } from '@/lib/i18n';
-import { sendFullCourseMessage } from '@/lib/slack';
+import { sendCourseFullMessage } from '@/lib/slack';
 
 export async function POST(request: NextRequest) {
   try {
@@ -93,7 +93,7 @@ export async function POST(request: NextRequest) {
 
     if (courseCreator && courseCreator.email) {
       if (course._count.students + 1 === course.maxStudents) {
-        await sendFullCourseMessage(courseCreator.email, course);
+        await sendCourseFullMessage(courseCreator.email, course);
       }
     }
 
