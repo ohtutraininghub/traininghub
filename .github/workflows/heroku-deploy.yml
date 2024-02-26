@@ -47,6 +47,10 @@ jobs:
           HD_SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
           HD_SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
 
+          # SLACK
+          HD_HOST_URL: ${{ secrets.HOST_URL }}
+          HD_SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+
           # BUILD TIME ARGS
 
           # NEXTAUTH
