@@ -1,10 +1,10 @@
 import { Course } from '@prisma/client';
-import { dateToUnixTimestamp } from '@/lib/timedateutils';
 import {
   SLACK_API_LOOKUP_BY_EMAIL,
   SLACK_API_POST_MESSAGE,
   SLACK_NEW_TRAININGS_CHANNEL,
-} from '@/lib/slack/constants';
+} from './constants';
+import { createBlocksCourseFull, createBlocksNewTraining } from './blocks';
 
 interface Block {
   type: string;
@@ -21,38 +21,7 @@ export const sendCourseFullMessage = async (
   userEmail: string,
   course: Course
 ) => {
-  const blocks = [
-    {
-      type: 'header',
-      text: {
-        type: 'plain_text',
-        text: 'Your course is full! :tada:',
-        emoji: true,
-      },
-    },
-    {
-      type: 'section',
-      text: {
-        type: 'mrkdwn',
-        text: `*<${process.env.HOST_URL}/en?courseId=${course.id}|${course.name}>* has reached full capacity *(${course.maxStudents}/${course.maxStudents})*`,
-      },
-    },
-    {
-      type: 'context',
-      elements: [
-        {
-          type: 'mrkdwn',
-          text: ':calendar:',
-        },
-        {
-          type: 'mrkdwn',
-          text: `${formatDateForSlack(course.startDate)} - ${formatDateForSlack(
-            course.endDate
-          )}`,
-        },
-      ],
-    },
-  ];
+  const blocks = createBlocksCourseFull(course);
   sendMessageToUser(userEmail, blocks);
 };
 
@@ -69,86 +38,7 @@ const findUserIdByEmail = async (email: string) => {
 };
 
 export const sendCoursePoster = async (course: Course) => {
-  const dateRange = `${formatDateForSlack(
-    course.startDate
-  )} - ${formatDateForSlack(course.endDate)}`;
-  const message = [
-    {
-      type: 'section',
-      text: {
-        type: 'mrkdwn',
-        text: '*New Training Available!* :tada:',
-      },
-    },
-    {
-      type: 'header',
-      text: {
-        type: 'plain_text',
-        text: course.name,
-      },
-    },
-    {
-      type: 'section',
-      text: {
-        type: 'mrkdwn',
-        text: course.summary || course.description,
-      },
-    },
-    {
-      type: 'context',
-      elements: [
-        {
-          type: 'mrkdwn',
-          text: ':busts_in_silhouette:',
-        },
-        {
-          type: 'mrkdwn',
-          text: `${course.maxStudents} spots`,
-        },
-      ],
-    },
-    {
-      type: 'context',
-      elements: [
-        {
-          type: 'mrkdwn',
-          text: ':calendar:',
-        },
-        {
-          type: 'mrkdwn',
-          text: dateRange,
-        },
-      ],
-    },
-    {
-      type: 'context',
-      elements: [
-        {
-          type: 'mrkdwn',
-          text: ':link:',
-        },
-        {
-          type: 'mrkdwn',
-          text: `*Enroll now:* <${process.env.HOST_URL}/en?courseId=${course.id}|${course.name}>`,
-        },
-      ],
-    },
-  ];
-  if (course.lastEnrollDate) {
-    message.push({
-      type: 'context',
-      elements: [
-        {
-          type: 'mrkdwn',
-          text: ':bangbang:',
-        },
-        {
-          type: 'mrkdwn',
-          text: `*Do it before:* ${formatDateForSlack(course.lastEnrollDate)}`,
-        },
-      ],
-    });
-  }
+  const message = createBlocksNewTraining(course);
   const channel = SLACK_NEW_TRAININGS_CHANNEL;
   await sendMessage(channel, message);
 };
@@ -175,9 +65,4 @@ const sendMessageToUser = async (userEmail: string, blocks: Block[]) => {
   const userId = await findUserIdByEmail(userEmail);
   if (!userEmail) return;
   await sendMessage(userId, blocks);
-};
-
-const formatDateForSlack = (date: Date) => {
-  const dateUnix = dateToUnixTimestamp(date);
-  return `<!date^${dateUnix}^{date_short} {time}|${date.toLocaleDateString()}>`;
 };
