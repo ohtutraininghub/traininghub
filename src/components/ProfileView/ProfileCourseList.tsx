@@ -23,6 +23,7 @@ export interface ProfileCourseListProps {
   courses: Course[];
   open: boolean;
   timer?: boolean;
+  id: string;
 }
 
 export default function ProfileCourseList({
@@ -30,6 +31,7 @@ export default function ProfileCourseList({
   courses,
   open,
   timer,
+  id,
 }: ProfileCourseListProps) {
   const { palette } = useTheme();
   const [isCollapsed, setIsCollapsed] = useState(open);
@@ -51,7 +53,7 @@ export default function ProfileCourseList({
           paddingLeft: '10px',
         }}
         variant="subtitle2"
-        data-testid="listHeader"
+        data-testid={`listHeader.${id}`}
       >
         {`${headerText} (${courses.length})`}
         <Tooltip
@@ -62,7 +64,7 @@ export default function ProfileCourseList({
           <IconButton
             sx={{ color: palette.white.main }}
             onClick={handleToggleCollapse}
-            data-testid="listControls"
+            data-testid={`listControls.${id}`}
           >
             {isCollapsed ? <ExpandLessIcon /> : <ExpandMoreIcon />}
           </IconButton>

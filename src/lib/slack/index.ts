@@ -1,10 +1,11 @@
 import { Course } from '@prisma/client';
+import { dateToUnixTimestamp } from '@/lib/timedateutils';
 
 interface Block {
   type: string;
   text?: {
     type: string;
-    text: string;
+    text?: string;
     emoji?: boolean;
   };
 }
@@ -84,4 +85,98 @@ const findUserIdByEmail = async (email: string) => {
   );
   const data = await res.json();
   return data.user.id;
+};
+
+export const sendCoursePoster = async (course: Course) => {
+  const dateRange = formatDateRangeForSlack(course.startDate, course.endDate);
+  const message = [
+    {
+      type: 'section',
+      text: {
+        type: 'mrkdwn',
+        text: '*New Training Available!* :tada:',
+      },
+    },
+    {
+      type: 'header',
+      text: {
+        type: 'plain_text',
+        text: course.name,
+      },
+    },
+    {
+      type: 'section',
+      text: {
+        type: 'mrkdwn',
+        text: course.summary || course.description,
+      },
+    },
+    {
+      type: 'context',
+      elements: [
+        {
+          type: 'mrkdwn',
+          text: ':busts_in_silhouette:',
+        },
+        {
+          type: 'mrkdwn',
+          text: `${course.maxStudents} spots`,
+        },
+      ],
+    },
+    {
+      type: 'context',
+      elements: [
+        {
+          type: 'mrkdwn',
+          text: ':calendar:',
+        },
+        {
+          type: 'mrkdwn',
+          text: dateRange,
+        },
+      ],
+    },
+    {
+      type: 'context',
+      elements: [
+        {
+          type: 'mrkdwn',
+          text: ':link:',
+        },
+        {
+          type: 'mrkdwn',
+          text: `*Enroll now:* <${process.env.HOST_URL}/en?courseId=${course.id}|${course.name}>`,
+        },
+      ],
+    },
+  ];
+  if (course.lastEnrollDate) {
+    message.push({
+      type: 'context',
+      elements: [
+        {
+          type: 'mrkdwn',
+          text: ':bangbang:',
+        },
+        {
+          type: 'mrkdwn',
+          text: `*Do it before:* <!date^${dateToUnixTimestamp(
+            course.lastEnrollDate
+          )}^{date_short} {time}|${course.lastEnrollDate.toLocaleDateString()}>`,
+        },
+      ],
+    });
+  }
+  const channel = 'new-trainings';
+  await sendMessage(channel, message);
+};
+
+const formatDateRangeForSlack = (startDate: Date, endDate: Date) => {
+  const startDateUnix = dateToUnixTimestamp(startDate);
+  const endDateUnix = dateToUnixTimestamp(endDate);
+  return (
+    `<!date^${startDateUnix}^{date_short} {time}|${startDate.toLocaleDateString()}> - ` +
+    `<!date^${endDateUnix}^{date_short} {time}|${endDate.toLocaleDateString()}>`
+  );
 };

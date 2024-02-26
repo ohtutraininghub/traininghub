@@ -41,17 +41,23 @@ describe('ProfileCourseList component', () => {
         headerText="Foxes everywhere"
         courses={testCourses}
         open={true}
+        id={'testId'}
       />
     );
-    const headerText = screen.getByTestId('listHeader');
-    const controlButton = screen.getByTestId('listControls');
+    const headerText = screen.getByTestId('listHeader.testId');
+    const controlButton = screen.getByTestId('listControls.testId');
     expect(headerText).toBeInTheDocument();
     expect(controlButton).toBeInTheDocument();
   });
 
   it('displays a message if the courses list is empty', () => {
     renderWithTheme(
-      <ProfileCourseList headerText="My Courses" courses={[]} open={true} />
+      <ProfileCourseList
+        headerText="My Courses"
+        courses={[]}
+        open={true}
+        id={'testId'}
+      />
     );
     const noCoursesText = screen.getByText('No courses to show.');
     expect(noCoursesText).toBeInTheDocument();
@@ -63,6 +69,7 @@ describe('ProfileCourseList component', () => {
         headerText="Foxes everywhere"
         courses={testCourses}
         open={true}
+        id={'testId'}
       />
     );
     testCourses.forEach((course) => {
@@ -76,6 +83,7 @@ describe('ProfileCourseList component', () => {
         headerText="Foxes everywhere"
         courses={testCourses}
         open={false}
+        id={'testId'}
       />
     );
     testCourses.forEach((course) => {
@@ -89,6 +97,7 @@ describe('ProfileCourseList component', () => {
         headerText="Foxes everywhere"
         courses={testCourses}
         open={false}
+        id={'testId'}
       />
     );
     expect(screen.getByText('(2)', { exact: false })).toBeInTheDocument();
@@ -100,9 +109,10 @@ describe('ProfileCourseList component', () => {
         headerText="Foxes everywhere"
         courses={testCourses}
         open={false}
+        id={'testId'}
       />
     );
-    const controlButton = screen.getByTestId('listControls');
+    const controlButton = screen.getByTestId('listControls.testId');
     testCourses.forEach((course) => {
       expect(screen.queryByText(course.name)).toBeNull();
     });
@@ -118,9 +128,10 @@ describe('ProfileCourseList component', () => {
         headerText="Foxes everywhere"
         courses={testCourses}
         open={true}
+        id={'testId'}
       />
     );
-    const controlButton = screen.getByTestId('listControls');
+    const controlButton = screen.getByTestId('listControls.testId');
     testCourses.forEach((course) => {
       expect(screen.getByText(course.name)).toBeInTheDocument();
     });
