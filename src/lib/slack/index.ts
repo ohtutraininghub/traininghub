@@ -17,30 +17,6 @@ interface Block {
 
 const token = process.env.SLACK_BOT_TOKEN;
 
-export const sendMessageToUser = async (userEmail: string, blocks: Block[]) => {
-  const userId = await findUserIdByEmail(userEmail);
-  if (!userEmail) return;
-  await sendMessage(userId, blocks);
-};
-
-export const sendMessage = async (channel: string, blocks: Block[]) => {
-  // Channel can be a user id or a channel id/name
-  const payload = {
-    channel: channel,
-    blocks: blocks,
-  };
-
-  await fetch(SLACK_API_POST_MESSAGE, {
-    method: 'POST',
-    body: JSON.stringify(payload),
-    headers: {
-      'Content-Type': 'application/json; charset=utf-8',
-      Authorization: `Bearer ${token}`,
-      Accept: 'application/json',
-    },
-  });
-};
-
 export const sendCourseFullMessage = async (
   userEmail: string,
   course: Course
@@ -175,6 +151,30 @@ export const sendCoursePoster = async (course: Course) => {
   }
   const channel = SLACK_NEW_TRAININGS_CHANNEL;
   await sendMessage(channel, message);
+};
+
+const sendMessage = async (channel: string, blocks: Block[]) => {
+  // Channel can be a user id or a channel id/name
+  const payload = {
+    channel: channel,
+    blocks: blocks,
+  };
+
+  await fetch(SLACK_API_POST_MESSAGE, {
+    method: 'POST',
+    body: JSON.stringify(payload),
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
+    },
+  });
+};
+
+const sendMessageToUser = async (userEmail: string, blocks: Block[]) => {
+  const userId = await findUserIdByEmail(userEmail);
+  if (!userEmail) return;
+  await sendMessage(userId, blocks);
 };
 
 const formatDateForSlack = (date: Date) => {
