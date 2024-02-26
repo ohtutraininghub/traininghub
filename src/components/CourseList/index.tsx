@@ -3,7 +3,7 @@
 import * as React from 'react';
 import {
   Box,
-  Container,
+  // Container,
   Grid,
   List,
   ListItem,
@@ -30,7 +30,6 @@ import CourseCard from '@/components/CourseCard';
 import { UserNamesAndIds } from '@/lib/prisma/users';
 import { ImageContainer } from '../ImageContainer';
 import { ToggleTrainingsButton } from '../Buttons/Buttons';
-import { useEffect, useRef, useState } from 'react';
 
 interface CourseListProps extends DictProps {
   courses: CourseWithInfo[];
@@ -57,14 +56,6 @@ export default function CourseList({
   const { t } = useTranslation(lang, 'components');
   const { palette } = useTheme();
   const [viewStyle, setViewStyle] = React.useState<string | null>('grid');
-  const [rowWidth, setRowWidth] = useState<number | null>(null);
-  const rowRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (rowRef.current) {
-      setRowWidth(rowRef.current.clientWidth);
-    }
-  }, [viewStyle]);
 
   const handleViewToggle = (
     // eslint-disable-next-line
@@ -75,6 +66,7 @@ export default function CourseList({
       setViewStyle(newViewStyle);
     }
   };
+  const componentAllignmentWidth = viewStyle === 'grid' ? '1533px' : '1300px';
 
   return (
     <>
@@ -97,15 +89,18 @@ export default function CourseList({
           justifyContent: 'space-between',
           flexDirection: 'row',
           width: '100%',
-          maxWidth: rowWidth,
+          maxWidth: componentAllignmentWidth,
           alignItems: 'center',
         }}
       >
+        <Box sx={{ flex: { xs: 0, sm: 1 }, display: 'flex' }} id="testi"></Box>
         <Box
-          sx={{ flex: { xd: 0, sm: 0, md: 1, lg: 1, xl: 1 }, display: 'flex' }}
-          id="testi"
-        ></Box>
-        <Box sx={{}}>
+          sx={{
+            // display: 'flex',
+            marginLeft: { xs: '3em' },
+            justifyContent: 'cetner',
+          }}
+        >
           <div style={{ paddingTop: '1em' }}>
             <ToggleButtonGroup
               value={viewStyle}
@@ -192,7 +187,14 @@ export default function CourseList({
         </Box>
       ) : (
         <>
-          <Container ref={rowRef} disableGutters>
+          <Box
+            sx={{
+              width: '100%', // Occupy full width
+              maxWidth: 1600, // Ensure consistent width
+              // margin: 'auto', // Center the content
+              // paddingTop: '1em', // Adjust padding as needed
+            }}
+          >
             {viewStyle === 'grid' && (
               <Grid
                 container
@@ -221,7 +223,7 @@ export default function CourseList({
                 ))}
               </Grid>
             )}
-          </Container>
+          </Box>
           {viewStyle === 'list' && (
             <Box
               style={{
