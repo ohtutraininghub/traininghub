@@ -1,5 +1,10 @@
 import { Course } from '@prisma/client';
 import { dateToUnixTimestamp } from '@/lib/timedateutils';
+import {
+  SLACK_API_LOOKUP_BY_EMAIL,
+  SLACK_API_POST_MESSAGE,
+  SLACK_NEW_TRAININGS_CHANNEL,
+} from '@/lib/slack/constants';
 
 interface Block {
   type: string;
@@ -27,7 +32,7 @@ export const sendMessage = async (channel: string, message: Block[]) => {
     blocks: message,
   };
 
-  await fetch('https://slack.com/api/chat.postMessage', {
+  await fetch(SLACK_API_POST_MESSAGE, {
     method: 'POST',
     body: JSON.stringify(payload),
     headers: {
@@ -39,16 +44,13 @@ export const sendMessage = async (channel: string, message: Block[]) => {
 };
 
 const findUserIdByEmail = async (email: string) => {
-  const res = await fetch(
-    `https://slack.com/api/users.lookupByEmail?email=${email}`,
-    {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${token}`,
-        Accept: 'application/json',
-      },
-    }
-  );
+  const res = await fetch(`${SLACK_API_LOOKUP_BY_EMAIL}${email}`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
+    },
+  });
   const data = await res.json();
   return data.user.id;
 };
@@ -134,7 +136,7 @@ export const sendCoursePoster = async (course: Course) => {
       ],
     });
   }
-  const channel = 'new-trainings';
+  const channel = SLACK_NEW_TRAININGS_CHANNEL;
   await sendMessage(channel, message);
 };
 
