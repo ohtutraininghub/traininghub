@@ -23,6 +23,7 @@ import {
   deleteEventFromCalendarWhenCourseDeleted,
 } from '@/lib/google';
 import { translator } from '@/lib/i18n';
+import { sendCoursePoster } from '@/lib/slack';
 
 const parseTags = async (tags: string[]): Promise<Tag[]> => {
   const allTags = await prisma.tag.findMany();
@@ -47,7 +48,7 @@ export async function POST(request: NextRequest) {
     const data = await request.json();
     const body = courseSchema.parse(data);
     const parsedTags = await parseTags(body.tags);
-    await prisma.course.create({
+    const course = await prisma.course.create({
       data: {
         ...body,
         createdById: user.id,
@@ -56,6 +57,8 @@ export async function POST(request: NextRequest) {
         },
       },
     });
+    // Send course poster to slack
+    sendCoursePoster(course);
 
     return successResponse({
       message: t('Courses.courseCreated'),
