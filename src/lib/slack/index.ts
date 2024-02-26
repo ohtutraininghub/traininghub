@@ -5,6 +5,7 @@ import {
   SLACK_NEW_TRAININGS_CHANNEL,
 } from './constants';
 import { createBlocksCourseFull, createBlocksNewTraining } from './blocks';
+import { isProduction } from '../env-utils';
 
 interface Block {
   type: string;
@@ -21,6 +22,7 @@ export const sendCourseFullMessage = async (
   userEmail: string,
   course: Course
 ) => {
+  if (!isProduction) return;
   const blocks = createBlocksCourseFull(course);
   sendMessageToUser(userEmail, blocks);
 };
@@ -38,6 +40,7 @@ const findUserIdByEmail = async (email: string) => {
 };
 
 export const sendCoursePoster = async (course: Course) => {
+  if (!isProduction) return;
   const message = createBlocksNewTraining(course);
   const channel = SLACK_NEW_TRAININGS_CHANNEL;
   await sendMessage(channel, message);
