@@ -14,6 +14,7 @@ const token = process.env.SLACK_BOT_TOKEN;
 
 export const sendMessageToUser = async (userEmail: string, blocks: Block[]) => {
   const userId = await findUserIdByEmail(userEmail);
+  if (!userEmail) return;
   await sendMessage(userId, blocks);
 };
 
@@ -52,7 +53,7 @@ export const sendFullCourseMessage = async (
       type: 'section',
       text: {
         type: 'mrkdwn',
-        text: `*<https://google.com|${course.name}>* has reached full capacity *(${course.maxStudents}/${course.maxStudents})*`,
+        text: `*<${process.env.HOST_URL}/en?courseId=${course.id}|${course.name}>* has reached full capacity *(${course.maxStudents}/${course.maxStudents})*`,
       },
     },
     {
@@ -60,11 +61,13 @@ export const sendFullCourseMessage = async (
       elements: [
         {
           type: 'mrkdwn',
-          text: '🕒',
+          text: ':calendar:',
         },
         {
           type: 'mrkdwn',
-          text: '20.8.2024 09.00 - 21.8.2024 15.00',
+          text: `${formatDateForSlack(course.startDate)} - ${formatDateForSlack(
+            course.endDate
+          )}`,
         },
       ],
     },
@@ -84,11 +87,13 @@ const findUserIdByEmail = async (email: string) => {
     }
   );
   const data = await res.json();
-  return data.user.id;
+  return data.user?.id;
 };
 
 export const sendCoursePoster = async (course: Course) => {
-  const dateRange = formatDateRangeForSlack(course.startDate, course.endDate);
+  const dateRange = `${formatDateForSlack(
+    course.startDate
+  )} - ${formatDateForSlack(course.endDate)}`;
   const message = [
     {
       type: 'section',
@@ -161,9 +166,7 @@ export const sendCoursePoster = async (course: Course) => {
         },
         {
           type: 'mrkdwn',
-          text: `*Do it before:* <!date^${dateToUnixTimestamp(
-            course.lastEnrollDate
-          )}^{date_short} {time}|${course.lastEnrollDate.toLocaleDateString()}>`,
+          text: `*Do it before:* ${formatDateForSlack(course.lastEnrollDate)}`,
         },
       ],
     });
@@ -172,11 +175,7 @@ export const sendCoursePoster = async (course: Course) => {
   await sendMessage(channel, message);
 };
 
-const formatDateRangeForSlack = (startDate: Date, endDate: Date) => {
-  const startDateUnix = dateToUnixTimestamp(startDate);
-  const endDateUnix = dateToUnixTimestamp(endDate);
-  return (
-    `<!date^${startDateUnix}^{date_short} {time}|${startDate.toLocaleDateString()}> - ` +
-    `<!date^${endDateUnix}^{date_short} {time}|${endDate.toLocaleDateString()}>`
-  );
+const formatDateForSlack = (date: Date) => {
+  const dateUnix = dateToUnixTimestamp(date);
+  return `<!date^${dateUnix}^{date_short} {time}|${date.toLocaleDateString()}>`;
 };
