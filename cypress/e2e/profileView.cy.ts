@@ -158,7 +158,7 @@ describe('Profile View', () => {
       cy.getCy('listControls\\.inprogressCourses').click();
       cy.getCy('listControls\\.upcomingCourses').click();
     });
-    it('should show my courses tab for trainer', () => {
+    it('should show my courses tab for admin', () => {
       cy.contains('My courses');
     });
     it('should show admin dashboard for admin', () => {
