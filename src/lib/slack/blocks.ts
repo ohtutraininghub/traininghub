@@ -54,7 +54,9 @@ export const createBlocksNewTraining = (course: Course) => {
       type: 'section',
       text: {
         type: 'mrkdwn',
-        text: course.summary || course.description,
+        text:
+          course.summary ||
+          'Learn more about this training from the link below :point_down:',
       },
     },
     {
