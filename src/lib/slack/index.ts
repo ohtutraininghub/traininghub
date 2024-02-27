@@ -1,5 +1,12 @@
 import { Course } from '@prisma/client';
-import { dateToUnixTimestamp } from '@/lib/timedateutils';
+import {
+  SLACK_API_LOOKUP_BY_CHANNEL,
+  SLACK_API_LOOKUP_BY_EMAIL,
+  SLACK_API_POST_MESSAGE,
+  SLACK_NEW_TRAININGS_CHANNEL,
+} from './constants';
+import { createBlocksCourseFull, createBlocksNewTraining } from './blocks';
+import { isProduction } from '../env-utils';
 
 interface Block {
   type: string;
@@ -12,20 +19,57 @@ interface Block {
 
 const token = process.env.SLACK_BOT_TOKEN;
 
-export const sendMessageToUser = async (userEmail: string, blocks: Block[]) => {
-  const userId = await findUserIdByEmail(userEmail);
-  if (!userEmail) return;
-  await sendMessage(userId, blocks);
+export const sendCourseFullMessage = async (
+  userEmail: string,
+  course: Course
+) => {
+  if (!isProduction()) return;
+  const blocks = createBlocksCourseFull(course);
+  sendMessageToUser(userEmail, blocks);
 };
 
-export const sendMessage = async (channel: string, blocks: Block[]) => {
+const findUserIdByEmail = async (email: string) => {
+  const res = await fetch(`${SLACK_API_LOOKUP_BY_EMAIL}${email}`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
+    },
+  });
+  const data = await res.json();
+  return data.user?.id;
+};
+
+export const sendCoursePoster = async (course: Course) => {
+  const channel = SLACK_NEW_TRAININGS_CHANNEL;
+  if (!isProduction()) return;
+  const channelExistsResult = await channelExists(channel);
+  if (!channelExistsResult) return;
+  const message = createBlocksNewTraining(course);
+  await sendMessage(channel, message);
+};
+
+const channelExists = async (channel: string) => {
+  const res = await fetch(`${SLACK_API_LOOKUP_BY_CHANNEL}`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
+    },
+  });
+  const data = await res.json();
+  if (!data.channels) return false;
+  return data.channels.some((c: { name: string }) => c.name === channel);
+};
+
+const sendMessage = async (channel: string, blocks: Block[]) => {
   // Channel can be a user id or a channel id/name
   const payload = {
     channel: channel,
     blocks: blocks,
   };
 
-  await fetch('https://slack.com/api/chat.postMessage', {
+  await fetch(SLACK_API_POST_MESSAGE, {
     method: 'POST',
     body: JSON.stringify(payload),
     headers: {
@@ -36,146 +80,8 @@ export const sendMessage = async (channel: string, blocks: Block[]) => {
   });
 };
 
-export const sendCourseFullMessage = async (
-  userEmail: string,
-  course: Course
-) => {
-  const blocks = [
-    {
-      type: 'header',
-      text: {
-        type: 'plain_text',
-        text: 'Your course is full! :tada:',
-        emoji: true,
-      },
-    },
-    {
-      type: 'section',
-      text: {
-        type: 'mrkdwn',
-        text: `*<${process.env.HOST_URL}/en?courseId=${course.id}|${course.name}>* has reached full capacity *(${course.maxStudents}/${course.maxStudents})*`,
-      },
-    },
-    {
-      type: 'context',
-      elements: [
-        {
-          type: 'mrkdwn',
-          text: ':calendar:',
-        },
-        {
-          type: 'mrkdwn',
-          text: `${formatDateForSlack(course.startDate)} - ${formatDateForSlack(
-            course.endDate
-          )}`,
-        },
-      ],
-    },
-  ];
-  sendMessageToUser(userEmail, blocks);
-};
-
-const findUserIdByEmail = async (email: string) => {
-  const res = await fetch(
-    `https://slack.com/api/users.lookupByEmail?email=${email}`,
-    {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${token}`,
-        Accept: 'application/json',
-      },
-    }
-  );
-  const data = await res.json();
-  return data.user?.id;
-};
-
-export const sendCoursePoster = async (course: Course) => {
-  const dateRange = `${formatDateForSlack(
-    course.startDate
-  )} - ${formatDateForSlack(course.endDate)}`;
-  const message = [
-    {
-      type: 'section',
-      text: {
-        type: 'mrkdwn',
-        text: '*New Training Available!* :tada:',
-      },
-    },
-    {
-      type: 'header',
-      text: {
-        type: 'plain_text',
-        text: course.name,
-      },
-    },
-    {
-      type: 'section',
-      text: {
-        type: 'mrkdwn',
-        text: course.summary || course.description,
-      },
-    },
-    {
-      type: 'context',
-      elements: [
-        {
-          type: 'mrkdwn',
-          text: ':busts_in_silhouette:',
-        },
-        {
-          type: 'mrkdwn',
-          text: `${course.maxStudents} spots`,
-        },
-      ],
-    },
-    {
-      type: 'context',
-      elements: [
-        {
-          type: 'mrkdwn',
-          text: ':calendar:',
-        },
-        {
-          type: 'mrkdwn',
-          text: dateRange,
-        },
-      ],
-    },
-    {
-      type: 'context',
-      elements: [
-        {
-          type: 'mrkdwn',
-          text: ':link:',
-        },
-        {
-          type: 'mrkdwn',
-          text: `*Enroll now:* <${process.env.HOST_URL}/en?courseId=${course.id}|${course.name}>`,
-        },
-      ],
-    },
-  ];
-  if (course.lastEnrollDate) {
-    message.push({
-      type: 'context',
-      elements: [
-        {
-          type: 'mrkdwn',
-          text: ':bangbang:',
-        },
-        {
-          type: 'mrkdwn',
-          text: `*Do it before:* ${formatDateForSlack(course.lastEnrollDate)}`,
-        },
-      ],
-    });
-  }
-  const channel = 'new-trainings';
-  await sendMessage(channel, message);
-};
-
-const formatDateForSlack = (date: Date) => {
-  const dateUnix = dateToUnixTimestamp(date);
-  return `<!date^${dateUnix}^{date_short} {time}|${date.toLocaleDateString()}>`;
+const sendMessageToUser = async (userEmail: string, blocks: Block[]) => {
+  const userId = await findUserIdByEmail(userEmail);
+  if (!userEmail) return;
+  await sendMessage(userId, blocks);
 };
