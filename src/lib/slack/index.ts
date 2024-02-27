@@ -1,5 +1,6 @@
 import { Course } from '@prisma/client';
 import {
+  SLACK_API_LOOKUP_BY_CHANNEL,
   SLACK_API_LOOKUP_BY_EMAIL,
   SLACK_API_POST_MESSAGE,
   SLACK_NEW_TRAININGS_CHANNEL,
@@ -22,7 +23,7 @@ export const sendCourseFullMessage = async (
   userEmail: string,
   course: Course
 ) => {
-  if (!isProduction) return;
+  if (!isProduction()) return;
   const blocks = createBlocksCourseFull(course);
   sendMessageToUser(userEmail, blocks);
 };
@@ -40,10 +41,25 @@ const findUserIdByEmail = async (email: string) => {
 };
 
 export const sendCoursePoster = async (course: Course) => {
-  if (!isProduction) return;
-  const message = createBlocksNewTraining(course);
   const channel = SLACK_NEW_TRAININGS_CHANNEL;
+  if (!isProduction()) return;
+  const channelExistsResult = await channelExists(channel);
+  if (!channelExistsResult) return;
+  const message = createBlocksNewTraining(course);
   await sendMessage(channel, message);
+};
+
+const channelExists = async (channel: string) => {
+  const res = await fetch(`${SLACK_API_LOOKUP_BY_CHANNEL}`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
+    },
+  });
+  const data = await res.json();
+  if (!data.channels) return false;
+  return data.channels.some((c: { name: string }) => c.name === channel);
 };
 
 const sendMessage = async (channel: string, blocks: Block[]) => {
