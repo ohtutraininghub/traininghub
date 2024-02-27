@@ -173,10 +173,10 @@ describe('ProfileView Tests', () => {
     const endedCreatedCourses = screen.queryByText(
       'ProfileView.header.endedCreatedCourses'
     );
-    const tempaltesAdmin = screen.queryByText(
+    const templatesAdmin = screen.queryByText(
       'ProfileView.header.templatesAdmin'
     );
-    const tempaltesTrainer = screen.queryByText(
+    const templatesTrainer = screen.queryByText(
       'ProfileView.header.templatesTrainer'
     );
     expect(myCourses).toBeInTheDocument();
@@ -184,8 +184,8 @@ describe('ProfileView Tests', () => {
     expect(inProgressCourses).toBeInTheDocument();
     expect(upcomingCreatedCourses).not.toBeInTheDocument();
     expect(endedCreatedCourses).not.toBeInTheDocument();
-    expect(tempaltesAdmin).not.toBeInTheDocument();
-    expect(tempaltesTrainer).not.toBeInTheDocument();
+    expect(templatesAdmin).not.toBeInTheDocument();
+    expect(templatesTrainer).not.toBeInTheDocument();
   });
   it('should render correct dropdowns for trainer', async () => {
     (useSession as jest.Mock).mockReturnValue({
@@ -229,10 +229,10 @@ describe('ProfileView Tests', () => {
     const endedCreatedCourses = screen.getByText(
       'ProfileView.header.endedCreatedCourses (1)'
     );
-    const tempaltesAdmin = screen.queryByText(
+    const templatesAdmin = screen.queryByText(
       'ProfileView.header.templatesAdmin (1)'
     );
-    const tempaltesTrainer = screen.getByText(
+    const templatesTrainer = screen.getByText(
       'ProfileView.header.templatesTrainer (1)'
     );
     expect(myCourses).toBeInTheDocument();
@@ -240,8 +240,8 @@ describe('ProfileView Tests', () => {
     expect(inProgressCourses).toBeInTheDocument();
     expect(upcomingCreatedCourses).toBeInTheDocument();
     expect(endedCreatedCourses).toBeInTheDocument();
-    expect(tempaltesAdmin).not.toBeInTheDocument();
-    expect(tempaltesTrainer).toBeInTheDocument();
+    expect(templatesAdmin).not.toBeInTheDocument();
+    expect(templatesTrainer).toBeInTheDocument();
   });
   it('should render correct dropdowns for admin', async () => {
     (useSession as jest.Mock).mockReturnValue({
@@ -284,10 +284,10 @@ describe('ProfileView Tests', () => {
     const endedCreatedCourses = screen.getByText(
       'ProfileView.header.endedCreatedCourses (0)' // there are no ended courses that were created by the admin
     );
-    const tempaltesAdmin = screen.getByText(
+    const templatesAdmin = screen.getByText(
       'ProfileView.header.templatesAdmin (1)'
     );
-    const tempaltesTrainer = screen.queryByText(
+    const templatesTrainer = screen.queryByText(
       'ProfileView.header.templatesTrainer (1)'
     );
     expect(myCourses).toBeInTheDocument();
@@ -295,8 +295,8 @@ describe('ProfileView Tests', () => {
     expect(inProgressCourses).toBeInTheDocument();
     expect(upcomingCreatedCourses).toBeInTheDocument();
     expect(endedCreatedCourses).toBeInTheDocument();
-    expect(tempaltesAdmin).toBeInTheDocument();
-    expect(tempaltesTrainer).not.toBeInTheDocument();
+    expect(templatesAdmin).toBeInTheDocument();
+    expect(templatesTrainer).not.toBeInTheDocument();
   });
   it('should be possible to access admin dashboard as an admin', async () => {
     (useSession as jest.Mock).mockReturnValue({
