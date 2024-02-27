@@ -135,7 +135,7 @@ const traineeUser = {
 };
 
 describe('ProfileView Tests', () => {
-  it('should render correct dropdowns for trainee', async () => {
+  it('should render correct dropdowns and tabs for trainee', async () => {
     (useSession as jest.Mock).mockReturnValue({
       data: {
         user: traineeUser,
@@ -160,32 +160,18 @@ describe('ProfileView Tests', () => {
       />
     );
 
-    const myCourses = screen.getByText('ProfileView.label.myCourses');
+    const myEnrollments = screen.getByText('ProfileView.label.myEnrollments');
+    const myCourses = screen.queryByText('ProfileView.label.myCourses');
     const upcomingCourses = screen.getByText(
       'ProfileView.header.upcomingCourses (1)'
     );
     const inProgressCourses = screen.getByText(
       'ProfileView.header.coursesInprogress (1)'
     );
-    const upcomingCreatedCourses = screen.queryByText(
-      'ProfileView.header.upcomingCreatedCourses'
-    );
-    const endedCreatedCourses = screen.queryByText(
-      'ProfileView.header.endedCreatedCourses'
-    );
-    const templatesAdmin = screen.queryByText(
-      'ProfileView.header.templatesAdmin'
-    );
-    const templatesTrainer = screen.queryByText(
-      'ProfileView.header.templatesTrainer'
-    );
-    expect(myCourses).toBeInTheDocument();
+    expect(myEnrollments).toBeInTheDocument();
+    expect(myCourses).not.toBeInTheDocument();
     expect(upcomingCourses).toBeInTheDocument();
     expect(inProgressCourses).toBeInTheDocument();
-    expect(upcomingCreatedCourses).not.toBeInTheDocument();
-    expect(endedCreatedCourses).not.toBeInTheDocument();
-    expect(templatesAdmin).not.toBeInTheDocument();
-    expect(templatesTrainer).not.toBeInTheDocument();
   });
   it('should render correct dropdowns for trainer', async () => {
     (useSession as jest.Mock).mockReturnValue({
@@ -216,6 +202,7 @@ describe('ProfileView Tests', () => {
       />
     );
 
+    const myEnrollments = screen.getByText('ProfileView.label.myEnrollments');
     const myCourses = screen.getByText('ProfileView.label.myCourses');
     const upcomingCourses = screen.getByText(
       'ProfileView.header.upcomingCourses (1)'
@@ -223,6 +210,12 @@ describe('ProfileView Tests', () => {
     const inProgressCourses = screen.getByText(
       'ProfileView.header.coursesInprogress (1)'
     );
+    expect(myEnrollments).toBeInTheDocument();
+    expect(myCourses).toBeInTheDocument();
+    expect(upcomingCourses).toBeInTheDocument();
+    expect(inProgressCourses).toBeInTheDocument();
+
+    fireEvent.click(myCourses);
     const upcomingCreatedCourses = screen.getByText(
       'ProfileView.header.upcomingCreatedCourses (0)' // trainers created courses are in the past
     );
@@ -235,9 +228,6 @@ describe('ProfileView Tests', () => {
     const templatesTrainer = screen.getByText(
       'ProfileView.header.templatesTrainer (1)'
     );
-    expect(myCourses).toBeInTheDocument();
-    expect(upcomingCourses).toBeInTheDocument();
-    expect(inProgressCourses).toBeInTheDocument();
     expect(upcomingCreatedCourses).toBeInTheDocument();
     expect(endedCreatedCourses).toBeInTheDocument();
     expect(templatesAdmin).not.toBeInTheDocument();
@@ -271,6 +261,7 @@ describe('ProfileView Tests', () => {
       />
     );
 
+    const myEnrollments = screen.getByText('ProfileView.label.myEnrollments');
     const myCourses = screen.getByText('ProfileView.label.myCourses');
     const upcomingCourses = screen.getByText(
       'ProfileView.header.upcomingCourses (1)'
@@ -278,6 +269,12 @@ describe('ProfileView Tests', () => {
     const inProgressCourses = screen.getByText(
       'ProfileView.header.coursesInprogress (1)'
     );
+    expect(myEnrollments).toBeInTheDocument();
+    expect(myCourses).toBeInTheDocument();
+    expect(upcomingCourses).toBeInTheDocument();
+    expect(inProgressCourses).toBeInTheDocument();
+
+    fireEvent.click(myCourses);
     const upcomingCreatedCourses = screen.getByText(
       'ProfileView.header.upcomingCreatedCourses (1)'
     );
@@ -290,9 +287,6 @@ describe('ProfileView Tests', () => {
     const templatesTrainer = screen.queryByText(
       'ProfileView.header.templatesTrainer (1)'
     );
-    expect(myCourses).toBeInTheDocument();
-    expect(upcomingCourses).toBeInTheDocument();
-    expect(inProgressCourses).toBeInTheDocument();
     expect(upcomingCreatedCourses).toBeInTheDocument();
     expect(endedCreatedCourses).toBeInTheDocument();
     expect(templatesAdmin).toBeInTheDocument();
