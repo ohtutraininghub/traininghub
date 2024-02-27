@@ -74,12 +74,21 @@ export default function ProfileView({
           },
         }}
       >
-        <Tab label={t('ProfileView.label.myEnrollments')} />
+        <Tab
+          label={t('ProfileView.label.myEnrollments')}
+          data-testid="myEnrollmentsTab"
+        />
         {isTrainerOrAdmin((session?.user as User) || {}) && (
-          <Tab label={t('ProfileView.label.myCourses')} />
+          <Tab
+            label={t('ProfileView.label.myCourses')}
+            data-testid="myCoursesTab"
+          />
         )}
         {isAdmin((session?.user as User) || {}) && (
-          <Tab label={t('ProfileView.label.adminDashboard')} />
+          <Tab
+            label={t('ProfileView.label.adminDashboard')}
+            data-testid="adminDashboardTab"
+          />
         )}
       </Tabs>
 
