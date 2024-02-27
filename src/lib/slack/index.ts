@@ -49,7 +49,7 @@ export const sendCoursePoster = async (course: Course) => {
   await sendMessage(channel, message);
 };
 
-export const channelExists = async (channel: string) => {
+const channelExists = async (channel: string) => {
   const res = await fetch(`${SLACK_API_LOOKUP_BY_CHANNEL}`, {
     method: 'GET',
     headers: {
