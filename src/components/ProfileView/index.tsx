@@ -5,12 +5,12 @@ import ProfileCourseList from '@/components/ProfileView/ProfileCourseList';
 import ProfileTemplateList from '@/components/ProfileView/ProfileTemplateList';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import { Course, Role, User } from '@prisma/client';
+import { Course, User } from '@prisma/client';
 import { PropsWithChildren, SyntheticEvent, useState } from 'react';
 import { useTheme } from '@mui/material/styles';
 import { useSession } from 'next-auth/react';
 import UserList from '@/components/UserList';
-import { isTrainerOrAdmin } from '@/lib/auth-utils';
+import { isTrainerOrAdmin, isAdmin } from '@/lib/auth-utils';
 import { TemplateWithCreator } from '@/lib/prisma/templates';
 import { Tag } from '@prisma/client';
 import { DictProps } from '@i18n/index';
@@ -74,35 +74,17 @@ export default function ProfileView({
           },
         }}
       >
-        <Tab label={t('ProfileView.label.myCourses')} />
-        <Tab label={t('ProfileView.label.additionalInfo')} />
-        {session?.user.role === Role.ADMIN && (
+        <Tab label={t('ProfileView.label.myEnrollments')} />
+        {isTrainerOrAdmin((session?.user as User) || {}) && (
+          <Tab label={t('ProfileView.label.myCourses')} />
+        )}
+        {isAdmin((session?.user as User) || {}) && (
           <Tab label={t('ProfileView.label.adminDashboard')} />
         )}
       </Tabs>
 
       {selectedTab === 0 && (
         <>
-          {isTrainerOrAdmin((session?.user as User) || {}) && (
-            <ProfileCourseList
-              headerText={t('ProfileView.header.upcomingCreatedCourses')}
-              courses={createdCourses.filter(
-                (createdCourse: Course) => createdCourse.startDate > currentDate
-              )}
-              open={true}
-              id={'upcomingCreated'}
-            />
-          )}
-          {isTrainerOrAdmin((session?.user as User) || {}) && (
-            <ProfileCourseList
-              headerText={t('ProfileView.header.endedCreatedCourses')}
-              courses={createdCourses.filter(
-                (createdCourse: Course) => createdCourse.endDate < currentDate
-              )}
-              open={true}
-              id={'endedCreated'}
-            />
-          )}
           <ProfileCourseList
             headerText={t('ProfileView.header.coursesInprogress')}
             courses={courses.filter(
@@ -129,18 +111,36 @@ export default function ProfileView({
             open={false}
             id={'endedCourses'}
           />
-          {isTrainerOrAdmin((session?.user as User) || {}) && (
-            <ProfileTemplateList
-              headerText={
-                session?.user.role === Role.ADMIN
-                  ? t('ProfileView.header.templatesAdmin')
-                  : t('ProfileView.header.templatesTrainer')
-              }
-              templates={templates}
-              tags={tags}
-              open={false}
-            />
-          )}
+        </>
+      )}
+      {selectedTab === 1 && (
+        <>
+          <ProfileCourseList
+            headerText={t('ProfileView.header.upcomingCreatedCourses')}
+            courses={createdCourses.filter(
+              (createdCourse: Course) => createdCourse.startDate > currentDate
+            )}
+            open={true}
+            id={'upcomingCreated'}
+          />
+          <ProfileCourseList
+            headerText={t('ProfileView.header.endedCreatedCourses')}
+            courses={createdCourses.filter(
+              (createdCourse: Course) => createdCourse.endDate < currentDate
+            )}
+            open={true}
+            id={'endedCreated'}
+          />
+          <ProfileTemplateList
+            headerText={
+              isAdmin((session?.user as User) || {})
+                ? t('ProfileView.header.templatesAdmin')
+                : t('ProfileView.header.templatesTrainer')
+            }
+            templates={templates}
+            tags={tags}
+            open={false}
+          />
         </>
       )}
       {selectedTab === 2 && (
