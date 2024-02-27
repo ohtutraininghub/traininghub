@@ -58,7 +58,7 @@ export const channelExists = async (channel: string) => {
     },
   });
   const data = await res.json();
-  if (!data) return false;
+  if (!data.channels) return false;
   return data.channels.some((c: { name: string }) => c.name === channel);
 };
 
