@@ -7,8 +7,8 @@ describe('Template editing', () => {
   describe('when logged in as an admin', () => {
     beforeEach(() => {
       cy.login('john.doe@example.com', 'ADMIN');
-      cy.getCy('avatarIconButton').click();
-      cy.getCy('viewProfileMenuItem').click();
+      cy.visit('/profile');
+      cy.getCy('myCoursesTab').click();
       cy.getCy('templateListControls').click();
     });
 
@@ -36,8 +36,8 @@ describe('Template editing', () => {
   describe('when logged in as a trainer', () => {
     beforeEach(() => {
       cy.login('emily.davis@example.com', 'TRAINER');
-      cy.getCy('avatarIconButton').click();
-      cy.getCy('viewProfileMenuItem').click();
+      cy.visit('/profile');
+      cy.getCy('myCoursesTab').click();
       cy.getCy('templateListControls').click();
     });
 

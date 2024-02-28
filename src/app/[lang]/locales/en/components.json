@@ -117,7 +117,8 @@
     "label": {
       "additionalInfo": "Additional information",
       "adminDashboard": "Admin dashboard",
-      "myCourses": "My courses"
+      "myCourses": "My courses",
+      "myEnrollments": "My enrollments"
     }
   },
   "RemoveCourse": {
