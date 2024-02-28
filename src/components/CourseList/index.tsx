@@ -87,14 +87,7 @@ export default function CourseList({
         alignItems="center"
       >
         <Grid item xs={0} sm={4}></Grid>
-        <Grid
-          item
-          xs={6}
-          sm={4}
-          display={'flex'}
-          flexDirection={'column'}
-          sx={{ pr: { xs: '0rem', sm: '0rem' } }}
-        >
+        <Grid item xs={6} sm={4} display={'flex'} flexDirection={'column'}>
           <div
             style={{
               paddingTop: '1em',
