@@ -3,7 +3,6 @@
 import * as React from 'react';
 import {
   Box,
-  // Container,
   Grid,
   List,
   ListItem,
@@ -66,7 +65,6 @@ export default function CourseList({
       setViewStyle(newViewStyle);
     }
   };
-  const componentAllignmentWidth = viewStyle === 'grid' ? '1533px' : '1300px';
 
   return (
     <>
@@ -81,27 +79,29 @@ export default function CourseList({
         })}
         editCourseLabel={t('EditButton.editCourse')}
       />
-
-      <Box
-        sx={{
-          margin: 'auto',
-          display: 'flex',
-          justifyContent: 'space-between',
-          flexDirection: 'row',
-          width: '100%',
-          maxWidth: componentAllignmentWidth,
-          alignItems: 'center',
-        }}
+      <Grid
+        container
+        display="flex"
+        width="100%"
+        maxWidth={1600}
+        alignItems="center"
       >
-        <Box sx={{ flex: { xs: 0, sm: 1 }, display: 'flex' }} id="testi"></Box>
-        <Box
-          sx={{
-            // display: 'flex',
-            marginLeft: { xs: '3em' },
-            justifyContent: 'cetner',
-          }}
+        <Grid item xs={0} sm={4}></Grid>
+        <Grid
+          item
+          xs={6}
+          sm={4}
+          display={'flex'}
+          flexDirection={'column'}
+          sx={{ pr: { xs: '0rem', sm: '0rem' } }}
         >
-          <div style={{ paddingTop: '1em' }}>
+          <div
+            style={{
+              paddingTop: '1em',
+              display: 'flex',
+              justifyContent: 'center',
+            }}
+          >
             <ToggleButtonGroup
               value={viewStyle}
               exclusive
@@ -152,21 +152,24 @@ export default function CourseList({
               {t('CourseList.listControlLabel')}
             </Typography>
           </div>
-        </Box>
-        <Box
+        </Grid>
+        <Grid
+          item
+          xs={6}
+          display="flex"
+          justifyContent="flex-end"
           sx={{
-            display: 'flex',
-            flex: 1,
-            justifyContent: 'flex-end',
-            alightItems: 'center',
+            pr: { xs: '2rem', sm: '2rem' },
+            mb: '1rem',
+            flex: { xs: 1, sm: 1 },
           }}
         >
           <ToggleTrainingsButton
-            text={t('ToggleTrainingsButton.requestsTrainings')}
+            text={t('ToggleTrainingsButton.requestTrainings')}
             onClick={() => {}}
           />
-        </Box>
-      </Box>
+        </Grid>
+      </Grid>
       {filteredCourses.length === 0 ? (
         <Box
           style={{
@@ -187,43 +190,39 @@ export default function CourseList({
         </Box>
       ) : (
         <>
-          <Box
-            sx={{
-              width: '100%', // Occupy full width
-              maxWidth: 1600, // Ensure consistent width
-              // margin: 'auto', // Center the content
-              // paddingTop: '1em', // Adjust padding as needed
-            }}
-          >
-            {viewStyle === 'grid' && (
-              <Grid
-                container
-                spacing={2}
-                maxWidth={1600}
-                width="100%"
-                sx={{ margin: 'auto' }}
-                columns={{ xs: 1, sm: 2, md: 3 }}
-              >
-                {filteredCourses.map((course) => (
-                  <Grid
-                    key={course.id}
-                    item
-                    xs={1}
-                    sx={{ marginBottom: '50px' }}
-                  >
-                    <CourseCard
-                      lang={lang}
-                      enrolls={t('CourseCard.enrolls', {
-                        studentCount: course._count.students,
-                        maxStudentCount: course.maxStudents,
-                      })}
-                      course={course}
-                    />
-                  </Grid>
-                ))}
-              </Grid>
-            )}
-          </Box>
+          {viewStyle === 'grid' && (
+            <Grid
+              container
+              display={'flex'}
+              justifyContent={'space-between'}
+              maxWidth={1600}
+              width="100%"
+              sx={{ margin: 'auto' }}
+              columns={{ xs: 1, sm: 2, md: 3 }}
+            >
+              {filteredCourses.map((course) => (
+                <Grid
+                  key={course.id}
+                  item
+                  xs={1}
+                  sx={{
+                    marginBottom: '50px',
+                    padding: '8px',
+                    paddingBottom: '0px',
+                  }}
+                >
+                  <CourseCard
+                    lang={lang}
+                    enrolls={t('CourseCard.enrolls', {
+                      studentCount: course._count.students,
+                      maxStudentCount: course.maxStudents,
+                    })}
+                    course={course}
+                  />
+                </Grid>
+              ))}
+            </Grid>
+          )}
           {viewStyle === 'list' && (
             <Box
               style={{

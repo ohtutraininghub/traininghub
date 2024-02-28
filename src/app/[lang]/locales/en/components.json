@@ -196,8 +196,8 @@
     }
   },
   "ToggleTrainingsButton": {
-    "requestsTrainings": "Request trainings",
-    "trainings": "Trainings"
+    "currentTrainings": "Current trainings",
+    "requestTrainings": "Request trainings"
   },
   "UnauthorizedError": {
     "backToHome": "Back to home",

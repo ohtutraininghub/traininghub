@@ -64,9 +64,9 @@ export function ToggleTrainingsButton({
   return (
     <Button
       sx={{
-        fontSize: ['0.8rem', '1rem'],
-        paddingX: ['0.8rem', '1rem'],
-        paddingY: ['0.3rem', '0.375rem'],
+        fontSize: { xs: '0.8rem', md: '1rem' },
+        paddingX: { xs: '0.8rem', md: '1rem' },
+        paddingY: { xs: '0.3rem', md: '0.375rem' },
       }}
       variant="contained"
       onClick={onClick}
