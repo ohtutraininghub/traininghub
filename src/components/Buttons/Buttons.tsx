@@ -72,6 +72,7 @@ export function ToggleTrainingsButton({
       }}
       variant="contained"
       onClick={onClick}
+      data-testid="toggle-past-trainings-button"
     >
       {text}
     </Button>
