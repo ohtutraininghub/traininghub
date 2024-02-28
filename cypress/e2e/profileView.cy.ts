@@ -75,6 +75,9 @@ describe('Profile View', () => {
       cy.contains('Taylor Trainee');
       cy.contains('taylor@traininghub.org');
     });
+    it('should not show my courses tab for trainee', () => {
+      cy.contains('My courses').should('not.exist');
+    });
     it('should not show admin dashboard for trainee', () => {
       cy.contains('Admin dashboard').should('not.exist');
     });
@@ -91,12 +94,6 @@ describe('Profile View', () => {
       cy.getCy('listControls\\.endedCourses').click();
       cy.contains(testCourses[0].name);
     });
-    it('should not show upcoming created courses for trainee', () => {
-      cy.contains('Upcoming created courses').should('not.exist');
-    });
-    it('should not show template list for trainee', () => {
-      cy.contains('My course templates').should('not.exist');
-    });
   });
   describe('when logged in as a trainer', () => {
     beforeEach(() => {
@@ -106,10 +103,14 @@ describe('Profile View', () => {
       cy.getCy('listControls\\.inprogressCourses').click();
       cy.getCy('listControls\\.upcomingCourses').click();
     });
+    it('should show my courses tab for trainer', () => {
+      cy.contains('My courses');
+    });
     it('should not show admin dashboard for trainer', () => {
       cy.contains('Admin dashboard').should('not.exist');
     });
     it('should show upcoming created courses for trainer', () => {
+      cy.getCy('myCoursesTab').click();
       // close ended created courses dropdown
       cy.getCy('listControls\\.endedCreated').click();
       // trainer user is the creator of 2 upcoming courses
@@ -120,6 +121,7 @@ describe('Profile View', () => {
       cy.contains(testCourses[3].name);
     });
     it('should show ended created courses for trainer', () => {
+      cy.getCy('myCoursesTab').click();
       // close upcoming created courses dropdown
       cy.getCy('listControls\\.upcomingCreated').click();
       // trainer user is the creator of one upcoming course
@@ -143,6 +145,7 @@ describe('Profile View', () => {
       cy.contains('No courses to show.');
     });
     it('should show template list for trainer', () => {
+      cy.getCy('myCoursesTab').click();
       // trainer user doesn't have any templates
       cy.contains('My course templates (0)');
     });
@@ -155,20 +158,26 @@ describe('Profile View', () => {
       cy.getCy('listControls\\.inprogressCourses').click();
       cy.getCy('listControls\\.upcomingCourses').click();
     });
+    it('should show my courses tab for admin', () => {
+      cy.contains('My courses');
+    });
     it('should show admin dashboard for admin', () => {
       cy.contains('Admin dashboard');
     });
     it('should not show upcoming created courses for admin', () => {
+      cy.getCy('myCoursesTab').click();
       // admin isn't the creator of any courses
       cy.contains('Upcoming created courses (0)');
       cy.contains('No courses to show.');
     });
     it('should not show ended created courses for admin', () => {
+      cy.getCy('myCoursesTab').click();
       // admin isn't the creator of any courses
       cy.contains('Ended created courses (0)');
       cy.contains('No courses to show.');
     });
     it('should show all templates for admin', () => {
+      cy.getCy('myCoursesTab').click();
       cy.contains('All course templates (2)');
 
       // open template dropdown
