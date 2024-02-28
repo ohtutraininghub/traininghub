@@ -159,7 +159,7 @@ export default function CourseList({
           display="flex"
           justifyContent="flex-end"
           sx={{
-            pr: { xs: '2rem', sm: '2rem' },
+            pr: { xs: '2rem', sm: '2rem', xl: '4rem' },
             mb: '1rem',
             flex: { xs: 1, sm: 1 },
           }}
