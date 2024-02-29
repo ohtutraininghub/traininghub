@@ -130,6 +130,7 @@ export default function ProfileView({
               (createdCourse: Course) => createdCourse.startDate > currentDate
             )}
             open={true}
+            timer={true}
             id={'upcomingCreated'}
           />
           <ProfileCourseList
