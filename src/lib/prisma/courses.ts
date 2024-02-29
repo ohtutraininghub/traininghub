@@ -65,6 +65,25 @@ export const getCourses = async () => {
   });
 };
 
+export const getAllCourses = async () => {
+  return await prisma.course.findMany({
+    include: {
+      createdBy: {
+        select: {
+          name: true,
+        },
+      },
+      _count: {
+        select: {
+          students: true,
+        },
+      },
+      tags: true,
+    },
+    orderBy: [{ startDate: 'asc' }, { name: 'asc' }],
+  });
+};
+
 export const getEnrolledCourseIdsByUserId = async (userId: string) => {
   return (
     await prisma.course.findMany({
