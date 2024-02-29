@@ -53,3 +53,28 @@ export function CourseModalCloseButton({ lang }: CourseModalCloseButtonProps) {
     <Button onClick={handleClick}>{t('CourseModalCloseButton.close')}</Button>
   );
 }
+
+export function ToggleTrainingsButton({
+  text,
+  onClick,
+}: {
+  text: string;
+  onClick: () => void;
+}) {
+  return (
+    <Button
+      sx={{
+        fontSize: { xs: '0.8rem', md: '1rem' },
+        paddingX: { xs: '0.8rem', sm: '1rem' },
+        paddingY: { xs: '0.3rem', sm: '0.375rem' },
+        borderRadius: '13px',
+        height: '50px',
+      }}
+      variant="contained"
+      onClick={onClick}
+      data-testid="toggle-past-trainings-button"
+    >
+      {text}
+    </Button>
+  );
+}

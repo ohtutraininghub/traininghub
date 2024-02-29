@@ -28,6 +28,7 @@ import Link from 'next/link';
 import CourseCard from '@/components/CourseCard';
 import { UserNamesAndIds } from '@/lib/prisma/users';
 import { ImageContainer } from '../ImageContainer';
+import { ToggleTrainingsButton } from '../Buttons/Buttons';
 
 interface CourseListProps extends DictProps {
   courses: CourseWithInfo[];
@@ -54,6 +55,7 @@ export default function CourseList({
   const { t } = useTranslation(lang, 'components');
   const { palette } = useTheme();
   const [viewStyle, setViewStyle] = React.useState<string | null>('grid');
+
   const handleViewToggle = (
     // eslint-disable-next-line
     event: React.MouseEvent<HTMLElement>,
@@ -77,56 +79,90 @@ export default function CourseList({
         })}
         editCourseLabel={t('EditButton.editCourse')}
       />
-      <div style={{ paddingTop: '1em' }}>
-        <ToggleButtonGroup
-          value={viewStyle}
-          exclusive
-          onChange={handleViewToggle}
-          aria-label="course view style"
-          sx={{
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
-          }}
-        >
-          <ToggleButton value="grid" aria-label="grid view">
-            <WindowIcon style={{ color: palette.white.main }} />
-          </ToggleButton>
-          <ToggleButton value="list" aria-label="list view">
-            <ViewHeadlineIcon style={{ color: palette.white.main }} />
-          </ToggleButton>
-        </ToggleButtonGroup>
-      </div>
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          paddingBottom: '1em',
-        }}
+      <Grid
+        container
+        display="flex"
+        width="100%"
+        maxWidth={1600}
+        alignItems="center"
       >
-        <Typography
-          variant="caption"
-          style={{
-            fontWeight: 500,
-            textTransform: 'uppercase',
-            color: palette.white.main,
-            marginRight: '20px',
+        <Grid item xs={0} sm={4}></Grid>
+        <Grid item xs={6} sm={4} display={'flex'} flexDirection={'column'}>
+          <div
+            style={{
+              paddingTop: '1em',
+              display: 'flex',
+              justifyContent: 'center',
+            }}
+          >
+            <ToggleButtonGroup
+              value={viewStyle}
+              exclusive
+              onChange={handleViewToggle}
+              aria-label="course view style"
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
+              }}
+            >
+              <ToggleButton value="grid" aria-label="grid view">
+                <WindowIcon style={{ color: palette.white.main }} />
+              </ToggleButton>
+              <ToggleButton value="list" aria-label="list view">
+                <ViewHeadlineIcon style={{ color: palette.white.main }} />
+              </ToggleButton>
+            </ToggleButtonGroup>
+          </div>
+
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              paddingBottom: '1em',
+            }}
+          >
+            <Typography
+              variant="caption"
+              style={{
+                fontWeight: 500,
+                textTransform: 'uppercase',
+                color: palette.white.main,
+                marginRight: '20px',
+              }}
+            >
+              {t('CourseList.gridControlLabel')}
+            </Typography>
+            <Typography
+              variant="caption"
+              style={{
+                fontWeight: 500,
+                color: palette.white.main,
+                textTransform: 'uppercase',
+              }}
+            >
+              {t('CourseList.listControlLabel')}
+            </Typography>
+          </div>
+        </Grid>
+        <Grid
+          item
+          xs={6}
+          display="flex"
+          justifyContent="flex-end"
+          sx={{
+            pr: { xs: '2rem', sm: '2rem', xl: '4rem' },
+            mb: '1rem',
+            flex: { xs: 1, sm: 1 },
           }}
         >
-          {t('CourseList.gridControlLabel')}
-        </Typography>
-        <Typography
-          variant="caption"
-          style={{
-            fontWeight: 500,
-            color: palette.white.main,
-            textTransform: 'uppercase',
-          }}
-        >
-          {t('CourseList.listControlLabel')}
-        </Typography>
-      </div>
+          <ToggleTrainingsButton
+            text={t('ToggleTrainingsButton.requestTrainings')}
+            onClick={() => {}}
+          />
+        </Grid>
+      </Grid>
       {filteredCourses.length === 0 ? (
         <Box
           style={{
@@ -150,14 +186,24 @@ export default function CourseList({
           {viewStyle === 'grid' && (
             <Grid
               container
-              spacing={2}
+              display={'flex'}
+              justifyContent={'space-between'}
               maxWidth={1600}
               width="100%"
               sx={{ margin: 'auto' }}
               columns={{ xs: 1, sm: 2, md: 3 }}
             >
               {filteredCourses.map((course) => (
-                <Grid key={course.id} item xs={1} sx={{ marginBottom: '50px' }}>
+                <Grid
+                  key={course.id}
+                  item
+                  xs={1}
+                  sx={{
+                    marginBottom: '50px',
+                    padding: '8px',
+                    paddingBottom: '0px',
+                  }}
+                >
                   <CourseCard
                     lang={lang}
                     enrolls={t('CourseCard.enrolls', {

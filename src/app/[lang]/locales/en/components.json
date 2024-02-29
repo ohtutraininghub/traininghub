@@ -117,7 +117,8 @@
     "label": {
       "additionalInfo": "Additional information",
       "adminDashboard": "Admin dashboard",
-      "myCourses": "My courses"
+      "myCourses": "My courses",
+      "myEnrollments": "My enrollments"
     }
   },
   "RemoveCourse": {
@@ -194,6 +195,10 @@
       "mainLinkLabel": "Insert link",
       "urlLabel": "URL"
     }
+  },
+  "ToggleTrainingsButton": {
+    "currentTrainings": "Current trainings",
+    "requestTrainings": "Request trainings"
   },
   "UnauthorizedError": {
     "backToHome": "Back to home",

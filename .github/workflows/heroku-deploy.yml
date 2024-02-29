@@ -30,6 +30,8 @@ jobs:
             SENTRY_AUTH_TOKEN
             SENTRY_ORG
             SENTRY_PROJECT
+            HOST_URL
+            SLACK_BOT_TOKEN
         env:
           # NEXTAUTH
           HD_NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL }}
@@ -45,6 +47,10 @@ jobs:
           HD_SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
           HD_SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
 
+          # SLACK
+          HD_HOST_URL: ${{ secrets.HOST_URL }}
+          HD_SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+
           # BUILD TIME ARGS
 
           # NEXTAUTH
@@ -57,3 +63,7 @@ jobs:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
           SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
+
+          # SLACK
+          HOST_URL: ${{ secrets.HOST_URL }}
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
