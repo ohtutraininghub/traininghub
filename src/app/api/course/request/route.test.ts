@@ -18,7 +18,7 @@ const testCourse = {
   createdById: testUser.id,
 };
 
-const invalidCourseId = '123';
+const invalidCourseId = 'clt716x04000008l2cuggdblf';
 
 jest.mock('../../../../lib/auth', () => ({
   getServerAuthSession: async () =>
@@ -67,6 +67,24 @@ describe('Course request API tests', () => {
       expect(data.message).toBe('Course by the given id was not found!');
       expect(data.messageType).toBe(MessageType.ERROR);
       expect(response.status).toBe(StatusCodeType.NOT_FOUND);
+    });
+    it('requesting a course already requested for returns error message', async () => {
+      const alreadyEnrolledCourse = await prisma.course.create({
+        data: {
+          ...testCourse,
+          requesters: {
+            connect: [{ id: testUser.id }],
+          },
+        },
+      });
+
+      const req = mockPostRequest({ courseId: alreadyEnrolledCourse.id });
+      const response = await POST(req);
+      const data = await response.json();
+
+      expect(data.message).toBe('You have already requested!');
+      expect(data.messageType).toBe(MessageType.ERROR);
+      expect(response.status).toBe(StatusCodeType.UNPROCESSABLE_CONTENT);
     });
   });
 });
