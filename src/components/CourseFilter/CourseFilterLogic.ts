@@ -12,9 +12,16 @@ export function filterCourses(
     courseTag?: string | undefined;
     startDate?: string;
     endDate?: string;
-  }
+  },
+  showPastCourses: boolean
 ) {
   let filteredCourses = [...courses];
+
+  if (!showPastCourses) {
+    filteredCourses = filteredCourses.filter(
+      (course) => new Date(course.endDate) >= new Date()
+    );
+  }
 
   if (searchCourses?.courseName) {
     const searchName = searchCourses.courseName.toLowerCase();

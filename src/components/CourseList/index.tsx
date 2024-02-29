@@ -51,7 +51,12 @@ export default function CourseList({
   searchCourses,
   lang,
 }: CourseListProps) {
-  const filteredCourses = filterCourses(courses, searchCourses);
+  const [showPastCourses, setShowPastCourses] = React.useState(false);
+  const filteredCourses = filterCourses(
+    courses,
+    searchCourses,
+    showPastCourses
+  );
   const { t } = useTranslation(lang, 'components');
   const { palette } = useTheme();
   const [viewStyle, setViewStyle] = React.useState<string | null>('grid');
@@ -64,6 +69,10 @@ export default function CourseList({
     if (newViewStyle !== null) {
       setViewStyle(newViewStyle);
     }
+  };
+
+  const handleToggleRequestTrainings = () => {
+    setShowPastCourses(!showPastCourses);
   };
 
   return (
@@ -159,7 +168,7 @@ export default function CourseList({
         >
           <ToggleTrainingsButton
             text={t('ToggleTrainingsButton.requestTrainings')}
-            onClick={() => {}}
+            onClick={handleToggleRequestTrainings}
           />
         </Grid>
       </Grid>
