@@ -5,10 +5,10 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { useTheme } from '@mui/material/styles';
 import { useState } from 'react';
 import { UseFormSetValue } from 'react-hook-form';
-import { CourseSchemaType } from '@/lib/zod/courses';
+import { CourseSchemaWithIdType } from '@/lib/zod/courses';
 import { TemplateWithTags } from '@/lib/prisma/templates';
 
-type FormType = CourseSchemaType;
+type FormType = CourseSchemaWithIdType;
 
 interface TemplateSelectProps {
   id: string;
