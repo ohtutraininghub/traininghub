@@ -29,6 +29,7 @@ export type CourseWithInfo = prismaClient.CourseGetPayload<{
     _count: {
       select: {
         students: true;
+        requesters: true;
       };
     };
   };
@@ -76,6 +77,7 @@ export const getAllCourses = async () => {
       _count: {
         select: {
           students: true,
+          requesters: true,
         },
       },
       tags: true,
