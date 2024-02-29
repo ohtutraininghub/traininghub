@@ -65,6 +65,25 @@ export async function changeUserRole(userId: string, newRole: $Enums.Role) {
   return updatedUser;
 }
 
+export async function getUsersEnrollsAndRequests(userId: string) {
+  const courses = await prisma.user.findUnique({
+    where: { id: userId },
+    include: {
+      courses: {
+        select: {
+          id: true,
+        },
+      },
+      requestedCourses: {
+        select: {
+          id: true,
+        },
+      },
+    },
+  });
+  return courses;
+}
+
 export type Users = Prisma.PromiseReturnType<typeof getAllUsers>;
 export type UserNamesAndIds = Prisma.PromiseReturnType<
   typeof getStudentNamesByCourseId
