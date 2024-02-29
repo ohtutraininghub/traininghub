@@ -33,8 +33,9 @@ import { ToggleTrainingsButton } from '../Buttons/Buttons';
 interface CourseListProps extends DictProps {
   courses: CourseWithInfo[];
   openedCourse: CourseWithInfo | undefined;
-  usersEnrolledCourseIds: string[];
-  enrolledStudents: UserNamesAndIds | null;
+  usersEnrolledCourseIds?: string[];
+  usersRequestedCoursesIds?: string[];
+  enrolledStudents?: UserNamesAndIds;
   searchCourses: {
     courseName?: string;
     courseTag?: string;
@@ -47,6 +48,7 @@ export default function CourseList({
   courses,
   openedCourse,
   usersEnrolledCourseIds,
+  usersRequestedCoursesIds,
   enrolledStudents,
   searchCourses,
   lang,
@@ -81,11 +83,12 @@ export default function CourseList({
         lang={lang}
         course={openedCourse}
         usersEnrolledCourseIds={usersEnrolledCourseIds}
-        enrolledStudents={enrolledStudents}
+        usersRequestedCoursesIds={usersRequestedCoursesIds}
         enrolls={t('CourseModal.enrolls', {
           studentCount: openedCourse?._count.students,
           maxStudentCount: openedCourse?.maxStudents,
         })}
+        enrolledStudents={enrolledStudents}
         editCourseLabel={t('EditButton.editCourse')}
       />
       <Grid
