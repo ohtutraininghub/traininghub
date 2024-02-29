@@ -186,8 +186,6 @@ export default function CourseList({
           {viewStyle === 'grid' && (
             <Grid
               container
-              display={'flex'}
-              justifyContent={'space-between'}
               maxWidth={1600}
               width="100%"
               sx={{ margin: 'auto' }}
