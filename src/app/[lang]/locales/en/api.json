@@ -24,6 +24,11 @@
     "noEnrollingAfterDeadline": "No enrolling allowed after enrollment deadline",
     "youHaveAlreadyEnrolled": "You have already enrolled!"
   },
+  "Requests": {
+    "requestCanceled": "Your request was canceled",
+    "requestSuccessfull": "Request successfully sent!",
+    "youHaveAlreadyRequested": "You have already requested!"
+  },
   "Tags": {
     "duplicateError": "Failed to create tag. A duplicate tag already exists.",
     "tagCreated": "The tag was succesfully created!",
