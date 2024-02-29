@@ -167,7 +167,11 @@ export default function CourseList({
           }}
         >
           <ToggleTrainingsButton
-            text={t('ToggleTrainingsButton.requestTrainings')}
+            text={
+              showPastCourses
+                ? t('ToggleTrainingsButton.currentTrainings')
+                : t('ToggleTrainingsButton.requestTrainings')
+            }
             onClick={handleToggleRequestTrainings}
           />
         </Grid>
