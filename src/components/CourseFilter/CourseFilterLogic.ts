@@ -17,7 +17,11 @@ export function filterCourses(
 ) {
   let filteredCourses = [...courses];
 
-  if (!showPastCourses) {
+  if (showPastCourses) {
+    filteredCourses = filteredCourses.filter(
+      (course) => new Date(course.endDate) < new Date()
+    );
+  } else {
     filteredCourses = filteredCourses.filter(
       (course) => new Date(course.endDate) >= new Date()
     );
