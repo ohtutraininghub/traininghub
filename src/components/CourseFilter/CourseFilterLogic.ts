@@ -18,6 +18,9 @@ export function filterCourses(
   let filteredCourses = [...courses];
 
   if (showPastCourses) {
+    filteredCourses = filteredCourses.sort(
+      (a, b) => b._count.requesters - a._count.requesters
+    );
     filteredCourses = filteredCourses.filter(
       (course) => new Date(course.endDate) < new Date()
     );
