@@ -11,6 +11,7 @@ export const get = async (url: RequestInfo | URL) => {
 };
 
 export const post = async (url: RequestInfo | URL, data?: unknown) => {
+  console.log('got to post');
   return await commonBody(url, data, 'POST');
 };
 
@@ -42,10 +43,12 @@ const commonBody = async (
   data: unknown,
   method: string
 ) => {
+  console.log('got to commonbody');
   const response = await fetch(url, {
     method: method,
     body: JSON.stringify(data),
   });
+  console.log(response);
   return await responseToJson(response);
 };
 
