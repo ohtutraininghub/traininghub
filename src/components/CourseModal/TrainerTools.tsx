@@ -11,14 +11,14 @@ interface Props {
     _newView: string | null
   ) => void;
   viewCourseDetailsLabel: string;
-  viewEnrolledStudentsLabel: string;
+  viewStudentsLabel: string;
 }
 
 export default function TrainerTools({
   courseView,
   handleCourseViewToggle,
   viewCourseDetailsLabel,
-  viewEnrolledStudentsLabel,
+  viewStudentsLabel,
 }: Props) {
   return (
     <>
@@ -83,7 +83,7 @@ export default function TrainerTools({
             mr: '6px',
           }}
         >
-          {viewEnrolledStudentsLabel}
+          {viewStudentsLabel}
         </Typography>
       </div>
     </>
