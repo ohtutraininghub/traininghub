@@ -43,6 +43,18 @@ interface CourseFormProps extends DictProps {
 
 type FormType = CourseSchemaWithIdType;
 
+const getTimeStringForTomorrow = (
+  hours: number,
+  minutes: number = 0
+): string => {
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  tomorrow.setHours(hours, minutes, 0, 0);
+  const offsetMinutes = tomorrow.getTimezoneOffset();
+  tomorrow.setMinutes(tomorrow.getMinutes() - offsetMinutes);
+  return tomorrow.toISOString().slice(0, 16);
+};
+
 export default function CourseForm({
   courseData,
   lang,
@@ -323,7 +335,9 @@ export default function CourseForm({
             {...register('startDate')}
             color="secondary"
             defaultValue={
-              courseData ? dateToDateTimeLocal(courseData.startDate) : ''
+              courseData
+                ? dateToDateTimeLocal(courseData.startDate)
+                : getTimeStringForTomorrow(9)
             }
             id="courseFormStartDate"
             type="datetime-local"
@@ -345,7 +359,9 @@ export default function CourseForm({
             {...register('endDate')}
             color="secondary"
             defaultValue={
-              courseData ? dateToDateTimeLocal(courseData.endDate) : ''
+              courseData
+                ? dateToDateTimeLocal(courseData.endDate)
+                : getTimeStringForTomorrow(17)
             }
             id="courseFormEndDate"
             type="datetime-local"
