@@ -8,7 +8,7 @@ import { User, Role } from '@prisma/client';
 jest.mock('../../lib/i18n/client', () => ({
   useTranslation: () => ({
     t: jest.fn((key) => {
-      const translations = {
+      const translations: { [key: string]: string } = {
         'ToggleTrainingsButton.currentTrainings': 'Current trainings',
         'ToggleTrainingsButton.requestTrainings': 'Request trainings',
       };
