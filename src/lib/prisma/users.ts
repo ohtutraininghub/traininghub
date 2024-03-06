@@ -57,6 +57,24 @@ export async function getStudentNamesByCourseId(courseId: string) {
   );
 }
 
+export async function getRequesterNamesByCourseId(courseId: string) {
+  const requesters = await prisma.user.findMany({
+    where: {
+      requestedCourses: {
+        some: {
+          id: courseId,
+        },
+      },
+    },
+    orderBy: {
+      name: 'asc',
+    },
+  });
+  return requesters.flatMap((requester) =>
+    requester.name ? { name: requester.name, userId: requester.id } : []
+  );
+}
+
 export async function changeUserRole(userId: string, newRole: $Enums.Role) {
   const updatedUser = await prisma.user.update({
     where: { id: userId },
