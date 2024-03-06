@@ -32,7 +32,9 @@
     }
   },
   "CourseCard": {
-    "enrolls": "Enrolls: {{studentCount}} / {{maxStudentCount}}"
+    "enrolls": "Enrolls: {{studentCount}} / {{maxStudentCount}}",
+    "learnMore": "Learn more",
+    "requests": "Requests: {{requestCount}}"
   },
   "CourseFilter": {
     "button": {
@@ -62,7 +64,8 @@
     },
     "courseImageAltText": "Course title image",
     "enrollmentDeadlineHeader": "Note: Enrollment deadline ",
-    "enrolls": "Enrolls: {{studentCount}} / {{maxStudentCount}}"
+    "enrolls": "Enrolls: {{studentCount}} / {{maxStudentCount}}",
+    "requests": "Requests: {{requestCount}}"
   },
   "CourseModalCloseButton": {
     "close": "Close"
@@ -124,6 +127,11 @@
   "RemoveCourse": {
     "button": {
       "text": "Remove"
+    }
+  },
+  "RequestTraining": {
+    "button": {
+      "request": "Request"
     }
   },
   "SaveTemplateButton": {
