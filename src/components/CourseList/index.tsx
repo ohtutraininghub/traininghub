@@ -36,6 +36,7 @@ interface CourseListProps extends DictProps {
   usersEnrolledCourseIds?: string[];
   usersRequestedCoursesIds?: string[];
   enrolledStudents?: UserNamesAndIds;
+  requesters?: UserNamesAndIds;
   searchCourses: {
     courseName?: string;
     courseTag?: string;
@@ -50,6 +51,7 @@ export default function CourseList({
   usersEnrolledCourseIds,
   usersRequestedCoursesIds,
   enrolledStudents,
+  requesters,
   searchCourses,
   lang,
 }: CourseListProps) {
@@ -77,19 +79,30 @@ export default function CourseList({
     setShowPastCourses(!showPastCourses);
   };
 
+  const courseModalProps = !showPastCourses
+    ? {
+        usersEnrolledCourseIds,
+        enrolledStudents,
+        studentCount: t('CourseModal.enrolls', {
+          studentCount: openedCourse?._count.students,
+          maxStudentCount: openedCourse?.maxStudents,
+        }),
+      }
+    : {
+        usersRequestedCoursesIds,
+        requesters,
+        studentCount: t('CourseModal.requests', {
+          requestCount: openedCourse?._count.requesters,
+        }),
+      };
+
   return (
     <>
       <CourseModal
         lang={lang}
         course={openedCourse}
-        usersEnrolledCourseIds={usersEnrolledCourseIds}
-        usersRequestedCoursesIds={usersRequestedCoursesIds}
-        enrolls={t('CourseModal.enrolls', {
-          studentCount: openedCourse?._count.students,
-          maxStudentCount: openedCourse?.maxStudents,
-        })}
-        enrolledStudents={enrolledStudents}
         editCourseLabel={t('EditButton.editCourse')}
+        {...courseModalProps}
       />
       <Grid
         container
@@ -220,10 +233,19 @@ export default function CourseList({
                 >
                   <CourseCard
                     lang={lang}
-                    enrolls={t('CourseCard.enrolls', {
-                      studentCount: course._count.students,
-                      maxStudentCount: course.maxStudents,
-                    })}
+                    studentCount={t(
+                      !showPastCourses
+                        ? 'CourseCard.enrolls'
+                        : 'CourseCard.requests',
+                      !showPastCourses
+                        ? {
+                            studentCount: course._count.students,
+                            maxStudentCount: course.maxStudents,
+                          }
+                        : {
+                            requestCount: course._count.requesters,
+                          }
+                    )}
                     course={course}
                   />
                 </Grid>
