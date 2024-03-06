@@ -3,8 +3,9 @@ import '@testing-library/jest-dom';
 import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { renderWithTheme } from '@/lib/test-utils';
-import CourseForm from '.';
+import CourseForm, { getTimeStringForTomorrow } from '.';
 import { dateToDateTimeLocal } from '@/lib/timedateutils';
+import { Tomorrow } from 'next/font/google';
 
 window.alert = jest.fn();
 
@@ -450,6 +451,42 @@ describe('Course Form Course Create Tests', () => {
         tags: template.tags.map((tag) => tag.name),
       });
     });
+  });
+  it('It returns correct time when getTimeStringForTomorrow is called', () => {
+    const date1 = getTimeStringForTomorrow(9);
+    const date2 = getTimeStringForTomorrow(17);
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const onlyDate = tomorrow.toISOString().slice(0, 10);
+    expect(date1).toBe(`${onlyDate}T09:00`);
+    expect(date2).toBe(`${onlyDate}T17:00`);
+  });
+  it('should set default start and end times correctly', () => {
+    renderWithTheme(
+      <CourseForm
+        lang="en"
+        tags={[]}
+        templates={[]}
+        courseData={course} // or pass a specific courseData object if needed
+      />
+    );
+
+    // Find the date and time input fields
+    const startDateInput = screen.getByTestId(
+      'courseFormStartDate'
+    ) as HTMLInputElement;
+    const endDateInput = screen.getByTestId(
+      'courseFormEndDate'
+    ) as HTMLInputElement;
+
+    // Set the input values to specific dates and times
+    setNativeValue(startDateInput, getTimeStringForTomorrow(9));
+    setNativeValue(endDateInput, getTimeStringForTomorrow(17));
+
+    // Assert that the input values are set correctly
+    expect(startDateInput.value).toBe(getTimeStringForTomorrow(9));
+
+    expect(endDateInput.value).toBe(getTimeStringForTomorrow(17));
   });
 });
 

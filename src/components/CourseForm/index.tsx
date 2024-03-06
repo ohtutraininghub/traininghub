@@ -43,7 +43,7 @@ interface CourseFormProps extends DictProps {
 
 type FormType = CourseSchemaWithIdType;
 
-const getTimeStringForTomorrow = (
+export const getTimeStringForTomorrow = (
   hours: number,
   minutes: number = 0
 ): string => {
