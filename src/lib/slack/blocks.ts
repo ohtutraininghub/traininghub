@@ -119,6 +119,75 @@ export const createBlocksNewTraining = (course: Course) => {
   return blocks;
 };
 
+export const createBlocksUpdatedTraining = (course: Course) => {
+  const blocks = [
+    {
+      type: 'section',
+      text: {
+        type: 'mrkdwn',
+        text: '*Training details have changed* :mag:',
+      },
+    },
+    {
+      type: 'header',
+      text: {
+        type: 'plain_text',
+        text: course.name,
+      },
+    },
+    {
+      type: 'section',
+      text: {
+        type: 'mrkdwn',
+        text:
+          course.summary ||
+          'Learn more about the updated training from the link below :point_down:',
+      },
+    },
+    {
+      type: 'context',
+      elements: [
+        {
+          type: 'mrkdwn',
+          text: ':busts_in_silhouette:',
+        },
+        {
+          type: 'mrkdwn',
+          text: `${course.maxStudents} spots`,
+        },
+      ],
+    },
+    {
+      type: 'context',
+      elements: [
+        {
+          type: 'mrkdwn',
+          text: ':calendar:',
+        },
+        {
+          type: 'mrkdwn',
+          text: formatDateRangeForSlack(course.startDate, course.endDate),
+        },
+      ],
+    },
+    {
+      type: 'context',
+      elements: [
+        {
+          type: 'mrkdwn',
+          text: ':link:',
+        },
+        {
+          type: 'mrkdwn',
+          text: `*Training page:* <${process.env.HOST_URL}/en?courseId=${course.id}|${course.name}>`,
+        },
+      ],
+    },
+  ];
+
+  return blocks;
+};
+
 const formatDateForSlack = (date: Date) => {
   const dateUnix = dateToUnixTimestamp(date);
   return `<!date^${dateUnix}^{date_short} {time}|${date.toLocaleDateString()}>`;
