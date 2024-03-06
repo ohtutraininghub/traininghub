@@ -24,6 +24,7 @@ import {
 } from '@/lib/google';
 import { translator } from '@/lib/i18n';
 import { sendCoursePoster } from '@/lib/slack';
+// import { sendCoursePoster, sendCourseUpdatel } from '@/lib/slack';
 
 const parseTags = async (tags: string[]): Promise<Tag[]> => {
   const allTags = await prisma.tag.findMany();
@@ -102,7 +103,22 @@ export async function PUT(request: NextRequest) {
           connect: parsedTags.map((tag) => ({ id: tag.id })),
         },
       },
+      include: {
+        students: true,
+      },
     });
+
+    const courseWithUsers = await prisma.course.findFirst({
+      where: { id: body.id },
+      include: {
+        students: true,
+      },
+    });
+
+    // Send notification of course update to slack
+    if (courseWithUsers) {
+      await sendCourseUpdate(courseWithUsers);
+    }
 
     // Update course to Google calendars
     await updateCourseToCalendars(updatedCourse);

@@ -5,7 +5,11 @@ import {
   SLACK_API_POST_MESSAGE,
   SLACK_NEW_TRAININGS_CHANNEL,
 } from './constants';
-import { createBlocksCourseFull, createBlocksNewTraining } from './blocks';
+import {
+  createBlocksCourseFull,
+  createBlocksNewTraining,
+  // createBlocksUpdatedTraining,
+} from './blocks';
 import { isProduction } from '../env-utils';
 
 interface Block {
@@ -48,6 +52,15 @@ export const sendCoursePoster = async (course: Course) => {
   const message = createBlocksNewTraining(course);
   await sendMessage(channel, message);
 };
+
+// export const sendCourseUpdate = async (course: Course) => {
+//   const channel = SLACK_NEW_TRAININGS_CHANNEL;
+//   if (!isProduction()) return;
+//   const channelExistsResult = await channelExists(channel);
+//   if (!channelExistsResult) return;
+//   const message = createBlocksUpdatedTraining(course);
+//   await sendMessage(channel, message);
+// };
 
 const channelExists = async (channel: string) => {
   const res = await fetch(`${SLACK_API_LOOKUP_BY_CHANNEL}`, {
