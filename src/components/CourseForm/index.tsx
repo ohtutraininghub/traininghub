@@ -16,7 +16,6 @@ import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
   courseSchema,
-  CourseSchemaType,
   courseSchemaWithId,
   CourseSchemaWithIdType,
 } from '@/lib/zod/courses';
@@ -42,7 +41,7 @@ interface CourseFormProps extends DictProps {
   templates: TemplateWithTags[];
 }
 
-type FormType = CourseSchemaType | CourseSchemaWithIdType;
+type FormType = CourseSchemaWithIdType;
 
 export default function CourseForm({
   courseData,
@@ -99,15 +98,17 @@ export default function CourseForm({
   };
 
   const submitTemplate = async (data: FormType) => {
-    // Destructure the data object, omitting date information
+    // Destructure the data object, omitting information not required for templates
     const {
       startDate: _startDate,
       endDate: _endDate,
       lastEnrollDate: _lastEnrollDate,
       lastCancelDate: _lastCancelDate,
-      ...dataWithoutDates
+      createdById: _createdById,
+      id: _id,
+      ...dataWithoutExtras
     } = data;
-    const responseJson = await post('/api/template', dataWithoutDates);
+    const responseJson = await post('/api/template', dataWithoutExtras);
 
     notify(responseJson);
 
