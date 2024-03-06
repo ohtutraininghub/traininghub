@@ -44,7 +44,10 @@ const testCourse: CourseWithInfo = {
   lastCancelDate: null,
   maxStudents: 10,
   tags: [],
-  _count: { students: 5 },
+  _count: {
+    students: 5,
+    requesters: 0,
+  },
   createdById: adminUser.id,
   createdBy: adminUser,
   image: '',
