@@ -463,15 +463,9 @@ describe('Course Form Course Create Tests', () => {
   });
   it('should set default start and end times correctly', () => {
     renderWithTheme(
-      <CourseForm
-        lang="en"
-        tags={[]}
-        templates={[]}
-        courseData={course} // or pass a specific courseData object if needed
-      />
+      <CourseForm lang="en" tags={[]} templates={[]} courseData={course} />
     );
 
-    // Find the date and time input fields
     const startDateInput = screen.getByTestId(
       'courseFormStartDate'
     ) as HTMLInputElement;
@@ -479,11 +473,9 @@ describe('Course Form Course Create Tests', () => {
       'courseFormEndDate'
     ) as HTMLInputElement;
 
-    // Set the input values to specific dates and times
     setNativeValue(startDateInput, getTimeStringForTomorrow(9));
     setNativeValue(endDateInput, getTimeStringForTomorrow(17));
 
-    // Assert that the input values are set correctly
     expect(startDateInput.value).toBe(getTimeStringForTomorrow(9));
 
     expect(endDateInput.value).toBe(getTimeStringForTomorrow(17));
