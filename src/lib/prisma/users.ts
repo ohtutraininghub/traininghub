@@ -70,6 +70,24 @@ export async function getStudentNamesByCourseId(courseId: string) {
   );
 }
 
+export async function getStudentEmailsByCourseId(courseId: string) {
+  const students = await prisma.user.findMany({
+    where: {
+      courses: {
+        some: {
+          id: courseId,
+        },
+      },
+    },
+    orderBy: {
+      email: 'asc',
+    },
+  });
+  return students.flatMap((student) =>
+    student.email ? { email: student.email, userId: student.id } : []
+  );
+}
+
 export async function changeUserRole(userId: string, newRole: $Enums.Role) {
   const updatedUser = await prisma.user.update({
     where: { id: userId },

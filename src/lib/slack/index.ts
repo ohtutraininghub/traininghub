@@ -32,13 +32,13 @@ export const sendCourseFullMessage = async (
   sendMessageToUser(userEmail, blocks);
 };
 
-export const sendTrainingCancelledMessage = async (course: Course) => {
-  const channel = 'test';
+export const sendTrainingCancelledMessage = async (
+  userEmail: string,
+  course: Course
+) => {
   if (!isProduction()) return;
-  const channelExistsResult = await channelExists(channel);
-  if (!channelExistsResult) return;
   const blocks = createBlocksTrainingCancelled(course);
-  await sendMessage(channel, blocks);
+  await sendMessageToUser(userEmail, blocks);
 };
 
 const findUserIdByEmail = async (email: string) => {

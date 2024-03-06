@@ -24,6 +24,7 @@ import {
 } from '@/lib/google';
 import { translator } from '@/lib/i18n';
 import { sendCoursePoster, sendTrainingCancelledMessage } from '@/lib/slack';
+import { getStudentEmailsByCourseId } from '@/lib/prisma/users';
 
 const parseTags = async (tags: string[]): Promise<Tag[]> => {
   const allTags = await prisma.tag.findMany();
@@ -123,6 +124,9 @@ export async function DELETE(request: NextRequest) {
 
     const reqData = await request.json();
     const courseData = courseDeleteSchema.parse(reqData);
+    const enrolledStudents = await getStudentEmailsByCourseId(
+      courseData.courseId
+    );
 
     const course = await prisma.course.findFirst({
       where: { id: courseData.courseId },
@@ -156,10 +160,12 @@ export async function DELETE(request: NextRequest) {
       },
     });
 
-    await prisma.$transaction([deleteCalendarEvents, deleteCourse]);
+    // Send Slack message to enrolled students
+    for (const student of enrolledStudents) {
+      await sendTrainingCancelledMessage(student.email, course);
+    }
 
-    // Send slack message
-    await sendTrainingCancelledMessage(course);
+    await prisma.$transaction([deleteCalendarEvents, deleteCourse]);
 
     return successResponse({
       message: t('Courses.courseDeleted'),
