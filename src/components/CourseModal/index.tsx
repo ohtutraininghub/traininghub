@@ -28,21 +28,24 @@ import { ImageContainer } from '../ImageContainer';
 import { hasCourseDeleteRights } from '@/lib/auth-utils';
 import { useMessage } from '../Providers/MessageProvider';
 import { remove } from '../../lib/response/fetchUtil';
+import { RequestTrainingButton } from '@/components/Buttons/Buttons';
 
 interface Props extends DictProps {
   course: CourseWithInfo | undefined;
-  usersEnrolledCourseIds: string[];
-  enrolledStudents: UserNamesAndIds | null;
-  enrolls: string;
+  usersEnrolledCourseIds?: string[];
+  enrolledStudents?: UserNamesAndIds;
+  requesters?: UserNamesAndIds;
+  studentCount?: string;
   editCourseLabel: string;
 }
 
 export default function CourseModal({
+  lang,
   course,
   usersEnrolledCourseIds,
   enrolledStudents,
-  lang,
-  enrolls,
+  requesters,
+  studentCount,
   editCourseLabel,
 }: Props) {
   const { t } = useTranslation(lang, 'components');
@@ -66,10 +69,12 @@ export default function CourseModal({
     return <Loading />;
   }
 
-  const isUserEnrolled = usersEnrolledCourseIds.includes(course.id);
+  const isUserEnrolled = usersEnrolledCourseIds?.includes(course.id);
   const isCourseFull = course._count.students === course.maxStudents;
+
   const hasRightToViewStudents = isTrainerOrAdmin(session.user);
   const hasEditRights = hasCourseEditRights(session.user);
+  const isInRequestView = !enrolledStudents;
 
   const handleClick = (event: object, reason: string) => {
     if (reason === 'backdropClick') {
@@ -144,8 +149,10 @@ export default function CourseModal({
                 viewCourseDetailsLabel={t(
                   'CourseModal.button.viewCourseDetailsLabel'
                 )}
-                viewEnrolledStudentsLabel={t(
-                  'CourseModal.button.viewEnrolledStudentsLabel'
+                viewStudentsLabel={t(
+                  !requesters
+                    ? 'CourseModal.button.viewEnrolledStudentsLabel'
+                    : 'CourseModal.button.viewRequestsLabel'
                 )}
               />
             </div>
@@ -175,7 +182,7 @@ export default function CourseModal({
           />
         </Typography>
 
-        {course.lastEnrollDate && (
+        {course.lastEnrollDate && !isInRequestView && (
           <Box
             sx={{
               display: 'flex',
@@ -212,8 +219,12 @@ export default function CourseModal({
 
         {courseView === 'attendees' && (
           <AttendeeTable
-            attendees={enrolledStudents}
-            noAttendeesText={t('AttendeeList.noAttendeesText')}
+            attendees={enrolledStudents || requesters || []}
+            noAttendeesText={t(
+              !requesters
+                ? 'AttendeeList.noAttendeesText'
+                : 'AttendeeList.noRequestsText'
+            )}
           />
         )}
 
@@ -265,15 +276,19 @@ export default function CourseModal({
                 />
               </Box>
               <Box sx={{ flex: 1, justifyContent: 'center' }}>
-                <Typography sx={{ mb: 1 }}>{enrolls}</Typography>
-                <EnrollHolder
-                  lang={lang}
-                  isUserEnrolled={isUserEnrolled}
-                  courseId={course.id}
-                  isCourseFull={isCourseFull}
-                  lastEnrollDate={course.lastEnrollDate}
-                  lastCancelDate={course.lastCancelDate}
-                />
+                <Typography sx={{ mb: 1 }}>{studentCount}</Typography>
+                {!isInRequestView ? (
+                  <EnrollHolder
+                    lang={lang}
+                    isUserEnrolled={isUserEnrolled}
+                    courseId={course.id}
+                    isCourseFull={isCourseFull}
+                    lastEnrollDate={course.lastEnrollDate}
+                    lastCancelDate={course.lastCancelDate}
+                  />
+                ) : (
+                  <RequestTrainingButton lang={lang} />
+                )}
               </Box>
               <Box
                 sx={{
