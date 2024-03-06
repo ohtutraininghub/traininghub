@@ -23,8 +23,7 @@ import {
   deleteEventFromCalendarWhenCourseDeleted,
 } from '@/lib/google';
 import { translator } from '@/lib/i18n';
-import { sendCoursePoster } from '@/lib/slack';
-// import { sendCoursePoster, sendCourseUpdatel } from '@/lib/slack';
+import { sendCoursePoster, sendCourseUpdate } from '@/lib/slack';
 
 const parseTags = async (tags: string[]): Promise<Tag[]> => {
   const allTags = await prisma.tag.findMany();
@@ -114,10 +113,11 @@ export async function PUT(request: NextRequest) {
         students: true,
       },
     });
-
-    // Send notification of course update to slack
+    // Send notification of course update to each user in slack
     if (courseWithUsers) {
-      await sendCourseUpdate(courseWithUsers);
+      for (const user of courseWithUsers.students) {
+        await sendCourseUpdate(updatedCourse, user.email || '');
+      }
     }
 
     // Update course to Google calendars

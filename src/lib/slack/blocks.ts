@@ -120,42 +120,21 @@ export const createBlocksNewTraining = (course: Course) => {
 };
 
 export const createBlocksUpdatedTraining = (course: Course) => {
-  const blocks = [
-    {
-      type: 'section',
-      text: {
-        type: 'mrkdwn',
-        text: '*Training details have changed* :mag:',
-      },
-    },
+  return [
     {
       type: 'header',
       text: {
         type: 'plain_text',
-        text: course.name,
+        text: 'Training details updated:exclamation::mag:',
+        emoji: true,
       },
     },
     {
       type: 'section',
       text: {
         type: 'mrkdwn',
-        text:
-          course.summary ||
-          'Learn more about the updated training from the link below :point_down:',
+        text: `*<${process.env.HOST_URL}/en?courseId=${course.id}|${course.name}>* has recent updates. Check it out!`,
       },
-    },
-    {
-      type: 'context',
-      elements: [
-        {
-          type: 'mrkdwn',
-          text: ':busts_in_silhouette:',
-        },
-        {
-          type: 'mrkdwn',
-          text: `${course.maxStudents} spots`,
-        },
-      ],
     },
     {
       type: 'context',
@@ -170,22 +149,7 @@ export const createBlocksUpdatedTraining = (course: Course) => {
         },
       ],
     },
-    {
-      type: 'context',
-      elements: [
-        {
-          type: 'mrkdwn',
-          text: ':link:',
-        },
-        {
-          type: 'mrkdwn',
-          text: `*Training page:* <${process.env.HOST_URL}/en?courseId=${course.id}|${course.name}>`,
-        },
-      ],
-    },
   ];
-
-  return blocks;
 };
 
 const formatDateForSlack = (date: Date) => {

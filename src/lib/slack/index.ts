@@ -8,7 +8,7 @@ import {
 import {
   createBlocksCourseFull,
   createBlocksNewTraining,
-  // createBlocksUpdatedTraining,
+  createBlocksUpdatedTraining,
 } from './blocks';
 import { isProduction } from '../env-utils';
 
@@ -53,14 +53,11 @@ export const sendCoursePoster = async (course: Course) => {
   await sendMessage(channel, message);
 };
 
-// export const sendCourseUpdate = async (course: Course) => {
-//   const channel = SLACK_NEW_TRAININGS_CHANNEL;
-//   if (!isProduction()) return;
-//   const channelExistsResult = await channelExists(channel);
-//   if (!channelExistsResult) return;
-//   const message = createBlocksUpdatedTraining(course);
-//   await sendMessage(channel, message);
-// };
+export const sendCourseUpdate = async (course: Course, userEmail: string) => {
+  if (!isProduction()) return;
+  const blocks = createBlocksUpdatedTraining(course);
+  await sendMessageToUser(userEmail, blocks);
+};
 
 const channelExists = async (channel: string) => {
   const res = await fetch(`${SLACK_API_LOOKUP_BY_CHANNEL}`, {
