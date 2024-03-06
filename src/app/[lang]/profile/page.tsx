@@ -34,8 +34,9 @@ export default async function ProfilePage({ searchParams, params }: Props) {
   if (!userData) {
     notFound();
   }
-  const courseIds = userData?.courses.map((course) => course.id) ?? [];
-  const openedCourse = userData?.courses.find(
+  const allCourses = userData?.createdCourses.concat(userData?.courses) ?? [];
+  const enrolledCourseIds = userData.courses.map((course) => course.id) ?? [];
+  const openedCourse = allCourses.find(
     (course) => course.id === searchParams.courseId
   );
 
@@ -53,7 +54,7 @@ export default async function ProfilePage({ searchParams, params }: Props) {
       <CourseModal
         lang={params.lang}
         course={openedCourse}
-        usersEnrolledCourseIds={courseIds}
+        usersEnrolledCourseIds={enrolledCourseIds}
         enrolledStudents={enrolledStudents}
         enrolls={t('CourseModal.enrolls', {
           studentCount: openedCourse?._count.students,
