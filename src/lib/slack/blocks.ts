@@ -40,7 +40,7 @@ export const createBlocksTrainingCancelled = (course: Course) => {
       type: 'header',
       text: {
         type: 'plain_text',
-        text: 'This course has been cancelled :exclamation:',
+        text: 'A course you were enrolled in has been cancelled :exclamation:',
         emoji: true,
       },
     },
