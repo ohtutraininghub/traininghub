@@ -18,10 +18,10 @@ import { ImageContainer } from '../ImageContainer';
 
 interface Props extends DictProps {
   course: CourseWithInfo;
-  enrolls: string;
+  studentCount: string;
 }
 
-const CourseCard = ({ course, enrolls, lang }: Props) => {
+const CourseCard = ({ course, studentCount, lang }: Props) => {
   const theme = useTheme();
   const searchParams = useSearchParams();
   const pathname = usePathname();
@@ -130,7 +130,7 @@ const CourseCard = ({ course, enrolls, lang }: Props) => {
                 }}
               >
                 <PeopleIcon />
-                <Typography>{enrolls}</Typography>
+                <Typography>{studentCount}</Typography>
               </Box>
             </Box>
             <Button
@@ -144,7 +144,7 @@ const CourseCard = ({ course, enrolls, lang }: Props) => {
                 boxShadow: '0px 0px 15px rgba(0, 0, 0, 0.7)',
               }}
             >
-              Learn more
+              {t('CourseCard.learnMore')}
             </Button>
           </Box>
         </CardContent>
