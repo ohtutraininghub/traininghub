@@ -3,7 +3,8 @@
     "header": {
       "text": "Attendees"
     },
-    "noAttendeesText": "No enrolled students"
+    "noAttendeesText": "No enrolled students",
+    "noRequestsText": "No requesters"
   },
   "CalendarPrompt": {
     "addPrompt": "Do you want to add this course to your Google calendar?",
@@ -60,7 +61,8 @@
   "CourseModal": {
     "button": {
       "viewCourseDetailsLabel": "Details",
-      "viewEnrolledStudentsLabel": "Students"
+      "viewEnrolledStudentsLabel": "Students",
+      "viewRequestsLabel": "Requests"
     },
     "courseImageAltText": "Course title image",
     "enrollmentDeadlineHeader": "Note: Enrollment deadline ",
