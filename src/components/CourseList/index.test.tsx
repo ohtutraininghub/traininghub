@@ -5,15 +5,6 @@ import CourseList from '.';
 import { useSession } from 'next-auth/react';
 import { User, Role } from '@prisma/client';
 
-const adminUser: User = {
-  id: '123a',
-  name: 'Ada Admin',
-  email: 'admin@traininghub.org',
-  emailVerified: null,
-  image: '',
-  role: Role.ADMIN,
-};
-
 jest.mock('../../lib/i18n/client', () => ({
   useTranslation: () => ({
     t: jest.fn((key) => {
@@ -53,6 +44,15 @@ jest.mock('next-auth/react', () => ({
 }));
 
 describe('CourseList Component', () => {
+  const adminUser: User = {
+    id: '123a',
+    name: 'Ada Admin',
+    email: 'admin@traininghub.org',
+    emailVerified: null,
+    image: '',
+    role: Role.ADMIN,
+  };
+
   const courses: CourseWithInfo[] = [
     {
       _count: {
@@ -66,7 +66,7 @@ describe('CourseList Component', () => {
       id: '1',
       name: 'Introduction to Python',
       description: 'Learn Python programming.',
-      startDate: new Date('2030-01-01'),
+      startDate: new Date('2030-01-01'), // Future course to be shown when current trainings are displayed
       endDate: new Date('2030-01-31'),
       lastEnrollDate: null,
       lastCancelDate: null,
@@ -87,7 +87,7 @@ describe('CourseList Component', () => {
       id: '2',
       name: 'Web Development Bootcamp',
       description: 'Become a full-stack developer.',
-      startDate: new Date('2029-11-12'),
+      startDate: new Date('2029-11-12'), // Future course to be shown when current trainings are displayed
       endDate: new Date('2029-11-28'),
       lastEnrollDate: null,
       lastCancelDate: null,
@@ -109,7 +109,7 @@ describe('CourseList Component', () => {
       name: 'Jenkins Fundamentals',
       description: 'Learn Jenkins programming.',
       startDate: new Date('2022-11-12'),
-      endDate: new Date('2022-11-28'),
+      endDate: new Date('2022-11-28'), // Old course to be shown when request trainings button is clicked
       lastEnrollDate: null,
       lastCancelDate: null,
       createdById: '123432132',
@@ -119,13 +119,14 @@ describe('CourseList Component', () => {
     },
   ];
 
-  it('renders CourseCard component in grid view', () => {
+  beforeEach(() => {
     (useSession as jest.Mock).mockReturnValue({
       data: {
         user: adminUser,
       },
       status: 'authenticated',
     });
+
     renderWithTheme(
       <CourseList
         lang="en"
@@ -136,51 +137,19 @@ describe('CourseList Component', () => {
         searchCourses={{}}
       />
     );
+  });
 
+  it('renders CourseCard component in grid view', () => {
     fireEvent.click(screen.getByLabelText('grid view'));
     expect(screen.getByTestId('grid-view')).toBeInTheDocument();
   });
 
   it('renders ListItems in list view', () => {
-    (useSession as jest.Mock).mockReturnValue({
-      data: {
-        user: adminUser,
-      },
-      status: 'authenticated',
-    });
-    renderWithTheme(
-      <CourseList
-        lang="en"
-        courses={courses}
-        openedCourse={undefined}
-        usersEnrolledCourseIds={[]}
-        enrolledStudents={null}
-        searchCourses={{}}
-      />
-    );
-
     fireEvent.click(screen.getByLabelText('list view'));
     expect(screen.getByTestId('list-view')).toBeInTheDocument();
   });
 
   it('toggles past courses on request trainings button click', async () => {
-    (useSession as jest.Mock).mockReturnValue({
-      data: {
-        user: adminUser,
-      },
-      status: 'authenticated',
-    });
-    renderWithTheme(
-      <CourseList
-        lang="en"
-        courses={courses}
-        openedCourse={undefined}
-        usersEnrolledCourseIds={[]}
-        enrolledStudents={null}
-        searchCourses={{}}
-      />
-    );
-
     fireEvent.click(screen.getByTestId('toggle-past-trainings-button'));
     expect(await screen.findByText(courses[2].name)).toBeInTheDocument();
     expect(screen.queryByText(courses[0].name)).not.toBeInTheDocument();
@@ -188,44 +157,12 @@ describe('CourseList Component', () => {
   });
 
   it('shows current courses button when past courses are displayed', async () => {
-    (useSession as jest.Mock).mockReturnValue({
-      data: {
-        user: adminUser,
-      },
-      status: 'authenticated',
-    });
-    renderWithTheme(
-      <CourseList
-        lang="en"
-        courses={courses}
-        openedCourse={undefined}
-        usersEnrolledCourseIds={[]}
-        enrolledStudents={null}
-        searchCourses={{}}
-      />
-    );
     const button = screen.getByTestId('toggle-past-trainings-button');
     fireEvent.click(button);
     expect(button).toHaveTextContent('Current trainings');
   });
 
   it('shows request trainings button when current courses are displayed', async () => {
-    (useSession as jest.Mock).mockReturnValue({
-      data: {
-        user: adminUser,
-      },
-      status: 'authenticated',
-    });
-    renderWithTheme(
-      <CourseList
-        lang="en"
-        courses={courses}
-        openedCourse={undefined}
-        usersEnrolledCourseIds={[]}
-        enrolledStudents={null}
-        searchCourses={{}}
-      />
-    );
     const button = screen.getByTestId('toggle-past-trainings-button');
     expect(button).toHaveTextContent('Request trainings');
   });
