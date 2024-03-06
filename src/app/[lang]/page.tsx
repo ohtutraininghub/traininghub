@@ -52,8 +52,6 @@ export default async function HomePage({ searchParams, params }: Props) {
   const usersEnrolledCourseIds = usersEnrollsAndRequests?.courses.map(
     (course) => course.id
   );
-  const usersRequestedCoursesIds =
-    usersEnrollsAndRequests?.requestedCourses.map((course) => course.id);
 
   const tags = await prisma.tag.findMany({});
 
@@ -70,7 +68,6 @@ export default async function HomePage({ searchParams, params }: Props) {
         courses={courses}
         openedCourse={openedCourse}
         usersEnrolledCourseIds={usersEnrolledCourseIds}
-        usersRequestedCoursesIds={usersRequestedCoursesIds}
         enrolledStudents={enrolledStudents}
         searchCourses={{
           courseName: searchParams.courseName,
