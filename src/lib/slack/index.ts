@@ -51,13 +51,11 @@ export const sendCoursePoster = async (course: Course) => {
 };
 
 export const createChannelForCourse = async (course: Course) => {
-  console.log('got to createChannelForCourse');
   const channelName = course.name
     .toLowerCase()
-    //.replace('[^a-z0-9\s-]', '')
+    .replace('[^a-z0-9s-]', '')
     .replace(/\s/g, '-');
 
-  console.log(channelName);
   return await createNewChannel(channelName);
 };
 
