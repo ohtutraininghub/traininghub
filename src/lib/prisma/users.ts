@@ -23,6 +23,7 @@ export async function getUserData(userId: string) {
           _count: {
             select: {
               students: true,
+              requesters: true,
             },
           },
         },
@@ -39,6 +40,7 @@ export async function getUserData(userId: string) {
           _count: {
             select: {
               students: true,
+              requesters: true,
             },
           },
         },
