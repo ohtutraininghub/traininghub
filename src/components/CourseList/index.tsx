@@ -35,7 +35,6 @@ interface CourseListProps extends DictProps {
   courses: CourseWithInfo[];
   openedCourse: CourseWithInfo | undefined;
   usersEnrolledCourseIds?: string[];
-  usersRequestedCoursesIds?: string[];
   enrolledStudents?: UserNamesAndIds;
   requesters?: UserNamesAndIds;
   searchCourses: {
@@ -50,7 +49,6 @@ export default function CourseList({
   courses,
   openedCourse,
   usersEnrolledCourseIds,
-  usersRequestedCoursesIds,
   enrolledStudents,
   requesters,
   searchCourses,
@@ -92,25 +90,15 @@ export default function CourseList({
     });
   };
 
-  const courseModalProps = !showPastCourses
-    ? {
-        usersEnrolledCourseIds,
-        enrolledStudents,
-        studentCount: openedCourse ? studentCount(openedCourse) : '',
-      }
-    : {
-        usersRequestedCoursesIds,
-        requesters,
-        studentCount: openedCourse ? studentCount(openedCourse) : '',
-      };
-
   return (
     <>
       <CourseModal
         lang={lang}
         course={openedCourse}
         editCourseLabel={t('EditButton.editCourse')}
-        {...courseModalProps}
+        usersEnrolledCourseIds={usersEnrolledCourseIds}
+        enrolledStudents={enrolledStudents}
+        requesters={requesters}
       />
       <Grid
         container

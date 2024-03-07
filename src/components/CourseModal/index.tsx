@@ -35,7 +35,6 @@ interface Props extends DictProps {
   usersEnrolledCourseIds?: string[];
   enrolledStudents?: UserNamesAndIds;
   requesters?: UserNamesAndIds;
-  studentCount?: string;
   editCourseLabel: string;
 }
 
@@ -45,7 +44,6 @@ export default function CourseModal({
   usersEnrolledCourseIds,
   enrolledStudents,
   requesters,
-  studentCount,
   editCourseLabel,
 }: Props) {
   const { t } = useTranslation(lang, 'components');
@@ -74,7 +72,19 @@ export default function CourseModal({
 
   const hasRightToViewStudents = isTrainerOrAdmin(session.user);
   const hasEditRights = hasCourseEditRights(session.user);
-  const isInRequestView = !enrolledStudents;
+  const isInRequestView = new Date(course.endDate) < new Date();
+
+  const studentCount = () => {
+    if (!isInRequestView) {
+      return t('CourseModal.enrolls', {
+        studentCount: course._count.students,
+        maxStudentCount: course.maxStudents,
+      });
+    }
+    return t('CourseModal.requests', {
+      requestCount: course._count.requesters,
+    });
+  };
 
   const handleClick = (event: object, reason: string) => {
     if (reason === 'backdropClick') {
@@ -277,7 +287,7 @@ export default function CourseModal({
                 />
               </Box>
               <Box sx={{ flex: 1, justifyContent: 'center' }}>
-                <Typography sx={{ mb: 1 }}>{studentCount}</Typography>
+                <Typography sx={{ mb: 1 }}>{studentCount()}</Typography>
                 {!isInRequestView ? (
                   <EnrollHolder
                     lang={lang}
