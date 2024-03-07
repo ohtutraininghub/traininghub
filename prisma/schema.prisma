@@ -51,6 +51,7 @@ model Course {
   createdById    String
   calendar       Calendar[]
   image          String?
+  slackChannelId String?
 }
 
 model Template {

@@ -217,7 +217,7 @@ describe('ProfileView Tests', () => {
 
     fireEvent.click(myCourses);
     const upcomingCreatedCourses = screen.getByText(
-      'ProfileView.header.upcomingCreatedCourses (0)' // trainers created courses are in the past
+      'ProfileView.header.upcomingCreatedCourses (1)' // trainers created courses are in the past
     );
     const endedCreatedCourses = screen.getByText(
       'ProfileView.header.endedCreatedCourses (1)'

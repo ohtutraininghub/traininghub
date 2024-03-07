@@ -127,7 +127,9 @@ export default function ProfileView({
           <ProfileCourseList
             headerText={t('ProfileView.header.upcomingCreatedCourses')}
             courses={createdCourses.filter(
-              (createdCourse: Course) => createdCourse.startDate > currentDate
+              (createdCourse: Course) =>
+                createdCourse.startDate >= currentDate ||
+                createdCourse.endDate >= currentDate
             )}
             open={true}
             timer={true}
