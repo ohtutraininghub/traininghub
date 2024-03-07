@@ -5,7 +5,11 @@ import {
   SLACK_API_POST_MESSAGE,
   SLACK_NEW_TRAININGS_CHANNEL,
 } from './constants';
-import { createBlocksCourseFull, createBlocksNewTraining } from './blocks';
+import {
+  createBlocksCourseFull,
+  createBlocksNewTraining,
+  createBlocksTrainingCancelled,
+} from './blocks';
 import { isProduction } from '../env-utils';
 
 interface Block {
@@ -26,6 +30,15 @@ export const sendCourseFullMessage = async (
   if (!isProduction()) return;
   const blocks = createBlocksCourseFull(course);
   sendMessageToUser(userEmail, blocks);
+};
+
+export const sendTrainingCancelledMessage = async (
+  userEmail: string,
+  course: Course
+) => {
+  if (!isProduction()) return;
+  const blocks = createBlocksTrainingCancelled(course);
+  await sendMessageToUser(userEmail, blocks);
 };
 
 const findUserIdByEmail = async (email: string) => {
