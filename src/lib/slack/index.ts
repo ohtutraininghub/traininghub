@@ -4,6 +4,7 @@ import {
   SLACK_API_LOOKUP_BY_EMAIL,
   SLACK_API_POST_MESSAGE,
   SLACK_NEW_TRAININGS_CHANNEL,
+  SLACK_API_ARCHIVE_CHANNEL,
 } from './constants';
 import {
   createBlocksCourseFull,
@@ -75,6 +76,19 @@ const channelExists = async (channel: string) => {
   return data.channels.some((c: { name: string }) => c.name === channel);
 };
 
+const channelIdExists = async (channel: string) => {
+  const res = await fetch(`${SLACK_API_LOOKUP_BY_CHANNEL}`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
+    },
+  });
+  const data = await res.json();
+  if (!data.channels) return false;
+  return data.channels.some((c: { id: string }) => c.id === channel);
+};
+
 const sendMessage = async (channel: string, blocks: Block[]) => {
   // Channel can be a user id or a channel id/name
   const payload = {
@@ -83,6 +97,26 @@ const sendMessage = async (channel: string, blocks: Block[]) => {
   };
 
   await fetch(SLACK_API_POST_MESSAGE, {
+    method: 'POST',
+    body: JSON.stringify(payload),
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
+    },
+  });
+};
+
+export const archiveChannel = async (channel: string) => {
+  // Channel must be a channel id
+  const payload = {
+    channel: channel,
+  };
+  // if (!isProduction()) return;
+  const channelExistsResult = await channelIdExists(channel);
+  if (!channelExistsResult) return;
+
+  await fetch(SLACK_API_ARCHIVE_CHANNEL, {
     method: 'POST',
     body: JSON.stringify(payload),
     headers: {
