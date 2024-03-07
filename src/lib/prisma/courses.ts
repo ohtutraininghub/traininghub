@@ -29,6 +29,7 @@ export type CourseWithInfo = prismaClient.CourseGetPayload<{
     _count: {
       select: {
         students: true;
+        requesters: true;
       };
     };
   };
@@ -62,6 +63,26 @@ export const getCourses = async () => {
     },
     orderBy: [{ startDate: 'asc' }, { name: 'asc' }],
     where: { endDate: { gte: new Date() } },
+  });
+};
+
+export const getAllCourses = async () => {
+  return await prisma.course.findMany({
+    include: {
+      createdBy: {
+        select: {
+          name: true,
+        },
+      },
+      _count: {
+        select: {
+          students: true,
+          requesters: true,
+        },
+      },
+      tags: true,
+    },
+    orderBy: [{ startDate: 'asc' }, { name: 'asc' }],
   });
 };
 
