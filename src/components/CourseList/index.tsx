@@ -214,6 +214,7 @@ export default function CourseList({
         <>
           {viewStyle === 'grid' && (
             <Grid
+              data-testid="grid-view"
               container
               maxWidth={1600}
               width="100%"
@@ -232,6 +233,7 @@ export default function CourseList({
                   }}
                 >
                   <CourseCard
+                    data-testid="course-card"
                     lang={lang}
                     studentCount={t(
                       !showPastCourses
@@ -261,7 +263,7 @@ export default function CourseList({
                 width: '100%',
               }}
             >
-              <List>
+              <List data-testid="list-view">
                 {filteredCourses.map((course, index) => (
                   <div key={course.id}>
                     <Link
