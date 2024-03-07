@@ -4,7 +4,7 @@
       "text": "Attendees"
     },
     "noAttendeesText": "No enrolled students",
-    "noRequestsText": "No requesters"
+    "noRequestsText": "No requests"
   },
   "CalendarPrompt": {
     "addPrompt": "Do you want to add this course to your Google calendar?",
@@ -34,6 +34,7 @@
   },
   "CourseCard": {
     "enrolls": "Enrolls: {{studentCount}} / {{maxStudentCount}}",
+    "expired": "Expired",
     "learnMore": "Learn more",
     "requests": "Requests: {{requestCount}}"
   },

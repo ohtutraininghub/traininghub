@@ -28,6 +28,8 @@ const CourseCard = ({ course, studentCount, lang }: Props) => {
   const { t } = useTranslation(lang, 'components');
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
+  const isExpired = new Date(course.endDate) < new Date();
+
   const getURL = () => {
     const params = new URLSearchParams(Array.from(searchParams.entries()));
     params.set('courseId', course.id);
@@ -64,11 +66,15 @@ const CourseCard = ({ course, studentCount, lang }: Props) => {
               <CalendarTodayIcon
                 sx={{ fontSize: '0.8rem', marginRight: '8px' }}
               />
-              <LocalizedDateTime
-                variant="range-short"
-                startDate={course.startDate}
-                endDate={course.endDate}
-              />
+              {!isExpired ? (
+                <LocalizedDateTime
+                  variant="range-short"
+                  startDate={course.startDate}
+                  endDate={course.endDate}
+                />
+              ) : (
+                t('CourseCard.expired')
+              )}
             </Box>
           }
           titleTypographyProps={{
