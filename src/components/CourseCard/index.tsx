@@ -10,6 +10,7 @@ import { useTheme } from '@mui/material/styles';
 import { Box, Button, useMediaQuery } from '@mui/material';
 import CardHeader from '@mui/material/CardHeader';
 import PeopleIcon from '@mui/icons-material/People';
+import HowToRegIcon from '@mui/icons-material/HowToReg';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useTranslation } from '@/lib/i18n/client';
@@ -135,7 +136,7 @@ const CourseCard = ({ course, studentCount, lang }: Props) => {
                   display: { xs: 'none', sm: 'block' }, // no render for too small viewports to save space for title
                 }}
               >
-                <PeopleIcon />
+                {!isExpired ? <PeopleIcon /> : <HowToRegIcon />}
                 <Typography>{studentCount}</Typography>
               </Box>
             </Box>

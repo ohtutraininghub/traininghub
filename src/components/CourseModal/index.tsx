@@ -150,10 +150,11 @@ export default function CourseModal({
                   'CourseModal.button.viewCourseDetailsLabel'
                 )}
                 viewStudentsLabel={t(
-                  !requesters
+                  !isInRequestView
                     ? 'CourseModal.button.viewEnrolledStudentsLabel'
                     : 'CourseModal.button.viewRequestsLabel'
                 )}
+                isInRequestView={isInRequestView}
               />
             </div>
           )}
@@ -221,7 +222,7 @@ export default function CourseModal({
           <AttendeeTable
             attendees={enrolledStudents || requesters || []}
             noAttendeesText={t(
-              !requesters
+              !isInRequestView
                 ? 'AttendeeList.noAttendeesText'
                 : 'AttendeeList.noRequestsText'
             )}

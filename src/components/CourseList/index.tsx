@@ -22,6 +22,7 @@ import { DictProps } from '@/lib/i18n';
 import { useTheme } from '@mui/material/styles';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import PeopleIcon from '@mui/icons-material/People';
+import HowToRegIcon from '@mui/icons-material/HowToReg';
 import Divider from '@mui/material/Divider';
 import LocalizedDateTime from '../LocalizedDateTime';
 import Link from 'next/link';
@@ -85,11 +86,10 @@ export default function CourseList({
         studentCount: course._count.students,
         maxStudentCount: course.maxStudents,
       });
-    } 
-      return t('CourseModal.requests', {
-        requestCount: course._count.requesters,
-      });
-    
+    }
+    return t('CourseModal.requests', {
+      requestCount: course._count.requesters,
+    });
   };
 
   const courseModalProps = !showPastCourses
@@ -319,13 +319,23 @@ export default function CourseList({
                                 t('CourseCard.expired')
                               )}
                               <br />
-                              <PeopleIcon
-                                sx={{
-                                  fontSize: '0.9rem',
-                                  marginRight: '8px',
-                                  display: 'inline',
-                                }}
-                              />
+                              {!showPastCourses ? (
+                                <PeopleIcon
+                                  sx={{
+                                    fontSize: '0.9rem',
+                                    marginRight: '8px',
+                                    display: 'inline',
+                                  }}
+                                />
+                              ) : (
+                                <HowToRegIcon
+                                  sx={{
+                                    fontSize: '0.9rem',
+                                    marginRight: '8px',
+                                    display: 'inline',
+                                  }}
+                                />
+                              )}
                               {studentCount(course)}
                             </span>
                           }

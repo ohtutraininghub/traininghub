@@ -2,6 +2,7 @@ import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import TextSnippetIcon from '@mui/icons-material/TextSnippet';
 import PeopleIcon from '@mui/icons-material/People';
+import HowToRegIcon from '@mui/icons-material/HowToReg';
 import Typography from '@mui/material/Typography';
 
 interface Props {
@@ -12,6 +13,7 @@ interface Props {
   ) => void;
   viewCourseDetailsLabel: string;
   viewStudentsLabel: string;
+  isInRequestView: boolean;
 }
 
 export default function TrainerTools({
@@ -19,6 +21,7 @@ export default function TrainerTools({
   handleCourseViewToggle,
   viewCourseDetailsLabel,
   viewStudentsLabel,
+  isInRequestView,
 }: Props) {
   return (
     <>
@@ -55,9 +58,12 @@ export default function TrainerTools({
               },
             }}
           >
-            <PeopleIcon sx={{ color: 'white.main' }} />
+            {isInRequestView ? (
+              <HowToRegIcon sx={{ color: 'white.main' }} />
+            ) : (
+              <PeopleIcon sx={{ color: 'white.main' }} />
+            )}
           </ToggleButton>
-          §{' '}
         </ToggleButtonGroup>
       </div>
       <div>
