@@ -217,7 +217,7 @@ describe('ProfileView Tests', () => {
 
     fireEvent.click(myCourses);
     const upcomingCreatedCourses = screen.getByText(
-      'ProfileView.header.upcomingCreatedCourses (0)' // trainers created courses are in the past
+      'ProfileView.header.upcomingCreatedCourses (1)' // trainers created courses are in the past
     );
     const endedCreatedCourses = screen.getByText(
       'ProfileView.header.endedCreatedCourses (1)'
@@ -228,7 +228,10 @@ describe('ProfileView Tests', () => {
     const templatesTrainer = screen.getByText(
       'ProfileView.header.templatesTrainer (1)'
     );
+    const courseChip = screen.getByTestId('courseTimer.5678');
     expect(upcomingCreatedCourses).toBeInTheDocument();
+    expect(courseChip).toHaveTextContent('In Progress');
+    expect(courseChip).toHaveStyle('background: "success"');
     expect(endedCreatedCourses).toBeInTheDocument();
     expect(templatesAdmin).not.toBeInTheDocument();
     expect(templatesTrainer).toBeInTheDocument();

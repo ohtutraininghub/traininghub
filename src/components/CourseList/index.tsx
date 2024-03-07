@@ -51,7 +51,12 @@ export default function CourseList({
   searchCourses,
   lang,
 }: CourseListProps) {
-  const filteredCourses = filterCourses(courses, searchCourses);
+  const [showPastCourses, setShowPastCourses] = React.useState(false);
+  const filteredCourses = filterCourses(
+    courses,
+    searchCourses,
+    showPastCourses
+  );
   const { t } = useTranslation(lang, 'components');
   const { palette } = useTheme();
   const [viewStyle, setViewStyle] = React.useState<string | null>('grid');
@@ -64,6 +69,10 @@ export default function CourseList({
     if (newViewStyle !== null) {
       setViewStyle(newViewStyle);
     }
+  };
+
+  const handleToggleRequestTrainings = () => {
+    setShowPastCourses(!showPastCourses);
   };
 
   return (
@@ -158,8 +167,12 @@ export default function CourseList({
           }}
         >
           <ToggleTrainingsButton
-            text={t('ToggleTrainingsButton.requestTrainings')}
-            onClick={() => {}}
+            text={
+              showPastCourses
+                ? t('ToggleTrainingsButton.currentTrainings')
+                : t('ToggleTrainingsButton.requestTrainings')
+            }
+            onClick={handleToggleRequestTrainings}
           />
         </Grid>
       </Grid>
@@ -185,6 +198,7 @@ export default function CourseList({
         <>
           {viewStyle === 'grid' && (
             <Grid
+              data-testid="grid-view"
               container
               maxWidth={1600}
               width="100%"
@@ -203,6 +217,7 @@ export default function CourseList({
                   }}
                 >
                   <CourseCard
+                    data-testid="course-card"
                     lang={lang}
                     enrolls={t('CourseCard.enrolls', {
                       studentCount: course._count.students,
@@ -223,7 +238,7 @@ export default function CourseList({
                 width: '100%',
               }}
             >
-              <List>
+              <List data-testid="list-view">
                 {filteredCourses.map((course, index) => (
                   <div key={course.id}>
                     <Link
