@@ -10,3 +10,5 @@ export const SLACK_API_CREATE_CHANNEL =
   'https://slack.com/api/conversations.create';
 
 export const SLACK_NEW_TRAININGS_CHANNEL = 'new-trainings';
+
+export const SLACK_CHANNEL_PREFIX = 'tmp-traininghub-';

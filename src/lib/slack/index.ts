@@ -5,6 +5,7 @@ import {
   SLACK_API_POST_MESSAGE,
   SLACK_API_CREATE_CHANNEL,
   SLACK_NEW_TRAININGS_CHANNEL,
+  SLACK_CHANNEL_PREFIX,
 } from './constants';
 import { createBlocksCourseFull, createBlocksNewTraining } from './blocks';
 import { isProduction } from '../env-utils';
@@ -51,10 +52,9 @@ export const sendCoursePoster = async (course: Course) => {
 };
 
 export const createChannelForCourse = async (course: Course) => {
-  const channelName = course.name
-    .toLowerCase()
-    .replace('[^a-z0-9s-]', '')
-    .replace(/\s/g, '-');
+  const channelName =
+    SLACK_CHANNEL_PREFIX +
+    course.name.toLowerCase().replace('[^a-z0-9s-]', '').replace(/\s/g, '-');
 
   return await createNewChannel(channelName);
 };
