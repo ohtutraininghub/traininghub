@@ -136,6 +136,7 @@ export default function ProfileCourseList({
                             color={
                               isCourseInProgress(course) ? 'success' : 'default'
                             }
+                            data-testid={`courseTimer.${course.id}`}
                           />
                         </NoSsr>
                       )}

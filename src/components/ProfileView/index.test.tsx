@@ -5,6 +5,7 @@ import { renderWithTheme } from '@/lib/test-utils';
 import { Role } from '@prisma/client';
 import ProfileView from './index';
 import { useSession } from 'next-auth/react';
+import { get } from 'http';
 
 // Mocking translation and fetch utilities
 jest.mock('../../lib/i18n/client', () => ({
@@ -228,7 +229,10 @@ describe('ProfileView Tests', () => {
     const templatesTrainer = screen.getByText(
       'ProfileView.header.templatesTrainer (1)'
     );
+    const courseChip = screen.getByTestId('courseTimer.5678');
     expect(upcomingCreatedCourses).toBeInTheDocument();
+    expect(courseChip).toHaveTextContent('In Progress');
+    expect(courseChip).toHaveStyle('background: "success"');
     expect(endedCreatedCourses).toBeInTheDocument();
     expect(templatesAdmin).not.toBeInTheDocument();
     expect(templatesTrainer).toBeInTheDocument();
