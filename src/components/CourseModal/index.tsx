@@ -160,11 +160,9 @@ export default function CourseModal({
                   'CourseModal.button.viewCourseDetailsLabel'
                 )}
                 viewStudentsLabel={t(
-                  !isInRequestView
-                    ? 'CourseModal.button.viewEnrolledStudentsLabel'
-                    : 'CourseModal.button.viewRequestsLabel'
+                  'CourseModal.button.viewEnrolledStudentsLabel'
                 )}
-                isInRequestView={isInRequestView}
+                viewRequestsLabel={t('CourseModal.button.viewRequestsLabel')}
               />
             </div>
           )}
@@ -230,12 +228,15 @@ export default function CourseModal({
 
         {courseView === 'attendees' && (
           <AttendeeTable
-            attendees={enrolledStudents || requesters || []}
-            noAttendeesText={t(
-              !isInRequestView
-                ? 'AttendeeList.noAttendeesText'
-                : 'AttendeeList.noRequestsText'
-            )}
+            attendees={enrolledStudents || []}
+            noAttendeesText={t('AttendeeList.noAttendeesText')}
+          />
+        )}
+
+        {courseView === 'requests' && (
+          <AttendeeTable
+            attendees={requesters || []}
+            noAttendeesText={t('AttendeeList.noRequestsText')}
           />
         )}
 

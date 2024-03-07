@@ -13,7 +13,7 @@ interface Props {
   ) => void;
   viewCourseDetailsLabel: string;
   viewStudentsLabel: string;
-  isInRequestView: boolean;
+  viewRequestsLabel: string;
 }
 
 export default function TrainerTools({
@@ -21,7 +21,7 @@ export default function TrainerTools({
   handleCourseViewToggle,
   viewCourseDetailsLabel,
   viewStudentsLabel,
-  isInRequestView,
+  viewRequestsLabel,
 }: Props) {
   return (
     <>
@@ -58,11 +58,21 @@ export default function TrainerTools({
               },
             }}
           >
-            {isInRequestView ? (
-              <HowToRegIcon sx={{ color: 'white.main' }} />
-            ) : (
-              <PeopleIcon sx={{ color: 'white.main' }} />
-            )}
+            <PeopleIcon sx={{ color: 'white.main' }} />
+          </ToggleButton>
+          <ToggleButton
+            data-testid="toggle-requests-list"
+            value="requests"
+            aria-label="requests list"
+            sx={{
+              width: '72px',
+              '&.Mui-selected, &.Mui-selected:hover': {
+                color: 'secondary.contrastText',
+                backgroundColor: 'coverBlue.dark',
+              },
+            }}
+          >
+            <HowToRegIcon sx={{ color: 'white.main' }} />
           </ToggleButton>
         </ToggleButtonGroup>
       </div>
@@ -90,6 +100,18 @@ export default function TrainerTools({
           }}
         >
           {viewStudentsLabel}
+        </Typography>
+        <Typography
+          variant="caption"
+          sx={{
+            fontWeight: 500,
+            color: 'white.main',
+            textTransform: 'uppercase',
+            ml: '6px',
+            mr: '6px',
+          }}
+        >
+          {viewRequestsLabel}
         </Typography>
       </div>
     </>
