@@ -39,6 +39,15 @@ export async function POST(request: NextRequest) {
       });
     }
 
+    console.log(response);
+
+    await prisma.course.update({
+      where: { id: body.courseId },
+      data: {
+        slackChannelId: response.channel.id,
+      },
+    });
+
     return successResponse({
       message: 'Channel created',
       statusCode: StatusCodeType.CREATED,
