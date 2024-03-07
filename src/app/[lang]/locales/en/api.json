@@ -29,6 +29,10 @@
     "requestSuccessfull": "Request successfully sent!",
     "youHaveAlreadyRequested": "You have already requested!"
   },
+  "Slack": {
+    "channelCreationFailed": "Failed to create channel",
+    "channelCreationSuccess": "Channel created successfully!"
+  },
   "Tags": {
     "duplicateError": "Failed to create tag. A duplicate tag already exists.",
     "tagCreated": "The tag was succesfully created!",

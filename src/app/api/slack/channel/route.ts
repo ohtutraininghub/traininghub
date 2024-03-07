@@ -34,12 +34,10 @@ export async function POST(request: NextRequest) {
     const response = await createChannelForCourse(course);
     if (!response.ok) {
       return errorResponse({
-        message: `Failed to create channel: ${response.error}`,
+        message: `${t('Slack.channelCreationFailed')}: ${response.error}`,
         statusCode: StatusCodeType.BAD_REQUEST,
       });
     }
-
-    console.log(response);
 
     await prisma.course.update({
       where: { id: body.courseId },
@@ -49,7 +47,7 @@ export async function POST(request: NextRequest) {
     });
 
     return successResponse({
-      message: 'Channel created',
+      message: t('Slack.channelCreationSuccess'),
       statusCode: StatusCodeType.CREATED,
     });
   } catch (error) {
