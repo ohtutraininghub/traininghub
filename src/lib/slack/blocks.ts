@@ -34,6 +34,42 @@ export const createBlocksCourseFull = (course: Course) => {
   ];
 };
 
+export const createBlocksTrainingCancelled = (course: Course) => {
+  return [
+    {
+      type: 'header',
+      text: {
+        type: 'plain_text',
+        text: 'A course you were enrolled in has been cancelled :exclamation:',
+        emoji: true,
+      },
+    },
+    {
+      type: 'section',
+      text: {
+        type: 'mrkdwn',
+        text: `*${course.name}* has been cancelled`,
+      },
+    },
+    {
+      type: 'context',
+      elements: [
+        {
+          type: 'mrkdwn',
+          text: ':calendar:',
+        },
+        {
+          type: 'mrkdwn',
+          text: `~${formatDateRangeForSlack(
+            course.startDate,
+            course.endDate
+          )}~`,
+        },
+      ],
+    },
+  ];
+};
+
 export const createBlocksNewTraining = (course: Course) => {
   const blocks = [
     {
