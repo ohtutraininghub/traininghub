@@ -144,15 +144,21 @@ export default function CourseModal({
           outline: 0,
         }}
       >
-        <div
-          style={{
+        <Box
+          sx={{
             display: 'grid',
-            gridTemplateColumns: '1fr 1fr 1fr',
+            gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr 1fr' },
+            gridTemplateRows: { xs: 'auto auto', sm: 'auto' },
             marginBottom: '1rem',
           }}
         >
           {hasRightToViewStudents && (
-            <div style={{ gridColumnStart: 2 }}>
+            <Box
+              sx={{
+                gridColumn: { xs: '1', sm: '2' },
+                gridRow: { xs: '2', sm: '1' },
+              }}
+            >
               <TrainerTools
                 courseView={courseView}
                 handleCourseViewToggle={handleCourseViewToggle}
@@ -164,12 +170,18 @@ export default function CourseModal({
                 )}
                 viewRequestsLabel={t('CourseModal.button.viewRequestsLabel')}
               />
-            </div>
+            </Box>
           )}
-          <div style={{ gridColumnStart: 3, justifySelf: 'end' }}>
+          <Box
+            sx={{
+              gridColumn: { xs: '1', sm: '3' },
+              gridRow: { xs: '1', sm: '1' },
+              justifySelf: { sm: 'end' },
+            }}
+          >
             <CourseModalCloseButton lang={lang} />
-          </div>
-        </div>
+          </Box>
+        </Box>
         {course.image && courseView === 'details' && (
           <ImageContainer
             withBorder
