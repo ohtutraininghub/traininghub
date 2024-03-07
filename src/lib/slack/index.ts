@@ -65,9 +65,12 @@ export const sendCoursePoster = async (course: Course) => {
 };
 
 export const createChannelForCourse = async (course: Course) => {
-  const channelName =
+  let channelName =
     SLACK_CHANNEL_PREFIX +
     course.name.toLowerCase().replace('[^a-z0-9s-]', '').replace(/\s/g, '-');
+  if (channelName.length > 80) {
+    channelName = channelName.substring(0, 80);
+  }
 
   return await createNewChannel(channelName);
 };
