@@ -79,21 +79,29 @@ export default function CourseList({
     setShowPastCourses(!showPastCourses);
   };
 
+  const studentCount = (course: CourseWithInfo) => {
+    if (!showPastCourses) {
+      return t('CourseModal.enrolls', {
+        studentCount: course._count.students,
+        maxStudentCount: course.maxStudents,
+      });
+    } 
+      return t('CourseModal.requests', {
+        requestCount: course._count.requesters,
+      });
+    
+  };
+
   const courseModalProps = !showPastCourses
     ? {
         usersEnrolledCourseIds,
         enrolledStudents,
-        studentCount: t('CourseModal.enrolls', {
-          studentCount: openedCourse?._count.students,
-          maxStudentCount: openedCourse?.maxStudents,
-        }),
+        studentCount: openedCourse ? studentCount(openedCourse) : '',
       }
     : {
         usersRequestedCoursesIds,
         requesters,
-        studentCount: t('CourseModal.requests', {
-          requestCount: openedCourse?._count.requesters,
-        }),
+        studentCount: openedCourse ? studentCount(openedCourse) : '',
       };
 
   return (
@@ -235,19 +243,7 @@ export default function CourseList({
                   <CourseCard
                     data-testid="course-card"
                     lang={lang}
-                    studentCount={t(
-                      !showPastCourses
-                        ? 'CourseCard.enrolls'
-                        : 'CourseCard.requests',
-                      !showPastCourses
-                        ? {
-                            studentCount: course._count.students,
-                            maxStudentCount: course.maxStudents,
-                          }
-                        : {
-                            requestCount: course._count.requesters,
-                          }
-                    )}
+                    studentCount={studentCount(course)}
                     course={course}
                   />
                 </Grid>
@@ -313,11 +309,15 @@ export default function CourseList({
                                   display: 'inline',
                                 }}
                               />
-                              <LocalizedDateTime
-                                variant="range-short"
-                                startDate={course.startDate}
-                                endDate={course.endDate}
-                              />
+                              {!showPastCourses ? (
+                                <LocalizedDateTime
+                                  variant="range-short"
+                                  startDate={course.startDate}
+                                  endDate={course.endDate}
+                                />
+                              ) : (
+                                t('CourseCard.expired')
+                              )}
                               <br />
                               <PeopleIcon
                                 sx={{
@@ -326,10 +326,7 @@ export default function CourseList({
                                   display: 'inline',
                                 }}
                               />
-                              {t('CourseListView.enrolls', {
-                                studentCount: course._count.students,
-                                maxStudentCount: course.maxStudents,
-                              })}
+                              {studentCount(course)}
                             </span>
                           }
                           secondaryTypographyProps={{
