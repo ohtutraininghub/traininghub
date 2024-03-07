@@ -108,6 +108,6 @@ const sendMessage = async (channel: string, blocks: Block[]) => {
 
 const sendMessageToUser = async (userEmail: string, blocks: Block[]) => {
   const userId = await findUserIdByEmail(userEmail);
-  if (!userEmail) return;
+  if (!userId) return;
   await sendMessage(userId, blocks);
 };
