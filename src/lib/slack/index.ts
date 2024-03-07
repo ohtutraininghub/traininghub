@@ -3,7 +3,6 @@ import {
   SLACK_API_LOOKUP_BY_CHANNEL,
   SLACK_API_LOOKUP_BY_EMAIL,
   SLACK_API_POST_MESSAGE,
-  SLACK_API_CREATE_CHANNEL,
   SLACK_NEW_TRAININGS_CHANNEL,
 } from './constants';
 import { createBlocksCourseFull, createBlocksNewTraining } from './blocks';
@@ -48,31 +47,6 @@ export const sendCoursePoster = async (course: Course) => {
   if (!channelExistsResult) return;
   const message = createBlocksNewTraining(course);
   await sendMessage(channel, message);
-};
-
-export const createChannelForCourse = async (course: Course) => {
-  console.log('got to createChannelForCourse');
-  const channelName = course.name
-    .toLowerCase()
-    //.replace('[^a-z0-9\s-]', '')
-    .replace(/\s/g, '-');
-
-  console.log(channelName);
-  return await createNewChannel(channelName);
-};
-
-export const createNewChannel = async (channel_name: string) => {
-  const res = await fetch(SLACK_API_CREATE_CHANNEL, {
-    method: 'POST',
-    body: JSON.stringify({ name: channel_name }),
-    headers: {
-      'Content-Type': 'application/json; charset=utf-8',
-      Authorization: `Bearer ${token}`,
-      Accept: 'application/json',
-    },
-  });
-  const data = await res.json();
-  return data;
 };
 
 const channelExists = async (channel: string) => {

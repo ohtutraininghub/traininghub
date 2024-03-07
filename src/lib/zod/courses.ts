@@ -107,7 +107,6 @@ const courseSchemaBase = z
 const courseSchemaBaseWithId = courseSchemaBase.extend({
   id: z.string().min(1),
   createdById: z.string(),
-  slackChannelId: z.string().nullish(),
 });
 
 export const courseSchema = withRefine(courseSchemaBase);
@@ -130,12 +129,6 @@ export const courseDeleteSchema = z
   .strict();
 
 export const courseRequestSchema = z
-  .object({
-    courseId: z.string().cuid(),
-  })
-  .strict();
-
-export const courseIdSchema = z
   .object({
     courseId: z.string().cuid(),
   })
