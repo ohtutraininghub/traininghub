@@ -1,7 +1,8 @@
 import { DictProps } from '@/lib/i18n';
-import { Button } from '@mui/material';
+import { Button, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useTranslation } from '@i18n/client';
+import theme from '../Providers/ThemeRegistry/theme';
 
 interface CreateSlackButtonProps extends DictProps {
   onclick: () => void;
@@ -15,6 +16,8 @@ const CreateSlackButton = ({
   isSubmitting,
   slackButtonDisabled,
 }: CreateSlackButtonProps) => {
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
+
   const { palette } = useTheme();
   const { t } = useTranslation(lang, 'components');
 
@@ -24,9 +27,11 @@ const CreateSlackButton = ({
         onClick={onclick}
         disabled={isSubmitting || slackButtonDisabled}
         sx={{
-          display: 'block',
+          display: 'flex',
+          alignItems: 'center',
           margin: 'auto',
-          mt: 2,
+          padding: isSmallScreen ? '5px' : 'auto',
+          mt: 'auto',
           color: palette.white.main,
           backgroundColor: palette.secondary.main,
           '&:hover': {
@@ -35,7 +40,7 @@ const CreateSlackButton = ({
         }}
         data-testid="saveTemplateButton"
       >
-        {t('SaveTemplateButton.button.save')}
+        {t('AddSlackButton.button.add')}
       </Button>
     </div>
   );

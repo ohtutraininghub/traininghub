@@ -1,4 +1,10 @@
 {
+  "AddSlackButton": {
+    "button": {
+      "add": "Create a slack channel"
+    }
+  },
+
   "AttendeeList": {
     "header": {
       "text": "Attendees"

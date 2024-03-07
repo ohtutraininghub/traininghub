@@ -117,7 +117,13 @@ export default function ProfileCourseList({
                         sx={{ color: palette.black.main }}
                       />
                       {timer && (
-                        <>
+                        <Box
+                          sx={{
+                            display: 'flex',
+                            gap: 1,
+                            alignItems: 'center',
+                          }}
+                        >
                           <NoSsr>
                             <Chip
                               icon={<TimerIcon />}
@@ -132,7 +138,7 @@ export default function ProfileCourseList({
                             isSubmitting={false}
                             slackButtonDisabled={false}
                           />
-                        </>
+                        </Box>
                       )}
                     </ListItem>
                   </Link>
