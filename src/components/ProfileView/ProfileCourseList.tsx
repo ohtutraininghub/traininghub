@@ -17,6 +17,7 @@ import TimerIcon from '@mui/icons-material/Timer';
 import { useState } from 'react';
 import { timeUntilstart } from '@/lib/timedateutils';
 import LocalizedDateTime from '../LocalizedDateTime';
+import CreateSlackButton from './CreateSlackButton';
 
 export interface ProfileCourseListProps {
   headerText: string;
@@ -116,14 +117,22 @@ export default function ProfileCourseList({
                         sx={{ color: palette.black.main }}
                       />
                       {timer && (
-                        <NoSsr>
-                          <Chip
-                            icon={<TimerIcon />}
-                            label={timeUntilstart(course.startDate)}
-                            size="small"
-                            style={{ marginLeft: 'auto' }}
+                        <>
+                          <NoSsr>
+                            <Chip
+                              icon={<TimerIcon />}
+                              label={timeUntilstart(course.startDate)}
+                              size="small"
+                              style={{ marginLeft: 'auto' }}
+                            />
+                          </NoSsr>
+                          <CreateSlackButton
+                            lang="en"
+                            onclick={() => {}}
+                            isSubmitting={false}
+                            slackButtonDisabled={false}
                           />
-                        </NoSsr>
+                        </>
                       )}
                     </ListItem>
                   </Link>
