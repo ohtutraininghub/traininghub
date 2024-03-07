@@ -2,7 +2,7 @@ import { NextResponse, NextRequest } from 'next/server';
 import {
   courseSchema,
   courseSchemaWithId,
-  courseDeleteSchema,
+  courseIdSchema,
 } from '@/lib/zod/courses';
 import {
   StatusCodeType,
@@ -122,7 +122,7 @@ export async function DELETE(request: NextRequest) {
     const { user } = await getServerAuthSession();
 
     const reqData = await request.json();
-    const courseData = courseDeleteSchema.parse(reqData);
+    const courseData = courseIdSchema.parse(reqData);
 
     const course = await prisma.course.findFirst({
       where: { id: courseData.courseId },
