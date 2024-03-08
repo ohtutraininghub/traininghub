@@ -6,7 +6,7 @@ import { prisma } from '@/lib/prisma';
 import { errorResponse, successResponse } from '@/lib/response/responseUtil';
 import { translator } from '@/lib/i18n';
 import { StatusCodeType } from '@/lib/response/responseUtil';
-import { isTrainerOrAdmin } from '@/lib/auth-utils';
+import { hasCourseEditRights, isTrainerOrAdmin } from '@/lib/auth-utils';
 import { courseIdSchema } from '@/lib/zod/courses';
 
 export async function POST(request: NextRequest) {
@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
       where: { id: body.courseId },
     });
 
-    if (!isTrainerOrAdmin(user)) {
+    if (!isTrainerOrAdmin(user) || !hasCourseEditRights(user)) {
       return errorResponse({
         message: t('Common.forbidden'),
         statusCode: StatusCodeType.FORBIDDEN,
@@ -28,6 +28,12 @@ export async function POST(request: NextRequest) {
       return errorResponse({
         message: t('Common.courseNotFound'),
         statusCode: StatusCodeType.NOT_FOUND,
+      });
+    }
+    if (course.slackChannelId) {
+      return errorResponse({
+        message: t('Slack.channelAlreadyExists'),
+        statusCode: StatusCodeType.BAD_REQUEST,
       });
     }
 

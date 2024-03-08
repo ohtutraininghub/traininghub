@@ -30,6 +30,7 @@
     "youHaveAlreadyRequested": "You have already requested!"
   },
   "Slack": {
+    "channelAlreadyExists": "Channel already exists",
     "channelCreationFailed": "Failed to create channel",
     "channelCreationSuccess": "Channel created successfully!"
   },
