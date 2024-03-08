@@ -63,7 +63,6 @@ export default async function ProfilePage({ searchParams, params }: Props) {
         usersEnrolledCourseIds={enrolledCourseIds}
         enrolledStudents={enrolledStudents}
         requesters={requesters}
-        editCourseLabel={t('EditButton.editCourse')}
       />
       <ProfileView
         lang={params.lang}

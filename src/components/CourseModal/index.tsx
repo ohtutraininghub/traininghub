@@ -35,7 +35,6 @@ interface Props extends DictProps {
   usersEnrolledCourseIds?: string[];
   enrolledStudents?: UserNamesAndIds;
   requesters?: UserNamesAndIds;
-  editCourseLabel: string;
 }
 
 export default function CourseModal({
@@ -44,7 +43,6 @@ export default function CourseModal({
   usersEnrolledCourseIds,
   enrolledStudents,
   requesters,
-  editCourseLabel,
 }: Props) {
   const { t } = useTranslation(lang, 'components');
   const { data: session, status } = useSession({ required: true });
@@ -294,7 +292,7 @@ export default function CourseModal({
                 sx={{ alignItems: 'center', display: 'flex', gap: 3, flex: 1 }}
               >
                 <EditButton
-                  editCourseLabel={editCourseLabel}
+                  lang={lang}
                   courseId={course.id}
                   hidden={!hasEditRights}
                 />

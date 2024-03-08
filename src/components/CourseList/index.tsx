@@ -95,7 +95,6 @@ export default function CourseList({
       <CourseModal
         lang={lang}
         course={openedCourse}
-        editCourseLabel={t('EditButton.editCourse')}
         usersEnrolledCourseIds={usersEnrolledCourseIds}
         enrolledStudents={enrolledStudents}
         requesters={requesters}
