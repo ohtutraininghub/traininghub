@@ -41,6 +41,11 @@ export default function ProfileCourseList({
     setIsCollapsed(!isCollapsed);
   };
 
+  const isCourseInProgress = (course: Course) => {
+    const currentDate = new Date();
+    return course.startDate <= currentDate && course.endDate >= currentDate;
+  };
+
   return (
     <Box
       sx={{
@@ -127,9 +132,21 @@ export default function ProfileCourseList({
                           <NoSsr>
                             <Chip
                               icon={<TimerIcon />}
-                              label={timeUntilstart(course.startDate)}
+                              label={
+                                isCourseInProgress(course)
+                                  ? 'In Progress'
+                                  : timeUntilstart(course.startDate)
+                              }
                               size="small"
-                              style={{ marginLeft: 'auto' }}
+                              sx={{
+                                marginLeft: 'auto',
+                              }}
+                              color={
+                                isCourseInProgress(course)
+                                  ? 'success'
+                                  : 'default'
+                              }
+                              data-testid={`courseTimer.${course.id}`}
                             />
                           </NoSsr>
                           <CreateSlackButton

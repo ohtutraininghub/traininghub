@@ -1,6 +1,9 @@
 import CourseList from '@/components/CourseList';
 import { notFound } from 'next/navigation';
-import { getCourses, getEnrolledCourseIdsByUserId } from '@/lib/prisma/courses';
+import {
+  getAllCourses,
+  getEnrolledCourseIdsByUserId,
+} from '@/lib/prisma/courses';
 import { getServerAuthSession } from '@/lib/auth';
 import { prisma } from '@/lib/prisma/index';
 import { Locale } from '@/lib/i18n/i18n-config';
@@ -28,7 +31,7 @@ type Props = {
 
 export default async function HomePage({ searchParams, params }: Props) {
   const session = await getServerAuthSession();
-  const courses = await getCourses();
+  const courses = await getAllCourses();
   const courseId = searchParams.courseId;
   const openedCourse = courses.find((course) => course.id === courseId);
 
