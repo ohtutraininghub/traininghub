@@ -68,7 +68,7 @@ const pastCourse: CourseWithInfo = {
 };
 
 describe('CourseCard tests', () => {
-  it('Course data should be displayed correctly for upcoming course', async () => {
+  it('should display course data correctly for upcoming course', async () => {
     renderWithTheme(
       <CourseCard
         lang="en"
@@ -84,7 +84,7 @@ describe('CourseCard tests', () => {
     ).not.toBeInTheDocument();
     expect(screen.getByText(upComingCourse.summary as string)).toBeVisible();
   });
-  it('Course data should be displayed correctly for past course', async () => {
+  it('should display course data correctly for past course', async () => {
     renderWithTheme(
       <CourseCard
         lang="en"
