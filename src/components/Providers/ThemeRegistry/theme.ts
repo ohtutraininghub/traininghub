@@ -15,6 +15,7 @@ declare module '@mui/material/styles' {
     black: PaletteColor;
     white: PaletteColor;
     modal: PaletteColor;
+    success: PaletteColor;
   }
   // eslint-disable-next-line no-unused-vars
   interface PaletteOptions {
@@ -24,6 +25,7 @@ declare module '@mui/material/styles' {
     black?: PaletteColorOptions;
     white?: PaletteColorOptions;
     modal?: PaletteColorOptions;
+    success?: PaletteColorOptions;
   }
 }
 
@@ -71,6 +73,12 @@ let theme = createTheme({
       main: '#ffffff',
     },
     modal: { main: '#000000bf' },
+    success: {
+      main: '#4caf50',
+      light: '#66bb6a',
+      dark: '#388e3c',
+      contrastText: '#f6f4f2',
+    },
   },
   typography: {
     htmlFontSize: 16, // root
