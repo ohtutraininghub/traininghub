@@ -127,6 +127,7 @@ export default function ProfileCourseList({
                             display: 'flex',
                             gap: 1,
                             alignItems: 'center',
+                            mr: '0.5em',
                           }}
                         >
                           <NoSsr>

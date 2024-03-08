@@ -1,8 +1,9 @@
 {
   "AddSlackButton": {
     "button": {
-      "add": "Create a slack channel"
-    }
+      "add": "slack"
+    },
+    "tooltip": "Creates a slack channel for this course"
   },
 
   "AttendeeList": {
