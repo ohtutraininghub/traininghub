@@ -1,5 +1,5 @@
 import { MessageType, StatusCodeType } from '@/lib/response/responseUtil';
-import { POST } from './route';
+import { POST, PUT } from './route';
 import { clearDatabase, prisma } from '@/lib/prisma';
 import { NextRequest } from 'next/server';
 import { createMocks } from 'node-mocks-http';
@@ -32,6 +32,13 @@ jest.mock('../../../../lib/auth', () => ({
 const mockPostRequest = (body: any) => {
   return createMocks<NextRequest>({
     method: 'POST',
+    json: () => body,
+  }).req;
+};
+
+const mockUpdateRequest = (body: any) => {
+  return createMocks<NextRequest>({
+    method: 'PUT',
     json: () => body,
   }).req;
 };
@@ -83,6 +90,45 @@ describe('Course request API tests', () => {
       const data = await response.json();
 
       expect(data.message).toBe('You have already requested!');
+      expect(data.messageType).toBe(MessageType.ERROR);
+      expect(response.status).toBe(StatusCodeType.UNPROCESSABLE_CONTENT);
+    });
+  });
+  describe('PUT', () => {
+    it('removing request from a requested course succeeds', async () => {
+      const requestedCourse = await prisma.course.create({
+        data: {
+          ...testCourse,
+          requesters: {
+            connect: [{ id: testUser.id }],
+          },
+        },
+      });
+
+      const req = mockUpdateRequest({ courseId: requestedCourse.id });
+      const response = await PUT(req);
+      const data = await response.json();
+
+      expect(data.message).toBe('Your request was removed');
+      expect(data.messageType).toBe(MessageType.SUCCESS);
+      expect(response.status).toBe(StatusCodeType.OK);
+    });
+
+    it('removing request from a course not requested throws error', async () => {
+      const notRequestedCourse = await prisma.course.create({
+        data: {
+          ...testCourse,
+          requesters: {
+            connect: [],
+          },
+        },
+      });
+
+      const req = mockUpdateRequest({ courseId: notRequestedCourse.id });
+      const response = await PUT(req);
+      const data = await response.json();
+
+      expect(data.message).toBe('You have not requested this course');
       expect(data.messageType).toBe(MessageType.ERROR);
       expect(response.status).toBe(StatusCodeType.UNPROCESSABLE_CONTENT);
     });
