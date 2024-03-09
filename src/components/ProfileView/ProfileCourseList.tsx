@@ -152,7 +152,13 @@ export default function ProfileCourseList({
                           </NoSsr>
                           <CreateSlackButton
                             lang="en"
-                            onclick={() => {}}
+                            onclick={(
+                              event: React.MouseEvent<HTMLButtonElement>
+                            ) => {
+                              {
+                                event.preventDefault();
+                              }
+                            }}
                             isSubmitting={false}
                             slackButtonDisabled={false}
                           />

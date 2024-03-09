@@ -6,7 +6,7 @@ import theme from '../Providers/ThemeRegistry/theme';
 import Image from 'next/image';
 
 interface CreateSlackButtonProps extends DictProps {
-  onclick: () => void;
+  onclick: (event: React.MouseEvent<HTMLButtonElement>) => void;
   isSubmitting: boolean;
   slackButtonDisabled: boolean;
 }
