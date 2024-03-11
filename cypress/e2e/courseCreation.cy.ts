@@ -109,11 +109,27 @@ describe('Course creation', () => {
     cy.getCy('courseImage').should('be.visible');
   });
 
+  it('should prefill the course start and end date', () => {
+    cy.login('trainer@test.com', 'TRAINER');
+    cy.visit('/course/create');
+    cy.getCy('courseFormName').type(course.name);
+    cy.getCy('textEditorTextSelect').click();
+    cy.getCy('textSelectorHeader1').click();
+    cy.get('.ProseMirror').type(`${course.header}{enter}`);
+
+    cy.getCy('textEditorTextSelect').click();
+    cy.getCy('textSelectorParagraph').click();
+    cy.get('.ProseMirror').type(course.description);
+    cy.getCy('courseFormMaxStudents').type(
+      `{selectall}{backspace}${course.maxStudents}`
+    );
+    cy.getCy('courseFormSubmit').click();
+    cy.contains(course.name).click();
+  });
+
   const requiredErrors = [
     'Name is required',
     'Description is required',
-    'Start date is required',
-    'End date is required',
     'Max students is required',
   ];
 
