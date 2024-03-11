@@ -43,6 +43,7 @@ const upComingCourse: CourseWithInfo = {
   tags: [],
   image: '',
   summary: 'After this course you will know all about testing with Jest!',
+  slackChannelId: '',
 };
 
 const pastCourse: CourseWithInfo = {
@@ -65,6 +66,7 @@ const pastCourse: CourseWithInfo = {
   tags: [],
   image: '',
   summary: 'Test course for testing purposes!',
+  slackChannelId: '',
 };
 
 describe('CourseCard tests', () => {

@@ -53,6 +53,7 @@ const upComingCourse: CourseWithInfo = {
   createdById: adminUser.id,
   createdBy: adminUser,
   image: '',
+  slackChannelId: '',
 };
 
 const pastCourse: CourseWithInfo = {
@@ -74,6 +75,7 @@ const pastCourse: CourseWithInfo = {
   createdById: trainerUser.id,
   createdBy: trainerUser,
   image: '',
+  slackChannelId: '',
 };
 
 jest.mock('../../lib/i18n/client', () => ({
