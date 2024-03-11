@@ -65,6 +65,7 @@ export const sendCoursePoster = async (course: Course) => {
 };
 
 export const createChannelForCourse = async (course: Course) => {
+  if (!isProduction()) return { ok: false, error: 'not_production' };
   let channelName =
     SLACK_CHANNEL_PREFIX +
     course.name.toLowerCase().replace('[^a-z0-9s-]', '').replace(/\s/g, '-');
@@ -75,7 +76,7 @@ export const createChannelForCourse = async (course: Course) => {
   return await createNewChannel(channelName);
 };
 
-export const createNewChannel = async (channel_name: string) => {
+const createNewChannel = async (channel_name: string) => {
   const res = await fetch(SLACK_API_CREATE_CHANNEL, {
     method: 'POST',
     body: JSON.stringify({ name: channel_name }),
