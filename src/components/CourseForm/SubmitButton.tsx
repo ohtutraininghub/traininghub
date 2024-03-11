@@ -2,10 +2,9 @@ import { Button } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
 interface Props {
-  isEditMode: boolean;
   isSubmitting: boolean;
 }
-export default function SubmitButton({ isEditMode, isSubmitting }: Props) {
+export default function SubmitButton({ isSubmitting }: Props) {
   const { palette } = useTheme();
   return (
     <Button
@@ -23,7 +22,7 @@ export default function SubmitButton({ isEditMode, isSubmitting }: Props) {
       }}
       data-testid="courseFormSubmit"
     >
-      {isEditMode ? 'Update' : 'Submit'}
+      Submit
     </Button>
   );
 }

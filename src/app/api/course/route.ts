@@ -35,6 +35,18 @@ export async function GET() {
   return NextResponse.json({ data: courses }, { status: StatusCodeType.OK });
 }
 
+export async function getStudentsByCourseId(request: NextRequest) {
+  const body = courseSchemaWithId.parse(await request.json());
+  const students = await prisma.course.findFirst({
+    where: { id: body.id },
+    include: {
+      students: true,
+    },
+  });
+
+  return students?.students;
+}
+
 export async function POST(request: NextRequest) {
   try {
     const { t } = await translator('api');

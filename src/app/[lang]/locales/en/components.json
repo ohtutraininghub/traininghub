@@ -46,6 +46,11 @@
       "tag": "Tag"
     }
   },
+  "CourseFormEditButton": {
+    "confirmEdit": "Are you sure you want to edit this training?",
+
+    "update": "Update"
+  },
   "CourseList": {
     "courses": "Courses",
     "gridControlLabel": "Grid",
