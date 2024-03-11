@@ -14,7 +14,7 @@ import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 
 interface Props {
-  attendees: UserNamesAndIds | null;
+  attendees: UserNamesAndIds;
   noAttendeesText: string;
 }
 
