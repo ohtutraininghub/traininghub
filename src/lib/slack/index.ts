@@ -112,7 +112,7 @@ export const archiveChannel = async (channel: string) => {
   const payload = {
     channel: channel,
   };
-  // if (!isProduction()) return;
+  if (!isProduction()) return;
   const channelExistsResult = await channelIdExists(channel);
   if (!channelExistsResult) return;
 
