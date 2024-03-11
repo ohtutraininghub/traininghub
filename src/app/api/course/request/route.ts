@@ -77,7 +77,7 @@ export async function PUT(request: NextRequest) {
     const session = await getServerAuthSession();
     const userId = session.user.id;
     const data = await request.json();
-    const { courseId } = courseRequestSchema.parse(data);
+    const { courseId } = courseIdSchema.parse(data);
 
     const course = await prisma.course.findFirst({
       where: { id: courseId },
