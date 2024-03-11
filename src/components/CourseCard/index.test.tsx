@@ -66,6 +66,7 @@ const pastCourse: CourseWithInfo = {
   tags: [],
   image: '',
   summary: 'Test course for testing purposes!',
+  slackChannelId: '',
 };
 
 describe('CourseCard tests', () => {
