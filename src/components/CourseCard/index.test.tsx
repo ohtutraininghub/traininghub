@@ -43,6 +43,7 @@ const upComingCourse: CourseWithInfo = {
   tags: [],
   image: '',
   summary: 'After this course you will know all about testing with Jest!',
+  slackChannelId: '',
 };
 
 const pastCourse: CourseWithInfo = {
