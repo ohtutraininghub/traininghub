@@ -20,6 +20,7 @@ export default function EditButton({
         style={{ textDecoration: 'none', color: 'inherit' }}
         href={`/course/${courseId}/edit`}
         hidden={hidden}
+        data-testid="editCourseButton"
       >
         <Box
           sx={{
