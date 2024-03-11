@@ -48,9 +48,9 @@ describe('TemplateSelect Tests', () => {
 
     userEvent.click(select);
     const option = await screen.findByText('Template 2');
-    userEvent.click(option);
 
     await waitFor(() => {
+      userEvent.click(option);
       expect(mockSetValue).toHaveBeenCalled();
     });
   });
@@ -65,13 +65,14 @@ describe('TemplateSelect Tests', () => {
       />
     );
     const select = screen.getByRole('combobox');
-
     userEvent.click(select);
 
-    const option1 = await screen.findByText('Template 1');
-    const option2 = await screen.findByText('Template 2');
+    await waitFor(() => {
+      const option1 = screen.getByText('Template 1');
+      const option2 = screen.getByText('Template 2');
 
-    expect(option1).toBeInTheDocument();
-    expect(option2).toBeInTheDocument();
+      expect(option1).toBeInTheDocument();
+      expect(option2).toBeInTheDocument();
+    });
   });
 });

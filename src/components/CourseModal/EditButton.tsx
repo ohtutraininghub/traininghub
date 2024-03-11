@@ -18,6 +18,7 @@ export default function EditButton({ lang, courseId, hidden }: Props) {
         style={{ textDecoration: 'none', color: 'inherit' }}
         href={`/course/${courseId}/edit`}
         hidden={hidden}
+        data-testid="editCourseButton"
       >
         <Box
           sx={{
