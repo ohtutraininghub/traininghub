@@ -53,6 +53,7 @@ const upComingCourse: CourseWithInfo = {
   createdById: adminUser.id,
   createdBy: adminUser,
   image: '',
+  slackChannelId: '',
 };
 
 const pastCourse: CourseWithInfo = {
