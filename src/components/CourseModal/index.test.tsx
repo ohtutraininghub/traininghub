@@ -75,6 +75,7 @@ const pastCourse: CourseWithInfo = {
   createdById: trainerUser.id,
   createdBy: trainerUser,
   image: '',
+  slackChannelId: '',
 };
 
 jest.mock('../../lib/i18n/client', () => ({
