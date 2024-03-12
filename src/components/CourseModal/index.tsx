@@ -27,7 +27,7 @@ import { useMediaQuery, useTheme } from '@mui/material';
 import { ImageContainer } from '../ImageContainer';
 import { hasCourseDeleteRights } from '@/lib/auth-utils';
 import { useMessage } from '../Providers/MessageProvider';
-import { remove } from '../../lib/response/fetchUtil';
+import { post, remove } from '../../lib/response/fetchUtil';
 import { RequestTrainingButton } from '@/components/Buttons/Buttons';
 
 interface Props extends DictProps {
@@ -97,6 +97,14 @@ export default function CourseModal({
     newView: string | null
   ) => {
     setCourseView(newView);
+  };
+
+  const handleRequest = async () => {
+    const responseJson = await post('/api/course/request', {
+      courseId: course.id,
+    });
+    notify(responseJson);
+    router.refresh();
   };
 
   const handleRemove = async () => {
@@ -309,7 +317,7 @@ export default function CourseModal({
                     lastCancelDate={course.lastCancelDate}
                   />
                 ) : (
-                  <RequestTrainingButton lang={lang} />
+                  <RequestTrainingButton onClick={handleRequest} lang={lang} />
                 )}
               </Box>
               <Box

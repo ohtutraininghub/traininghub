@@ -79,9 +79,18 @@ export function ToggleTrainingsButton({
   );
 }
 
-interface RequestTrainingButtonProps extends DictProps {}
+interface RequestTrainingButtonProps extends DictProps {
+  onClick: () => void;
+}
 
-export function RequestTrainingButton({ lang }: RequestTrainingButtonProps) {
+export function RequestTrainingButton({
+  onClick,
+  lang,
+}: RequestTrainingButtonProps) {
   const { t } = useTranslation(lang, 'components');
-  return <Button>{t('RequestTraining.button.request')}</Button>;
+  return (
+    <Button onClick={onClick} data-testid="request-button">
+      {t('RequestTraining.button.request')}
+    </Button>
+  );
 }
