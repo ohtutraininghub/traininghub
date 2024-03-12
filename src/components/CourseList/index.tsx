@@ -35,6 +35,7 @@ interface CourseListProps extends DictProps {
   courses: CourseWithInfo[];
   openedCourse: CourseWithInfo | undefined;
   usersEnrolledCourseIds?: string[];
+  usersRequestedCourseIds?: string[];
   enrolledStudents?: UserNamesAndIds;
   requesters?: UserNamesAndIds;
   searchCourses: {
@@ -49,6 +50,7 @@ export default function CourseList({
   courses,
   openedCourse,
   usersEnrolledCourseIds,
+  usersRequestedCourseIds,
   enrolledStudents,
   requesters,
   searchCourses,
@@ -96,6 +98,7 @@ export default function CourseList({
         lang={lang}
         course={openedCourse}
         usersEnrolledCourseIds={usersEnrolledCourseIds}
+        usersRequestedCourseIds={usersRequestedCourseIds}
         enrolledStudents={enrolledStudents}
         requesters={requesters}
       />

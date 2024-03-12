@@ -27,12 +27,13 @@ import { useMediaQuery, useTheme } from '@mui/material';
 import { ImageContainer } from '../ImageContainer';
 import { hasCourseDeleteRights } from '@/lib/auth-utils';
 import { useMessage } from '../Providers/MessageProvider';
-import { post, remove } from '../../lib/response/fetchUtil';
+import { post, update, remove } from '../../lib/response/fetchUtil';
 import { RequestTrainingButton } from '@/components/Buttons/Buttons';
 
 interface Props extends DictProps {
   course: CourseWithInfo | undefined;
   usersEnrolledCourseIds?: string[];
+  usersRequestedCourseIds?: string[];
   enrolledStudents?: UserNamesAndIds;
   requesters?: UserNamesAndIds;
 }
@@ -41,6 +42,7 @@ export default function CourseModal({
   lang,
   course,
   usersEnrolledCourseIds,
+  usersRequestedCourseIds,
   enrolledStudents,
   requesters,
 }: Props) {
@@ -66,6 +68,7 @@ export default function CourseModal({
   }
 
   const isUserEnrolled = usersEnrolledCourseIds?.includes(course.id);
+  const hasUserRequested = usersRequestedCourseIds?.includes(course.id);
   const isCourseFull = course._count.students === course.maxStudents;
 
   const hasRightToViewStudents = isTrainerOrAdmin(session.user);
@@ -101,6 +104,14 @@ export default function CourseModal({
 
   const handleRequest = async () => {
     const responseJson = await post('/api/course/request', {
+      courseId: course.id,
+    });
+    notify(responseJson);
+    router.refresh();
+  };
+
+  const handleRemoveRequest = async () => {
+    const responseJson = await update('/api/course/request', {
       courseId: course.id,
     });
     notify(responseJson);
@@ -317,7 +328,16 @@ export default function CourseModal({
                     lastCancelDate={course.lastCancelDate}
                   />
                 ) : (
-                  <RequestTrainingButton onClick={handleRequest} lang={lang} />
+                  <RequestTrainingButton
+                    onClick={
+                      !hasUserRequested ? handleRequest : handleRemoveRequest
+                    }
+                    text={
+                      !hasUserRequested
+                        ? t('RequestTraining.button.request')
+                        : t('RequestTraining.button.removeRequest')
+                    }
+                  />
                 )}
               </Box>
               <Box
