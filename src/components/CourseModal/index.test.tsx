@@ -106,6 +106,7 @@ jest.mock('next/navigation', () => ({
   useRouter() {
     return {
       replace: jest.fn(),
+      refresh: jest.fn(),
     };
   },
   useSearchParams: jest.fn(),
@@ -220,6 +221,63 @@ describe('CourseModal component', () => {
     userEvent.click(requestsButton);
     await waitFor(() => {
       expect(screen.getByText(trainerUser.name)).toBeInTheDocument();
+    });
+  });
+  it('should not render request button for upcoming course', async () => {
+    (useSession as jest.Mock).mockReturnValue({
+      data: {
+        user: traineeUser,
+      },
+      status: 'authenticated',
+    });
+    renderWithTheme(<CourseModal course={upComingCourse} lang="en" />);
+
+    expect(screen.queryByTestId('request-button')).not.toBeInTheDocument();
+  });
+  it('calls request post function with correct values if user has not previously requested', async () => {
+    (useSession as jest.Mock).mockReturnValue({
+      data: {
+        user: traineeUser,
+      },
+      status: 'authenticated',
+    });
+    renderWithTheme(<CourseModal course={pastCourse} lang="en" />);
+
+    const requestButton = screen.getByTestId('request-button');
+    expect(requestButton).toHaveTextContent('RequestTraining.button.request');
+
+    userEvent.click(requestButton);
+    await waitFor(() => {
+      expect(mockFetch).toBeCalledWith('/api/course/request', {
+        courseId: pastCourse.id,
+      });
+    });
+  });
+  it('should remove request if user has previously requested', async () => {
+    (useSession as jest.Mock).mockReturnValue({
+      data: {
+        user: traineeUser,
+      },
+      status: 'authenticated',
+    });
+    renderWithTheme(
+      <CourseModal
+        course={pastCourse}
+        usersRequestedCourseIds={['987654abc']}
+        lang="en"
+      />
+    );
+
+    const requestButton = screen.getByTestId('request-button');
+    expect(requestButton).toHaveTextContent(
+      'RequestTraining.button.removeRequest'
+    );
+
+    userEvent.click(requestButton);
+    await waitFor(() => {
+      expect(mockFetch).toBeCalledWith('/api/course/request', {
+        courseId: pastCourse.id,
+      });
     });
   });
 });
