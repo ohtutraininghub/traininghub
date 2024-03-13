@@ -57,8 +57,11 @@ const findUserIdByEmail = async (email: string) => {
   return data.user?.id;
 };
 
-const createUsersIdListByEmail = (users: string[]) => {
-  return users.map((user) => findUserIdByEmail(user));
+const createUsersIdListByEmail = async (users: string[]) => {
+  const idList = await Promise.all(
+    users.map((user) => findUserIdByEmail(user))
+  );
+  return idList.filter((id) => id !== null);
 };
 
 export const sendCoursePoster = async (course: Course) => {
@@ -104,7 +107,7 @@ export const addUsersToChannel = async (
 
   const payload = {
     channel: channel,
-    users: createUsersIdListByEmail(students),
+    users: await createUsersIdListByEmail(students),
   };
 
   const res = await fetch(SLACK_API_INVITE_USERS, {
