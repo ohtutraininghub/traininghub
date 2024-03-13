@@ -12,12 +12,9 @@ import { getStudentEmailsByCourseId } from '@/lib/prisma/users';
 
 export async function POST(request: NextRequest) {
   try {
-    console.log('got to post request');
     const { t } = await translator('api');
     const { user } = await getServerAuthSession();
-    console.log('starting course parse');
     const body = courseIdSchema.parse(await request.json());
-    console.log('starting course search');
     const course = await prisma.course.findFirst({
       where: { id: body.courseId },
     });
