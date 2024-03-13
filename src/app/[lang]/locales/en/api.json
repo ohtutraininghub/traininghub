@@ -6,6 +6,7 @@
     "courseNotFound": "Course by the given id was not found!",
     "forbidden": "Forbidden",
     "notEnrolledError": "You have not enrolled to this course",
+    "notRequestedError": "You have not requested this course",
     "templateNotFound": "Template by the given id was not found",
     "unprocessableContent": "Unprocessable content"
   },
@@ -25,9 +26,14 @@
     "youHaveAlreadyEnrolled": "You have already enrolled!"
   },
   "Requests": {
-    "requestCanceled": "Your request was canceled",
+    "requestRemoved": "Your request was removed",
     "requestSuccessfull": "Request successfully sent!",
     "youHaveAlreadyRequested": "You have already requested!"
+  },
+  "Slack": {
+    "channelAlreadyExists": "Channel already exists",
+    "channelCreationFailed": "Failed to create channel",
+    "channelCreationSuccess": "Channel created successfully!"
   },
   "Tags": {
     "duplicateError": "Failed to create tag. A duplicate tag already exists.",

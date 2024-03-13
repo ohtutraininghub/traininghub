@@ -22,6 +22,7 @@ import { DictProps } from '@/lib/i18n';
 import { useTheme } from '@mui/material/styles';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import PeopleIcon from '@mui/icons-material/People';
+import HowToRegIcon from '@mui/icons-material/HowToReg';
 import Divider from '@mui/material/Divider';
 import LocalizedDateTime from '../LocalizedDateTime';
 import Link from 'next/link';
@@ -33,8 +34,10 @@ import { ToggleTrainingsButton } from '../Buttons/Buttons';
 interface CourseListProps extends DictProps {
   courses: CourseWithInfo[];
   openedCourse: CourseWithInfo | undefined;
-  usersEnrolledCourseIds: string[];
-  enrolledStudents: UserNamesAndIds | null;
+  usersEnrolledCourseIds?: string[];
+  usersRequestedCourseIds?: string[];
+  enrolledStudents?: UserNamesAndIds;
+  requesters?: UserNamesAndIds;
   searchCourses: {
     courseName?: string;
     courseTag?: string;
@@ -47,7 +50,9 @@ export default function CourseList({
   courses,
   openedCourse,
   usersEnrolledCourseIds,
+  usersRequestedCourseIds,
   enrolledStudents,
+  requesters,
   searchCourses,
   lang,
 }: CourseListProps) {
@@ -75,18 +80,27 @@ export default function CourseList({
     setShowPastCourses(!showPastCourses);
   };
 
+  const studentCount = (course: CourseWithInfo) => {
+    if (!showPastCourses) {
+      return t('CourseModal.enrolls', {
+        studentCount: course._count.students,
+        maxStudentCount: course.maxStudents,
+      });
+    }
+    return t('CourseModal.requests', {
+      requestCount: course._count.requesters,
+    });
+  };
+
   return (
     <>
       <CourseModal
         lang={lang}
         course={openedCourse}
         usersEnrolledCourseIds={usersEnrolledCourseIds}
+        usersRequestedCourseIds={usersRequestedCourseIds}
         enrolledStudents={enrolledStudents}
-        enrolls={t('CourseModal.enrolls', {
-          studentCount: openedCourse?._count.students,
-          maxStudentCount: openedCourse?.maxStudents,
-        })}
-        editCourseLabel={t('EditButton.editCourse')}
+        requesters={requesters}
       />
       <Grid
         container
@@ -219,10 +233,7 @@ export default function CourseList({
                   <CourseCard
                     data-testid="course-card"
                     lang={lang}
-                    enrolls={t('CourseCard.enrolls', {
-                      studentCount: course._count.students,
-                      maxStudentCount: course.maxStudents,
-                    })}
+                    studentCount={studentCount(course)}
                     course={course}
                   />
                 </Grid>
@@ -288,23 +299,34 @@ export default function CourseList({
                                   display: 'inline',
                                 }}
                               />
-                              <LocalizedDateTime
-                                variant="range-short"
-                                startDate={course.startDate}
-                                endDate={course.endDate}
-                              />
+                              {!showPastCourses ? (
+                                <LocalizedDateTime
+                                  variant="range-short"
+                                  startDate={course.startDate}
+                                  endDate={course.endDate}
+                                />
+                              ) : (
+                                t('CourseCard.expired')
+                              )}
                               <br />
-                              <PeopleIcon
-                                sx={{
-                                  fontSize: '0.9rem',
-                                  marginRight: '8px',
-                                  display: 'inline',
-                                }}
-                              />
-                              {t('CourseListView.enrolls', {
-                                studentCount: course._count.students,
-                                maxStudentCount: course.maxStudents,
-                              })}
+                              {!showPastCourses ? (
+                                <PeopleIcon
+                                  sx={{
+                                    fontSize: '0.9rem',
+                                    marginRight: '8px',
+                                    display: 'inline',
+                                  }}
+                                />
+                              ) : (
+                                <HowToRegIcon
+                                  sx={{
+                                    fontSize: '0.9rem',
+                                    marginRight: '8px',
+                                    display: 'inline',
+                                  }}
+                                />
+                              )}
+                              {studentCount(course)}
                             </span>
                           }
                           secondaryTypographyProps={{

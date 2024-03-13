@@ -27,23 +27,24 @@ import { useMediaQuery, useTheme } from '@mui/material';
 import { ImageContainer } from '../ImageContainer';
 import { hasCourseDeleteRights } from '@/lib/auth-utils';
 import { useMessage } from '../Providers/MessageProvider';
-import { remove } from '../../lib/response/fetchUtil';
+import { post, update, remove } from '../../lib/response/fetchUtil';
+import { RequestTrainingButton } from '@/components/Buttons/Buttons';
 
 interface Props extends DictProps {
   course: CourseWithInfo | undefined;
-  usersEnrolledCourseIds: string[];
-  enrolledStudents: UserNamesAndIds | null;
-  enrolls: string;
-  editCourseLabel: string;
+  usersEnrolledCourseIds?: string[];
+  usersRequestedCourseIds?: string[];
+  enrolledStudents?: UserNamesAndIds;
+  requesters?: UserNamesAndIds;
 }
 
 export default function CourseModal({
+  lang,
   course,
   usersEnrolledCourseIds,
+  usersRequestedCourseIds,
   enrolledStudents,
-  lang,
-  enrolls,
-  editCourseLabel,
+  requesters,
 }: Props) {
   const { t } = useTranslation(lang, 'components');
   const { data: session, status } = useSession({ required: true });
@@ -66,10 +67,25 @@ export default function CourseModal({
     return <Loading />;
   }
 
-  const isUserEnrolled = usersEnrolledCourseIds.includes(course.id);
+  const isUserEnrolled = usersEnrolledCourseIds?.includes(course.id);
+  const hasUserRequested = usersRequestedCourseIds?.includes(course.id);
   const isCourseFull = course._count.students === course.maxStudents;
+
   const hasRightToViewStudents = isTrainerOrAdmin(session.user);
   const hasEditRights = hasCourseEditRights(session.user);
+  const isInRequestView = new Date(course.endDate) < new Date();
+
+  const studentCount = () => {
+    if (!isInRequestView) {
+      return t('CourseModal.enrolls', {
+        studentCount: course._count.students,
+        maxStudentCount: course.maxStudents,
+      });
+    }
+    return t('CourseModal.requests', {
+      requestCount: course._count.requesters,
+    });
+  };
 
   const handleClick = (event: object, reason: string) => {
     if (reason === 'backdropClick') {
@@ -84,6 +100,22 @@ export default function CourseModal({
     newView: string | null
   ) => {
     setCourseView(newView);
+  };
+
+  const handleRequest = async () => {
+    const responseJson = await post('/api/course/request', {
+      courseId: course.id,
+    });
+    notify(responseJson);
+    router.refresh();
+  };
+
+  const handleRemoveRequest = async () => {
+    const responseJson = await update('/api/course/request', {
+      courseId: course.id,
+    });
+    notify(responseJson);
+    router.refresh();
   };
 
   const handleRemove = async () => {
@@ -129,31 +161,44 @@ export default function CourseModal({
           outline: 0,
         }}
       >
-        <div
-          style={{
+        <Box
+          sx={{
             display: 'grid',
-            gridTemplateColumns: '1fr 1fr 1fr',
+            gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr 1fr' },
+            gridTemplateRows: { xs: 'auto auto', sm: 'auto' },
             marginBottom: '1rem',
           }}
         >
           {hasRightToViewStudents && (
-            <div style={{ gridColumnStart: 2 }}>
+            <Box
+              sx={{
+                gridColumn: { xs: '1', sm: '2' },
+                gridRow: { xs: '2', sm: '1' },
+              }}
+            >
               <TrainerTools
                 courseView={courseView}
                 handleCourseViewToggle={handleCourseViewToggle}
                 viewCourseDetailsLabel={t(
                   'CourseModal.button.viewCourseDetailsLabel'
                 )}
-                viewEnrolledStudentsLabel={t(
+                viewStudentsLabel={t(
                   'CourseModal.button.viewEnrolledStudentsLabel'
                 )}
+                viewRequestsLabel={t('CourseModal.button.viewRequestsLabel')}
               />
-            </div>
+            </Box>
           )}
-          <div style={{ gridColumnStart: 3, justifySelf: 'end' }}>
+          <Box
+            sx={{
+              gridColumn: { xs: '1', sm: '3' },
+              gridRow: { xs: '1', sm: '1' },
+              justifySelf: { sm: 'end' },
+            }}
+          >
             <CourseModalCloseButton lang={lang} />
-          </div>
-        </div>
+          </Box>
+        </Box>
         {course.image && courseView === 'details' && (
           <ImageContainer
             withBorder
@@ -175,7 +220,7 @@ export default function CourseModal({
           />
         </Typography>
 
-        {course.lastEnrollDate && (
+        {course.lastEnrollDate && !isInRequestView && (
           <Box
             sx={{
               display: 'flex',
@@ -212,8 +257,15 @@ export default function CourseModal({
 
         {courseView === 'attendees' && (
           <AttendeeTable
-            attendees={enrolledStudents}
+            attendees={enrolledStudents || []}
             noAttendeesText={t('AttendeeList.noAttendeesText')}
+          />
+        )}
+
+        {courseView === 'requests' && (
+          <AttendeeTable
+            attendees={requesters || []}
+            noAttendeesText={t('AttendeeList.noRequestsText')}
           />
         )}
 
@@ -259,21 +311,34 @@ export default function CourseModal({
                 sx={{ alignItems: 'center', display: 'flex', gap: 3, flex: 1 }}
               >
                 <EditButton
-                  editCourseLabel={editCourseLabel}
+                  lang={lang}
                   courseId={course.id}
                   hidden={!hasEditRights}
                 />
               </Box>
               <Box sx={{ flex: 1, justifyContent: 'center' }}>
-                <Typography sx={{ mb: 1 }}>{enrolls}</Typography>
-                <EnrollHolder
-                  lang={lang}
-                  isUserEnrolled={isUserEnrolled}
-                  courseId={course.id}
-                  isCourseFull={isCourseFull}
-                  lastEnrollDate={course.lastEnrollDate}
-                  lastCancelDate={course.lastCancelDate}
-                />
+                <Typography sx={{ mb: 1 }}>{studentCount()}</Typography>
+                {!isInRequestView ? (
+                  <EnrollHolder
+                    lang={lang}
+                    isUserEnrolled={isUserEnrolled}
+                    courseId={course.id}
+                    isCourseFull={isCourseFull}
+                    lastEnrollDate={course.lastEnrollDate}
+                    lastCancelDate={course.lastCancelDate}
+                  />
+                ) : (
+                  <RequestTrainingButton
+                    onClick={
+                      !hasUserRequested ? handleRequest : handleRemoveRequest
+                    }
+                    text={
+                      !hasUserRequested
+                        ? t('RequestTraining.button.request')
+                        : t('RequestTraining.button.removeRequest')
+                    }
+                  />
+                )}
               </Box>
               <Box
                 sx={{

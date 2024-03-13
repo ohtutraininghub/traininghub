@@ -6,7 +6,7 @@ import { prisma } from '@/lib/prisma';
 import { errorResponse, successResponse } from '@/lib/response/responseUtil';
 import { translator } from '@/lib/i18n';
 import { StatusCodeType } from '@/lib/response/responseUtil';
-import { isTrainerOrAdmin } from '@/lib/auth-utils';
+import { hasCourseEditRights, isTrainerOrAdmin } from '@/lib/auth-utils';
 import { courseIdSchema } from '@/lib/zod/courses';
 import { getStudentEmailsByCourseId } from '@/lib/prisma/users';
 
@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
       where: { id: body.courseId },
     });
 
-    if (!isTrainerOrAdmin(user)) {
+    if (!isTrainerOrAdmin(user) || !hasCourseEditRights(user)) {
       return errorResponse({
         message: t('Common.forbidden'),
         statusCode: StatusCodeType.FORBIDDEN,
@@ -34,14 +34,27 @@ export async function POST(request: NextRequest) {
         statusCode: StatusCodeType.NOT_FOUND,
       });
     }
+    if (course.slackChannelId) {
+      return errorResponse({
+        message: t('Slack.channelAlreadyExists'),
+        statusCode: StatusCodeType.BAD_REQUEST,
+      });
+    }
 
     const response = await createChannelForCourse(course);
     if (!response.ok) {
       return errorResponse({
-        message: `Failed to create channel: ${response.error}`,
+        message: `${t('Slack.channelCreationFailed')}: ${response.error}`,
         statusCode: StatusCodeType.BAD_REQUEST,
       });
     }
+
+    await prisma.course.update({
+      where: { id: body.courseId },
+      data: {
+        slackChannelId: response.channel.id,
+      },
+    });
     const students = await getStudentEmailsByCourseId(course.id);
     const studentEmails = students.map((student) => student.email);
     const res = await addUsersToChannel(response.channel.id, studentEmails);
@@ -52,7 +65,7 @@ export async function POST(request: NextRequest) {
       });
     }
     return successResponse({
-      message: 'Channel created',
+      message: t('Slack.channelCreationSuccess'),
       statusCode: StatusCodeType.CREATED,
     });
   } catch (error) {

@@ -85,22 +85,3 @@ export const getAllCourses = async () => {
     orderBy: [{ startDate: 'asc' }, { name: 'asc' }],
   });
 };
-
-export const getEnrolledCourseIdsByUserId = async (userId: string) => {
-  return (
-    await prisma.course.findMany({
-      where: {
-        students: {
-          some: {
-            id: {
-              equals: userId,
-            },
-          },
-        },
-      },
-      select: {
-        id: true,
-      },
-    })
-  ).map((data) => data.id);
-};

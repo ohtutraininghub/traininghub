@@ -113,10 +113,10 @@ describe('Profile View', () => {
       cy.getCy('myCoursesTab').click();
       // close ended created courses dropdown
       cy.getCy('listControls\\.endedCreated').click();
-      // trainer user is the creator of 2 upcoming courses
+      // trainer user is the creator of 2 upcoming courses and one ongoing course
       cy.contains('Upcoming created courses (3)');
       cy.contains(testCourses[0].name).should('not.exist');
-      cy.contains(testCourses[1].name);
+      cy.contains(testCourses[1].name).contains('In Progress');
       cy.contains(testCourses[2].name);
       cy.contains(testCourses[3].name);
     });
