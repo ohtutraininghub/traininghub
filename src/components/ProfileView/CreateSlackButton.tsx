@@ -16,14 +16,15 @@ const CreateSlackButton = ({
   slackButtonDisabled,
 }: CreateSlackButtonProps) => {
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
-
   const { palette } = useTheme();
   const { t } = useTranslation(lang, 'components');
-
+  const tooltipText = slackButtonDisabled
+    ? t('AddSlackButton.tooltip.disabled')
+    : t('AddSlackButton.tooltip.active');
   return (
     <div>
       <Tooltip
-        title={t('AddSlackButton.tooltip.active')}
+        title={tooltipText}
         enterTouchDelay={0}
         followCursor={true}
         arrow={true}
@@ -55,7 +56,7 @@ const CreateSlackButton = ({
               src="/slack-logo-png-white.png"
               width={22}
               height={22}
-              alt="Slack"
+              alt="Slack image"
             />
             {!isSmallScreen && t('AddSlackButton.button')}
           </Button>

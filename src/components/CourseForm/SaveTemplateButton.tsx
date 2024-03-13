@@ -31,6 +31,9 @@ export default function SaveTemplateButton({
           margin: 'auto',
           mt: 2,
           color: palette.white.main,
+          '&.Mui-disabled': {
+            color: palette.white.main,
+          },
           backgroundColor: palette.secondary.main,
           '&:hover': {
             backgroundColor: palette.secondary.light,

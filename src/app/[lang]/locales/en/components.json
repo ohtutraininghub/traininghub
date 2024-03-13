@@ -4,7 +4,7 @@
 
     "tooltip": {
       "active": "Creates a slack channel for this course",
-      "disabled": "The sleck channel has already been created"
+      "disabled": "The slack channel for this course exists already"
     }
   },
 

@@ -169,7 +169,7 @@ export default function ProfileCourseList({
                               event: React.MouseEvent<HTMLButtonElement>
                             ) => {
                               {
-                                event.preventDefault();
+                                event.preventDefault(); // prevents the CourseModal from opening
                                 handleCreateNewChannel(course.id);
                               }
                             }}
