@@ -143,6 +143,7 @@
   },
   "RequestTraining": {
     "button": {
+      "removeRequest": "Remove request",
       "request": "Request"
     }
   },
