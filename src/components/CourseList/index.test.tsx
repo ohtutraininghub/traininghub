@@ -133,7 +133,7 @@ describe('CourseList Component', () => {
         courses={courses}
         openedCourse={undefined}
         usersEnrolledCourseIds={[]}
-        enrolledStudents={null}
+        enrolledStudents={undefined}
         searchCourses={{}}
       />
     );

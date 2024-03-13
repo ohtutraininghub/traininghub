@@ -65,6 +65,7 @@ Slack setup is required for sending messages to Slack.
     - Here you can obtain `Bot User OAuth Token` for `SLACK_BOT_TOKEN`.
   - Bot Token Scopes:
     - `channels:read`
+    - `channels:manage`
     - `chat:write`
     - `users:read`
     - `users:read.email`
