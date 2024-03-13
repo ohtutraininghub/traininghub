@@ -123,13 +123,7 @@ export const courseEnrollSchema = z
   })
   .strict();
 
-export const courseDeleteSchema = z
-  .object({
-    courseId: z.string().cuid(),
-  })
-  .strict();
-
-export const courseRequestSchema = z
+export const courseIdSchema = z
   .object({
     courseId: z.string().cuid(),
   })
