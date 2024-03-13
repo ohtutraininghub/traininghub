@@ -7,6 +7,7 @@ import {
   SLACK_NEW_TRAININGS_CHANNEL,
   SLACK_API_ARCHIVE_CHANNEL,
   SLACK_CHANNEL_PREFIX,
+  SLACK_API_RENAME_CHANNEL,
 } from './constants';
 import {
   createBlocksCourseFull,
@@ -135,14 +136,48 @@ const sendMessage = async (channel: string, blocks: Block[]) => {
   });
 };
 
-export const archiveChannel = async (channel: string) => {
-  // Channel must be a channel id
+const renameChannel = async (channel: string, name: string) => {
+  if (name.length > 80) {
+    name = name.substring(0, 80);
+  }
   const payload = {
     channel: channel,
+    name: name,
   };
   if (!isProduction()) return;
-  const channelExistsResult = await channelIdExists(channel);
+
+  await fetch(SLACK_API_RENAME_CHANNEL, {
+    method: 'POST',
+    body: JSON.stringify(payload),
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
+    },
+  });
+};
+
+export const archiveChannel = async (
+  channelId: string,
+  channelName: string
+) => {
+  // Channel must be a channel id
+  const payload = {
+    channel: channelId,
+  };
+  if (!isProduction()) return;
+  const channelExistsResult = await channelIdExists(channelId);
   if (!channelExistsResult) return;
+
+  // Every Slack channel must have a unique name.
+  // Channel must be renamed before archiving it to be possible to create a new channel with the same name.
+  // Let's add date to the channel name to avoid conflicts.
+  const currentDate = new Date();
+  const day = currentDate.getDate();
+  const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+  const year = currentDate.getFullYear();
+  const newName = `${channelName}-${day}${month}${year}`;
+  await renameChannel(channelId, newName);
 
   await fetch(SLACK_API_ARCHIVE_CHANNEL, {
     method: 'POST',
