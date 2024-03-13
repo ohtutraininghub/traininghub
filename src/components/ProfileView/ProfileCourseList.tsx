@@ -18,8 +18,12 @@ import { useState } from 'react';
 import { timeUntilstart } from '@/lib/timedateutils';
 import LocalizedDateTime from '../LocalizedDateTime';
 import CreateSlackButton from './CreateSlackButton';
+import { post } from '@/lib/response/fetchUtil';
+import { DictProps } from '@/lib/i18n';
+import { useRouter } from 'next/navigation';
+import { useMessage } from '../Providers/MessageProvider';
 
-export interface ProfileCourseListProps {
+export interface ProfileCourseListProps extends DictProps {
   headerText: string;
   courses: Course[];
   open: boolean;
@@ -28,6 +32,7 @@ export interface ProfileCourseListProps {
 }
 
 export default function ProfileCourseList({
+  lang,
   headerText,
   courses,
   open,
@@ -37,6 +42,9 @@ export default function ProfileCourseList({
   const { palette } = useTheme();
   const [isCollapsed, setIsCollapsed] = useState(open);
 
+  const { notify } = useMessage();
+  const router = useRouter();
+
   const handleToggleCollapse = () => {
     setIsCollapsed(!isCollapsed);
   };
@@ -45,7 +53,12 @@ export default function ProfileCourseList({
     const currentDate = new Date();
     return course.startDate <= currentDate && course.endDate >= currentDate;
   };
-
+  const handleCreateNewChannel = async (id: string) => {
+    const responseJson = await post('/api/slack/channel', { courseId: id });
+    notify(responseJson);
+    router.push(`/${lang}/profile`);
+    router.refresh();
+  };
   return (
     <Box
       sx={{
@@ -151,16 +164,16 @@ export default function ProfileCourseList({
                             />
                           </NoSsr>
                           <CreateSlackButton
-                            lang="en"
+                            lang={lang}
                             onclick={(
                               event: React.MouseEvent<HTMLButtonElement>
                             ) => {
                               {
                                 event.preventDefault();
+                                handleCreateNewChannel(course.id);
                               }
                             }}
-                            isSubmitting={false}
-                            slackButtonDisabled={false}
+                            slackButtonDisabled={Boolean(course.slackChannelId)}
                           />
                         </Box>
                       )}

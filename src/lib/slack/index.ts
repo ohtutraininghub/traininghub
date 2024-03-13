@@ -65,7 +65,7 @@ export const sendCoursePoster = async (course: Course) => {
 };
 
 export const createChannelForCourse = async (course: Course) => {
-  if (!isProduction()) return { ok: false, error: 'not_production' };
+  // remove this comment: if (!isProduction()) return { ok: false, error: 'not_production' };
   let channelName =
     SLACK_CHANNEL_PREFIX +
     course.name.toLowerCase().replace('[^a-z0-9s-]', '').replace(/\s/g, '-');

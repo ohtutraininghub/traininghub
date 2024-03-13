@@ -95,6 +95,7 @@ export default function ProfileView({
       {selectedTab === 0 && (
         <>
           <ProfileCourseList
+            lang={lang}
             headerText={t('ProfileView.header.coursesInprogress')}
             courses={courses.filter(
               (course: Course) =>
@@ -104,6 +105,7 @@ export default function ProfileView({
             id={'inprogressCourses'}
           />
           <ProfileCourseList
+            lang={lang}
             headerText={t('ProfileView.header.upcomingCourses')}
             courses={courses.filter(
               (course: Course) => course.startDate > currentDate
@@ -113,6 +115,7 @@ export default function ProfileView({
             id={'upcomingCourses'}
           />
           <ProfileCourseList
+            lang={lang}
             headerText={t('ProfileView.header.endedCourses')}
             courses={courses.filter(
               (course: Course) => course.endDate < currentDate
@@ -125,6 +128,7 @@ export default function ProfileView({
       {selectedTab === 1 && (
         <>
           <ProfileCourseList
+            lang={lang}
             headerText={t('ProfileView.header.upcomingCreatedCourses')}
             courses={createdCourses.filter(
               (createdCourse: Course) =>
@@ -136,6 +140,7 @@ export default function ProfileView({
             id={'upcomingCreated'}
           />
           <ProfileCourseList
+            lang={lang}
             headerText={t('ProfileView.header.endedCreatedCourses')}
             courses={createdCourses.filter(
               (createdCourse: Course) => createdCourse.endDate < currentDate
@@ -165,7 +170,7 @@ export default function ProfileView({
           }}
         >
           {children}
-          <UserList users={users} lang="en" />
+          <UserList users={users} lang={lang} />
         </div>
       )}
     </div>

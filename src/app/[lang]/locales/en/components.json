@@ -1,9 +1,11 @@
 {
   "AddSlackButton": {
-    "button": {
-      "add": "slack"
-    },
-    "tooltip": "Creates a slack channel for this course"
+    "button": "slack",
+
+    "tooltip": {
+      "active": "Creates a slack channel for this course",
+      "disabled": "The sleck channel has already been created"
+    }
   },
 
   "AttendeeList": {
