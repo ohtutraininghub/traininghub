@@ -9,6 +9,7 @@ interface EditButtonProps extends DictProps {
   handleDialogOpen: () => void;
   handleEdit: () => void;
   dialogOpen: boolean;
+  onNotifyChange?: (isChecked: boolean) => void;
 }
 
 export default function EditButton({
@@ -17,6 +18,7 @@ export default function EditButton({
   handleDialogOpen,
   handleEdit,
   dialogOpen,
+  onNotifyChange,
 }: EditButtonProps) {
   const { t } = useTranslation(lang, 'components');
   const { palette } = useTheme();
@@ -55,6 +57,7 @@ export default function EditButton({
           confirmMessage={t('CourseFormEditButton.confirmEdit')}
           handleClick={handleConfirm}
           includeCheckbox={true}
+          onNotifyChange={onNotifyChange}
         />
       </Box>
     </div>

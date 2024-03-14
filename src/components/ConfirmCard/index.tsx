@@ -21,6 +21,7 @@ interface Props extends DictProps {
   confirmMessage: string;
   handleClick: () => void;
   includeCheckbox?: boolean;
+  onNotifyChange?: (isChecked: boolean) => void;
 }
 
 export function ConfirmCard({
@@ -30,6 +31,7 @@ export function ConfirmCard({
   handleClick,
   lang,
   includeCheckbox = false,
+  onNotifyChange,
 }: Props) {
   const { t } = useTranslation(lang, 'components');
   const { palette } = useTheme();
@@ -103,6 +105,7 @@ export function ConfirmCard({
                     checked={isNotifyChecked}
                     onChange={(event) => {
                       setIsNotifyChecked(event.target.checked);
+                      onNotifyChange && onNotifyChange(event.target.checked);
                     }}
                   />
                 }

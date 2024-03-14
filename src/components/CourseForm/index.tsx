@@ -92,6 +92,12 @@ export default function CourseForm({
     },
   });
 
+  const [isNotifyChecked, setIsNotifyChecked] = useState(false);
+
+  const handleNotifyChange = (checked: boolean) => {
+    setIsNotifyChecked(checked);
+  };
+
   const submitForm = async (data: FormType) => {
     const responseJson = await post('/api/course', data);
 
@@ -102,8 +108,7 @@ export default function CourseForm({
     router.refresh();
   };
 
-  const submitEdit = async (data: FormType, isChecked = false) => {
-    // Add isChecked to the data object if it needs to be sent to the server.
+  const submitEdit = async (data: FormType, isChecked = isNotifyChecked) => {
     const payload = {
       ...data,
       isChecked: isChecked,
@@ -120,7 +125,6 @@ export default function CourseForm({
   };
 
   const submitTemplate = async (data: FormType) => {
-    // Destructure the data object, omitting information not required for templates
     const {
       startDate: _startDate,
       endDate: _endDate,
@@ -468,6 +472,7 @@ export default function CourseForm({
               handleEdit={handleSubmit(submitEdit)}
               dialogOpen={open}
               lang={lang}
+              onNotifyChange={handleNotifyChange}
             />
           ) : (
             <SubmitButton isSubmitting={isSubmitting} />
