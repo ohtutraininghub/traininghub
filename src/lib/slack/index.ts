@@ -144,7 +144,6 @@ const renameChannel = async (channel: string, name: string) => {
     channel: channel,
     name: name,
   };
-  if (!isProduction()) return;
 
   await fetch(SLACK_API_RENAME_CHANNEL, {
     method: 'POST',
