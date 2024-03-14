@@ -6,6 +6,7 @@ import { Course } from '@prisma/client';
 import userEvent from '@testing-library/user-event';
 import { Message } from '@mui/icons-material';
 import { MessageType } from '@/lib/response/responseUtil';
+import { post } from '@/lib/response/fetchUtil';
 
 const testCourses: Course[] = [
   {
@@ -38,18 +39,19 @@ const testCourses: Course[] = [
   },
 ];
 
-const mockFetch = jest.fn((...args: any[]) =>
-  Promise.resolve({
-    json: () => Promise.resolve({ args: args }),
-    ok: true,
-  })
-);
+const mockFetch = jest.fn();
+
 jest.mock('../../lib/response/fetchUtil', () => ({
   post: (...args: any[]) => mockFetch(...args),
 }));
 
 jest.mock('next/navigation', () => ({
-  useRouter() {},
+  useRouter() {
+    return {
+      replace: jest.fn(),
+      refresh: jest.fn(),
+    };
+  },
 }));
 
 describe('ProfileCourseList component', () => {

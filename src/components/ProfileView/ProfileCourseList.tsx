@@ -173,7 +173,7 @@ export default function ProfileCourseList({
                                 handleCreateNewChannel(course.id);
                               }
                             }}
-                            slackButtonDisabled={Boolean(course.slackChannelId)}
+                            buttonDisabled={Boolean(course.slackChannelId)}
                           />
                         </Box>
                       )}

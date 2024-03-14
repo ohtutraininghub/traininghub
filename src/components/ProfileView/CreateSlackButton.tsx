@@ -7,18 +7,18 @@ import Image from 'next/image';
 
 interface CreateSlackButtonProps extends DictProps {
   onclick: (event: React.MouseEvent<HTMLButtonElement>) => void;
-  slackButtonDisabled: boolean;
+  buttonDisabled: boolean;
 }
 
 const CreateSlackButton = ({
   lang,
   onclick,
-  slackButtonDisabled,
+  buttonDisabled,
 }: CreateSlackButtonProps) => {
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const { palette } = useTheme();
   const { t } = useTranslation(lang, 'components');
-  const tooltipText = slackButtonDisabled
+  const tooltipText = buttonDisabled
     ? t('AddSlackButton.tooltip.disabled')
     : t('AddSlackButton.tooltip.active');
   return (
@@ -33,7 +33,7 @@ const CreateSlackButton = ({
         <span>
           <Button
             onClick={onclick}
-            disabled={slackButtonDisabled}
+            disabled={buttonDisabled}
             sx={{
               display: 'flex',
               alignItems: 'center',
@@ -46,7 +46,7 @@ const CreateSlackButton = ({
                 backgroundColor: palette.secondary.light,
               },
               '& img': {
-                opacity: slackButtonDisabled ? 0.5 : 1,
+                opacity: buttonDisabled ? 0.5 : 1,
               },
             }}
             data-testid="createSlackButton"
