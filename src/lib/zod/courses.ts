@@ -67,6 +67,7 @@ const courseSchemaBase = z
     description: z
       .string()
       .min(1)
+      .regex(/^(?!<p><\/p>$).+$/)
       .transform((desc) => DOMPurify.sanitize(desc)),
     startDate: z
       .string()
