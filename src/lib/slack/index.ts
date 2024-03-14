@@ -145,7 +145,7 @@ const renameChannel = async (channel: string, name: string) => {
     name: name,
   };
 
-  await fetch(SLACK_API_RENAME_CHANNEL, {
+  const res = await fetch(SLACK_API_RENAME_CHANNEL, {
     method: 'POST',
     body: JSON.stringify(payload),
     headers: {
@@ -154,6 +154,8 @@ const renameChannel = async (channel: string, name: string) => {
       Accept: 'application/json',
     },
   });
+  const data = await res.json();
+  return data;
 };
 
 export const archiveChannel = async (
@@ -176,17 +178,19 @@ export const archiveChannel = async (
   const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
   const year = currentDate.getFullYear();
   const newName = `${channelName}-${day}${month}${year}`;
-  await renameChannel(channelId, newName);
 
-  await fetch(SLACK_API_ARCHIVE_CHANNEL, {
-    method: 'POST',
-    body: JSON.stringify(payload),
-    headers: {
-      'Content-Type': 'application/json; charset=utf-8',
-      Authorization: `Bearer ${token}`,
-      Accept: 'application/json',
-    },
-  });
+  const renameChannelResponse = await renameChannel(channelId, newName);
+  if (renameChannelResponse.ok) {
+    await fetch(SLACK_API_ARCHIVE_CHANNEL, {
+      method: 'POST',
+      body: JSON.stringify(payload),
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/json',
+      },
+    });
+  }
 };
 
 const sendMessageToUser = async (userEmail: string, blocks: Block[]) => {
