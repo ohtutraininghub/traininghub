@@ -8,7 +8,10 @@ import { translator } from '@/lib/i18n';
 import { StatusCodeType } from '@/lib/response/responseUtil';
 import { hasCourseEditRights, isTrainerOrAdmin } from '@/lib/auth-utils';
 import { courseIdSchema } from '@/lib/zod/courses';
-import { getStudentEmailsByCourseId } from '@/lib/prisma/users';
+import {
+  getStudentEmailsByCourseId,
+  getTrainerEmailByCreatedById,
+} from '@/lib/prisma/users';
 
 export async function POST(request: NextRequest) {
   try {
@@ -52,8 +55,13 @@ export async function POST(request: NextRequest) {
         slackChannelId: response.channel.id,
       },
     });
+
+    const trainer = await getTrainerEmailByCreatedById(course.createdById);
     const students = await getStudentEmailsByCourseId(course.id);
     const studentEmails = students.map((student) => student.email);
+    if (trainer) {
+      studentEmails.push(trainer);
+    }
     const res = await addUsersToChannel(response.channel.id, studentEmails);
     if (!res.ok) {
       return errorResponse({
