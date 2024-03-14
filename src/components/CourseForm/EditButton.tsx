@@ -1,8 +1,8 @@
 import { useTranslation } from '@i18n/client';
-import { Box, Button } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
 import { DictProps } from '@/lib/i18n';
 import { ConfirmCard } from '../ConfirmCard';
+import { Box, Button } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
 interface EditButtonProps extends DictProps {
   isSubmitting: boolean;
@@ -18,8 +18,12 @@ export default function EditButton({
   handleEdit,
   dialogOpen,
 }: EditButtonProps) {
-  const { palette } = useTheme();
   const { t } = useTranslation(lang, 'components');
+  const { palette } = useTheme();
+
+  const handleConfirm = () => {
+    handleEdit();
+  };
 
   return (
     <div>
@@ -36,9 +40,8 @@ export default function EditButton({
             backgroundColor: palette.secondary.light,
           },
         }}
-        data-testid="editButton"
       >
-        {t('CourseFormEditButton.update')}
+        Update
       </Button>
       <Box
         sx={{
@@ -50,7 +53,7 @@ export default function EditButton({
           backdropOpen={dialogOpen}
           setBackdropOpen={handleDialogOpen}
           confirmMessage={t('CourseFormEditButton.confirmEdit')}
-          handleClick={handleEdit}
+          handleClick={handleConfirm}
         />
       </Box>
     </div>

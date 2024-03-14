@@ -2,8 +2,17 @@
 
 import { DictProps } from '@i18n/index';
 import { useTranslation } from '@i18n/client';
-import { Backdrop, Box, Button, Card, Typography } from '@mui/material';
-import { Dispatch, SetStateAction } from 'react';
+import {
+  Backdrop,
+  Box,
+  Button,
+  Card,
+  Typography,
+  Checkbox,
+  FormGroup,
+  FormControlLabel,
+} from '@mui/material';
+import { Dispatch, SetStateAction, useState } from 'react';
 import { useTheme } from '@mui/material/styles';
 
 interface Props extends DictProps {
@@ -22,6 +31,9 @@ export function ConfirmCard({
 }: Props) {
   const { t } = useTranslation(lang, 'components');
   const { palette } = useTheme();
+
+  const [isNotifyChecked, setIsNotifyChecked] = useState(false);
+
   return (
     <Backdrop
       sx={{ zIndex: 1200 }}
@@ -42,6 +54,7 @@ export function ConfirmCard({
           backgroundColor: palette.coverBlue.main,
           position: 'relative',
         }}
+        onClick={(event) => event.stopPropagation()} // Stop event propagation here
       >
         <Box
           sx={{
@@ -79,6 +92,20 @@ export function ConfirmCard({
           className="button-container"
           display="flex"
         >
+          <FormGroup>
+            <FormControlLabel
+              label="Notify participants on Slack"
+              control={
+                <Checkbox
+                  checked={isNotifyChecked}
+                  onChange={(event) => {
+                    setIsNotifyChecked(event.target.checked);
+                    console.log('IS CHECKED: ', event.target.checked);
+                  }}
+                />
+              }
+            />
+          </FormGroup>
           <Button
             variant="outlined"
             data-testid="confirmCardCancel"
@@ -86,6 +113,7 @@ export function ConfirmCard({
           >
             {t('ConfirmCard.cancel')}
           </Button>
+
           <Button
             variant="contained"
             data-testid="confirmCardConfirm"

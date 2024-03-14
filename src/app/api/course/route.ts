@@ -31,20 +31,12 @@ const parseTags = async (tags: string[]): Promise<Tag[]> => {
 };
 
 export async function GET() {
-  const courses = await prisma.course.findMany();
-  return NextResponse.json({ data: courses }, { status: StatusCodeType.OK });
-}
-
-export async function getStudentsByCourseId(request: NextRequest) {
-  const body = courseSchemaWithId.parse(await request.json());
-  const students = await prisma.course.findFirst({
-    where: { id: body.id },
+  const courses = await prisma.course.findMany({
     include: {
       students: true,
     },
   });
-
-  return students?.students;
+  return NextResponse.json({ data: courses }, { status: StatusCodeType.OK });
 }
 
 export async function POST(request: NextRequest) {
@@ -85,8 +77,11 @@ export async function PUT(request: NextRequest) {
   try {
     const { t } = await translator('api');
     const { user } = await getServerAuthSession();
-    const body = courseSchemaWithId.parse(await request.json());
+    const requestData = await request.json();
+    const { isChecked, ...courseDataWithoutIsChecked } = requestData;
+    const body = courseSchemaWithId.parse(courseDataWithoutIsChecked);
     const parsedTags = await parseTags(body.tags);
+
     const course = await prisma.course.findFirst({
       where: { id: body.id },
     });
@@ -119,21 +114,24 @@ export async function PUT(request: NextRequest) {
       },
     });
 
-    const courseWithUsers = await prisma.course.findFirst({
-      where: { id: body.id },
-      include: {
-        students: true,
-      },
-    });
-    // Send notification of course update to each user in slack
-    if (courseWithUsers) {
-      for (const user of courseWithUsers.students) {
-        await sendCourseUpdate(updatedCourse, user.email || '');
-      }
-    }
-
     // Update course to Google calendars
     await updateCourseToCalendars(updatedCourse);
+
+    console.log('ISCHECKED:::   ', isChecked);
+    if (isChecked === true) {
+      const courseWithUsers = await prisma.course.findFirst({
+        where: { id: body.id },
+        include: {
+          students: true,
+        },
+      });
+      // Send notification of course update to each user in slack
+      if (courseWithUsers) {
+        for (const user of courseWithUsers.students) {
+          await sendCourseUpdate(courseWithUsers, user.email || '');
+        }
+      }
+    }
 
     return successResponse({
       message: t('Courses.courseUpdated'),

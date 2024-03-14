@@ -102,11 +102,16 @@ export default function CourseForm({
     router.refresh();
   };
 
-  const submitEdit = async (data: FormType) => {
-    const responseJson = await update(`/api/course`, data);
+  const submitEdit = async (data: FormType, isChecked = true) => {
+    // Add isChecked to the data object if it needs to be sent to the server.
+    const payload = {
+      ...data,
+      isChecked: isChecked,
+    };
+    console.log(payload);
+    const responseJson = await update(`/api/course`, payload);
 
     notify(responseJson);
-
     router.push('/');
     router.refresh();
   };
