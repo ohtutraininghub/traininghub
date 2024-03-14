@@ -20,6 +20,7 @@ interface Props extends DictProps {
   setBackdropOpen: Dispatch<SetStateAction<boolean>>;
   confirmMessage: string;
   handleClick: () => void;
+  includeCheckbox?: boolean;
 }
 
 export function ConfirmCard({
@@ -28,6 +29,7 @@ export function ConfirmCard({
   confirmMessage,
   handleClick,
   lang,
+  includeCheckbox = false,
 }: Props) {
   const { t } = useTranslation(lang, 'components');
   const { palette } = useTheme();
@@ -92,20 +94,21 @@ export function ConfirmCard({
           className="button-container"
           display="flex"
         >
-          <FormGroup>
-            <FormControlLabel
-              label="Notify participants on Slack"
-              control={
-                <Checkbox
-                  checked={isNotifyChecked}
-                  onChange={(event) => {
-                    setIsNotifyChecked(event.target.checked);
-                    console.log('IS CHECKED: ', event.target.checked);
-                  }}
-                />
-              }
-            />
-          </FormGroup>
+          {includeCheckbox && (
+            <FormGroup>
+              <FormControlLabel
+                label="Notify participants on Slack"
+                control={
+                  <Checkbox
+                    checked={isNotifyChecked}
+                    onChange={(event) => {
+                      setIsNotifyChecked(event.target.checked);
+                    }}
+                  />
+                }
+              />
+            </FormGroup>
+          )}
           <Button
             variant="outlined"
             data-testid="confirmCardCancel"

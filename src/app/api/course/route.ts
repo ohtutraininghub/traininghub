@@ -117,7 +117,6 @@ export async function PUT(request: NextRequest) {
     // Update course to Google calendars
     await updateCourseToCalendars(updatedCourse);
 
-    console.log('ISCHECKED:::   ', isChecked);
     if (isChecked === true) {
       const courseWithUsers = await prisma.course.findFirst({
         where: { id: body.id },

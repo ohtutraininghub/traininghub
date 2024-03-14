@@ -54,6 +54,7 @@ export default function EditButton({
           setBackdropOpen={handleDialogOpen}
           confirmMessage={t('CourseFormEditButton.confirmEdit')}
           handleClick={handleConfirm}
+          includeCheckbox={true}
         />
       </Box>
     </div>
