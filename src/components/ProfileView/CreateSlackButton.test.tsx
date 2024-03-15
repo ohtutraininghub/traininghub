@@ -14,6 +14,21 @@ describe('CreateSlackButton ', () => {
     expect(buttonByText).toBeInTheDocument;
     expect(buttonByImage).toBeInTheDocument;
   });
+
+  it('calls the onClick function when the button is clicked', async () => {
+    const mockOnClick = jest.fn();
+    const render = renderWithTheme(
+      <CreateSlackButton
+        lang="en"
+        onclick={mockOnClick}
+        buttonDisabled={false}
+      />
+    );
+    const button = render.getByTestId('createSlackButton');
+    button.click();
+    expect(mockOnClick).toHaveBeenCalledTimes(1);
+  });
+
   it('disables the button when buttonDisabled is true', async () => {
     const mockOnClick = jest.fn();
     const render = renderWithTheme(
@@ -23,9 +38,8 @@ describe('CreateSlackButton ', () => {
         buttonDisabled={true}
       />
     );
-
-    const buttonByText = render.getByTestId('createSlackButton');
-    buttonByText.click();
+    const button = render.getByTestId('createSlackButton');
+    button.click();
     expect(mockOnClick).not.toHaveBeenCalled();
   });
 });
