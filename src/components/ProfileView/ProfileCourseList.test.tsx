@@ -4,9 +4,6 @@ import { renderWithTheme } from '@/lib/test-utils';
 import ProfileCourseList from './ProfileCourseList';
 import { Course } from '@prisma/client';
 import userEvent from '@testing-library/user-event';
-import { Message } from '@mui/icons-material';
-import { MessageType } from '@/lib/response/responseUtil';
-import { post } from '@/lib/response/fetchUtil';
 
 const testCourses: Course[] = [
   {
