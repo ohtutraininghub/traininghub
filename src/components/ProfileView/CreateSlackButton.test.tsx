@@ -14,4 +14,18 @@ describe('CreateSlackButton ', () => {
     expect(buttonByText).toBeInTheDocument;
     expect(buttonByImage).toBeInTheDocument;
   });
+  it('disables the button when buttonDisabled is true', async () => {
+    const mockOnClick = jest.fn();
+    const render = renderWithTheme(
+      <CreateSlackButton
+        lang="en"
+        onclick={mockOnClick}
+        buttonDisabled={true}
+      />
+    );
+
+    const buttonByText = render.getByTestId('createSlackButton');
+    buttonByText.click();
+    expect(mockOnClick).not.toHaveBeenCalled();
+  });
 });
