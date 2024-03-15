@@ -3,7 +3,7 @@ import CreateSlackButton from './CreateSlackButton';
 import { waitFor } from '@testing-library/react';
 
 describe('CreateSlackButton ', () => {
-  it('renders the text and image of the button', async () => {
+  it('displays the text and image of the button', async () => {
     const render = renderWithTheme(
       <CreateSlackButton lang="en" onclick={jest.fn()} buttonDisabled={false} />
     );
