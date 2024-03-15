@@ -125,7 +125,7 @@ describe('Profile View', () => {
       // close upcoming created courses dropdown
       cy.getCy('listControls\\.upcomingCreated').click();
       // trainer user is the creator of one upcoming course
-      cy.contains('Ended created courses (1)');
+      cy.contains('Ended created courses (2)');
       cy.contains(testCourses[0].name);
       cy.contains(testCourses[1].name).should('not.exist');
       cy.contains(testCourses[2].name).should('not.exist');
