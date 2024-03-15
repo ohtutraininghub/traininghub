@@ -78,3 +78,19 @@ export function ToggleTrainingsButton({
     </Button>
   );
 }
+
+interface RequestTrainingButtonProps {
+  onClick: () => void;
+  text: string;
+}
+
+export function RequestTrainingButton({
+  onClick,
+  text,
+}: RequestTrainingButtonProps) {
+  return (
+    <Button onClick={onClick} data-testid="request-button">
+      {text}
+    </Button>
+  );
+}

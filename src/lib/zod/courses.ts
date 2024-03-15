@@ -67,6 +67,7 @@ const courseSchemaBase = z
     description: z
       .string()
       .min(1)
+      .regex(/^(?!<p><\/p>$).+$/)
       .transform((desc) => DOMPurify.sanitize(desc)),
     startDate: z
       .string()
@@ -107,6 +108,7 @@ const courseSchemaBase = z
 const courseSchemaBaseWithId = courseSchemaBase.extend({
   id: z.string().min(1),
   createdById: z.string(),
+  slackChannelId: z.string().nullish(),
 });
 
 export const courseSchema = withRefine(courseSchemaBase);
@@ -122,13 +124,7 @@ export const courseEnrollSchema = z
   })
   .strict();
 
-export const courseDeleteSchema = z
-  .object({
-    courseId: z.string().cuid(),
-  })
-  .strict();
-
-export const courseRequestSchema = z
+export const courseIdSchema = z
   .object({
     courseId: z.string().cuid(),
   })

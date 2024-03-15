@@ -3,12 +3,17 @@ import {
   SLACK_API_LOOKUP_BY_CHANNEL,
   SLACK_API_LOOKUP_BY_EMAIL,
   SLACK_API_POST_MESSAGE,
+  SLACK_API_CREATE_CHANNEL,
   SLACK_NEW_TRAININGS_CHANNEL,
+  SLACK_API_ARCHIVE_CHANNEL,
+  SLACK_CHANNEL_PREFIX,
+  SLACK_API_RENAME_CHANNEL,
 } from './constants';
 import {
   createBlocksCourseFull,
   createBlocksNewTraining,
   createBlocksUpdatedTraining,
+  createBlocksTrainingCancelled,
 } from './blocks';
 import { isProduction } from '../env-utils';
 
@@ -30,6 +35,15 @@ export const sendCourseFullMessage = async (
   if (!isProduction()) return;
   const blocks = createBlocksCourseFull(course);
   sendMessageToUser(userEmail, blocks);
+};
+
+export const sendTrainingCancelledMessage = async (
+  userEmail: string,
+  course: Course
+) => {
+  if (!isProduction()) return;
+  const blocks = createBlocksTrainingCancelled(course);
+  await sendMessageToUser(userEmail, blocks);
 };
 
 const findUserIdByEmail = async (email: string) => {
@@ -72,6 +86,19 @@ const channelExists = async (channel: string) => {
   return data.channels.some((c: { name: string }) => c.name === channel);
 };
 
+const channelIdExists = async (channel: string) => {
+  const res = await fetch(`${SLACK_API_LOOKUP_BY_CHANNEL}`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
+    },
+  });
+  const data = await res.json();
+  if (!data.channels) return false;
+  return data.channels.some((c: { id: string }) => c.id === channel);
+};
+
 const sendMessage = async (channel: string, blocks: Block[]) => {
   // Channel can be a user id or a channel id/name
   const payload = {
@@ -90,8 +117,91 @@ const sendMessage = async (channel: string, blocks: Block[]) => {
   });
 };
 
+const renameChannel = async (channel: string, name: string) => {
+  if (name.length > 80) {
+    name = name.substring(0, 80);
+  }
+  const payload = {
+    channel: channel,
+    name: name,
+  };
+
+  const res = await fetch(SLACK_API_RENAME_CHANNEL, {
+    method: 'POST',
+    body: JSON.stringify(payload),
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
+    },
+  });
+  const data = await res.json();
+  return data;
+};
+
+export const archiveChannel = async (
+  channelId: string,
+  channelName: string
+) => {
+  // Channel must be a channel id
+  const payload = {
+    channel: channelId,
+  };
+  if (!isProduction()) return;
+  const channelExistsResult = await channelIdExists(channelId);
+  if (!channelExistsResult) return;
+
+  // Every Slack channel must have a unique name.
+  // Channel must be renamed before archiving it to be possible to create a new channel with the same name.
+  // Let's add date to the channel name to avoid conflicts.
+  const currentDate = new Date();
+  const day = currentDate.getDate();
+  const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+  const year = currentDate.getFullYear();
+  const newName = `${channelName}-${day}${month}${year}`;
+
+  const renameChannelResponse = await renameChannel(channelId, newName);
+  if (renameChannelResponse.ok) {
+    await fetch(SLACK_API_ARCHIVE_CHANNEL, {
+      method: 'POST',
+      body: JSON.stringify(payload),
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/json',
+      },
+    });
+  }
+};
+
 const sendMessageToUser = async (userEmail: string, blocks: Block[]) => {
   const userId = await findUserIdByEmail(userEmail);
-  if (!userEmail) return;
+  if (!userId) return;
   await sendMessage(userId, blocks);
+};
+
+export const createChannelForCourse = async (course: Course) => {
+  if (!isProduction()) return { ok: false, error: 'not_production' };
+  let channelName =
+    SLACK_CHANNEL_PREFIX +
+    course.name.toLowerCase().replace('[^a-z0-9s-]', '').replace(/\s/g, '-');
+  if (channelName.length > 80) {
+    channelName = channelName.substring(0, 80);
+  }
+
+  return await createNewChannel(channelName);
+};
+
+const createNewChannel = async (channel_name: string) => {
+  const res = await fetch(SLACK_API_CREATE_CHANNEL, {
+    method: 'POST',
+    body: JSON.stringify({ name: channel_name }),
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
+    },
+  });
+  const data = await res.json();
+  return data;
 };

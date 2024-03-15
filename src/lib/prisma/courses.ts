@@ -29,6 +29,7 @@ export type CourseWithInfo = prismaClient.CourseGetPayload<{
     _count: {
       select: {
         students: true;
+        requesters: true;
       };
     };
   };
@@ -65,21 +66,22 @@ export const getCourses = async () => {
   });
 };
 
-export const getEnrolledCourseIdsByUserId = async (userId: string) => {
-  return (
-    await prisma.course.findMany({
-      where: {
-        students: {
-          some: {
-            id: {
-              equals: userId,
-            },
-          },
+export const getAllCourses = async () => {
+  return await prisma.course.findMany({
+    include: {
+      createdBy: {
+        select: {
+          name: true,
         },
       },
-      select: {
-        id: true,
+      _count: {
+        select: {
+          students: true,
+          requesters: true,
+        },
       },
-    })
-  ).map((data) => data.id);
+      tags: true,
+    },
+    orderBy: [{ startDate: 'asc' }, { name: 'asc' }],
+  });
 };

@@ -3,7 +3,8 @@
     "header": {
       "text": "Attendees"
     },
-    "noAttendeesText": "No enrolled students"
+    "noAttendeesText": "No enrolled students",
+    "noRequestsText": "No requests"
   },
   "CalendarPrompt": {
     "addPrompt": "Do you want to add this course to your Google calendar?",
@@ -32,7 +33,10 @@
     }
   },
   "CourseCard": {
-    "enrolls": "Enrolls: {{studentCount}} / {{maxStudentCount}}"
+    "enrolls": "Enrolls: {{studentCount}} / {{maxStudentCount}}",
+    "expired": "Expired",
+    "learnMore": "Learn more",
+    "requests": "Requests: {{requestCount}}"
   },
   "CourseFilter": {
     "button": {
@@ -63,11 +67,13 @@
   "CourseModal": {
     "button": {
       "viewCourseDetailsLabel": "Details",
-      "viewEnrolledStudentsLabel": "Students"
+      "viewEnrolledStudentsLabel": "Students",
+      "viewRequestsLabel": "Requests"
     },
     "courseImageAltText": "Course title image",
     "enrollmentDeadlineHeader": "Note: Enrollment deadline ",
-    "enrolls": "Enrolls: {{studentCount}} / {{maxStudentCount}}"
+    "enrolls": "Enrolls: {{studentCount}} / {{maxStudentCount}}",
+    "requests": "Requests: {{requestCount}}"
   },
   "CourseModalCloseButton": {
     "close": "Close"
@@ -129,6 +135,12 @@
   "RemoveCourse": {
     "button": {
       "text": "Remove"
+    }
+  },
+  "RequestTraining": {
+    "button": {
+      "removeRequest": "Remove request",
+      "request": "Request"
     }
   },
   "SaveTemplateButton": {
