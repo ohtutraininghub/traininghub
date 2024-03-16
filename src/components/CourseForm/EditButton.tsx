@@ -42,6 +42,7 @@ export default function EditButton({
             backgroundColor: palette.secondary.light,
           },
         }}
+        data-testid="courseFormEdit"
       >
         Update
       </Button>

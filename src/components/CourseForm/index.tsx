@@ -132,7 +132,6 @@ export default function CourseForm({
       lastCancelDate: _lastCancelDate,
       createdById: _createdById,
       id: _id,
-      slackChannelId: _slackChannelId,
       ...dataWithoutExtras
     } = data;
     const responseJson = await post('/api/template', dataWithoutExtras);
