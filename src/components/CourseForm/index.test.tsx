@@ -695,7 +695,6 @@ describe('Course Form Course Edit Tests', () => {
       });
     });
   });
-  // mockFetch.mockClear();
 
   it('Form is submitted with correct values in Edit Mode when values have been edited', async () => {
     mockFetch.mockClear();

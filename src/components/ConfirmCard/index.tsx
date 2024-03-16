@@ -99,7 +99,7 @@ export function ConfirmCard({
           {includeCheckbox && (
             <FormGroup>
               <FormControlLabel
-                label="Notify participants on Slack"
+                label={t('ConfirmCard.checkbox.label')}
                 control={
                   <Checkbox
                     checked={isNotifyChecked}

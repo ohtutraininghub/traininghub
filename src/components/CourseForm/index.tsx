@@ -475,7 +475,7 @@ export default function CourseForm({
               onNotifyChange={handleNotifyChange}
             />
           ) : (
-            <SubmitButton isSubmitting={isSubmitting} />
+            <SubmitButton isSubmitting={isSubmitting} lang={lang} />
           )}
         </form>
       </Box>

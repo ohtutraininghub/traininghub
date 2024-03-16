@@ -44,7 +44,7 @@ export default function EditButton({
         }}
         data-testid="courseFormEdit"
       >
-        Update
+        {t('CourseFormEditButton.update')}
       </Button>
       <Box
         sx={{

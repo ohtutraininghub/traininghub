@@ -1,10 +1,13 @@
+import { useTranslation } from '@i18n/client';
+import { DictProps } from '@/lib/i18n';
 import { Button } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
-interface Props {
+interface Props extends DictProps {
   isSubmitting: boolean;
 }
-export default function SubmitButton({ isSubmitting }: Props) {
+export default function SubmitButton({ isSubmitting, lang }: Props) {
+  const { t } = useTranslation(lang, 'components');
   const { palette } = useTheme();
   return (
     <Button
@@ -22,7 +25,7 @@ export default function SubmitButton({ isSubmitting }: Props) {
       }}
       data-testid="courseFormSubmit"
     >
-      Submit
+      {t('CourseFormSubmitButton.submit')}
     </Button>
   );
 }
