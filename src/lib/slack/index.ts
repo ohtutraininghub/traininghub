@@ -60,7 +60,7 @@ const findUserIdByEmail = async (email: string) => {
 
 export const sendCoursePoster = async (course: Course) => {
   const channel = SLACK_NEW_TRAININGS_CHANNEL;
-  // if (!isProduction()) return;
+  if (!isProduction()) return;
   const channelExistsResult = await channelExists(channel);
   if (!channelExistsResult) return;
   const message = createBlocksNewTraining(course);
@@ -68,7 +68,8 @@ export const sendCoursePoster = async (course: Course) => {
 };
 
 export const sendCourseUpdate = async (course: Course, userEmail: string) => {
-  // if (!isProduction()) return;
+  if (!isProduction()) return;
+  console.log('sendCourseUpdate------------------------------------------');
   const blocks = createBlocksUpdatedTraining(course);
   await sendMessageToUser(userEmail, blocks);
 };

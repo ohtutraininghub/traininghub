@@ -35,6 +35,7 @@ export function ConfirmCard({
 }: Props) {
   const { t } = useTranslation(lang, 'components');
   const { palette } = useTheme();
+  const theme = useTheme();
 
   const [isNotifyChecked, setIsNotifyChecked] = useState(false);
 
@@ -92,6 +93,9 @@ export function ConfirmCard({
             justifyContent: 'flex-end',
             margin: '0.5em 0',
             gap: 1,
+            [theme.breakpoints.up('sm')]: {
+              flexDirection: 'column',
+            },
           }}
           className="button-container"
           display="flex"
@@ -99,9 +103,21 @@ export function ConfirmCard({
           {includeCheckbox && (
             <FormGroup>
               <FormControlLabel
+                sx={{
+                  color: palette.white.main,
+                  '& .MuiFormControlLabel-label': {
+                    fontSize: '16px',
+                    fontFamily: 'Roboto',
+                    zIndex: 1,
+                    [theme.breakpoints.up('sm')]: {
+                      fontSize: '14px',
+                    },
+                  },
+                }}
                 label={t('ConfirmCard.checkbox.label')}
                 control={
                   <Checkbox
+                    sx={{ color: palette.white.main }}
                     checked={isNotifyChecked}
                     onChange={(event) => {
                       setIsNotifyChecked(event.target.checked);
