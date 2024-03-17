@@ -136,12 +136,18 @@ const sendMessage = async (channel: string, blocks: Block[]) => {
 };
 
 const renameChannel = async (channelId: string, channelName: string) => {
-  if (channelName.length > 80) {
-    channelName = channelName.substring(0, 80);
+  if (channelName.length > 71) {
+    channelName = channelName.substring(0, 71);
   }
+  // Adds date to the end of the channel name
+  const currentDate = new Date();
+  const day = currentDate.getDate();
+  const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+  const year = currentDate.getFullYear();
+  const newName = `${channelName}-${day}${month}${year}`;
   const payload = {
     channel: channelId,
-    name: channelName,
+    name: newName,
   };
 
   const res = await fetch(SLACK_API_RENAME_CHANNEL, {
@@ -166,19 +172,13 @@ export const archiveChannel = async (course: Course) => {
   const channelExistsResult = await channelExists(course.slackChannelId, 'id');
   if (!channelExistsResult) return;
 
-  // Every Slack channel must have a unique name.
-  // Channel must be renamed before archiving it to be possible to create a new channel with the same name.
-  // Let's add date to the channel name to avoid conflicts.
-  const currentDate = new Date();
-  const day = currentDate.getDate();
-  const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
-  const year = currentDate.getFullYear();
   const channelName = renderChannelName(course);
-  const newName = `${channelName}-${day}${month}${year}`;
 
+  // Every Slack channel must have a unique name.
+  // To avoid future naming conflicts, channel must be renamed before archiving.
   const renameChannelResponse = await renameChannel(
     course.slackChannelId,
-    newName
+    channelName
   );
   if (renameChannelResponse.ok) {
     await fetch(SLACK_API_ARCHIVE_CHANNEL, {
