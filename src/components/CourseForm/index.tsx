@@ -67,8 +67,9 @@ export default function CourseForm({
   const router = useRouter();
   const { palette } = useTheme();
   const { notify } = useMessage();
-  const [open, setOpen] = useState(false);
-
+  const [templateDialogOpen, setTemplateDialogOpen] = useState(false);
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [isNotifyChecked, setIsNotifyChecked] = useState(false);
   const {
     control,
     register,
@@ -91,8 +92,6 @@ export default function CourseForm({
         : { maxStudents: 10 }),
     },
   });
-
-  const [isNotifyChecked, setIsNotifyChecked] = useState(false);
 
   const handleNotifyChange = (checked: boolean) => {
     setIsNotifyChecked(checked);
@@ -120,8 +119,12 @@ export default function CourseForm({
     router.refresh();
   };
 
-  const handleDialogOpen = () => {
-    setOpen(!open);
+  const handleTemplateDialogOpen = () => {
+    setTemplateDialogOpen(!templateDialogOpen);
+  };
+
+  const handleEditDialogOpen = () => {
+    setEditDialogOpen(!editDialogOpen);
   };
 
   const submitTemplate = async (data: FormType) => {
@@ -460,17 +463,17 @@ export default function CourseForm({
           <FormFieldError error={errors.maxStudents} />
           <SaveTemplateButton
             isSubmitting={isSubmitting}
-            handleDialogOpen={handleDialogOpen}
+            handleDialogOpen={handleTemplateDialogOpen}
             handleSaveTemplate={handleSubmit(submitTemplate)}
-            dialogOpen={open}
+            dialogOpen={templateDialogOpen}
             lang={lang}
           />
           {isEditMode ? (
             <EditButton
               isSubmitting={isSubmitting}
-              handleDialogOpen={handleDialogOpen}
+              handleDialogOpen={handleEditDialogOpen}
               handleEdit={handleSubmit(submitEdit)}
-              dialogOpen={open}
+              dialogOpen={editDialogOpen}
               lang={lang}
               onNotifyChange={handleNotifyChange}
             />
