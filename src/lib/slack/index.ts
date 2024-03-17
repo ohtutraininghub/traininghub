@@ -68,14 +68,19 @@ export const sendCoursePoster = async (course: Course) => {
 
 export const createChannelForCourse = async (course: Course) => {
   if (!isProduction()) return { ok: false, error: 'not_production' };
+  const channelName = renderChannelName(course);
+
+  return await createNewChannel(channelName);
+};
+
+const renderChannelName = (course: Course) => {
   let channelName =
     SLACK_CHANNEL_PREFIX +
     course.name.toLowerCase().replace('[^a-z0-9s-]', '').replace(/\s/g, '-');
   if (channelName.length > 80) {
     channelName = channelName.substring(0, 80);
   }
-
-  return await createNewChannel(channelName);
+  return channelName;
 };
 
 const createNewChannel = async (channel_name: string) => {
@@ -158,16 +163,13 @@ const renameChannel = async (channel: string, name: string) => {
   return data;
 };
 
-export const archiveChannel = async (
-  channelId: string,
-  channelName: string
-) => {
-  // Channel must be a channel id
+export const archiveChannel = async (course: Course) => {
+  if (!course.slackChannelId) return;
   const payload = {
-    channel: channelId,
+    channel: course.slackChannelId,
   };
   if (!isProduction()) return;
-  const channelExistsResult = await channelIdExists(channelId);
+  const channelExistsResult = await channelIdExists(course.slackChannelId);
   if (!channelExistsResult) return;
 
   // Every Slack channel must have a unique name.
@@ -177,9 +179,13 @@ export const archiveChannel = async (
   const day = currentDate.getDate();
   const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
   const year = currentDate.getFullYear();
+  const channelName = renderChannelName(course);
   const newName = `${channelName}-${day}${month}${year}`;
 
-  const renameChannelResponse = await renameChannel(channelId, newName);
+  const renameChannelResponse = await renameChannel(
+    course.slackChannelId,
+    newName
+  );
   if (renameChannelResponse.ok) {
     await fetch(SLACK_API_ARCHIVE_CHANNEL, {
       method: 'POST',
