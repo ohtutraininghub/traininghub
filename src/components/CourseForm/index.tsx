@@ -140,7 +140,7 @@ export default function CourseForm({
     } = data;
     const responseJson = await post('/api/template', dataWithoutExtras);
     notify(responseJson);
-
+    setTemplateDialogOpen(false);
     router.refresh();
   };
 
