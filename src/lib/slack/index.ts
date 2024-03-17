@@ -69,7 +69,6 @@ export const sendCoursePoster = async (course: Course) => {
 
 export const sendCourseUpdate = async (course: Course, userEmail: string) => {
   if (!isProduction()) return;
-  console.log('sendCourseUpdate------------------------------------------');
   const blocks = createBlocksUpdatedTraining(course);
   await sendMessageToUser(userEmail, blocks);
 };

@@ -108,10 +108,10 @@ export default function CourseForm({
     router.refresh();
   };
 
-  const submitEdit = async (data: FormType, isChecked = isNotifyChecked) => {
+  const submitEdit = async (data: FormType) => {
     const payload = {
       ...data,
-      isChecked: isChecked,
+      isChecked: isNotifyChecked,
     };
     const responseJson = await update(`/api/course`, payload);
 
