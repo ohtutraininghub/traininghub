@@ -60,7 +60,7 @@ const findUserIdByEmail = async (email: string) => {
 export const sendCoursePoster = async (course: Course) => {
   const channel = SLACK_NEW_TRAININGS_CHANNEL;
   if (!isProduction()) return;
-  const channelExistsResult = await channelExists(channel);
+  const channelExistsResult = await channelExists(channel, 'name');
   if (!channelExistsResult) return;
   const message = createBlocksNewTraining(course);
   await sendMessage(channel, message);
@@ -97,20 +97,9 @@ const createNewChannel = async (channel_name: string) => {
   return data;
 };
 
-const channelExists = async (channel: string) => {
-  const res = await fetch(`${SLACK_API_LOOKUP_BY_CHANNEL}`, {
-    method: 'GET',
-    headers: {
-      Authorization: `Bearer ${token}`,
-      Accept: 'application/json',
-    },
-  });
-  const data = await res.json();
-  if (!data.channels) return false;
-  return data.channels.some((c: { name: string }) => c.name === channel);
-};
+type ArgumentType = 'id' | 'name';
 
-const channelIdExists = async (channel: string) => {
+const channelExists = async (channel: string, argumentType: ArgumentType) => {
   const res = await fetch(`${SLACK_API_LOOKUP_BY_CHANNEL}`, {
     method: 'GET',
     headers: {
@@ -120,7 +109,12 @@ const channelIdExists = async (channel: string) => {
   });
   const data = await res.json();
   if (!data.channels) return false;
-  return data.channels.some((c: { id: string }) => c.id === channel);
+  if (argumentType === 'id') {
+    return data.channels.some((c: { id: string }) => c.id === channel);
+  }
+  if (argumentType === 'name') {
+    return data.channels.some((c: { name: string }) => c.name === channel);
+  }
 };
 
 const sendMessage = async (channel: string, blocks: Block[]) => {
@@ -141,13 +135,13 @@ const sendMessage = async (channel: string, blocks: Block[]) => {
   });
 };
 
-const renameChannel = async (channel: string, name: string) => {
-  if (name.length > 80) {
-    name = name.substring(0, 80);
+const renameChannel = async (channelId: string, channelName: string) => {
+  if (channelName.length > 80) {
+    channelName = channelName.substring(0, 80);
   }
   const payload = {
-    channel: channel,
-    name: name,
+    channel: channelId,
+    name: channelName,
   };
 
   const res = await fetch(SLACK_API_RENAME_CHANNEL, {
@@ -169,7 +163,7 @@ export const archiveChannel = async (course: Course) => {
     channel: course.slackChannelId,
   };
   if (!isProduction()) return;
-  const channelExistsResult = await channelIdExists(course.slackChannelId);
+  const channelExistsResult = await channelExists(course.slackChannelId, 'id');
   if (!channelExistsResult) return;
 
   // Every Slack channel must have a unique name.
