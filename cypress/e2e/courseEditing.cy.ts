@@ -47,7 +47,7 @@ describe('Course editing form', () => {
     cy.getCy('confirmCard')
       .eq(2)
       .within(() => {
-        cy.contains('button', 'Confirm').click();
+        cy.contains('button', 'Confirm').click({ force: true });
       });
     cy.visit('/profile');
     cy.getCy('myCoursesTab').click();

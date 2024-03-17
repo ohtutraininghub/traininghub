@@ -128,6 +128,10 @@ export default function CourseForm({
   };
 
   const submitTemplate = async (data: FormType) => {
+    console.log(
+      'submitTemplate-----------------------------------------------------------------',
+      data
+    );
     const {
       startDate: _startDate,
       endDate: _endDate,
