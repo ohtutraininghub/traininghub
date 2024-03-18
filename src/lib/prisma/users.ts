@@ -75,9 +75,9 @@ export async function getStudentNamesByCourseId(courseId: string) {
 export async function getRequesterNamesByCourseId(courseId: string) {
   const requesters = await prisma.user.findMany({
     where: {
-      requestedCourses: {
+      requests: {
         some: {
-          id: courseId,
+          courseId: courseId,
         },
       },
     },

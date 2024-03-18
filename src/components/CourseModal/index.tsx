@@ -27,7 +27,7 @@ import { useMediaQuery, useTheme } from '@mui/material';
 import { ImageContainer } from '../ImageContainer';
 import { hasCourseDeleteRights } from '@/lib/auth-utils';
 import { useMessage } from '../Providers/MessageProvider';
-import { post, update, remove } from '../../lib/response/fetchUtil';
+import { post, remove } from '../../lib/response/fetchUtil';
 import { RequestTrainingButton } from '@/components/Buttons/Buttons';
 
 interface Props extends DictProps {
@@ -111,7 +111,7 @@ export default function CourseModal({
   };
 
   const handleRemoveRequest = async () => {
-    const responseJson = await update('/api/course/request', {
+    const responseJson = await remove('/api/course/request', {
       courseId: course.id,
     });
     notify(responseJson);
