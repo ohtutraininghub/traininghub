@@ -12,6 +12,9 @@ export const SLACK_API_LOOKUP_BY_CHANNEL =
 export const SLACK_API_CREATE_CHANNEL =
   'https://slack.com/api/conversations.create';
 
+export const SLACK_API_INVITE_USERS =
+  'https://slack.com/api/conversations.invite';
+
 export const SLACK_API_RENAME_CHANNEL =
   'https://slack.com/api/conversations.rename';
 
