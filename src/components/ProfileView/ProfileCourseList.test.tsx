@@ -18,6 +18,7 @@ const testCourses: Course[] = [
     lastCancelDate: null,
     maxStudents: 10,
     image: '',
+    slackChannelId: 'C123456782',
   },
   {
     id: '223456789',
@@ -31,13 +32,30 @@ const testCourses: Course[] = [
     lastCancelDate: null,
     maxStudents: 10,
     image: '',
+    slackChannelId: 'C123456789',
   },
 ];
+
+const mockFetch = jest.fn();
+
+jest.mock('../../lib/response/fetchUtil', () => ({
+  post: (...args: any[]) => mockFetch(...args),
+}));
+
+jest.mock('next/navigation', () => ({
+  useRouter() {
+    return {
+      replace: jest.fn(),
+      refresh: jest.fn(),
+    };
+  },
+}));
 
 describe('ProfileCourseList component', () => {
   it('has a header and expand/close controls', () => {
     renderWithTheme(
       <ProfileCourseList
+        lang="en"
         headerText="Foxes everywhere"
         courses={testCourses}
         open={true}
@@ -53,6 +71,7 @@ describe('ProfileCourseList component', () => {
   it('displays a message if the courses list is empty', () => {
     renderWithTheme(
       <ProfileCourseList
+        lang="en"
         headerText="My Courses"
         courses={[]}
         open={true}
@@ -66,6 +85,7 @@ describe('ProfileCourseList component', () => {
   it('renders course information when courses are provided and list open', () => {
     renderWithTheme(
       <ProfileCourseList
+        lang="en"
         headerText="Foxes everywhere"
         courses={testCourses}
         open={true}
@@ -80,6 +100,7 @@ describe('ProfileCourseList component', () => {
   it('does not render course information if list is closed', () => {
     renderWithTheme(
       <ProfileCourseList
+        lang="en"
         headerText="Foxes everywhere"
         courses={testCourses}
         open={false}
@@ -94,6 +115,7 @@ describe('ProfileCourseList component', () => {
   it('shows the number of courses', () => {
     renderWithTheme(
       <ProfileCourseList
+        lang="en"
         headerText="Foxes everywhere"
         courses={testCourses}
         open={false}
@@ -106,6 +128,7 @@ describe('ProfileCourseList component', () => {
   it('expands when the toggle is clicked', async () => {
     renderWithTheme(
       <ProfileCourseList
+        lang="en"
         headerText="Foxes everywhere"
         courses={testCourses}
         open={false}
@@ -125,6 +148,7 @@ describe('ProfileCourseList component', () => {
   it('list collapses when control is clicked', async () => {
     renderWithTheme(
       <ProfileCourseList
+        lang="en"
         headerText="Foxes everywhere"
         courses={testCourses}
         open={true}
