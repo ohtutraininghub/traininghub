@@ -74,6 +74,9 @@ export function ConfirmCard({
             width: '100%',
             height: '100%',
             transform: 'scaleX(-1)',
+            [theme.breakpoints.up('sm')]: {
+              flexDirection: 'column',
+            },
           }}
         />
         <Typography
