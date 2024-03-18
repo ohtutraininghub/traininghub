@@ -23,7 +23,11 @@ import {
   deleteEventFromCalendarWhenCourseDeleted,
 } from '@/lib/google';
 import { translator } from '@/lib/i18n';
-import { sendCoursePoster, sendTrainingCancelledMessage } from '@/lib/slack';
+import {
+  archiveChannel,
+  sendCoursePoster,
+  sendTrainingCancelledMessage,
+} from '@/lib/slack';
 import { getStudentEmailsByCourseId } from '@/lib/prisma/users';
 
 const parseTags = async (tags: string[]): Promise<Tag[]> => {
@@ -164,6 +168,9 @@ export async function DELETE(request: NextRequest) {
     for (const student of enrolledStudents) {
       await sendTrainingCancelledMessage(student.email, course);
     }
+
+    // Archive the Slack channel
+    await archiveChannel(course);
 
     await prisma.$transaction([deleteCalendarEvents, deleteCourse]);
 
