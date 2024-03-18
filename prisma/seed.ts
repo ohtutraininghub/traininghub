@@ -40,6 +40,15 @@ const courseData = [
     tags: ['Git'],
   },
   {
+    name: 'Docker Fundamentals',
+    description:
+      'This course will introduce you to the basics of Docker, a popular platform for developing, shipping and running applications. You will learn how to create and run containers, and how to build and manage images. The course will also cover topics like networking and storage, and how to work with Docker Compose.',
+    startDate: new Date(currentDate - 6 * msDay), // course is in the past
+    endDate: new Date(currentDate - 6 * msDay + 7 * msHour),
+    maxStudents: 10,
+    tags: ['Docker', 'CI/CD'],
+  },
+  {
     name: 'Jenkins Fundamentals',
     description:
       'Learn how to automate building, testing and deploying your code using Jenkins, a popular open-source server for setting up continuous integration and continuous delivery pipelines. During this two-day course you will get a lot of hands-on experience in Jenkins basics like setting up a Jenkins server, choosing and installing Jenkins plugins and building a Jenkins CI/CD pipeline.',

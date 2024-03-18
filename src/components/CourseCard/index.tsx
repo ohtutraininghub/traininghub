@@ -69,6 +69,7 @@ const CourseCard = ({ course, studentCount, lang }: Props) => {
               />
               {!isExpired ? (
                 <LocalizedDateTime
+                  data-testid="course-card-date-range"
                   variant="range-short"
                   startDate={course.startDate}
                   endDate={course.endDate}
