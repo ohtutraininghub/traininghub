@@ -1,5 +1,6 @@
 import { Course } from '@prisma/client';
 import {
+  SLACK_API_INVITE_USERS,
   SLACK_API_LOOKUP_BY_CHANNEL,
   SLACK_API_LOOKUP_BY_EMAIL,
   SLACK_API_POST_MESSAGE,
@@ -46,6 +47,7 @@ export const sendTrainingCancelledMessage = async (
   await sendMessageToUser(userEmail, blocks);
 };
 
+// rate limit 50 requests per minute
 const findUserIdByEmail = async (email: string) => {
   const res = await fetch(`${SLACK_API_LOOKUP_BY_EMAIL}${email}`, {
     method: 'GET',
@@ -56,6 +58,13 @@ const findUserIdByEmail = async (email: string) => {
   });
   const data = await res.json();
   return data.user?.id;
+};
+
+const createUsersIdListByEmail = async (users: string[]) => {
+  const idList = await Promise.all(
+    users.map((user) => findUserIdByEmail(user))
+  );
+  return idList.filter((id) => id !== null);
 };
 
 export const sendCoursePoster = async (course: Course) => {
@@ -72,8 +81,6 @@ export const sendCourseUpdate = async (course: Course, userEmail: string) => {
   const blocks = createBlocksUpdatedTraining(course);
   await sendMessageToUser(userEmail, blocks);
 };
-
-type ArgumentType = 'id' | 'name';
 
 export const createChannelForCourse = async (course: Course) => {
   if (!isProduction()) return { ok: false, error: 'not_production' };
@@ -105,6 +112,33 @@ const createNewChannel = async (channel_name: string) => {
   const data = await res.json();
   return data;
 };
+
+export const addUsersToChannel = async (
+  channel: string,
+  students: string[]
+) => {
+  if (!isProduction()) return;
+
+  const payload = {
+    channel: channel,
+    users: await createUsersIdListByEmail(students),
+  };
+
+  const res = await fetch(SLACK_API_INVITE_USERS, {
+    method: 'POST',
+    body: JSON.stringify(payload),
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
+    },
+  });
+  const data = await res.json();
+  return data;
+};
+
+type ArgumentType = 'id' | 'name';
+
 const channelExists = async (channel: string, argumentType: ArgumentType) => {
   const res = await fetch(`${SLACK_API_LOOKUP_BY_CHANNEL}`, {
     method: 'GET',
