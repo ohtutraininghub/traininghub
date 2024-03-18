@@ -32,6 +32,7 @@ import StyledTooltip from '@/components/StyledTooltip';
 import TemplateSelect from './TemplateSelect';
 import SubmitButton from './SubmitButton';
 import SaveTemplateButton from './SaveTemplateButton';
+import EditButton from './EditButton';
 import { useState } from 'react';
 import { TemplateWithTags } from '@/lib/prisma/templates';
 
@@ -66,8 +67,9 @@ export default function CourseForm({
   const router = useRouter();
   const { palette } = useTheme();
   const { notify } = useMessage();
-  const [open, setOpen] = useState(false);
-
+  const [templateDialogOpen, setTemplateDialogOpen] = useState(false);
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [isNotifyChecked, setIsNotifyChecked] = useState(false);
   const {
     control,
     register,
@@ -91,26 +93,41 @@ export default function CourseForm({
     },
   });
 
+  const handleNotifyChange = (checked: boolean) => {
+    setIsNotifyChecked(checked);
+  };
+
   const submitForm = async (data: FormType) => {
-    const responseJson = isEditMode
-      ? await update(`/api/course`, data)
-      : await post('/api/course', data);
+    const responseJson = await post('/api/course', data);
 
     notify(responseJson);
 
-    if (!isEditMode) {
-      reset();
-    }
+    reset();
     router.push('/');
     router.refresh();
   };
 
-  const handleDialogOpen = () => {
-    setOpen(!open);
+  const submitEdit = async (data: FormType) => {
+    const payload = {
+      ...data,
+      isChecked: isNotifyChecked,
+    };
+    const responseJson = await update(`/api/course`, payload);
+
+    notify(responseJson);
+    router.push('/');
+    router.refresh();
+  };
+
+  const handleTemplateDialogOpen = () => {
+    setTemplateDialogOpen(!templateDialogOpen);
+  };
+
+  const handleEditDialogOpen = () => {
+    setEditDialogOpen(!editDialogOpen);
   };
 
   const submitTemplate = async (data: FormType) => {
-    // Destructure the data object, omitting information not required for templates
     const {
       startDate: _startDate,
       endDate: _endDate,
@@ -122,9 +139,8 @@ export default function CourseForm({
       ...dataWithoutExtras
     } = data;
     const responseJson = await post('/api/template', dataWithoutExtras);
-
     notify(responseJson);
-
+    setTemplateDialogOpen(false);
     router.refresh();
   };
 
@@ -447,12 +463,23 @@ export default function CourseForm({
           <FormFieldError error={errors.maxStudents} />
           <SaveTemplateButton
             isSubmitting={isSubmitting}
-            handleDialogOpen={handleDialogOpen}
+            handleDialogOpen={handleTemplateDialogOpen}
             handleSaveTemplate={handleSubmit(submitTemplate)}
-            dialogOpen={open}
+            dialogOpen={templateDialogOpen}
             lang={lang}
           />
-          <SubmitButton isEditMode={isEditMode} isSubmitting={isSubmitting} />
+          {isEditMode ? (
+            <EditButton
+              isSubmitting={isSubmitting}
+              handleDialogOpen={handleEditDialogOpen}
+              handleEdit={handleSubmit(submitEdit)}
+              dialogOpen={editDialogOpen}
+              lang={lang}
+              onNotifyChange={handleNotifyChange}
+            />
+          ) : (
+            <SubmitButton isSubmitting={isSubmitting} lang={lang} />
+          )}
         </form>
       </Box>
     </Container>

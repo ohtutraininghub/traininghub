@@ -34,6 +34,9 @@
   },
   "ConfirmCard": {
     "cancel": "Cancel",
+    "checkbox": {
+      "label": "Notify participants on Slack"
+    },
     "confirm": "Confirm"
   },
   "ConfirmRemoveCourse": {
@@ -58,6 +61,13 @@
       "startDate": "Start date",
       "tag": "Tag"
     }
+  },
+  "CourseFormEditButton": {
+    "confirmEdit": "Are you sure you want to edit this training?",
+    "update": "Update"
+  },
+  "CourseFormSubmitButton": {
+    "submit": "Submit"
   },
   "CourseList": {
     "courses": "Courses",

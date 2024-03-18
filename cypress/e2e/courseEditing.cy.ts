@@ -15,7 +15,12 @@ describe('Course editing form', () => {
     cy.contains('Robot Framework Fundamentals').click();
     cy.getCy('editCourseButton').click();
     cy.getCy('courseFormSummary').type('New summary for Robot');
-    cy.getCy('courseFormSubmit').click();
+    cy.getCy('courseFormEdit').click();
+    cy.getCy('confirmCard')
+      .eq(2)
+      .within(() => {
+        cy.contains('button', 'Confirm').click();
+      });
     cy.contains('New summary for Robot');
   });
 
@@ -25,7 +30,12 @@ describe('Course editing form', () => {
     cy.getCy('editCourseButton').click();
     cy.getCy('courseFormName').clear();
     cy.getCy('courseFormName').type('Roborobo Training');
-    cy.getCy('courseFormSubmit').click();
+    cy.getCy('courseFormEdit').click();
+    cy.getCy('confirmCard')
+      .eq(2)
+      .within(() => {
+        cy.contains('button', 'Confirm').click();
+      });
     cy.contains('Roborobo Training');
   });
 
@@ -34,8 +44,11 @@ describe('Course editing form', () => {
     cy.contains('Robot Framework Fundamentals').click();
     cy.getCy('editCourseButton').click();
     cy.getCy('saveTemplateButton').click();
-    cy.get('[data-testid="confirmCardConfirm"]:visible').first().click();
-
+    cy.getCy('confirmCard')
+      .eq(1)
+      .within(() => {
+        cy.contains('button', 'Confirm').click();
+      });
     cy.visit('/profile');
     cy.getCy('myCoursesTab').click();
     cy.getCy('templateListControls').click();

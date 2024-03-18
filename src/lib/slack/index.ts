@@ -13,6 +13,7 @@ import {
 import {
   createBlocksCourseFull,
   createBlocksNewTraining,
+  createBlocksUpdatedTraining,
   createBlocksTrainingCancelled,
 } from './blocks';
 import { isProduction } from '../env-utils';
@@ -73,6 +74,12 @@ export const sendCoursePoster = async (course: Course) => {
   if (!channelExistsResult) return;
   const message = createBlocksNewTraining(course);
   await sendMessage(channel, message);
+};
+
+export const sendCourseUpdate = async (course: Course, userEmail: string) => {
+  if (!isProduction()) return;
+  const blocks = createBlocksUpdatedTraining(course);
+  await sendMessageToUser(userEmail, blocks);
 };
 
 export const createChannelForCourse = async (course: Course) => {
