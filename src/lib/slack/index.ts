@@ -130,30 +130,6 @@ export const addUsersToChannel = async (
   return data;
 };
 
-export const addUsersToChannel = async (
-  channel: string,
-  students: string[]
-) => {
-  if (!isProduction()) return;
-
-  const payload = {
-    channel: channel,
-    users: await createUsersIdListByEmail(students),
-  };
-
-  const res = await fetch(SLACK_API_INVITE_USERS, {
-    method: 'POST',
-    body: JSON.stringify(payload),
-    headers: {
-      'Content-Type': 'application/json; charset=utf-8',
-      Authorization: `Bearer ${token}`,
-      Accept: 'application/json',
-    },
-  });
-  const data = await res.json();
-  return data;
-};
-
 type ArgumentType = 'id' | 'name';
 
 const channelExists = async (channel: string, argumentType: ArgumentType) => {
