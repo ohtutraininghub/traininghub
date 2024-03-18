@@ -129,6 +129,16 @@ let theme = createTheme({
         },
       },
     },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          '&.Mui-disabled': {
+            color: 'rgba(255, 255, 255, 0.5)',
+            backgroundColor: 'rgba(125, 125, 125)',
+          },
+        },
+      },
+    },
   },
 });
 

@@ -61,7 +61,7 @@ const findUserIdByEmail = async (email: string) => {
 export const sendCoursePoster = async (course: Course) => {
   const channel = SLACK_NEW_TRAININGS_CHANNEL;
   if (!isProduction()) return;
-  const channelExistsResult = await channelExists(channel);
+  const channelExistsResult = await channelExists(channel, 'name');
   if (!channelExistsResult) return;
   const message = createBlocksNewTraining(course);
   await sendMessage(channel, message);
@@ -73,20 +73,39 @@ export const sendCourseUpdate = async (course: Course, userEmail: string) => {
   await sendMessageToUser(userEmail, blocks);
 };
 
-const channelExists = async (channel: string) => {
-  const res = await fetch(`${SLACK_API_LOOKUP_BY_CHANNEL}`, {
-    method: 'GET',
-    headers: {
-      Authorization: `Bearer ${token}`,
-      Accept: 'application/json',
-    },
-  });
-  const data = await res.json();
-  if (!data.channels) return false;
-  return data.channels.some((c: { name: string }) => c.name === channel);
+type ArgumentType = 'id' | 'name';
+
+export const createChannelForCourse = async (course: Course) => {
+  if (!isProduction()) return { ok: false, error: 'not_production' };
+  const channelName = renderChannelName(course);
+
+  return await createNewChannel(channelName);
 };
 
-const channelIdExists = async (channel: string) => {
+const renderChannelName = (course: Course) => {
+  let channelName =
+    SLACK_CHANNEL_PREFIX +
+    course.name.toLowerCase().replace('[^a-z0-9s-]', '').replace(/\s/g, '-');
+  if (channelName.length > 80) {
+    channelName = channelName.substring(0, 80);
+  }
+  return channelName;
+};
+
+const createNewChannel = async (channel_name: string) => {
+  const res = await fetch(SLACK_API_CREATE_CHANNEL, {
+    method: 'POST',
+    body: JSON.stringify({ name: channel_name }),
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
+    },
+  });
+  const data = await res.json();
+  return data;
+};
+const channelExists = async (channel: string, argumentType: ArgumentType) => {
   const res = await fetch(`${SLACK_API_LOOKUP_BY_CHANNEL}`, {
     method: 'GET',
     headers: {
@@ -96,7 +115,12 @@ const channelIdExists = async (channel: string) => {
   });
   const data = await res.json();
   if (!data.channels) return false;
-  return data.channels.some((c: { id: string }) => c.id === channel);
+  if (argumentType === 'id') {
+    return data.channels.some((c: { id: string }) => c.id === channel);
+  }
+  if (argumentType === 'name') {
+    return data.channels.some((c: { name: string }) => c.name === channel);
+  }
 };
 
 const sendMessage = async (channel: string, blocks: Block[]) => {
@@ -117,13 +141,19 @@ const sendMessage = async (channel: string, blocks: Block[]) => {
   });
 };
 
-const renameChannel = async (channel: string, name: string) => {
-  if (name.length > 80) {
-    name = name.substring(0, 80);
+const renameChannel = async (channelId: string, channelName: string) => {
+  if (channelName.length > 71) {
+    channelName = channelName.substring(0, 71);
   }
+  // Adds date to the end of the channel name
+  const currentDate = new Date();
+  const day = currentDate.getDate();
+  const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+  const year = currentDate.getFullYear();
+  const newName = `${channelName}-${day}${month}${year}`;
   const payload = {
-    channel: channel,
-    name: name,
+    channel: channelId,
+    name: newName,
   };
 
   const res = await fetch(SLACK_API_RENAME_CHANNEL, {
@@ -139,28 +169,23 @@ const renameChannel = async (channel: string, name: string) => {
   return data;
 };
 
-export const archiveChannel = async (
-  channelId: string,
-  channelName: string
-) => {
-  // Channel must be a channel id
+export const archiveChannel = async (course: Course) => {
+  if (!course.slackChannelId) return;
   const payload = {
-    channel: channelId,
+    channel: course.slackChannelId,
   };
   if (!isProduction()) return;
-  const channelExistsResult = await channelIdExists(channelId);
+  const channelExistsResult = await channelExists(course.slackChannelId, 'id');
   if (!channelExistsResult) return;
 
-  // Every Slack channel must have a unique name.
-  // Channel must be renamed before archiving it to be possible to create a new channel with the same name.
-  // Let's add date to the channel name to avoid conflicts.
-  const currentDate = new Date();
-  const day = currentDate.getDate();
-  const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
-  const year = currentDate.getFullYear();
-  const newName = `${channelName}-${day}${month}${year}`;
+  const channelName = renderChannelName(course);
 
-  const renameChannelResponse = await renameChannel(channelId, newName);
+  // Every Slack channel must have a unique name.
+  // To avoid future naming conflicts, channel must be renamed before archiving.
+  const renameChannelResponse = await renameChannel(
+    course.slackChannelId,
+    channelName
+  );
   if (renameChannelResponse.ok) {
     await fetch(SLACK_API_ARCHIVE_CHANNEL, {
       method: 'POST',
@@ -178,30 +203,4 @@ const sendMessageToUser = async (userEmail: string, blocks: Block[]) => {
   const userId = await findUserIdByEmail(userEmail);
   if (!userId) return;
   await sendMessage(userId, blocks);
-};
-
-export const createChannelForCourse = async (course: Course) => {
-  if (!isProduction()) return { ok: false, error: 'not_production' };
-  let channelName =
-    SLACK_CHANNEL_PREFIX +
-    course.name.toLowerCase().replace('[^a-z0-9s-]', '').replace(/\s/g, '-');
-  if (channelName.length > 80) {
-    channelName = channelName.substring(0, 80);
-  }
-
-  return await createNewChannel(channelName);
-};
-
-const createNewChannel = async (channel_name: string) => {
-  const res = await fetch(SLACK_API_CREATE_CHANNEL, {
-    method: 'POST',
-    body: JSON.stringify({ name: channel_name }),
-    headers: {
-      'Content-Type': 'application/json; charset=utf-8',
-      Authorization: `Bearer ${token}`,
-      Accept: 'application/json',
-    },
-  });
-  const data = await res.json();
-  return data;
 };

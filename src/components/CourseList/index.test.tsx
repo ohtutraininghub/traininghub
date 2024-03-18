@@ -74,6 +74,7 @@ describe('CourseList Component', () => {
       maxStudents: 20,
       tags: [{ id: 'tag1', name: 'Programming' }],
       image: '',
+      slackChannelId: 'C123456782',
     },
     {
       _count: {
@@ -95,6 +96,7 @@ describe('CourseList Component', () => {
       maxStudents: 15,
       tags: [{ id: 'tag2', name: 'Web Development' }],
       image: '',
+      slackChannelId: null,
     },
     {
       _count: {
@@ -116,6 +118,7 @@ describe('CourseList Component', () => {
       maxStudents: 15,
       tags: [],
       image: '',
+      slackChannelId: null,
     },
   ];
 
