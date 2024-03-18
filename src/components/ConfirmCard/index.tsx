@@ -96,9 +96,7 @@ export function ConfirmCard({
             justifyContent: 'flex-end',
             margin: '0.5em 0',
             gap: 1,
-            [theme.breakpoints.up('sm')]: {
-              flexDirection: 'column',
-            },
+            flexDirection: 'column',
           }}
           className="button-container"
           display="flex"
