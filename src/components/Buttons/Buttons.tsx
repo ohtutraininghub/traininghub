@@ -50,7 +50,9 @@ export function CourseModalCloseButton({ lang }: CourseModalCloseButtonProps) {
   };
 
   return (
-    <Button onClick={handleClick}>{t('CourseModalCloseButton.close')}</Button>
+    <Button onClick={handleClick} data-testid="course-modal-close-button">
+      {t('CourseModalCloseButton.close')}
+    </Button>
   );
 }
 
