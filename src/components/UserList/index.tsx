@@ -38,7 +38,7 @@ type Order = 'asc' | 'desc';
 
 type TableHeader = Exclude<
   keyof Users[number],
-  'image' | 'id' | 'country' | 'title' | 'profileCompleted'
+  'image' | 'id' | 'countryId' | 'titleId' | 'profileCompleted'
 >;
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {

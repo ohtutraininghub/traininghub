@@ -23,8 +23,10 @@ model User {
   name             String?
   email            String?    @unique
   emailVerified    DateTime?
-  country          String?
-  title            String?
+  countryId        String?
+  country          Country?   @relation(name: "country", fields: [countryId], references: [id])
+  titleId          String?
+  title            Title?     @relation(name: "title", fields: [titleId], references: [id])
   image            String?
   courses          Course[]
   createdCourses   Course[]   @relation(name: "createdCourses")
@@ -41,11 +43,13 @@ model Country {
   id          String @id @default(cuid())
   name        String
   countryCode String
+  users       User[] @relation(name: "country")
 }
 
 model Title {
-  id   String @id @default(cuid())
-  name String
+  id    String @id @default(cuid())
+  name  String
+  users User[] @relation(name: "title")
 }
 
 model Course {
