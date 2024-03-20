@@ -1,25 +1,31 @@
 import { useTranslation } from '@i18n/client';
-import { Box, Button } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
 import { DictProps } from '@/lib/i18n';
 import { ConfirmCard } from '../ConfirmCard';
+import { Box, Button } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
-interface SaveTemplateButtonProps extends DictProps {
+interface EditButtonProps extends DictProps {
   isSubmitting: boolean;
   handleDialogOpen: () => void;
-  handleSaveTemplate: () => void;
+  handleEdit: () => void;
   dialogOpen: boolean;
+  onNotifyChange?: (isChecked: boolean) => void;
 }
 
-export default function SaveTemplateButton({
+export default function EditButton({
   isSubmitting,
   lang,
   handleDialogOpen,
-  handleSaveTemplate,
+  handleEdit,
   dialogOpen,
-}: SaveTemplateButtonProps) {
-  const { palette } = useTheme();
+  onNotifyChange,
+}: EditButtonProps) {
   const { t } = useTranslation(lang, 'components');
+  const { palette } = useTheme();
+
+  const handleConfirm = () => {
+    handleEdit();
+  };
 
   return (
     <div>
@@ -31,17 +37,14 @@ export default function SaveTemplateButton({
           margin: 'auto',
           mt: 2,
           color: palette.white.main,
-          '&.Mui-disabled': {
-            color: palette.white.main,
-          },
           backgroundColor: palette.secondary.main,
           '&:hover': {
             backgroundColor: palette.secondary.light,
           },
         }}
-        data-testid="saveTemplateButton"
+        data-testid="courseFormEdit"
       >
-        {t('SaveTemplateButton.button.save')}
+        {t('CourseFormEditButton.update')}
       </Button>
       <Box
         sx={{
@@ -52,8 +55,10 @@ export default function SaveTemplateButton({
           lang={lang}
           backdropOpen={dialogOpen}
           setBackdropOpen={handleDialogOpen}
-          confirmMessage={t('SaveTemplateButton.confirmSave')}
-          handleClick={handleSaveTemplate}
+          confirmMessage={t('CourseFormEditButton.confirmEdit')}
+          handleClick={handleConfirm}
+          includeCheckbox={true}
+          onNotifyChange={onNotifyChange}
         />
       </Box>
     </div>

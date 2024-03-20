@@ -625,6 +625,7 @@ describe('Course Form Course Edit Tests', () => {
   });
 
   it('Form is submitted with correct values in Edit Mode', async () => {
+    mockFetch.mockClear();
     renderWithTheme(
       <CourseForm
         lang="en"
@@ -634,12 +635,15 @@ describe('Course Form Course Edit Tests', () => {
       />
     );
 
-    const submitButton = screen.getByTestId('courseFormSubmit');
+    const submitButton = screen.getByTestId('courseFormEdit');
     await userEvent.click(submitButton);
+    const confirmButtons = screen.getAllByTestId('confirmCardConfirm');
+    await userEvent.click(confirmButtons[1]);
 
     await waitFor(() => {
       expect(mockFetch).toBeCalledWith('/api/course', {
         ...course,
+        isChecked: false,
         endDate: new Date(course.endDate),
         maxStudents: Number(course.maxStudents),
         startDate: new Date(course.startDate),
@@ -674,12 +678,15 @@ describe('Course Form Course Edit Tests', () => {
       />
     );
 
-    const submitButton = screen.getByTestId('courseFormSubmit');
+    const submitButton = screen.getByTestId('courseFormEdit');
     await userEvent.click(submitButton);
+    const confirmButtons = screen.getAllByTestId('confirmCardConfirm');
+    await userEvent.click(confirmButtons[1]);
 
     await waitFor(() => {
       expect(mockFetch).toBeCalledWith('/api/course', {
         ...course,
+        isChecked: false,
         startDate: new Date(course.startDate),
         endDate: new Date(course.endDate),
         lastEnrollDate: null,
@@ -743,14 +750,17 @@ describe('Course Form Course Edit Tests', () => {
     const option = screen.getByText(tags[1].name);
     await user.click(option);
 
-    const submitButton = screen.getByTestId('courseFormSubmit');
+    const submitButton = screen.getByTestId('courseFormEdit');
     await userEvent.click(submitButton);
+    const confirmButtons = screen.getAllByTestId('confirmCardConfirm');
+    await userEvent.click(confirmButtons[1]);
 
     await waitFor(() => {
       expect(mockFetch).toBeCalledWith('/api/course', {
         ...editedCourse,
         endDate: new Date(course.endDate),
         startDate: new Date(course.startDate),
+        isChecked: false,
         lastEnrollDate: new Date(course.lastEnrollDate),
         lastCancelDate: new Date(course.lastCancelDate),
         maxStudents: Number(editedCourse.maxStudents),
@@ -769,8 +779,10 @@ describe('Course Form Course Edit Tests', () => {
     const name = screen.getByTestId('courseFormName') as HTMLInputElement;
     await user.clear(name);
 
-    const submitButton = screen.getByTestId('courseFormSubmit');
+    const submitButton = screen.getByTestId('courseFormEdit');
     await userEvent.click(submitButton);
+    const confirmButtons = screen.getAllByTestId('confirmCardConfirm');
+    await userEvent.click(confirmButtons[1]);
 
     await waitFor(() => {
       expect(mockFetch).not.toBeCalled();

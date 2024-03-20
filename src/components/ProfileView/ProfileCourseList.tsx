@@ -17,8 +17,13 @@ import TimerIcon from '@mui/icons-material/Timer';
 import { useState } from 'react';
 import { timeUntilstart } from '@/lib/timedateutils';
 import LocalizedDateTime from '../LocalizedDateTime';
+import CreateSlackButton from './CreateSlackButton';
+import { post } from '@/lib/response/fetchUtil';
+import { DictProps } from '@/lib/i18n';
+import { useRouter } from 'next/navigation';
+import { useMessage } from '../Providers/MessageProvider';
 
-export interface ProfileCourseListProps {
+export interface ProfileCourseListProps extends DictProps {
   headerText: string;
   courses: Course[];
   open: boolean;
@@ -27,6 +32,7 @@ export interface ProfileCourseListProps {
 }
 
 export default function ProfileCourseList({
+  lang,
   headerText,
   courses,
   open,
@@ -36,6 +42,9 @@ export default function ProfileCourseList({
   const { palette } = useTheme();
   const [isCollapsed, setIsCollapsed] = useState(open);
 
+  const { notify } = useMessage();
+  const router = useRouter();
+
   const handleToggleCollapse = () => {
     setIsCollapsed(!isCollapsed);
   };
@@ -44,7 +53,12 @@ export default function ProfileCourseList({
     const currentDate = new Date();
     return course.startDate <= currentDate && course.endDate >= currentDate;
   };
-
+  const handleCreateNewChannel = async (id: string) => {
+    const responseJson = await post('/api/slack/channel', { courseId: id });
+    notify(responseJson);
+    router.push(`/${lang}/profile`);
+    router.refresh();
+  };
   return (
     <Box
       sx={{
@@ -121,24 +135,47 @@ export default function ProfileCourseList({
                         sx={{ color: palette.black.main }}
                       />
                       {timer && (
-                        <NoSsr>
-                          <Chip
-                            icon={<TimerIcon />}
-                            label={
-                              isCourseInProgress(course)
-                                ? 'In Progress'
-                                : timeUntilstart(course.startDate)
-                            }
-                            size="small"
-                            sx={{
-                              marginLeft: 'auto',
+                        <Box
+                          sx={{
+                            display: 'flex',
+                            gap: 1,
+                            alignItems: 'center',
+                            mr: '0.5em',
+                          }}
+                        >
+                          <NoSsr>
+                            <Chip
+                              icon={<TimerIcon />}
+                              label={
+                                isCourseInProgress(course)
+                                  ? 'In Progress'
+                                  : timeUntilstart(course.startDate)
+                              }
+                              size="small"
+                              sx={{
+                                marginLeft: 'auto',
+                              }}
+                              color={
+                                isCourseInProgress(course)
+                                  ? 'success'
+                                  : 'default'
+                              }
+                              data-testid={`courseTimer.${course.id}`}
+                            />
+                          </NoSsr>
+                          <CreateSlackButton
+                            lang={lang}
+                            onclick={(
+                              event: React.MouseEvent<HTMLButtonElement>
+                            ) => {
+                              {
+                                event.preventDefault(); // prevents the CourseModal from opening
+                                handleCreateNewChannel(course.id);
+                              }
                             }}
-                            color={
-                              isCourseInProgress(course) ? 'success' : 'default'
-                            }
-                            data-testid={`courseTimer.${course.id}`}
+                            buttonDisabled={Boolean(course.slackChannelId)}
                           />
-                        </NoSsr>
+                        </Box>
                       )}
                     </ListItem>
                   </Link>

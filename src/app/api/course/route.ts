@@ -23,7 +23,12 @@ import {
   deleteEventFromCalendarWhenCourseDeleted,
 } from '@/lib/google';
 import { translator } from '@/lib/i18n';
-import { sendCoursePoster, sendTrainingCancelledMessage } from '@/lib/slack';
+import {
+  archiveChannel,
+  sendCoursePoster,
+  sendCourseUpdate,
+  sendTrainingCancelledMessage,
+} from '@/lib/slack';
 import { getStudentEmailsByCourseId } from '@/lib/prisma/users';
 
 const parseTags = async (tags: string[]): Promise<Tag[]> => {
@@ -32,7 +37,11 @@ const parseTags = async (tags: string[]): Promise<Tag[]> => {
 };
 
 export async function GET() {
-  const courses = await prisma.course.findMany();
+  const courses = await prisma.course.findMany({
+    include: {
+      students: true,
+    },
+  });
   return NextResponse.json({ data: courses }, { status: StatusCodeType.OK });
 }
 
@@ -74,8 +83,11 @@ export async function PUT(request: NextRequest) {
   try {
     const { t } = await translator('api');
     const { user } = await getServerAuthSession();
-    const body = courseSchemaWithId.parse(await request.json());
+    const requestData = await request.json();
+    const { isChecked, ...courseDataWithoutIsChecked } = requestData;
+    const body = courseSchemaWithId.parse(courseDataWithoutIsChecked);
     const parsedTags = await parseTags(body.tags);
+
     const course = await prisma.course.findFirst({
       where: { id: body.id },
     });
@@ -103,10 +115,28 @@ export async function PUT(request: NextRequest) {
           connect: parsedTags.map((tag) => ({ id: tag.id })),
         },
       },
+      include: {
+        students: true,
+      },
     });
 
     // Update course to Google calendars
     await updateCourseToCalendars(updatedCourse);
+
+    if (isChecked === true) {
+      const courseWithUsers = await prisma.course.findFirst({
+        where: { id: body.id },
+        include: {
+          students: true,
+        },
+      });
+      // Send notification of course update to each user in slack
+      if (courseWithUsers) {
+        for (const user of courseWithUsers.students) {
+          await sendCourseUpdate(courseWithUsers, user.email || '');
+        }
+      }
+    }
 
     return successResponse({
       message: t('Courses.courseUpdated'),
@@ -164,6 +194,9 @@ export async function DELETE(request: NextRequest) {
     for (const student of enrolledStudents) {
       await sendTrainingCancelledMessage(student.email, course);
     }
+
+    // Archive the Slack channel
+    await archiveChannel(course);
 
     await prisma.$transaction([deleteCalendarEvents, deleteCourse]);
 

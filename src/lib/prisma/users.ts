@@ -90,6 +90,15 @@ export async function getStudentEmailsByCourseId(courseId: string) {
   );
 }
 
+export async function getTrainerEmailByCreatedById(createdById: string) {
+  const trainer = await prisma.user.findUnique({
+    where: {
+      id: createdById,
+    },
+  });
+  return trainer?.email;
+}
+
 export async function changeUserRole(userId: string, newRole: $Enums.Role) {
   const updatedUser = await prisma.user.update({
     where: { id: userId },

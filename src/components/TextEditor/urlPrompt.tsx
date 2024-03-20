@@ -70,7 +70,6 @@ export const PromptWindow = ({
       reset();
     }
   };
-
   const handleClose = (event: ClosePromptEvent) => {
     event.preventDefault();
     callbackFn(null);

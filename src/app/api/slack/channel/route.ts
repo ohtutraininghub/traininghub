@@ -1,13 +1,17 @@
 import { handleCommonErrors } from '@/lib/response/errorUtil';
 import { NextRequest } from 'next/server';
 import { getServerAuthSession } from '@/lib/auth';
-import { createChannelForCourse } from '@/lib/slack';
+import { createChannelForCourse, addUsersToChannel } from '@/lib/slack';
 import { prisma } from '@/lib/prisma';
 import { errorResponse, successResponse } from '@/lib/response/responseUtil';
 import { translator } from '@/lib/i18n';
 import { StatusCodeType } from '@/lib/response/responseUtil';
 import { hasCourseEditRights, isTrainerOrAdmin } from '@/lib/auth-utils';
 import { courseIdSchema } from '@/lib/zod/courses';
+import {
+  getStudentEmailsByCourseId,
+  getTrainerEmailByCreatedById,
+} from '@/lib/prisma/users';
 
 export async function POST(request: NextRequest) {
   try {
@@ -52,6 +56,19 @@ export async function POST(request: NextRequest) {
       },
     });
 
+    const trainer = await getTrainerEmailByCreatedById(course.createdById);
+    const students = await getStudentEmailsByCourseId(course.id);
+    const studentEmails = students.map((student) => student.email);
+    if (trainer) {
+      studentEmails.push(trainer);
+    }
+    const res = await addUsersToChannel(response.channel.id, studentEmails);
+    if (!res.ok) {
+      return errorResponse({
+        message: `Failed to add students to channel: ${res.error}`,
+        statusCode: StatusCodeType.BAD_REQUEST,
+      });
+    }
     return successResponse({
       message: t('Slack.channelCreationSuccess'),
       statusCode: StatusCodeType.CREATED,

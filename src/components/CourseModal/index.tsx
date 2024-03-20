@@ -318,7 +318,9 @@ export default function CourseModal({
                 />
               </Box>
               <Box sx={{ flex: 1, justifyContent: 'center' }}>
-                <Typography sx={{ mb: 1 }}>{studentCount()}</Typography>
+                <Typography sx={{ mb: 1 }} data-testid="student-count">
+                  {studentCount()}
+                </Typography>
                 {!isInRequestView ? (
                   <EnrollHolder
                     lang={lang}
