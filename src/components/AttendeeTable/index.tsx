@@ -33,6 +33,8 @@ export default function AttendeeTable({ attendees, noAttendeesText }: Props) {
     );
   }
 
+  const requests = attendees as RequestsAndUserNames;
+
   const handleChangePage = (
     _event: React.MouseEvent<HTMLButtonElement, MouseEvent> | null,
     newPage: number
@@ -70,6 +72,7 @@ export default function AttendeeTable({ attendees, noAttendeesText }: Props) {
           <TableHead>
             <TableRow>
               <TableCell>Name</TableCell>
+              {requests && <TableCell align="right">Request Date</TableCell>}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -78,6 +81,13 @@ export default function AttendeeTable({ attendees, noAttendeesText }: Props) {
               .map((attendee) => (
                 <TableRow key={attendee.userId}>
                   <TableCell>{attendee.name}</TableCell>
+                  {requests && (
+                    <TableCell align="right">
+                      {requests
+                        .find((request) => request.userId === attendee.userId)
+                        ?.date.toDateString()}
+                    </TableCell>
+                  )}
                 </TableRow>
               ))}
             {emptyRows > 0 && (
