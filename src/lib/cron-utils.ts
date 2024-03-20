@@ -12,11 +12,12 @@ const sendNotificationsBeforeCourseStart = async () => {
     startDateStart,
     startDateEnd
   );
-
   courses.forEach((course) => {
     const emails = course.students.map((student) => student.email);
-    if (typeof emails === 'string') {
-      sendReminderToUsers(course, emails);
+    if (Array.isArray(emails) && emails.every((email) => email !== null)) {
+      sendReminderToUsers(course, emails as string[]);
+    } else {
+      sendReminderToUsers(course, emails as string[]);
     }
   });
 };
