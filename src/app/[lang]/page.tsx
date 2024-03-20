@@ -11,7 +11,8 @@ import { isTrainerOrAdmin } from '@/lib/auth-utils';
 import {
   UserNamesAndIds,
   getStudentNamesByCourseId,
-  getUsersEnrollsAndRequests,
+  getUsersEnrolls,
+  getUsersRequests,
 } from '@/lib/prisma/users';
 import BackToTopToggle from '@/components/BackToTopToggle';
 import {
@@ -54,17 +55,17 @@ export default async function HomePage({ searchParams, params }: Props) {
     requests = await getRequestsByCourseId(openedCourse.id);
   }
 
-  const usersEnrollsAndRequests = await getUsersEnrollsAndRequests(
-    session.user.id
-  );
+  const usersEnrolls = await getUsersEnrolls(session.user.id);
 
-  const usersEnrolledCourseIds = usersEnrollsAndRequests?.courses.map(
+  const usersEnrolledCourseIds = usersEnrolls?.courses.map(
     (course) => course.id
   );
 
-  const usersRequestedCourseIds = requests
-    .filter((request) => request.userId === session.user.id)
-    .map((request) => request.courseId);
+  const usersRequests = await getUsersRequests(session.user.id);
+
+  const usersRequestedCourseIds = usersRequests.map(
+    (request) => request.courseId
+  );
 
   const tags = await prisma.tag.findMany({});
 
