@@ -155,8 +155,11 @@ export const createBlocksNewTraining = (course: Course) => {
   return blocks;
 };
 
-export const createBlocksUpdatedTraining = (course: Course) => {
-  return [
+export const createBlocksUpdatedTraining = (
+  oldCourse: Course,
+  updatedCourse: Course
+) => {
+  const blocks = [
     {
       type: 'header',
       text: {
@@ -166,13 +169,39 @@ export const createBlocksUpdatedTraining = (course: Course) => {
       },
     },
     {
-      type: 'section',
-      text: {
-        type: 'mrkdwn',
-        text: `*<${process.env.HOST_URL}/en?courseId=${course.id}|${course.name}>* has recent updates. Check it out!`,
-      },
+      type: 'context',
+      elements: [
+        {
+          type: 'mrkdwn',
+          text: `*<${process.env.HOST_URL}/en?courseId=${updatedCourse.id}|${updatedCourse.name}>* has recent updates:`,
+        },
+      ],
     },
-    {
+  ];
+
+  if (!(updatedCourse.name === oldCourse.name)) {
+    blocks.push({
+      type: 'context',
+      elements: [
+        {
+          type: 'mrkdwn',
+          text: ':pencil2:',
+        },
+        {
+          type: 'mrkdwn',
+          text: `~${oldCourse.name}~ :point_right: ${updatedCourse.name}`,
+        },
+      ],
+    });
+  }
+
+  if (
+    !(
+      updatedCourse.startDate.toString() === oldCourse.startDate.toString() &&
+      updatedCourse.endDate.toString() === oldCourse.endDate.toString()
+    )
+  ) {
+    blocks.push({
       type: 'context',
       elements: [
         {
@@ -181,11 +210,35 @@ export const createBlocksUpdatedTraining = (course: Course) => {
         },
         {
           type: 'mrkdwn',
-          text: formatDateRangeForSlack(course.startDate, course.endDate),
+          text: `~${formatDateRangeForSlack(
+            oldCourse.startDate,
+            oldCourse.endDate
+          )}~ :point_right: ${formatDateRangeForSlack(
+            updatedCourse.startDate,
+            updatedCourse.endDate
+          )}`,
         },
       ],
-    },
-  ];
+    });
+  }
+
+  if (!(updatedCourse.maxStudents === oldCourse.maxStudents)) {
+    blocks.push({
+      type: 'context',
+      elements: [
+        {
+          type: 'mrkdwn',
+          text: ':busts_in_silhouette:',
+        },
+        {
+          type: 'mrkdwn',
+          text: `~${oldCourse.maxStudents}~ :point_right: ${updatedCourse.maxStudents} spots`,
+        },
+      ],
+    });
+  }
+
+  return blocks;
 };
 
 const formatDateForSlack = (date: Date) => {
