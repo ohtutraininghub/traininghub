@@ -15,6 +15,7 @@ import {
   createBlocksNewTraining,
   createBlocksUpdatedTraining,
   createBlocksTrainingCancelled,
+  createBlocksCourseReminder,
 } from './blocks';
 import { isProduction } from '../env-utils';
 
@@ -231,6 +232,13 @@ export const archiveChannel = async (course: Course) => {
       },
     });
   }
+};
+
+export const sendReminderToUsers = (course: Course, emails: string[]) => {
+  emails.forEach((email) => {
+    const message = createBlocksCourseReminder(course);
+    sendMessageToUser(email, message);
+  });
 };
 
 const sendMessageToUser = async (userEmail: string, blocks: Block[]) => {
