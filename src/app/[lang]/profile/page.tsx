@@ -9,9 +9,12 @@ import {
   UserNamesAndIds,
   getAllUsers,
   getStudentNamesByCourseId,
-  getRequesterNamesByCourseId,
   getUserData,
 } from '@/lib/prisma/users';
+import {
+  RequestsAndUserNames,
+  getRequestsByCourseId,
+} from '@/lib/prisma/requests';
 import {
   getTemplatesWithCreator,
   getTemplatesByUserIdWithCreator,
@@ -50,9 +53,9 @@ export default async function ProfilePage({ searchParams, params }: Props) {
     enrolledStudents = await getStudentNamesByCourseId(openedCourse.id);
   }
 
-  let requesters: UserNamesAndIds | null = [];
+  let requests: RequestsAndUserNames | null = [];
   if (isTrainerOrAdmin(session.user) && openedCourse) {
-    requesters = await getRequesterNamesByCourseId(openedCourse.id);
+    requests = await getRequestsByCourseId(openedCourse.id);
   }
 
   return (
@@ -62,7 +65,7 @@ export default async function ProfilePage({ searchParams, params }: Props) {
         course={openedCourse}
         usersEnrolledCourseIds={enrolledCourseIds}
         enrolledStudents={enrolledStudents}
-        requesters={requesters}
+        requests={requests}
       />
       <ProfileView
         lang={params.lang}

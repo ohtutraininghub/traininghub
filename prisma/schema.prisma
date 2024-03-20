@@ -27,7 +27,6 @@ model User {
   courses          Course[]
   createdCourses   Course[]   @relation(name: "createdCourses")
   createdTemplates Template[] @relation(name: "createdTemplates")
-  requestedCourses Course[]   @relation(name: "requestedCourses")
   requests         Request[]
   accounts         Account[]
   sessions         Session[]
@@ -46,7 +45,6 @@ model Course {
   lastCancelDate DateTime?
   maxStudents    Int
   students       User[]
-  requesters     User[]     @relation(name: "requestedCourses")
   requests       Request[]
   tags           Tag[]
   createdBy      User?      @relation(name: "createdCourses", references: [id], fields: [createdById])

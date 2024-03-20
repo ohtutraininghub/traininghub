@@ -1,5 +1,6 @@
 'use client';
 
+import { RequestsAndUserNames } from '@/lib/prisma/requests';
 import { UserNamesAndIds } from '@/lib/prisma/users';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
@@ -14,7 +15,7 @@ import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 
 interface Props {
-  attendees: UserNamesAndIds;
+  attendees: UserNamesAndIds | RequestsAndUserNames;
   noAttendeesText: string;
 }
 

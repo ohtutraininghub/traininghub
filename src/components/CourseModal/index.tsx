@@ -29,13 +29,14 @@ import { hasCourseDeleteRights } from '@/lib/auth-utils';
 import { useMessage } from '../Providers/MessageProvider';
 import { post, remove } from '../../lib/response/fetchUtil';
 import { RequestTrainingButton } from '@/components/Buttons/Buttons';
+import { RequestsAndUserNames } from '@/lib/prisma/requests';
 
 interface Props extends DictProps {
   course: CourseWithInfo | undefined;
   usersEnrolledCourseIds?: string[];
   usersRequestedCourseIds?: string[];
   enrolledStudents?: UserNamesAndIds;
-  requesters?: UserNamesAndIds;
+  requests?: RequestsAndUserNames;
 }
 
 export default function CourseModal({
@@ -44,7 +45,7 @@ export default function CourseModal({
   usersEnrolledCourseIds,
   usersRequestedCourseIds,
   enrolledStudents,
-  requesters,
+  requests,
 }: Props) {
   const { t } = useTranslation(lang, 'components');
   const { data: session, status } = useSession({ required: true });
@@ -83,7 +84,7 @@ export default function CourseModal({
       });
     }
     return t('CourseModal.requests', {
-      requestCount: course._count.requesters,
+      requestCount: course._count.requests,
     });
   };
 
@@ -264,7 +265,7 @@ export default function CourseModal({
 
         {courseView === 'requests' && (
           <AttendeeTable
-            attendees={requesters || []}
+            attendees={requests || []}
             noAttendeesText={t('AttendeeList.noRequestsText')}
           />
         )}

@@ -19,7 +19,7 @@ export function filterCourses(
 
   if (showPastCourses) {
     filteredCourses = filteredCourses.sort(
-      (a, b) => b._count.requesters - a._count.requesters
+      (a, b) => b._count.requests - a._count.requests
     );
     filteredCourses = filteredCourses.filter(
       (course) => new Date(course.endDate) < new Date()

@@ -57,7 +57,7 @@ describe('CourseList Component', () => {
     {
       _count: {
         students: 10,
-        requesters: 5,
+        requests: 5,
       },
       createdBy: {
         name: '',
@@ -74,11 +74,12 @@ describe('CourseList Component', () => {
       maxStudents: 20,
       tags: [{ id: 'tag1', name: 'Programming' }],
       image: '',
+      slackChannelId: null,
     },
     {
       _count: {
         students: 5,
-        requesters: 0,
+        requests: 0,
       },
       createdBy: {
         name: '',
@@ -95,11 +96,12 @@ describe('CourseList Component', () => {
       maxStudents: 15,
       tags: [{ id: 'tag2', name: 'Web Development' }],
       image: '',
+      slackChannelId: null,
     },
     {
       _count: {
         students: 10,
-        requesters: 1,
+        requests: 1,
       },
       createdBy: {
         name: '',
@@ -116,6 +118,7 @@ describe('CourseList Component', () => {
       maxStudents: 15,
       tags: [],
       image: '',
+      slackChannelId: null,
     },
   ];
 

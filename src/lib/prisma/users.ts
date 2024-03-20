@@ -23,7 +23,7 @@ export async function getUserData(userId: string) {
           _count: {
             select: {
               students: true,
-              requesters: true,
+              requests: true,
             },
           },
         },
@@ -40,7 +40,7 @@ export async function getUserData(userId: string) {
           _count: {
             select: {
               students: true,
-              requesters: true,
+              requests: true,
             },
           },
         },
@@ -69,24 +69,6 @@ export async function getStudentNamesByCourseId(courseId: string) {
   });
   return students.flatMap((student) =>
     student.name ? { name: student.name, userId: student.id } : []
-  );
-}
-
-export async function getRequesterNamesByCourseId(courseId: string) {
-  const requesters = await prisma.user.findMany({
-    where: {
-      requests: {
-        some: {
-          courseId: courseId,
-        },
-      },
-    },
-    orderBy: {
-      name: 'asc',
-    },
-  });
-  return requesters.flatMap((requester) =>
-    requester.name ? { name: requester.name, userId: requester.id } : []
   );
 }
 
@@ -121,11 +103,6 @@ export async function getUsersEnrollsAndRequests(userId: string) {
     where: { id: userId },
     include: {
       courses: {
-        select: {
-          id: true,
-        },
-      },
-      requestedCourses: {
         select: {
           id: true,
         },
