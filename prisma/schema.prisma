@@ -23,6 +23,8 @@ model User {
   name             String?
   email            String?    @unique
   emailVerified    DateTime?
+  country          String?
+  title            String?
   image            String?
   courses          Course[]
   createdCourses   Course[]   @relation(name: "createdCourses")
@@ -32,6 +34,18 @@ model User {
   sessions         Session[]
   role             Role       @default(TRAINEE)
   calendar         Calendar[]
+  profileCompleted Boolean    @default(false)
+}
+
+model Country {
+  id          String @id @default(cuid())
+  name        String
+  countryCode String
+}
+
+model Title {
+  id   String @id @default(cuid())
+  name String
 }
 
 model Course {
