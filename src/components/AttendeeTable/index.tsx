@@ -33,7 +33,9 @@ export default function AttendeeTable({ attendees, noAttendeesText }: Props) {
     );
   }
 
-  const requests = attendees as RequestsAndUserNames;
+  const requests = attendees[0].hasOwnProperty('date')
+    ? (attendees as RequestsAndUserNames)
+    : null;
 
   const handleChangePage = (
     _event: React.MouseEvent<HTMLButtonElement, MouseEvent> | null,
