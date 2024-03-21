@@ -46,3 +46,31 @@ export async function POST(request: NextRequest) {
     return await handleCommonErrors(error);
   }
 }
+
+export async function DELETE(request: NextRequest) {
+  try {
+    const { t } = await translator('api');
+    const session = await getServerAuthSession();
+    const data = await request.json();
+    const { courseId, userId } = courseAndUserSchema.parse(data);
+
+    if (!isTrainerOrAdmin(session.user)) {
+      return errorResponse({
+        message: t('Common.forbidden'),
+        statusCode: StatusCodeType.FORBIDDEN,
+      });
+    }
+
+    await prisma.participation.deleteMany({
+      where: {
+        courseId: courseId,
+        userId: userId,
+      },
+    });
+    return successResponse({
+      message: t('Participations.participationRemoved'),
+    });
+  } catch (error) {
+    return await handleCommonErrors(error);
+  }
+}
