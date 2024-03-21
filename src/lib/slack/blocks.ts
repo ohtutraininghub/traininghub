@@ -164,7 +164,7 @@ export const createBlocksUpdatedTraining = (
       type: 'header',
       text: {
         type: 'plain_text',
-        text: 'Training details updated:exclamation::mag:',
+        text: 'Training details updated!',
         emoji: true,
       },
     },
@@ -189,7 +189,7 @@ export const createBlocksUpdatedTraining = (
         },
         {
           type: 'mrkdwn',
-          text: `~${oldCourse.name}~ :point_right: ${updatedCourse.name}`,
+          text: ` ~${oldCourse.name}~ :arrow_right: ${updatedCourse.name}`,
         },
       ],
     });
@@ -210,10 +210,10 @@ export const createBlocksUpdatedTraining = (
         },
         {
           type: 'mrkdwn',
-          text: `~${formatDateRangeForSlack(
+          text: ` ~${formatDateRangeForSlack(
             oldCourse.startDate,
             oldCourse.endDate
-          )}~ :point_right: ${formatDateRangeForSlack(
+          )}~ :arrow_right: ${formatDateRangeForSlack(
             updatedCourse.startDate,
             updatedCourse.endDate
           )}`,
@@ -232,7 +232,7 @@ export const createBlocksUpdatedTraining = (
         },
         {
           type: 'mrkdwn',
-          text: `~${oldCourse.maxStudents}~ :point_right: ${updatedCourse.maxStudents} spots`,
+          text: `~${oldCourse.maxStudents} spots~ :arrow_right: ${updatedCourse.maxStudents} spots`,
         },
       ],
     });
