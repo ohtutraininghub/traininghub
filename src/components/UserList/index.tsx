@@ -36,7 +36,10 @@ interface Props extends DictProps {
 
 type Order = 'asc' | 'desc';
 
-type TableHeader = Exclude<keyof Users[number], 'image' | 'id'>;
+type TableHeader = Exclude<
+  keyof Users[number],
+  'image' | 'id' | 'countryId' | 'titleId' | 'profileCompleted'
+>;
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -55,9 +58,9 @@ function getComparator<Key extends keyof any>(
   orderBy: Key
 ): (
   // eslint-disable-next-line no-unused-vars
-  a: { [key in Key]: string | Date | null },
+  a: { [key in Key]: string | Date | null | boolean },
   // eslint-disable-next-line no-unused-vars
-  b: { [key in Key]: string | Date | null }
+  b: { [key in Key]: string | Date | null | boolean }
 ) => number {
   return order === 'desc'
     ? (a, b) => descendingComparator(a, b, orderBy)
