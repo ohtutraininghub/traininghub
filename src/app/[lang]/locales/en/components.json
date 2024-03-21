@@ -1,16 +1,15 @@
 {
   "AddSlackButton": {
     "button": "slack",
-
     "tooltip": {
       "active": "Creates a slack channel for this course",
       "disabled": "The slack channel for this course exists already"
     }
   },
-
   "AttendeeList": {
     "header": {
-      "text": "Attendees"
+      "name": "Name",
+      "requestDate": "Request Date"
     },
     "noAttendeesText": "No enrolled students",
     "noRequestsText": "No requests"

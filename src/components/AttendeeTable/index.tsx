@@ -1,5 +1,6 @@
 'use client';
 
+import { DictProps } from '@/lib/i18n';
 import { RequestsAndUserNames } from '@/lib/prisma/requests';
 import { UserNamesAndIds } from '@/lib/prisma/users';
 import Paper from '@mui/material/Paper';
@@ -13,15 +14,21 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
+import { useTranslation } from '@/lib/i18n/client';
 
-interface Props {
+interface Props extends DictProps {
   attendees: UserNamesAndIds | RequestsAndUserNames;
   noAttendeesText: string;
 }
 
-export default function AttendeeTable({ attendees, noAttendeesText }: Props) {
+export default function AttendeeTable({
+  attendees,
+  noAttendeesText,
+  lang,
+}: Props) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const { t } = useTranslation(lang, 'components');
 
   if (!attendees) return null;
 
@@ -73,8 +80,12 @@ export default function AttendeeTable({ attendees, noAttendeesText }: Props) {
         >
           <TableHead>
             <TableRow>
-              <TableCell>Name</TableCell>
-              {requests && <TableCell align="right">Request Date</TableCell>}
+              <TableCell>{t('AttendeeList.header.name')}</TableCell>
+              {requests && (
+                <TableCell align="right">
+                  {t('AttendeeList.header.requestDate')}
+                </TableCell>
+              )}
             </TableRow>
           </TableHead>
           <TableBody>
