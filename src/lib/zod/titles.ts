@@ -5,7 +5,7 @@ import { makeZodI18nMap } from 'zod-i18n-map';
 z.setErrorMap(zodI18nMap);
 z.setErrorMap(makeZodI18nMap({ ns: ['zod', 'custom'] }));
 
-export const maxTitleLength = 54;
+export const maxTitleLength = 56;
 
 export const titleSchema = z.object({
   name: z
@@ -17,7 +17,7 @@ export const titleSchema = z.object({
     })
     .refine((value) => value.trim().length <= maxTitleLength, {
       params: {
-        i18n: { key: 'maximumLengthForTagIs', values: { maxTitleLength } },
+        i18n: { key: 'maximumLengthForTitleIs', values: { maxTitleLength } },
       },
     })
     .refine((value) => !/\s{2,}/.test(value), {

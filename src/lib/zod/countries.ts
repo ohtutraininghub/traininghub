@@ -5,19 +5,22 @@ import { makeZodI18nMap } from 'zod-i18n-map';
 z.setErrorMap(zodI18nMap);
 z.setErrorMap(makeZodI18nMap({ ns: ['zod', 'custom'] }));
 
-export const maxCountryLength = 60;
+export const maxCountryLength = 56;
 
 export const countrySchema = z.object({
   name: z
     .string()
     .refine((value) => value.trim() !== '', {
       params: {
-        i18n: { key: 'tagNameRequired' },
+        i18n: { key: 'countryNameRequired' },
       },
     })
     .refine((value) => value.trim().length <= maxCountryLength, {
       params: {
-        i18n: { key: 'maximumLengthForTagIs', values: { maxCountryLength } },
+        i18n: {
+          key: 'maximumLengthForCountryIs',
+          values: { maxCountryLength },
+        },
       },
     })
     .refine((value) => !/\s{2,}/.test(value), {
