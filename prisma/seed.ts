@@ -110,6 +110,25 @@ const tagData = [
   { name: 'Testing' },
 ];
 
+const countryData = [
+  { name: 'Finland', countryCode: 'FI' },
+  { name: 'Sweden', countryCode: 'SE' },
+  { name: 'Norway', countryCode: 'NO' },
+  { name: 'Denmark', countryCode: 'DK' },
+  { name: 'Germany', countryCode: 'DE' },
+  { name: 'Netherlands', countryCode: 'NL' },
+  { name: 'Switzerland', countryCode: 'CH' },
+  { name: 'United Kingdom', countryCode: 'GB' },
+  { name: 'United States', countryCode: 'US' },
+  { name: 'Poland', countryCode: 'PL' },
+];
+
+const titleData = [
+  { name: 'Employee' },
+  { name: 'Management' },
+  { name: 'Team Lead' },
+];
+
 const userData: User[] = [
   {
     id: 'clsiortzr000008k10sundybm',
@@ -118,6 +137,9 @@ const userData: User[] = [
     emailVerified: null,
     image: 'https://example.com/johndoe.jpg',
     role: 'ADMIN',
+    countryId: null,
+    titleId: null,
+    profileCompleted: false,
   },
   {
     id: '123002',
@@ -126,6 +148,9 @@ const userData: User[] = [
     emailVerified: null,
     image: 'https://example.com/alicesmith.jpg',
     role: 'ADMIN',
+    countryId: null,
+    titleId: null,
+    profileCompleted: false,
   },
   {
     id: '123003',
@@ -134,6 +159,9 @@ const userData: User[] = [
     emailVerified: null,
     image: 'https://example.com/bobjohnson.jpg',
     role: 'TRAINEE',
+    countryId: null,
+    titleId: null,
+    profileCompleted: false,
   },
   {
     id: 'clsiom8xf000008k12bgf6bw6',
@@ -142,6 +170,9 @@ const userData: User[] = [
     emailVerified: null,
     image: 'https://example.com/emilydavis.jpg',
     role: 'TRAINER',
+    countryId: null,
+    titleId: null,
+    profileCompleted: false,
   },
   {
     id: '123005',
@@ -150,6 +181,9 @@ const userData: User[] = [
     emailVerified: null,
     image: 'https://example.com/chrismiller.jpg',
     role: 'ADMIN',
+    countryId: null,
+    titleId: null,
+    profileCompleted: false,
   },
   {
     id: '123006',
@@ -158,6 +192,9 @@ const userData: User[] = [
     emailVerified: null,
     image: 'https://example.com/sophiawhite.jpg',
     role: 'TRAINER',
+    countryId: null,
+    titleId: null,
+    profileCompleted: false,
   },
   {
     id: '123007',
@@ -166,6 +203,9 @@ const userData: User[] = [
     emailVerified: null,
     image: 'https://example.com/danielbrown.jpg',
     role: 'ADMIN',
+    countryId: null,
+    titleId: null,
+    profileCompleted: false,
   },
   {
     id: '123008',
@@ -174,6 +214,9 @@ const userData: User[] = [
     emailVerified: null,
     image: 'https://example.com/oliviataylor.jpg',
     role: 'TRAINER',
+    countryId: null,
+    titleId: null,
+    profileCompleted: false,
   },
   {
     id: '123009',
@@ -182,6 +225,9 @@ const userData: User[] = [
     emailVerified: null,
     image: 'https://example.com/michaelwilson.jpg',
     role: 'TRAINER',
+    countryId: null,
+    titleId: null,
+    profileCompleted: false,
   },
   {
     id: '123010',
@@ -190,6 +236,9 @@ const userData: User[] = [
     emailVerified: null,
     image: 'https://example.com/ellamoore.jpg',
     role: 'TRAINEE',
+    countryId: null,
+    titleId: null,
+    profileCompleted: false,
   },
 ];
 
@@ -199,13 +248,20 @@ export async function seedUsers() {
 
 export async function main() {
   await clearDatabase();
+  await prisma.country.createMany({
+    data: countryData,
+  });
+
+  await prisma.title.createMany({
+    data: titleData,
+  });
 
   await prisma.user.create({ data: {} });
   const trainee = await prisma.user.create({ data: traineeUser });
   const trainer = await prisma.user.create({ data: trainerUser });
   await prisma.user.create({ data: adminUser });
 
-  seedUsers();
+  await seedUsers();
 
   await prisma.tag.createMany({
     data: tagData,
