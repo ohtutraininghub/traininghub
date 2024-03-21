@@ -13,6 +13,9 @@ export async function getRequestsByCourseId(courseId: string) {
         },
       },
     },
+    orderBy: {
+      date: 'desc',
+    },
   });
   return requests.map((request) => ({
     ...request,
