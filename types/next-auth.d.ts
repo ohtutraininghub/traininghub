@@ -15,7 +15,7 @@ declare module 'next-auth' {
       profileCompleted: boolean;
     };
   }
-
+  types;
   interface User extends DefaultUser {
     role: Role;
   }
