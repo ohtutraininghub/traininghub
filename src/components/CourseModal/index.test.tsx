@@ -48,7 +48,7 @@ const upComingCourse: CourseWithInfo = {
   tags: [],
   _count: {
     students: 5,
-    requesters: 0,
+    requests: 0,
   },
   createdById: adminUser.id,
   createdBy: adminUser,
@@ -70,7 +70,7 @@ const pastCourse: CourseWithInfo = {
   tags: [],
   _count: {
     students: 5,
-    requesters: 3,
+    requests: 3,
   },
   createdById: trainerUser.id,
   createdBy: trainerUser,
@@ -130,7 +130,7 @@ describe('CourseModal component', () => {
         course={upComingCourse}
         usersEnrolledCourseIds={[]}
         enrolledStudents={[]}
-        requesters={[]}
+        requests={[]}
         lang="en"
       />
     );
@@ -150,7 +150,7 @@ describe('CourseModal component', () => {
         course={upComingCourse}
         usersEnrolledCourseIds={[]}
         enrolledStudents={[]}
-        requesters={[]}
+        requests={[]}
         lang="en"
       />
     );
@@ -170,7 +170,7 @@ describe('CourseModal component', () => {
         course={upComingCourse}
         usersEnrolledCourseIds={[]}
         enrolledStudents={[]}
-        requesters={[]}
+        requests={[]}
         lang="en"
       />
     );
@@ -189,7 +189,7 @@ describe('CourseModal component', () => {
         course={upComingCourse}
         usersEnrolledCourseIds={[]}
         enrolledStudents={[{ name: traineeUser.name, userId: traineeUser.id }]}
-        requesters={[]}
+        requests={[]}
         lang="en"
       />
     );
@@ -212,7 +212,18 @@ describe('CourseModal component', () => {
         course={pastCourse}
         usersEnrolledCourseIds={[]}
         enrolledStudents={[{ name: traineeUser.name, userId: traineeUser.id }]}
-        requesters={[{ name: trainerUser.name, userId: trainerUser.id }]}
+        requests={[
+          {
+            name: trainerUser.name,
+            user: {
+              name: traineeUser.name,
+            },
+            id: '123',
+            courseId: pastCourse.id,
+            userId: trainerUser.id,
+            date: new Date(),
+          },
+        ]}
         lang="en"
       />
     );

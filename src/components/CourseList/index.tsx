@@ -30,6 +30,7 @@ import CourseCard from '@/components/CourseCard';
 import { UserNamesAndIds } from '@/lib/prisma/users';
 import { ImageContainer } from '../ImageContainer';
 import { ToggleTrainingsButton } from '../Buttons/Buttons';
+import { RequestsAndUserNames } from '@/lib/prisma/requests';
 
 interface CourseListProps extends DictProps {
   courses: CourseWithInfo[];
@@ -37,7 +38,7 @@ interface CourseListProps extends DictProps {
   usersEnrolledCourseIds?: string[];
   usersRequestedCourseIds?: string[];
   enrolledStudents?: UserNamesAndIds;
-  requesters?: UserNamesAndIds;
+  requests?: RequestsAndUserNames;
   searchCourses: {
     courseName?: string;
     courseTag?: string;
@@ -52,7 +53,7 @@ export default function CourseList({
   usersEnrolledCourseIds,
   usersRequestedCourseIds,
   enrolledStudents,
-  requesters,
+  requests,
   searchCourses,
   lang,
 }: CourseListProps) {
@@ -88,7 +89,7 @@ export default function CourseList({
       });
     }
     return t('CourseModal.requests', {
-      requestCount: course._count.requesters,
+      requestCount: course._count.requests,
     });
   };
 
@@ -100,7 +101,7 @@ export default function CourseList({
         usersEnrolledCourseIds={usersEnrolledCourseIds}
         usersRequestedCourseIds={usersRequestedCourseIds}
         enrolledStudents={enrolledStudents}
-        requesters={requesters}
+        requests={requests}
       />
       <Grid
         container
