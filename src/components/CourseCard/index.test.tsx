@@ -38,7 +38,7 @@ const upComingCourse: CourseWithInfo = {
   maxStudents: 42,
   _count: {
     students: 0,
-    requesters: 0,
+    requests: 0,
   },
   tags: [],
   image: '',
@@ -61,7 +61,7 @@ const pastCourse: CourseWithInfo = {
   maxStudents: 13,
   _count: {
     students: 0,
-    requesters: 10,
+    requests: 10,
   },
   tags: [],
   image: '',
@@ -90,14 +90,14 @@ describe('CourseCard tests', () => {
     renderWithTheme(
       <CourseCard
         lang="en"
-        studentCount={`${pastCourse._count.requesters}`}
+        studentCount={`${pastCourse._count.requests}`}
         course={pastCourse}
       />
     );
 
     expect(screen.getByText('CourseCard.expired')).toBeVisible();
     expect(screen.getByText(pastCourse.name)).toBeVisible();
-    expect(screen.getByText(`${pastCourse._count.requesters}`)).toBeVisible();
+    expect(screen.getByText(`${pastCourse._count.requests}`)).toBeVisible();
     expect(screen.queryByText(pastCourse.description)).not.toBeInTheDocument();
     expect(screen.getByText(pastCourse.summary as string)).toBeVisible();
   });

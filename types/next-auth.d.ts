@@ -10,6 +10,9 @@ declare module 'next-auth' {
       email: string;
       image: string;
       role: Role;
+      countryId: string;
+      titleId: string;
+      profileCompleted: boolean;
     };
   }
 

@@ -11,10 +11,14 @@ import { isTrainerOrAdmin } from '@/lib/auth-utils';
 import {
   UserNamesAndIds,
   getStudentNamesByCourseId,
-  getRequesterNamesByCourseId,
-  getUsersEnrollsAndRequests,
+  getUsersEnrolls,
+  getUsersRequests,
 } from '@/lib/prisma/users';
 import BackToTopToggle from '@/components/BackToTopToggle';
+import {
+  RequestsAndUserNames,
+  getRequestsByCourseId,
+} from '@/lib/prisma/requests';
 
 export const dynamic = 'force-dynamic';
 
@@ -46,21 +50,21 @@ export default async function HomePage({ searchParams, params }: Props) {
     enrolledStudents = await getStudentNamesByCourseId(openedCourse.id);
   }
 
-  let requesters: UserNamesAndIds | null = [];
+  let requests: RequestsAndUserNames | null = [];
   if (isTrainerOrAdmin(session.user) && openedCourse) {
-    requesters = await getRequesterNamesByCourseId(openedCourse.id);
+    requests = await getRequestsByCourseId(openedCourse.id);
   }
 
-  const usersEnrollsAndRequests = await getUsersEnrollsAndRequests(
-    session.user.id
-  );
+  const usersEnrolls = await getUsersEnrolls(session.user.id);
 
-  const usersEnrolledCourseIds = usersEnrollsAndRequests?.courses.map(
+  const usersEnrolledCourseIds = usersEnrolls?.courses.map(
     (course) => course.id
   );
 
-  const usersRequestedCourseIds = usersEnrollsAndRequests?.requestedCourses.map(
-    (course) => course.id
+  const usersRequests = await getUsersRequests(session.user.id);
+
+  const usersRequestedCourseIds = usersRequests.map(
+    (request) => request.courseId
   );
 
   const tags = await prisma.tag.findMany({});
@@ -80,7 +84,7 @@ export default async function HomePage({ searchParams, params }: Props) {
         usersEnrolledCourseIds={usersEnrolledCourseIds}
         usersRequestedCourseIds={usersRequestedCourseIds}
         enrolledStudents={enrolledStudents}
-        requesters={requesters}
+        requests={requests}
         searchCourses={{
           courseName: searchParams.courseName,
           courseTag: searchParams.courseTag,
