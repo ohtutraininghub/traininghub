@@ -222,6 +222,94 @@ export const createBlocksUpdatedTraining = (
     });
   }
 
+  if (
+    !(
+      updatedCourse.lastEnrollDate?.toString() ===
+      oldCourse.lastEnrollDate?.toString()
+    )
+  ) {
+    if (oldCourse.lastEnrollDate && updatedCourse.lastEnrollDate) {
+      blocks.push({
+        type: 'context',
+        elements: [
+          {
+            type: 'mrkdwn',
+            text: ':bangbang:',
+          },
+          {
+            type: 'mrkdwn',
+            text: `~*Enrollment deadline:* ${formatDateForSlack(
+              oldCourse.lastEnrollDate
+            )}~ :arrow_right: *Enrollment deadline:* ${formatDateForSlack(
+              updatedCourse.lastEnrollDate
+            )}`,
+          },
+        ],
+      });
+    }
+    if (updatedCourse.lastEnrollDate && !oldCourse.lastEnrollDate) {
+      blocks.push({
+        type: 'context',
+        elements: [
+          {
+            type: 'mrkdwn',
+            text: ':bangbang:',
+          },
+          {
+            type: 'mrkdwn',
+            text: `*Enrollment deadline:* ${formatDateForSlack(
+              updatedCourse.lastEnrollDate
+            )}`,
+          },
+        ],
+      });
+    }
+  }
+
+  if (
+    !(
+      updatedCourse.lastCancelDate?.toString() ===
+      oldCourse.lastCancelDate?.toString()
+    )
+  ) {
+    if (oldCourse.lastCancelDate && updatedCourse.lastCancelDate) {
+      blocks.push({
+        type: 'context',
+        elements: [
+          {
+            type: 'mrkdwn',
+            text: ':bangbang:',
+          },
+          {
+            type: 'mrkdwn',
+            text: `~*Cancellation deadline:* ${formatDateForSlack(
+              oldCourse.lastCancelDate
+            )}~ :arrow_right: *Cancellation deadline:* ${formatDateForSlack(
+              updatedCourse.lastCancelDate
+            )}`,
+          },
+        ],
+      });
+    }
+    if (updatedCourse.lastCancelDate && !oldCourse.lastCancelDate) {
+      blocks.push({
+        type: 'context',
+        elements: [
+          {
+            type: 'mrkdwn',
+            text: ':bangbang:',
+          },
+          {
+            type: 'mrkdwn',
+            text: `*Cancellation deadline:* ${formatDateForSlack(
+              updatedCourse.lastCancelDate
+            )}`,
+          },
+        ],
+      });
+    }
+  }
+
   if (!(updatedCourse.maxStudents === oldCourse.maxStudents)) {
     blocks.push({
       type: 'context',
