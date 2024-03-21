@@ -25,6 +25,10 @@
     "noEnrollingAfterDeadline": "No enrolling allowed after enrollment deadline",
     "youHaveAlreadyEnrolled": "You have already enrolled!"
   },
+  "Participations": {
+    "participationAdded": "Participation marked",
+    "participationRemoved": "Participation removed"
+  },
   "Requests": {
     "requestRemoved": "Your request was removed",
     "requestSuccessfull": "Request successfully sent!",
