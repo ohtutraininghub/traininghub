@@ -12,7 +12,6 @@ export const getCountries = async () => {
 // };
 
 export const getCountryById = async (countryId: Country['id']) => {
-  console.log('countryId---------------------------------', countryId);
   return await prisma.country.findFirst({
     where: {
       id: countryId,

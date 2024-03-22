@@ -1,17 +1,7 @@
 'use client';
 
-import {
-  CountrySchemaType,
-  countrySchema,
-  maxCountryLength,
-} from '@/lib/zod/countries';
-import {
-  Button,
-  Box,
-  FormControl,
-  FormLabel,
-  OutlinedInput,
-} from '@mui/material';
+import { CountrySchemaType, countrySchema } from '@/lib/zod/countries';
+import { Button, Box, FormControl, FormLabel } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -20,6 +10,7 @@ import { useMessage } from '../Providers/MessageProvider';
 import { post } from '@/lib/response/fetchUtil';
 import { DictProps } from '@/lib/i18n';
 import { useTranslation } from '@i18n/client';
+import CountrySelect from './countrySelect';
 
 interface Props extends DictProps {}
 
@@ -29,7 +20,6 @@ export default function CountryForm({ lang }: Props) {
   const { t } = useTranslation(lang, 'admin');
 
   const {
-    register,
     formState: { errors, isSubmitting },
     handleSubmit,
     reset,
@@ -57,16 +47,7 @@ export default function CountryForm({ lang }: Props) {
         {`${t('CountryForm.label')}:`}
       </FormLabel>
       <Box sx={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-        <OutlinedInput
-          placeholder={t('CountryForm.placeholderText')}
-          {...register('name')}
-          inputProps={{
-            maxLength: maxCountryLength + 1,
-            sx: { padding: '0.75rem' },
-            'data-testid': 'countryFormInput',
-          }}
-        />
-
+        <CountrySelect />
         <Button
           type="submit"
           disabled={isSubmitting}

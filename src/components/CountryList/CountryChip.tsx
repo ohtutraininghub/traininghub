@@ -28,10 +28,6 @@ export default function CountryChip({ lang, countryId, countryName }: Props) {
     const responseJson = await remove('/api/country/', {
       id: countryId,
     });
-    console.log(
-      '---------------------------------------------------------------------------',
-      responseJson
-    );
     notify(responseJson);
     router.refresh();
   };

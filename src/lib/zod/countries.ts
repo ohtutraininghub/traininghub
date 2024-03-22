@@ -32,7 +32,7 @@ export const countrySchema = z.object({
 
 export const countryDeleteSchema = z
   .object({
-    tagId: z.string().cuid(),
+    id: z.string().cuid(),
   })
   .strict();
 
