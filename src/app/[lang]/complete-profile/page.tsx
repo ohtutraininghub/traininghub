@@ -10,7 +10,7 @@ export default async function CompleteProfilePage() {
 
   return (
     <BackgroundContainer>
-      <CompleteProfile countries={countries} titles={titles} />
+      <CompleteProfile countries={countries} titles={titles} lang="en" />
     </BackgroundContainer>
   );
 }

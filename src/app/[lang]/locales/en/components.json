@@ -32,6 +32,11 @@
     "confirmCancellation": "Are you sure you want to unenroll from the course?",
     "pastCancellationDate": "The course starts soon. Contact the trainer if you want to cancel your enrollment."
   },
+  "CompleteProfile": {
+    "button": "Save Details",
+    "subtitle": "Please fill in the following information to complete your profile",
+    "title": "Complete your profile"
+  },
   "ConfirmCard": {
     "cancel": "Cancel",
     "checkbox": {

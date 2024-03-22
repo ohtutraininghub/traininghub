@@ -1,24 +1,25 @@
 'use client';
 
+import { useState } from 'react';
 import {
   Box,
   Button,
   Container,
-  InputLabel,
-  MenuItem,
-  Select,
   SelectChangeEvent,
   Typography,
 } from '@mui/material';
 import { Country, Title } from '@prisma/client';
-import { useState } from 'react';
+import SelectDropdown from '../SelectDropdown';
+import { useTranslation } from '@i18n/client';
+import { DictProps } from '@i18n/index';
 
-interface Props {
+interface Props extends DictProps {
   countries: Country[];
   titles: Title[];
 }
 
-export default function CompleteProfile({ countries, titles }: Props) {
+export default function CompleteProfile({ countries, titles, lang }: Props) {
+  const { t } = useTranslation(lang, 'components');
   const [selectedCountry, setSelectedCountry] = useState('');
   const [selectedTitle, setSelectedTitle] = useState('');
 
@@ -52,7 +53,7 @@ export default function CompleteProfile({ countries, titles }: Props) {
         }}
       >
         <Typography variant="h2" color="secondary" textAlign="center" mb={4}>
-          Complete your profile
+          {t('CompleteProfile.title')}
         </Typography>
         <Typography
           variant="h6"
@@ -61,7 +62,7 @@ export default function CompleteProfile({ countries, titles }: Props) {
           mb={2}
           sx={{ color: 'secondary' }}
         >
-          Please fill in the following information to complete your profile
+          {t('CompleteProfile.subtitle')}
         </Typography>
         <form
           id="completeProfileForm"
@@ -69,92 +70,22 @@ export default function CompleteProfile({ countries, titles }: Props) {
           onSubmit={submitForm}
         >
           <Container>
-            <InputLabel
-              htmlFor="countrySelect"
-              id="country-label"
-              sx={{ color: 'secondary' }}
-            >
-              Country
-            </InputLabel>
-            <Select
-              name="countrySelect"
-              id="countrySelect"
-              labelId="country-label"
-              style={{ display: 'flex', flexWrap: 'wrap', marginBottom: 10 }}
-              color="secondary"
+            <SelectDropdown
+              name="country"
+              label="Country"
               value={selectedCountry}
-              onChange={handleValueChange}
-              sx={{ color: 'secondary' }}
-              MenuProps={{ disableScrollLock: true }}
-            >
-              {countries.map((country) => (
-                <MenuItem
-                  key={country.id}
-                  value={country.name}
-                  divider
-                  sx={{
-                    '&.Mui-selected': {
-                      backgroundColor: 'surface.main',
-                    },
-                    '&.Mui-selected.Mui-focusVisible': {
-                      backgroundColor: 'surface.dark',
-                    },
-                    '&:hover': {
-                      backgroundColor: 'surface.light',
-                    },
-                    '&.Mui-selected:hover': {
-                      backgroundColor: 'surface.main',
-                    },
-                  }}
-                >
-                  {country.name}
-                </MenuItem>
-              ))}
-            </Select>
+              handler={handleValueChange}
+              items={countries}
+            />
           </Container>
           <Container>
-            <InputLabel
-              htmlFor="titleSelect"
-              id="title-label"
-              sx={{ color: 'secondary' }}
-            >
-              Title
-            </InputLabel>
-            <Select
-              name="titleSelect"
-              id="titleSelect"
-              labelId="title-label"
-              style={{ display: 'flex', flexWrap: 'wrap', marginBottom: 10 }}
-              color="secondary"
+            <SelectDropdown
+              name="title"
+              label="Title"
               value={selectedTitle}
-              onChange={handleValueChange}
-              sx={{ color: 'secondary' }}
-              MenuProps={{ disableScrollLock: true }}
-            >
-              {titles.map((title) => (
-                <MenuItem
-                  key={title.id}
-                  value={title.name}
-                  divider
-                  sx={{
-                    '&.Mui-selected': {
-                      backgroundColor: 'surface.main',
-                    },
-                    '&.Mui-selected.Mui-focusVisible': {
-                      backgroundColor: 'surface.dark',
-                    },
-                    '&:hover': {
-                      backgroundColor: 'surface.light',
-                    },
-                    '&.Mui-selected:hover': {
-                      backgroundColor: 'surface.main',
-                    },
-                  }}
-                >
-                  {title.name}
-                </MenuItem>
-              ))}
-            </Select>
+              handler={handleValueChange}
+              items={titles}
+            />
           </Container>
           <Container
             sx={{
@@ -178,7 +109,7 @@ export default function CompleteProfile({ countries, titles }: Props) {
                 },
               }}
             >
-              Save Details
+              {t('CompleteProfile.button')}
             </Button>
           </Container>
         </form>
