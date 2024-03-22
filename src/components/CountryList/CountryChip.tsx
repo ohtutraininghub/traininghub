@@ -26,8 +26,12 @@ export default function CountryChip({ lang, countryId, countryName }: Props) {
 
   const handleDelete = async () => {
     const responseJson = await remove('/api/country/', {
-      countryId: countryId,
+      id: countryId,
     });
+    console.log(
+      '---------------------------------------------------------------------------',
+      responseJson
+    );
     notify(responseJson);
     router.refresh();
   };
