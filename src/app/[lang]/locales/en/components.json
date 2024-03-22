@@ -34,8 +34,10 @@
   },
   "CompleteProfile": {
     "button": "Save Details",
+    "countryLabel": "Country",
     "subtitle": "Please fill in the following information to complete your profile",
-    "title": "Complete your profile"
+    "title": "Complete your profile",
+    "titleLabel": "Title"
   },
   "ConfirmCard": {
     "cancel": "Cancel",

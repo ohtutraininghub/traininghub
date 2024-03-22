@@ -69,24 +69,22 @@ export default function CompleteProfile({ countries, titles, lang }: Props) {
           data-testid="completeProfileForm"
           onSubmit={submitForm}
         >
-          <Container>
+          <Box>
             <SelectDropdown
               name="country"
-              label="Country"
+              label={t('CompleteProfile.countryLabel')}
               value={selectedCountry}
               handler={handleValueChange}
               items={countries}
             />
-          </Container>
-          <Container>
             <SelectDropdown
               name="title"
-              label="Title"
+              label={t('CompleteProfile.titleLabel')}
               value={selectedTitle}
               handler={handleValueChange}
               items={titles}
             />
-          </Container>
+          </Box>
           <Container
             sx={{
               display: 'flex',
