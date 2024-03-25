@@ -21,6 +21,10 @@ export default function CreateCountry({
   countryHeader,
   countries,
 }: Props) {
+  const filteredCountries = countries.filter(
+    (country) => country.name !== null
+  );
+
   return (
     <div
       style={{
@@ -32,7 +36,7 @@ export default function CreateCountry({
       <Typography variant="h2" sx={{ marginBottom: '2rem' }}>
         {countryHeader}
       </Typography>
-      <CountryList lang={lang} countries={countries} />
+      <CountryList lang={lang} countries={filteredCountries} />
       <CountryForm lang={lang} />
     </div>
   );
