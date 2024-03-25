@@ -83,6 +83,19 @@ describe('AttendeeTable component', () => {
       });
     });
 
+    it('Displays participation checkboxes to all course attendees', async () => {
+      renderWithTheme(
+        <AttendeeTable
+          attendees={enrolledStudents}
+          noAttendeesText={noEnrolledStudentsText}
+          lang={lang}
+        />
+      );
+
+      const checkbox = screen.getAllByTestId('participation-checkbox');
+      expect(checkbox).toHaveLength(enrolledStudents.length);
+    });
+
     it('Displays message text but no table if the list with enrolled students is empty', async () => {
       renderWithTheme(
         <AttendeeTable

@@ -110,6 +110,7 @@ export default function AttendeeTable({
                     <TableCell align="right">
                       <input
                         type="checkbox"
+                        data-testid="participation-checkbox"
                         style={{
                           transform: 'scale(1.25)',
                         }}
