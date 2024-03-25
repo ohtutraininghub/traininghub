@@ -36,10 +36,6 @@ export default function CountryForm({ lang }: Props) {
   const [selectedCode, setCountryCode] = React.useState<string | null>(null);
 
   const submitForm = async (data: CountrySchemaType) => {
-    console.log(
-      'DATA------------------------------------------------------',
-      data
-    );
     data.name = selectedCountry || data.name.replace(/\s{2,}/g, ' ').trim();
     const responseJson = await post('/api/country', data);
     notify(responseJson);
@@ -87,7 +83,6 @@ export default function CountryForm({ lang }: Props) {
               label="Choose a country"
               inputProps={{
                 ...params.inputProps,
-                autoComplete: 'new-password', // disable autocomplete and autofill
               }}
             />
           )}

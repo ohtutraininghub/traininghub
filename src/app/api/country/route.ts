@@ -23,10 +23,16 @@ export async function POST(request: NextRequest) {
       });
     }
     const reqData = await request.json();
-    console.log(
-      'REQDATA------------------------------------------------------',
-      reqData
-    );
+    const existingCountry = await prisma.country.findFirst({
+      where: { name: reqData.name },
+    });
+
+    if (existingCountry) {
+      return errorResponse({
+        message: t('Tags.duplicateError'),
+        statusCode: StatusCodeType.UNPROCESSABLE_CONTENT,
+      });
+    }
     await prisma.country.create({
       data: reqData as CountrySchemaType,
     });
@@ -38,13 +44,8 @@ export async function POST(request: NextRequest) {
     if (
       error instanceof Prisma.PrismaClientKnownRequestError &&
       error.code === 'P2002'
-    ) {
-      return errorResponse({
-        message: t('Tags.duplicateError'),
-        statusCode: StatusCodeType.UNPROCESSABLE_CONTENT,
-      });
-    }
-    return await handleCommonErrors(error);
+    )
+      return await handleCommonErrors(error);
   }
 }
 
