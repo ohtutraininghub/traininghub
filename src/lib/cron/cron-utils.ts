@@ -1,5 +1,5 @@
-import { coursesWithStartDateBetweenDates } from './prisma/courses';
-import { sendReminderToUsers } from './slack';
+import { coursesWithStartDateBetweenDates } from '../prisma/courses';
+import { sendReminderToUsers } from '../slack';
 
 const sendNotificationsBeforeCourseStart = async () => {
   const startDateStart = new Date();
