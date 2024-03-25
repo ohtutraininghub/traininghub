@@ -413,11 +413,7 @@ export const countries: readonly CountryType[] = [
     label: 'British Virgin Islands',
     phone: '1-284',
   },
-  {
-    code: 'VI',
-    label: 'US Virgin Islands',
-    phone: '1-340',
-  },
+  { code: 'VI', label: 'US Virgin Islands', phone: '1-340' },
   { code: 'VN', label: 'Vietnam', phone: '84' },
   { code: 'VU', label: 'Vanuatu', phone: '678' },
   { code: 'WF', label: 'Wallis and Futuna', phone: '681' },

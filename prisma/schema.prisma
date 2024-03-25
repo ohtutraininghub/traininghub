@@ -40,10 +40,10 @@ model User {
 }
 
 model Country {
-  id          String  @id @default(cuid())
-  name        String?
-  countryCode String?
-  users       User[]  @relation(name: "country")
+  id          String @id @default(cuid())
+  name        String
+  countryCode String
+  users       User[] @relation(name: "country")
 }
 
 model Title {
