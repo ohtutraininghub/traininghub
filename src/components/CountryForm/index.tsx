@@ -10,7 +10,11 @@ import { useMessage } from '../Providers/MessageProvider';
 import { post } from '@/lib/response/fetchUtil';
 import { DictProps } from '@/lib/i18n';
 import { useTranslation } from '@i18n/client';
-import CountrySelect from './countrySelect';
+// import CountrySelect from './countrySelect';
+import * as React from 'react';
+import TextField from '@mui/material/TextField';
+import Autocomplete from '@mui/material/Autocomplete';
+import { countries } from './countries'; // Adjust the import path accordingly
 
 interface Props extends DictProps {}
 
@@ -21,14 +25,22 @@ export default function CountryForm({ lang }: Props) {
 
   const {
     formState: { errors, isSubmitting },
-    handleSubmit,
     reset,
   } = useForm<CountrySchemaType>({
     resolver: zodResolver(countrySchema),
   });
 
+  const [selectedCountry, setSelectedCountry] = React.useState<string | null>(
+    null
+  );
+  const [selectedCode, setCountryCode] = React.useState<string | null>(null);
+
   const submitForm = async (data: CountrySchemaType) => {
-    data.name = data.name.replace(/\s{2,}/g, ' ').trim();
+    console.log(
+      'DATA------------------------------------------------------',
+      data
+    );
+    data.name = selectedCountry || data.name.replace(/\s{2,}/g, ' ').trim();
     const responseJson = await post('/api/country', data);
     notify(responseJson);
     reset();
@@ -36,7 +48,7 @@ export default function CountryForm({ lang }: Props) {
   };
 
   return (
-    <FormControl component="form" onSubmit={handleSubmit(submitForm)}>
+    <FormControl>
       <FormLabel
         sx={{
           marginBottom: '0.35rem',
@@ -47,9 +59,46 @@ export default function CountryForm({ lang }: Props) {
         {`${t('CountryForm.label')}:`}
       </FormLabel>
       <Box sx={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-        <CountrySelect />
+        <Autocomplete
+          onChange={(event, newValue) => {
+            setSelectedCountry(newValue?.label || null);
+            setCountryCode(newValue?.code || null);
+          }}
+          id="country-select"
+          sx={{ width: 300 }}
+          options={countries}
+          autoHighlight
+          getOptionLabel={(option) => option.label}
+          renderOption={(
+            props,
+            option: { label: string; code: string; phone: string }
+          ) => (
+            <Box
+              component="li"
+              sx={{ '& > img': { mr: 2, flexShrink: 0 } }}
+              {...props}
+            >
+              {option.label} ({option.code})
+            </Box>
+          )}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label="Choose a country"
+              inputProps={{
+                ...params.inputProps,
+                autoComplete: 'new-password', // disable autocomplete and autofill
+              }}
+            />
+          )}
+        />
         <Button
-          type="submit"
+          onClick={() =>
+            submitForm({
+              name: selectedCountry || '',
+              countryCode: selectedCode || '',
+            })
+          }
           disabled={isSubmitting}
           variant="contained"
           sx={{}}

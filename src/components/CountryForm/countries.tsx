@@ -1,16 +1,11 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import Autocomplete from '@mui/material/Autocomplete';
-
-interface CountryType {
+export interface CountryType {
   code: string;
   label: string;
   phone: string;
   suggested?: boolean;
 }
 
-const countries: readonly CountryType[] = [
+export const countries: readonly CountryType[] = [
   { code: 'AD', label: 'Andorra', phone: '376' },
   {
     code: 'AE',
@@ -434,37 +429,3 @@ const countries: readonly CountryType[] = [
   { code: 'ZM', label: 'Zambia', phone: '260' },
   { code: 'ZW', label: 'Zimbabwe', phone: '263' },
 ];
-
-export default function CountrySelect({ countrylist = countries }) {
-  return (
-    <Autocomplete
-      id="country-select"
-      sx={{ width: 300 }}
-      options={countrylist}
-      autoHighlight
-      getOptionLabel={(option) => option.label}
-      renderOption={(
-        props,
-        option: { label: string; code: string; phone: string }
-      ) => (
-        <Box
-          component="li"
-          sx={{ '& > img': { mr: 2, flexShrink: 0 } }}
-          {...props}
-        >
-          {option.label} ({option.code})
-        </Box>
-      )}
-      renderInput={(params) => (
-        <TextField
-          {...params}
-          label="Choose a country"
-          inputProps={{
-            ...params.inputProps,
-            autoComplete: 'new-password', // disable autocomplete and autofill
-          }}
-        />
-      )}
-    />
-  );
-}

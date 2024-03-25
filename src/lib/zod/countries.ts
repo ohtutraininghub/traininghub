@@ -5,7 +5,7 @@ import { makeZodI18nMap } from 'zod-i18n-map';
 z.setErrorMap(zodI18nMap);
 z.setErrorMap(makeZodI18nMap({ ns: ['zod', 'custom'] }));
 
-export const maxCountryLength = 56;
+export const maxCountryLength = 96;
 
 export const countrySchema = z.object({
   name: z
@@ -28,6 +28,7 @@ export const countrySchema = z.object({
         i18n: { key: 'consecutiveSpacesNotAllowed' },
       },
     }),
+  countryCode: z.string(),
 });
 
 export const countryDeleteSchema = z
