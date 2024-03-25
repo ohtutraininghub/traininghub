@@ -10,6 +10,11 @@
     "templateNotFound": "Template by the given id was not found",
     "unprocessableContent": "Unprocessable content"
   },
+  "Countries": {
+    "duplicateError": "Failed to create country tag. A duplicate tag already exists.",
+    "tagCreated": "The country tag was succesfully created!",
+    "tagDeleted": "The country tag was succesfully deleted"
+  },
   "Courses": {
     "addedToCalendar": "Added course to calendar!",
     "courseCreated": "Course successfully created!",

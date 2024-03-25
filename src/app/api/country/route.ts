@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
 
     if (existingCountry) {
       return errorResponse({
-        message: t('Tags.duplicateError'),
+        message: t('Countries.duplicateError'),
         statusCode: StatusCodeType.UNPROCESSABLE_CONTENT,
       });
     }
@@ -37,7 +37,7 @@ export async function POST(request: NextRequest) {
       data: reqData as CountrySchemaType,
     });
     return successResponse({
-      message: t('Tags.tagCreated'),
+      message: t('Countries.tagCreated'),
       statusCode: StatusCodeType.CREATED,
     });
   } catch (error: unknown) {
@@ -69,7 +69,7 @@ export async function DELETE(request: NextRequest) {
     });
 
     return successResponse({
-      message: t('Tags.tagDeleted'),
+      message: t('Countries.tagDeleted'),
       statusCode: StatusCodeType.OK,
     });
   } catch (error: unknown) {

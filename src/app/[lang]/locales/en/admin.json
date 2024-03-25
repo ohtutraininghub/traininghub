@@ -6,6 +6,7 @@
     "button": {
       "submit": "Submit"
     },
+    "chooseCountry": "Choose country",
     "label": "New country",
     "placeholderText": "Country name"
   },

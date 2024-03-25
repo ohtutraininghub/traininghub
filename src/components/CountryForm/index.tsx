@@ -79,7 +79,7 @@ export default function CountryForm({ lang }: Props) {
           renderInput={(params) => (
             <TextField
               {...params}
-              label="Choose a country"
+              label={t('CountryForm.chooseCountry')}
               inputProps={{
                 ...params.inputProps,
               }}
