@@ -86,6 +86,11 @@ export default function AttendeeTable({
                   {t('AttendeeList.header.requestDate')}
                 </TableCell>
               )}
+              {!requests && (
+                <TableCell align="right">
+                  {t('AttendeeList.header.participation')}
+                </TableCell>
+              )}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -99,6 +104,16 @@ export default function AttendeeTable({
                       {requests
                         .find((request) => request.userId === attendee.userId)
                         ?.date.toDateString()}
+                    </TableCell>
+                  )}
+                  {!requests && (
+                    <TableCell align="right">
+                      <input
+                        type="checkbox"
+                        style={{
+                          transform: 'scale(1.25)',
+                        }}
+                      />
                     </TableCell>
                   )}
                 </TableRow>

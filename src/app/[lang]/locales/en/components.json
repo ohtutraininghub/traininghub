@@ -9,6 +9,7 @@
   "AttendeeList": {
     "header": {
       "name": "Name",
+      "participation": "Participation",
       "requestDate": "Request Date"
     },
     "noAttendeesText": "No enrolled students",
