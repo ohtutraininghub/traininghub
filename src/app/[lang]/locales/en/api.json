@@ -27,6 +27,7 @@
   },
   "Participations": {
     "participationAdded": "Participation marked",
+    "participationNotFound": "Participation not found",
     "participationRemoved": "Participation removed"
   },
   "Requests": {

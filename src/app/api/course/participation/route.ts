@@ -5,8 +5,9 @@ import { prisma } from '@/lib/prisma';
 import { handleCommonErrors } from '@/lib/response/errorUtil';
 import {
   errorResponse,
+  messageResponse,
+  MessageType,
   StatusCodeType,
-  successResponse,
 } from '@/lib/response/responseUtil';
 import { courseAndUserSchema } from '@/lib/zod/courses';
 import { NextRequest } from 'next/server';
@@ -39,8 +40,11 @@ export async function POST(request: NextRequest) {
         },
       },
     });
-    return successResponse({
+
+    return messageResponse({
       message: t('Participations.participationAdded'),
+      messageType: MessageType.SUCCESS,
+      statusCode: StatusCodeType.CREATED,
     });
   } catch (error) {
     return await handleCommonErrors(error);
@@ -67,8 +71,11 @@ export async function DELETE(request: NextRequest) {
         userId: userId,
       },
     });
-    return successResponse({
+
+    return messageResponse({
       message: t('Participations.participationRemoved'),
+      messageType: MessageType.SUCCESS,
+      statusCode: StatusCodeType.OK,
     });
   } catch (error) {
     return await handleCommonErrors(error);
