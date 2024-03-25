@@ -30,38 +30,36 @@ export async function POST(request: NextRequest) {
         statusCode: StatusCodeType.NOT_FOUND,
       });
     }
-    const userRequestIds = await prisma.user.findUnique({
-      where: { id: userId },
-      include: {
-        requestedCourses: {
-          select: {
-            id: true,
-          },
-        },
+    const existingRequest = await prisma.request.findFirst({
+      where: {
+        courseId: courseId,
+        userId: userId,
       },
     });
 
-    if (
-      userRequestIds?.requestedCourses.find((course) => course.id === courseId)
-    ) {
+    if (existingRequest) {
       return errorResponse({
         message: t('Requests.youHaveAlreadyRequested'),
         statusCode: StatusCodeType.UNPROCESSABLE_CONTENT,
       });
     }
 
-    await prisma.course.update({
-      where: {
-        id: courseId,
-      },
+    await prisma.request.create({
       data: {
-        requesters: {
+        user: {
           connect: {
             id: userId,
           },
         },
+        course: {
+          connect: {
+            id: courseId,
+          },
+        },
+        date: new Date(),
       },
     });
+
     return messageResponse({
       message: t('Requests.requestSuccessfull'),
       messageType: MessageType.SUCCESS,
@@ -71,7 +69,8 @@ export async function POST(request: NextRequest) {
     return await handleCommonErrors(error);
   }
 }
-export async function PUT(request: NextRequest) {
+
+export async function DELETE(request: NextRequest) {
   try {
     const { t } = await translator('api');
     const session = await getServerAuthSession();
@@ -79,37 +78,24 @@ export async function PUT(request: NextRequest) {
     const data = await request.json();
     const { courseId } = courseIdSchema.parse(data);
 
-    const course = await prisma.course.findFirst({
-      where: { id: courseId },
-      include: {
-        requesters: {
-          select: {
-            id: true,
-          },
-        },
+    const courseRequest = await prisma.request.findFirst({
+      where: {
+        courseId: courseId,
+        userId: userId,
       },
     });
 
-    if (!course) {
-      return errorResponse({
-        message: t('Common.courseNotFound'),
-        statusCode: StatusCodeType.NOT_FOUND,
-      });
-    }
-
-    if (!course.requesters.find((requester) => requester.id === userId)) {
+    if (!courseRequest) {
       return errorResponse({
         message: t('Common.notRequestedError'),
         statusCode: StatusCodeType.UNPROCESSABLE_CONTENT,
       });
     }
 
-    await prisma.course.update({
-      where: { id: courseId },
-      data: {
-        requesters: {
-          disconnect: [{ id: userId }],
-        },
+    await prisma.request.deleteMany({
+      where: {
+        courseId: courseId,
+        userId: userId,
       },
     });
 

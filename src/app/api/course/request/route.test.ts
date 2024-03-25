@@ -1,5 +1,5 @@
 import { MessageType, StatusCodeType } from '@/lib/response/responseUtil';
-import { POST, PUT } from './route';
+import { POST, DELETE } from './route';
 import { clearDatabase, prisma } from '@/lib/prisma';
 import { NextRequest } from 'next/server';
 import { createMocks } from 'node-mocks-http';
@@ -36,9 +36,9 @@ const mockPostRequest = (body: any) => {
   }).req;
 };
 
-const mockUpdateRequest = (body: any) => {
+const mockDeleteRequest = (body: any) => {
   return createMocks<NextRequest>({
-    method: 'PUT',
+    method: 'DELETE',
     json: () => body,
   }).req;
 };
@@ -77,11 +77,22 @@ describe('Course request API tests', () => {
     });
     it('requesting a course already requested for returns error message', async () => {
       const alreadyEnrolledCourse = await prisma.course.create({
+        data: testCourse,
+      });
+
+      await prisma.request.create({
         data: {
-          ...testCourse,
-          requesters: {
-            connect: [{ id: testUser.id }],
+          user: {
+            connect: {
+              id: testUser.id,
+            },
           },
+          course: {
+            connect: {
+              id: alreadyEnrolledCourse.id,
+            },
+          },
+          date: new Date(),
         },
       });
 
@@ -94,19 +105,30 @@ describe('Course request API tests', () => {
       expect(response.status).toBe(StatusCodeType.UNPROCESSABLE_CONTENT);
     });
   });
-  describe('PUT', () => {
+  describe('DELETE', () => {
     it('removing request from a requested course succeeds', async () => {
       const requestedCourse = await prisma.course.create({
+        data: testCourse,
+      });
+
+      await prisma.request.create({
         data: {
-          ...testCourse,
-          requesters: {
-            connect: [{ id: testUser.id }],
+          user: {
+            connect: {
+              id: testUser.id,
+            },
           },
+          course: {
+            connect: {
+              id: requestedCourse.id,
+            },
+          },
+          date: new Date(),
         },
       });
 
-      const req = mockUpdateRequest({ courseId: requestedCourse.id });
-      const response = await PUT(req);
+      const req = mockDeleteRequest({ courseId: requestedCourse.id });
+      const response = await DELETE(req);
       const data = await response.json();
 
       expect(data.message).toBe('Your request was removed');
@@ -116,16 +138,11 @@ describe('Course request API tests', () => {
 
     it('removing request from a course not requested throws error', async () => {
       const notRequestedCourse = await prisma.course.create({
-        data: {
-          ...testCourse,
-          requesters: {
-            connect: [],
-          },
-        },
+        data: testCourse,
       });
 
-      const req = mockUpdateRequest({ courseId: notRequestedCourse.id });
-      const response = await PUT(req);
+      const req = mockDeleteRequest({ courseId: notRequestedCourse.id });
+      const response = await DELETE(req);
       const data = await response.json();
 
       expect(data.message).toBe('You have not requested this course');

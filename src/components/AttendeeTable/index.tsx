@@ -1,5 +1,7 @@
 'use client';
 
+import { DictProps } from '@/lib/i18n';
+import { RequestsAndUserNames } from '@/lib/prisma/requests';
 import { UserNamesAndIds } from '@/lib/prisma/users';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
@@ -12,15 +14,21 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
+import { useTranslation } from '@/lib/i18n/client';
 
-interface Props {
-  attendees: UserNamesAndIds;
+interface Props extends DictProps {
+  attendees: UserNamesAndIds | RequestsAndUserNames;
   noAttendeesText: string;
 }
 
-export default function AttendeeTable({ attendees, noAttendeesText }: Props) {
+export default function AttendeeTable({
+  attendees,
+  noAttendeesText,
+  lang,
+}: Props) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const { t } = useTranslation(lang, 'components');
 
   if (!attendees) return null;
 
@@ -31,6 +39,10 @@ export default function AttendeeTable({ attendees, noAttendeesText }: Props) {
       </Typography>
     );
   }
+
+  const requests = attendees[0].hasOwnProperty('date')
+    ? (attendees as RequestsAndUserNames)
+    : null;
 
   const handleChangePage = (
     _event: React.MouseEvent<HTMLButtonElement, MouseEvent> | null,
@@ -68,7 +80,17 @@ export default function AttendeeTable({ attendees, noAttendeesText }: Props) {
         >
           <TableHead>
             <TableRow>
-              <TableCell>Name</TableCell>
+              <TableCell>{t('AttendeeList.header.name')}</TableCell>
+              {requests && (
+                <TableCell align="right">
+                  {t('AttendeeList.header.requestDate')}
+                </TableCell>
+              )}
+              {!requests && (
+                <TableCell align="right">
+                  {t('AttendeeList.header.participation')}
+                </TableCell>
+              )}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -77,6 +99,24 @@ export default function AttendeeTable({ attendees, noAttendeesText }: Props) {
               .map((attendee) => (
                 <TableRow key={attendee.userId}>
                   <TableCell>{attendee.name}</TableCell>
+                  {requests && (
+                    <TableCell align="right">
+                      {requests
+                        .find((request) => request.userId === attendee.userId)
+                        ?.date.toDateString()}
+                    </TableCell>
+                  )}
+                  {!requests && (
+                    <TableCell align="right">
+                      <input
+                        type="checkbox"
+                        data-testid="participation-checkbox"
+                        style={{
+                          transform: 'scale(1.25)',
+                        }}
+                      />
+                    </TableCell>
+                  )}
                 </TableRow>
               ))}
             {emptyRows > 0 && (

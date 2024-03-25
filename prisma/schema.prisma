@@ -19,23 +19,42 @@ enum Role {
 }
 
 model User {
-  id               String     @id @default(cuid())
+  id               String          @id @default(cuid())
   name             String?
-  email            String?    @unique
+  email            String?         @unique
   emailVerified    DateTime?
+  countryId        String?
+  country          Country?        @relation(name: "country", fields: [countryId], references: [id])
+  titleId          String?
+  title            Title?          @relation(name: "title", fields: [titleId], references: [id])
   image            String?
   courses          Course[]
-  createdCourses   Course[]   @relation(name: "createdCourses")
-  createdTemplates Template[] @relation(name: "createdTemplates")
-  requestedCourses Course[]   @relation(name: "requestedCourses")
+  createdCourses   Course[]        @relation(name: "createdCourses")
+  createdTemplates Template[]      @relation(name: "createdTemplates")
+  requests         Request[]
+  participations   Participation[]
   accounts         Account[]
   sessions         Session[]
-  role             Role       @default(TRAINEE)
+  role             Role            @default(TRAINEE)
   calendar         Calendar[]
+  profileCompleted Boolean         @default(false)
+}
+
+model Country {
+  id          String @id @default(cuid())
+  name        String
+  countryCode String
+  users       User[] @relation(name: "country")
+}
+
+model Title {
+  id    String @id @default(cuid())
+  name  String
+  users User[] @relation(name: "title")
 }
 
 model Course {
-  id             String     @id @default(cuid())
+  id             String          @id @default(cuid())
   name           String
   description    String
   summary        String?
@@ -45,13 +64,35 @@ model Course {
   lastCancelDate DateTime?
   maxStudents    Int
   students       User[]
-  requesters     User[]     @relation(name: "requestedCourses")
+  requests       Request[]
+  participations Participation[]
   tags           Tag[]
-  createdBy      User?      @relation(name: "createdCourses", references: [id], fields: [createdById])
+  createdBy      User?           @relation(name: "createdCourses", references: [id], fields: [createdById])
   createdById    String
   calendar       Calendar[]
   image          String?
   slackChannelId String?
+}
+
+model Request {
+  id       String   @id @default(cuid())
+  user     User     @relation(fields: [userId], references: [id])
+  userId   String
+  course   Course   @relation(fields: [courseId], references: [id])
+  courseId String
+  date     DateTime
+
+  @@unique([userId, courseId])
+}
+
+model Participation {
+  id       String @id @default(cuid())
+  user     User   @relation(fields: [userId], references: [id])
+  userId   String
+  course   Course @relation(fields: [courseId], references: [id])
+  courseId String
+
+  @@unique([userId, courseId])
 }
 
 model Template {
