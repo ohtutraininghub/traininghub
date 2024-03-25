@@ -36,6 +36,7 @@ export default function CountryForm({ lang }: Props) {
 
   const submitForm = async (data: CountrySchemaType) => {
     data.name = selectedCountry || data.name.replace(/\s{2,}/g, ' ').trim();
+    data.countryCode = selectedCode || '';
     const responseJson = await post('/api/country', data);
     notify(responseJson);
     reset();
@@ -87,12 +88,14 @@ export default function CountryForm({ lang }: Props) {
           )}
         />
         <Button
-          onClick={() =>
-            submitForm({
-              name: selectedCountry || '',
-              countryCode: selectedCode || '',
-            })
-          }
+          onClick={() => {
+            if (selectedCountry && selectedCode) {
+              submitForm({
+                name: selectedCountry,
+                countryCode: selectedCode,
+              });
+            }
+          }}
           disabled={isSubmitting}
           variant="contained"
           sx={{}}
