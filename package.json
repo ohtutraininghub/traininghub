@@ -12,7 +12,7 @@
     "build": "next build",
     "start": "next start",
     "start:migrate": "prisma migrate deploy && npm run compile && npm-run-all --parallel start cron",
-    "compile": "tsc ./src/lib/cron/cron-compile.ts",
+    "compile": " npx tsc ./src/lib/cron/cron-compile.ts",
     "cron": "node ./src/lib/cron/cron.js",
     "_TEST SCRIPTS": "===",
     "test": "./scripts/dev_test.sh",
@@ -112,6 +112,6 @@
     "prettier-plugin-sort-json": "^3.1.0",
     "prisma": "^5.8.1",
     "ts-node": "^10.9.1",
-    "typescript": "5.2.2"
+    "typescript": "^5.2.2"
   }
 }
