@@ -11,7 +11,7 @@ import { DictProps } from '@/lib/i18n';
 
 interface Props extends DictProps {
   countryId: string;
-  countryName: string;
+  countryName: string | null;
 }
 
 export default function CountryChip({ lang, countryId, countryName }: Props) {

@@ -43,7 +43,7 @@ export default async function CountyList({
           <CountryChip
             lang={lang}
             countryId={country.id}
-            countryName={country.name ?? ''}
+            countryName={country.name}
           />
         </li>
       ))}
