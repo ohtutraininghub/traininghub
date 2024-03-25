@@ -260,6 +260,7 @@ export default function CourseModal({
           <AttendeeTable
             attendees={enrolledStudents || []}
             noAttendeesText={t('AttendeeList.noAttendeesText')}
+            lang={lang}
           />
         )}
 
@@ -267,6 +268,7 @@ export default function CourseModal({
           <AttendeeTable
             attendees={requests || []}
             noAttendeesText={t('AttendeeList.noRequestsText')}
+            lang={lang}
           />
         )}
 
