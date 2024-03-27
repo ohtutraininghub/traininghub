@@ -6,6 +6,12 @@ const trainerUser = {
   role: Role.TRAINER,
 };
 
+const adminUser = {
+  name: 'Anna Admin',
+  email: 'anna@traininghub.org',
+  role: Role.ADMIN,
+};
+
 describe('Course participation tracking', () => {
   before(() => {
     cy.task('clearDatabase');
@@ -25,6 +31,25 @@ describe('Course participation tracking', () => {
     });
 
     it('allows trainer to unmark course participation successfully', () => {
+      cy.getCy('participation-checkbox').click();
+      cy.getCy('participation-checkbox').click();
+      cy.contains('Participation removed');
+    });
+  });
+
+  describe('when logged in as a admin', () => {
+    beforeEach(() => {
+      cy.login(adminUser.email, adminUser.role);
+      cy.contains('Robot Framework Fundamentals').click();
+      cy.getCy('toggle-attendees-list').click();
+    });
+
+    it('allows admin to mark course participation successfully', () => {
+      cy.getCy('participation-checkbox').click();
+      cy.contains('Participation marked');
+    });
+
+    it('allows admin to unmark course participation successfully', () => {
       cy.getCy('participation-checkbox').click();
       cy.getCy('participation-checkbox').click();
       cy.contains('Participation removed');
