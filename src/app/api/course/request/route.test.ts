@@ -3,7 +3,6 @@ import { POST, DELETE } from './route';
 import { clearDatabase, prisma } from '@/lib/prisma';
 import { NextRequest } from 'next/server';
 import { createMocks } from 'node-mocks-http';
-import { courseEnrollSchema } from '@/lib/zod/courses';
 
 const testUser = {
   id: 'cloeouh4x0000qiexq8tqzvh7',
@@ -37,7 +36,7 @@ const mockPostRequest = (body: any) => {
   }).req;
 };
 
-const mockUpdateRequest = (body: any) => {
+const mockDeleteRequest = (body: any) => {
   return createMocks<NextRequest>({
     method: 'DELETE',
     json: () => body,
@@ -128,7 +127,7 @@ describe('Course request API tests', () => {
         },
       });
 
-      const req = mockUpdateRequest({ courseId: requestedCourse.id });
+      const req = mockDeleteRequest({ courseId: requestedCourse.id });
       const response = await DELETE(req);
       const data = await response.json();
 
@@ -142,7 +141,7 @@ describe('Course request API tests', () => {
         data: testCourse,
       });
 
-      const req = mockUpdateRequest({ courseId: notRequestedCourse.id });
+      const req = mockDeleteRequest({ courseId: notRequestedCourse.id });
       const response = await DELETE(req);
       const data = await response.json();
 

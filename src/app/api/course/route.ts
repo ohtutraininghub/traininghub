@@ -133,7 +133,7 @@ export async function PUT(request: NextRequest) {
       // Send notification of course update to each user in slack
       if (courseWithUsers) {
         for (const user of courseWithUsers.students) {
-          await sendCourseUpdate(courseWithUsers, user.email || '');
+          await sendCourseUpdate(course, courseWithUsers, user.email || '');
         }
       }
     }

@@ -1,5 +1,6 @@
 'use client';
 
+import { DictProps } from '@/lib/i18n';
 import { RequestsAndUserNames } from '@/lib/prisma/requests';
 import { UserNamesAndIds } from '@/lib/prisma/users';
 import Paper from '@mui/material/Paper';
@@ -13,15 +14,31 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
+import { useTranslation } from '@/lib/i18n/client';
+import { post, remove } from '@/lib/response/fetchUtil';
+import { useMessage } from '../Providers/MessageProvider';
+import { useRouter } from 'next/navigation';
 
-interface Props {
-  attendees: UserNamesAndIds | RequestsAndUserNames;
+type Attendees = UserNamesAndIds | RequestsAndUserNames;
+type Attendee = Attendees[0];
+
+interface Props extends DictProps {
+  courseId: string;
+  attendees: Attendees;
   noAttendeesText: string;
 }
 
-export default function AttendeeTable({ attendees, noAttendeesText }: Props) {
+export default function AttendeeTable({
+  courseId,
+  attendees,
+  noAttendeesText,
+  lang,
+}: Props) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const { t } = useTranslation(lang, 'components');
+  const { notify } = useMessage();
+  const router = useRouter();
 
   if (!attendees) return null;
 
@@ -32,6 +49,10 @@ export default function AttendeeTable({ attendees, noAttendeesText }: Props) {
       </Typography>
     );
   }
+
+  const requests = attendees[0].hasOwnProperty('date')
+    ? (attendees as RequestsAndUserNames)
+    : null;
 
   const handleChangePage = (
     _event: React.MouseEvent<HTMLButtonElement, MouseEvent> | null,
@@ -47,11 +68,19 @@ export default function AttendeeTable({ attendees, noAttendeesText }: Props) {
     setPage(0);
   };
 
-  // Avoid a layout jump when reaching the last page with empty rows.
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - attendees.length) : 0;
-
-  const rowHeight = 53; // Baseline row height for MUI tables + border
+  const handleChangeParticipation = async (attendee: Attendee) => {
+    const responseJson = attendee.isParticipating
+      ? await remove('/api/course/participation', {
+          courseId: courseId,
+          userId: attendee.userId,
+        })
+      : await post('/api/course/participation', {
+          courseId: courseId,
+          userId: attendee.userId,
+        });
+    notify(responseJson);
+    router.refresh();
+  };
 
   return (
     <Paper sx={{ my: 2 }}>
@@ -69,7 +98,17 @@ export default function AttendeeTable({ attendees, noAttendeesText }: Props) {
         >
           <TableHead>
             <TableRow>
-              <TableCell>Name</TableCell>
+              <TableCell>{t('AttendeeList.header.name')}</TableCell>
+              {requests && (
+                <TableCell align="right">
+                  {t('AttendeeList.header.requestDate')}
+                </TableCell>
+              )}
+              {!requests && (
+                <TableCell align="right">
+                  {t('AttendeeList.header.participation')}
+                </TableCell>
+              )}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -78,17 +117,28 @@ export default function AttendeeTable({ attendees, noAttendeesText }: Props) {
               .map((attendee) => (
                 <TableRow key={attendee.userId}>
                   <TableCell>{attendee.name}</TableCell>
+                  {requests && (
+                    <TableCell align="right">
+                      {requests
+                        .find((request) => request.userId === attendee.userId)
+                        ?.date.toDateString()}
+                    </TableCell>
+                  )}
+                  {!requests && (
+                    <TableCell align="right">
+                      <input
+                        type="checkbox"
+                        data-testid="participation-checkbox"
+                        style={{
+                          transform: 'scale(1.25)',
+                        }}
+                        checked={attendee.isParticipating}
+                        onChange={() => handleChangeParticipation(attendee)}
+                      />
+                    </TableCell>
+                  )}
                 </TableRow>
               ))}
-            {emptyRows > 0 && (
-              <TableRow
-                style={{
-                  height: rowHeight * emptyRows,
-                }}
-              >
-                <TableCell colSpan={1} />
-              </TableRow>
-            )}
           </TableBody>
           <TableFooter>
             <TableRow>

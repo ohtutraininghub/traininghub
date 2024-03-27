@@ -20,7 +20,9 @@ import {
   getTemplatesByUserIdWithCreator,
 } from '@/lib/prisma/templates';
 import CreateTag from '../admin/dashboard/CreateTag';
+import CreateCountry from '../admin/dashboard/CreateCountry';
 import { getTags } from '@/lib/prisma/tags';
+import { getCountries } from '@/lib/prisma/country';
 import { isAdmin, isTrainerOrAdmin } from '@/lib/auth-utils';
 
 type Props = {
@@ -34,6 +36,7 @@ export default async function ProfilePage({ searchParams, params }: Props) {
   const allUsers = await getAllUsers();
   const userData = await getUserData(session.user.id);
   const tags = await getTags();
+  const countries = await getCountries();
 
   if (!userData) {
     notFound();
@@ -78,8 +81,14 @@ export default async function ProfilePage({ searchParams, params }: Props) {
         createdCourses={userData?.createdCourses ?? []}
         users={allUsers}
         templates={templates}
+        countries={countries}
         tags={tags}
       >
+        <CreateCountry
+          countryHeader={t('admin:CountriesSection.header')}
+          countries={countries}
+          lang={params.lang}
+        />
         <CreateTag
           tagsHeader={t('admin:TagsSection.header')}
           tags={tags}

@@ -77,9 +77,13 @@ export const sendCoursePoster = async (course: Course) => {
   await sendMessage(channel, message);
 };
 
-export const sendCourseUpdate = async (course: Course, userEmail: string) => {
+export const sendCourseUpdate = async (
+  oldCourseData: Course,
+  updatedCourseData: Course,
+  userEmail: string
+) => {
   if (!isProduction()) return;
-  const blocks = createBlocksUpdatedTraining(course);
+  const blocks = createBlocksUpdatedTraining(oldCourseData, updatedCourseData);
   await sendMessageToUser(userEmail, blocks);
 };
 
