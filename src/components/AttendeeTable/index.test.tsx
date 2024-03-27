@@ -62,6 +62,26 @@ jest.mock('../../lib/i18n/client', () => ({
   },
 }));
 
+const mockFetch = jest.fn((...args: any[]) =>
+  Promise.resolve({
+    json: () => Promise.resolve({ args: args }),
+    ok: true,
+  })
+);
+
+jest.mock('../../lib/response/fetchUtil', () => ({
+  update: (...args: any[]) => mockFetch(...args),
+}));
+
+jest.mock('next/navigation', () => ({
+  useRouter() {
+    return {
+      push: jest.fn(),
+      refresh: jest.fn(),
+    };
+  },
+}));
+
 const noEnrolledStudentsText = 'No enrolled students';
 const noRequestsText = 'No requests';
 
