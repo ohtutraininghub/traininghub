@@ -2,7 +2,7 @@ const course = {
   name: 'Kubernetes Fundamentals',
   header: 'Learn Kubernetes',
   description:
-    'Take your first steps in using Kubernetes for container orchestration. This course will introduce you to the basic concepts and building blocks of Kubernetes and the architecture of the system. Get ready to start you cloud native journey!',
+    'This course will introduce you to the basic concepts and building blocks of Kubernetes and the architecture of the system.',
   startDate: '2030-06-01T08:30',
   endDate: '2030-07-01T08:30',
   maxStudents: '100',
