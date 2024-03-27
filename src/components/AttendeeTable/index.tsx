@@ -82,12 +82,6 @@ export default function AttendeeTable({
     router.refresh();
   };
 
-  // Avoid a layout jump when reaching the last page with empty rows.
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - attendees.length) : 0;
-
-  const rowHeight = 53; // Baseline row height for MUI tables + border
-
   return (
     <Paper sx={{ my: 2 }}>
       <TableContainer
@@ -145,15 +139,6 @@ export default function AttendeeTable({
                   )}
                 </TableRow>
               ))}
-            {emptyRows > 0 && (
-              <TableRow
-                style={{
-                  height: rowHeight * emptyRows,
-                }}
-              >
-                <TableCell colSpan={1} />
-              </TableRow>
-            )}
           </TableBody>
           <TableFooter>
             <TableRow>
