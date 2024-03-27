@@ -329,7 +329,10 @@ export const createBlocksUpdatedTraining = (
   return blocks;
 };
 
-export const createBlocksCourseReminder = (course: Course) => {
+export const createBlocksCourseReminder = (
+  course: Course,
+  daysUntilStart: string
+) => {
   return [
     {
       type: 'header',
@@ -343,7 +346,7 @@ export const createBlocksCourseReminder = (course: Course) => {
       type: 'section',
       text: {
         type: 'mrkdwn',
-        text: `*<${process.env.HOST_URL}/en?courseId=${course.id}|${course.name}>* is starting soon!`,
+        text: `*<${process.env.HOST_URL}/en?courseId=${course.id}|${course.name}>* is starting in ${daysUntilStart}!`,
       },
     },
     {
