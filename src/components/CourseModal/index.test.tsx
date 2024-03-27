@@ -7,7 +7,7 @@ import { useSession } from 'next-auth/react';
 import userEvent from '@testing-library/user-event';
 import { waitFor } from '@testing-library/dom';
 
-const adminUser: User = {
+const adminUser = {
   id: '123a',
   name: 'Ada Admin',
   email: 'admin@traininghub.org',
@@ -188,7 +188,13 @@ describe('CourseModal component', () => {
       <CourseModal
         course={upComingCourse}
         usersEnrolledCourseIds={[]}
-        enrolledStudents={[{ name: traineeUser.name, userId: traineeUser.id }]}
+        enrolledStudents={[
+          {
+            name: traineeUser.name,
+            userId: traineeUser.id,
+            isParticipating: false,
+          },
+        ]}
         requests={[]}
         lang="en"
       />
@@ -211,7 +217,13 @@ describe('CourseModal component', () => {
       <CourseModal
         course={pastCourse}
         usersEnrolledCourseIds={[]}
-        enrolledStudents={[{ name: traineeUser.name, userId: traineeUser.id }]}
+        enrolledStudents={[
+          {
+            name: traineeUser.name,
+            userId: traineeUser.id,
+            isParticipating: false,
+          },
+        ]}
         requests={[
           {
             name: trainerUser.name,
@@ -222,6 +234,7 @@ describe('CourseModal component', () => {
             courseId: pastCourse.id,
             userId: trainerUser.id,
             date: new Date(),
+            isParticipating: false,
           },
         ]}
         lang="en"

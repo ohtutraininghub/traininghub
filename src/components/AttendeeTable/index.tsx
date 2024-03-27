@@ -15,13 +15,21 @@ import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 import { useTranslation } from '@/lib/i18n/client';
+import { post, remove } from '@/lib/response/fetchUtil';
+import { useMessage } from '../Providers/MessageProvider';
+import { useRouter } from 'next/navigation';
+
+type Attendees = UserNamesAndIds | RequestsAndUserNames;
+type Attendee = Attendees[0];
 
 interface Props extends DictProps {
-  attendees: UserNamesAndIds | RequestsAndUserNames;
+  courseId: string;
+  attendees: Attendees;
   noAttendeesText: string;
 }
 
 export default function AttendeeTable({
+  courseId,
   attendees,
   noAttendeesText,
   lang,
@@ -29,6 +37,8 @@ export default function AttendeeTable({
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const { t } = useTranslation(lang, 'components');
+  const { notify } = useMessage();
+  const router = useRouter();
 
   if (!attendees) return null;
 
@@ -58,11 +68,19 @@ export default function AttendeeTable({
     setPage(0);
   };
 
-  // Avoid a layout jump when reaching the last page with empty rows.
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - attendees.length) : 0;
-
-  const rowHeight = 53; // Baseline row height for MUI tables + border
+  const handleChangeParticipation = async (attendee: Attendee) => {
+    const responseJson = attendee.isParticipating
+      ? await remove('/api/course/participation', {
+          courseId: courseId,
+          userId: attendee.userId,
+        })
+      : await post('/api/course/participation', {
+          courseId: courseId,
+          userId: attendee.userId,
+        });
+    notify(responseJson);
+    router.refresh();
+  };
 
   return (
     <Paper sx={{ my: 2 }}>
@@ -114,20 +132,13 @@ export default function AttendeeTable({
                         style={{
                           transform: 'scale(1.25)',
                         }}
+                        checked={attendee.isParticipating}
+                        onChange={() => handleChangeParticipation(attendee)}
                       />
                     </TableCell>
                   )}
                 </TableRow>
               ))}
-            {emptyRows > 0 && (
-              <TableRow
-                style={{
-                  height: rowHeight * emptyRows,
-                }}
-              >
-                <TableCell colSpan={1} />
-              </TableRow>
-            )}
           </TableBody>
           <TableFooter>
             <TableRow>
