@@ -238,9 +238,13 @@ export const archiveChannel = async (course: Course) => {
   }
 };
 
-export const sendReminderToUsers = (course: Course, emails: string[]) => {
+export const sendReminderToUsers = (
+  course: Course,
+  emails: string[],
+  daysUntilStart: string
+) => {
   emails.forEach((email) => {
-    const message = createBlocksCourseReminder(course);
+    const message = createBlocksCourseReminder(course, daysUntilStart);
     sendMessageToUser(email, message);
   });
 };
