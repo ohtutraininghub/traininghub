@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    prisma.participation.create({
+    await prisma.participation.create({
       data: {
         user: {
           connect: {
