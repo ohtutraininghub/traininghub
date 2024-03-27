@@ -55,7 +55,7 @@ describe('Course creation using template', () => {
     cy.login('trainer@test.com', 'TRAINER');
     cy.visit('/course/create');
 
-    cy.get('#templateSelect').parent().type('{downarrow}{enter}');
+    cy.get('#templateSelect').parent().type('{downarrow}{downarrow}{enter}');
 
     cy.getCy('courseFormStartDate').type(course.startDate);
     cy.getCy('courseFormEndDate').type(course.endDate);
