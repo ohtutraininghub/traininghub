@@ -47,6 +47,7 @@
     "templateUpdated": "Template successfully updated"
   },
   "Users": {
-    "roleChanged": "User access role succesfully changed!"
+    "roleChanged": "User access role successfully changed!",
+    "userCreated": "User info successfully updated!"
   }
 }
