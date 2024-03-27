@@ -20,6 +20,7 @@ export async function getRequestsByCourseId(courseId: string) {
   return requests.map((request) => ({
     ...request,
     name: request.user.name,
+    isParticipating: false,
   }));
 }
 
