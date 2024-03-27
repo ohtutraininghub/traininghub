@@ -67,9 +67,25 @@ export async function getStudentNamesByCourseId(courseId: string) {
       name: 'asc',
     },
   });
-  return students.flatMap((student) =>
-    student.name ? { name: student.name, userId: student.id } : []
+
+  const studentsWithParticipation = await Promise.all(
+    students.map(async (student) => {
+      const isParticipating = await prisma.participation.findFirst({
+        where: {
+          userId: student.id,
+          courseId: courseId,
+        },
+      });
+
+      return {
+        name: student.name,
+        userId: student.id,
+        isParticipating: !!isParticipating,
+      };
+    })
   );
+
+  return studentsWithParticipation;
 }
 
 export async function getStudentEmailsByCourseId(courseId: string) {

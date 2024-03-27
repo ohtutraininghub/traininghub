@@ -258,15 +258,19 @@ export default function CourseModal({
 
         {courseView === 'attendees' && (
           <AttendeeTable
+            courseId={course.id}
             attendees={enrolledStudents || []}
             noAttendeesText={t('AttendeeList.noAttendeesText')}
+            lang={lang}
           />
         )}
 
         {courseView === 'requests' && (
           <AttendeeTable
+            courseId={course.id}
             attendees={requests || []}
             noAttendeesText={t('AttendeeList.noRequestsText')}
+            lang={lang}
           />
         )}
 

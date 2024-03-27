@@ -19,24 +19,25 @@ enum Role {
 }
 
 model User {
-  id               String     @id @default(cuid())
+  id               String          @id @default(cuid())
   name             String?
-  email            String?    @unique
+  email            String?         @unique
   emailVerified    DateTime?
   countryId        String?
-  country          Country?   @relation(name: "country", fields: [countryId], references: [id])
+  country          Country?        @relation(name: "country", fields: [countryId], references: [id])
   titleId          String?
-  title            Title?     @relation(name: "title", fields: [titleId], references: [id])
+  title            Title?          @relation(name: "title", fields: [titleId], references: [id])
   image            String?
   courses          Course[]
-  createdCourses   Course[]   @relation(name: "createdCourses")
-  createdTemplates Template[] @relation(name: "createdTemplates")
+  createdCourses   Course[]        @relation(name: "createdCourses")
+  createdTemplates Template[]      @relation(name: "createdTemplates")
   requests         Request[]
+  participations   Participation[]
   accounts         Account[]
   sessions         Session[]
-  role             Role       @default(TRAINEE)
+  role             Role            @default(TRAINEE)
   calendar         Calendar[]
-  profileCompleted Boolean    @default(false)
+  profileCompleted Boolean         @default(false)
 }
 
 model Country {
@@ -53,7 +54,7 @@ model Title {
 }
 
 model Course {
-  id             String     @id @default(cuid())
+  id             String          @id @default(cuid())
   name           String
   description    String
   summary        String?
@@ -64,8 +65,9 @@ model Course {
   maxStudents    Int
   students       User[]
   requests       Request[]
+  participations Participation[]
   tags           Tag[]
-  createdBy      User?      @relation(name: "createdCourses", references: [id], fields: [createdById])
+  createdBy      User?           @relation(name: "createdCourses", references: [id], fields: [createdById])
   createdById    String
   calendar       Calendar[]
   image          String?
@@ -79,6 +81,16 @@ model Request {
   course   Course   @relation(fields: [courseId], references: [id])
   courseId String
   date     DateTime
+
+  @@unique([userId, courseId])
+}
+
+model Participation {
+  id       String @id @default(cuid())
+  user     User   @relation(fields: [userId], references: [id])
+  userId   String
+  course   Course @relation(fields: [courseId], references: [id])
+  courseId String
 
   @@unique([userId, courseId])
 }
