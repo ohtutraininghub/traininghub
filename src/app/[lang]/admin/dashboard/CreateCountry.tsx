@@ -7,8 +7,8 @@ export const dynamic = 'force-dynamic';
 
 type Country = {
   id: string;
-  name: string | null;
-  countryCode: string | null;
+  name: string;
+  countryCode: string;
 };
 
 interface Props extends DictProps {
