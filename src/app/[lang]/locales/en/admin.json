@@ -1,4 +1,19 @@
 {
+  "CountriesSection": {
+    "header": "Countries"
+  },
+  "CountryForm": {
+    "button": {
+      "submit": "Submit"
+    },
+    "chooseCountry": "Choose country",
+    "label": "New country",
+    "placeholderText": "Country name"
+  },
+  "CountryList": {
+    "confirmCountryDeletion": "Are you sure you want to delete the following country:",
+    "noCountriesAdded": "No countries added"
+  },
   "DashboardTitle": "Admin dashboard",
   "EditUsers": {
     "confirmCard": {
