@@ -2,16 +2,6 @@ import { mock } from 'node:test';
 import sendNotificationsBeforeCourseStart from './cron-utils';
 import { mockComponent } from 'react-dom/test-utils';
 
-const mockSendReminderToUsers = jest.fn();
-jest.mock('../slack/index', () => ({
-  sendReminderToUsers: mockSendReminderToUsers,
-}));
-
-const mockCoursesWithStartDateBetweenDates = jest.fn();
-jest.mock('../prisma/courses', () => ({
-  coursesWithStartDateBetweenDates: mockCoursesWithStartDateBetweenDates,
-}));
-
 const inOneDay = new Date();
 inOneDay.setDate(inOneDay.getDate() + 1);
 const inThreeDays = new Date();
@@ -53,6 +43,22 @@ const courseInThreeDays = {
   slackChannelId: '123',
 };
 
+const mockSendReminderToUsers = jest.fn();
+jest.mock('../slack/index', () => ({
+  sendReminderToUsers: mockSendReminderToUsers,
+}));
+
+const mockCoursesWithStartDateBetweenDates = jest.fn();
+mockCoursesWithStartDateBetweenDates.mockReturnValueOnce(courseInOneDay);
+mockCoursesWithStartDateBetweenDates.mockReturnValueOnce(courseInThreeDays);
+jest.mock('../prisma/courses', () => ({
+  coursesWithStartDateBetweenDates: mockCoursesWithStartDateBetweenDates,
+}));
+
 describe('Tests for cron-utils', () => {
-  it('should call sendReminderToUsers with the correct parameters', () => {});
+  it('should call sendReminderToUsers with the correct parameters', () => {
+    sendNotificationsBeforeCourseStart();
+    expect(mockSendReminderToUsers).toHaveBeenCalledTimes(2);
+    expect(mockCoursesWithStartDateBetweenDates).toHaveBeenCalledWith();
+  });
 });
