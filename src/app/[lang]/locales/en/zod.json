@@ -1,5 +1,6 @@
 {
   "consecutiveSpacesNotAllowed": "Consecutive spaces are not allowed",
+  "countryRequired": "A country is required",
   "courseId": "Course Id",
   "description": "Description",
   "endDate": "End date",
@@ -23,5 +24,6 @@
   "startDate": "Start date",
   "startDateCannotBeInThePast": "Start date cannot be in the past",
   "tagNameRequired": "A tag name is required",
-  "tags": "Tag name"
+  "tags": "Tag name",
+  "titleRequired": "A title is required"
 }

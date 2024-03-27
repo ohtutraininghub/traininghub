@@ -1,3 +1,4 @@
+import React from 'react';
 import { InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
 
 interface Item {
@@ -6,67 +7,69 @@ interface Item {
 }
 
 interface Props {
-  name: string;
   label: string;
-  value: string;
-  handler: (e: SelectChangeEvent<string>) => void;
   items: Item[];
+  field: {
+    onChange: (e: SelectChangeEvent) => void;
+    onBlur: () => void;
+    value: string;
+    name: string;
+  };
 }
 
-export default function SelectDropdown({
-  name,
-  label,
-  value,
-  handler,
-  items,
-}: Props) {
-  return (
-    <>
-      <InputLabel
-        htmlFor={`${name}-select`}
-        id={`${name}-label`}
-        sx={{ color: 'secondary' }}
-      >
-        {label}
-      </InputLabel>
-      <Select
-        name={`${name}Select`}
-        id={`${name}Select`}
-        labelId={`${name}-label`}
-        color="secondary"
-        value={value}
-        onChange={handler}
-        sx={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          marginBottom: 2,
-        }}
-        MenuProps={{ disableScrollLock: true }}
-      >
-        {items.map((item) => (
-          <MenuItem
-            key={item.id}
-            value={item.name}
-            divider
-            sx={{
-              '&.Mui-selected': {
-                backgroundColor: 'surface.main',
-              },
-              '&.Mui-selected.Mui-focusVisible': {
-                backgroundColor: 'surface.dark',
-              },
-              '&:hover': {
-                backgroundColor: 'surface.light',
-              },
-              '&.Mui-selected:hover': {
-                backgroundColor: 'surface.main',
-              },
-            }}
-          >
-            {item.name}
-          </MenuItem>
-        ))}
-      </Select>
-    </>
-  );
-}
+const SelectDropdown = React.forwardRef<HTMLDivElement, Props>(
+  function SelectDropdown({ label, items, field }, ref) {
+    return (
+      <>
+        <InputLabel
+          htmlFor={`${field.name}-select`}
+          id={`${field.name}-label`}
+          sx={{ color: 'secondary' }}
+        >
+          {label}
+        </InputLabel>
+        <Select
+          {...field}
+          label={label}
+          ref={ref}
+          name={`${field.name}Select`}
+          id={`${field.name}-select`}
+          labelId={`${field.name}-label`}
+          color="secondary"
+          sx={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            marginBottom: 2,
+          }}
+          MenuProps={{ disableScrollLock: true }}
+        >
+          {items.map((item) => (
+            <MenuItem
+              key={item.id}
+              value={item.name}
+              divider
+              sx={{
+                '&.Mui-selected': {
+                  backgroundColor: 'surface.main',
+                },
+                '&.Mui-selected.Mui-focusVisible': {
+                  backgroundColor: 'surface.dark',
+                },
+                '&:hover': {
+                  backgroundColor: 'surface.light',
+                },
+                '&.Mui-selected:hover': {
+                  backgroundColor: 'surface.main',
+                },
+              }}
+            >
+              {item.name}
+            </MenuItem>
+          ))}
+        </Select>
+      </>
+    );
+  }
+);
+
+export default SelectDropdown;

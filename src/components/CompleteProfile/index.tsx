@@ -1,17 +1,18 @@
 'use client';
 
-import { useState } from 'react';
-import {
-  Box,
-  Button,
-  Container,
-  SelectChangeEvent,
-  Typography,
-} from '@mui/material';
+import { Box, Button, Container, Typography } from '@mui/material';
+import { useRouter } from 'next/navigation';
 import { Country, Title } from '@prisma/client';
 import SelectDropdown from '../SelectDropdown';
 import { useTranslation } from '@i18n/client';
 import { DictProps } from '@i18n/index';
+import { MessageType } from '@/lib/response/responseUtil';
+import { useMessage } from '../Providers/MessageProvider';
+import { update } from '@/lib/response/fetchUtil';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { userInfoSchema, UserInfoSchemaType } from '@/lib/zod/user';
+import { Controller, useForm } from 'react-hook-form';
+import FormFieldError from '@/components/FormFieldError';
 
 interface Props extends DictProps {
   countries: Country[];
@@ -20,22 +21,34 @@ interface Props extends DictProps {
 
 export default function CompleteProfile({ countries, titles, lang }: Props) {
   const { t } = useTranslation(lang, 'components');
-  const [selectedCountry, setSelectedCountry] = useState('');
-  const [selectedTitle, setSelectedTitle] = useState('');
+  const router = useRouter();
+  const { notify } = useMessage();
 
-  const handleValueChange = (e: SelectChangeEvent<string>) => {
-    e.preventDefault();
-    const { name, value } = e.target;
-    if (name === 'countrySelect') {
-      setSelectedCountry(value);
-    } else if (name === 'titleSelect') {
-      setSelectedTitle(value);
+  const {
+    control,
+    formState: { errors, isSubmitting },
+    handleSubmit,
+    reset,
+  } = useForm<UserInfoSchemaType>({
+    resolver: zodResolver(userInfoSchema),
+    defaultValues: {
+      country: '',
+      title: '',
+    },
+  });
+
+  const submitForm = async (data: UserInfoSchemaType) => {
+    try {
+      const responseJson = await update('/api/profile', data);
+      notify(responseJson);
+      reset();
+      router.push('/');
+    } catch (error) {
+      notify({
+        message: t('CompleteProfile.error'),
+        messageType: MessageType.ERROR,
+      });
     }
-  };
-
-  const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log('Form submitted');
   };
 
   return (
@@ -67,23 +80,33 @@ export default function CompleteProfile({ countries, titles, lang }: Props) {
         <form
           id="completeProfileForm"
           data-testid="completeProfileForm"
-          onSubmit={submitForm}
+          onSubmit={handleSubmit(submitForm)}
         >
           <Box>
-            <SelectDropdown
+            <Controller
               name="country"
-              label={t('CompleteProfile.countryLabel')}
-              value={selectedCountry}
-              handler={handleValueChange}
-              items={countries}
+              control={control}
+              render={({ field }) => (
+                <SelectDropdown
+                  field={field}
+                  label={t('CompleteProfile.countryLabel')}
+                  items={countries}
+                />
+              )}
             />
-            <SelectDropdown
+            <FormFieldError error={errors.country} />
+            <Controller
               name="title"
-              label={t('CompleteProfile.titleLabel')}
-              value={selectedTitle}
-              handler={handleValueChange}
-              items={titles}
+              control={control}
+              render={({ field }) => (
+                <SelectDropdown
+                  field={field}
+                  label={t('CompleteProfile.titleLabel')}
+                  items={titles}
+                />
+              )}
             />
+            <FormFieldError error={errors.title} />
           </Box>
           <Container
             sx={{
@@ -94,6 +117,7 @@ export default function CompleteProfile({ countries, titles, lang }: Props) {
           >
             <Button
               type="submit"
+              disabled={isSubmitting}
               color="secondary"
               variant="contained"
               sx={{
