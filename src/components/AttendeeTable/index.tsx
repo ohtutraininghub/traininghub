@@ -15,13 +15,21 @@ import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 import { useTranslation } from '@/lib/i18n/client';
+import { post, remove } from '@/lib/response/fetchUtil';
+import { useMessage } from '../Providers/MessageProvider';
+import { useRouter } from 'next/navigation';
+
+type Attendees = UserNamesAndIds | RequestsAndUserNames;
+type Attendee = Attendees[0];
 
 interface Props extends DictProps {
-  attendees: UserNamesAndIds | RequestsAndUserNames;
+  courseId: string;
+  attendees: Attendees;
   noAttendeesText: string;
 }
 
 export default function AttendeeTable({
+  courseId,
   attendees,
   noAttendeesText,
   lang,
@@ -29,6 +37,8 @@ export default function AttendeeTable({
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const { t } = useTranslation(lang, 'components');
+  const { notify } = useMessage();
+  const router = useRouter();
 
   if (!attendees) return null;
 
@@ -56,6 +66,20 @@ export default function AttendeeTable({
   ) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
+  };
+
+  const handleChangeParticipation = async (attendee: Attendee) => {
+    const responseJson = attendee.isParticipating
+      ? await remove('/api/course/participation', {
+          courseId: courseId,
+          userId: attendee.userId,
+        })
+      : await post('/api/course/participation', {
+          courseId: courseId,
+          userId: attendee.userId,
+        });
+    notify(responseJson);
+    router.refresh();
   };
 
   // Avoid a layout jump when reaching the last page with empty rows.
@@ -114,6 +138,8 @@ export default function AttendeeTable({
                         style={{
                           transform: 'scale(1.25)',
                         }}
+                        checked={attendee.isParticipating}
+                        onChange={() => handleChangeParticipation(attendee)}
                       />
                     </TableCell>
                   )}
