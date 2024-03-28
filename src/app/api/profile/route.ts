@@ -1,5 +1,9 @@
 import { prisma } from '@/lib/prisma';
-import { StatusCodeType, successResponse } from '@/lib/response/responseUtil';
+import {
+  StatusCodeType,
+  errorResponse,
+  successResponse,
+} from '@/lib/response/responseUtil';
 import { NextRequest } from 'next/server';
 import { getServerAuthSession } from '@/lib/auth';
 import { handleCommonErrors } from '@/lib/response/errorUtil';
@@ -17,6 +21,12 @@ export async function PUT(request: NextRequest) {
     const title = await prisma.title.findFirst({
       where: { name: data.title },
     });
+    if (!country || !title) {
+      return errorResponse({
+        message: t('Users.countryOrTitleNotFound'),
+        statusCode: StatusCodeType.NOT_FOUND,
+      });
+    }
     await prisma.user.update({
       where: { id: userId },
       data: {
