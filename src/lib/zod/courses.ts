@@ -130,4 +130,11 @@ export const courseIdSchema = z
   })
   .strict();
 
+export const courseAndUserSchema = z
+  .object({
+    courseId: z.string().cuid(),
+    userId: z.string().cuid(),
+  })
+  .strict();
+
 export type CourseEnrollSchemaType = z.infer<typeof courseEnrollSchema>;

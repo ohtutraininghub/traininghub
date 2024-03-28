@@ -1,5 +1,7 @@
 {
   "consecutiveSpacesNotAllowed": "Consecutive spaces are not allowed",
+  "countries": "Country name",
+  "countryNameRequired": "A country name is required",
   "countryRequired": "A country is required",
   "courseId": "Course Id",
   "description": "Description",
@@ -19,11 +21,15 @@
   "lastCancelEnrollDateCannotBeAfterEndDate": "The last date to cancel enrollment cannot be after the end date of the course",
   "lastEnrollDateCannotBeAfterEndDate": "The last date to enroll cannot be after the end date of the course",
   "maxStudents": "Max students",
+  "maximumLengthForCountryIs": "The maximum length for a country is {{maxCountryLength}} characters",
   "maximumLengthForTagIs": "The maximum length for a tag is {{maxTagLength}} characters",
+  "maximumLengthForTitleIs": "The maximum length for a title is {{maxTitleLength}} characters",
   "name": "Name",
   "startDate": "Start date",
   "startDateCannotBeInThePast": "Start date cannot be in the past",
   "tagNameRequired": "A tag name is required",
   "tags": "Tag name",
-  "titleRequired": "A title is required"
+  "titleNameRequired": "A title is required",
+  "titleRequired": "A title is required",
+  "titles": "Title"
 }

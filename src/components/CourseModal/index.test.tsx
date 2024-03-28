@@ -7,7 +7,7 @@ import { useSession } from 'next-auth/react';
 import userEvent from '@testing-library/user-event';
 import { waitFor } from '@testing-library/dom';
 
-const adminUser: User = {
+const adminUser = {
   id: '123a',
   name: 'Ada Admin',
   email: 'admin@traininghub.org',
@@ -48,7 +48,7 @@ const upComingCourse: CourseWithInfo = {
   tags: [],
   _count: {
     students: 5,
-    requesters: 0,
+    requests: 0,
   },
   createdById: adminUser.id,
   createdBy: adminUser,
@@ -70,7 +70,7 @@ const pastCourse: CourseWithInfo = {
   tags: [],
   _count: {
     students: 5,
-    requesters: 3,
+    requests: 3,
   },
   createdById: trainerUser.id,
   createdBy: trainerUser,
@@ -130,7 +130,7 @@ describe('CourseModal component', () => {
         course={upComingCourse}
         usersEnrolledCourseIds={[]}
         enrolledStudents={[]}
-        requesters={[]}
+        requests={[]}
         lang="en"
       />
     );
@@ -150,7 +150,7 @@ describe('CourseModal component', () => {
         course={upComingCourse}
         usersEnrolledCourseIds={[]}
         enrolledStudents={[]}
-        requesters={[]}
+        requests={[]}
         lang="en"
       />
     );
@@ -170,7 +170,7 @@ describe('CourseModal component', () => {
         course={upComingCourse}
         usersEnrolledCourseIds={[]}
         enrolledStudents={[]}
-        requesters={[]}
+        requests={[]}
         lang="en"
       />
     );
@@ -188,8 +188,14 @@ describe('CourseModal component', () => {
       <CourseModal
         course={upComingCourse}
         usersEnrolledCourseIds={[]}
-        enrolledStudents={[{ name: traineeUser.name, userId: traineeUser.id }]}
-        requesters={[]}
+        enrolledStudents={[
+          {
+            name: traineeUser.name,
+            userId: traineeUser.id,
+            isParticipating: false,
+          },
+        ]}
+        requests={[]}
         lang="en"
       />
     );
@@ -211,8 +217,26 @@ describe('CourseModal component', () => {
       <CourseModal
         course={pastCourse}
         usersEnrolledCourseIds={[]}
-        enrolledStudents={[{ name: traineeUser.name, userId: traineeUser.id }]}
-        requesters={[{ name: trainerUser.name, userId: trainerUser.id }]}
+        enrolledStudents={[
+          {
+            name: traineeUser.name,
+            userId: traineeUser.id,
+            isParticipating: false,
+          },
+        ]}
+        requests={[
+          {
+            name: trainerUser.name,
+            user: {
+              name: traineeUser.name,
+            },
+            id: '123',
+            courseId: pastCourse.id,
+            userId: trainerUser.id,
+            date: new Date(),
+            isParticipating: false,
+          },
+        ]}
         lang="en"
       />
     );

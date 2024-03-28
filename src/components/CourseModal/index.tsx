@@ -27,15 +27,16 @@ import { useMediaQuery, useTheme } from '@mui/material';
 import { ImageContainer } from '../ImageContainer';
 import { hasCourseDeleteRights } from '@/lib/auth-utils';
 import { useMessage } from '../Providers/MessageProvider';
-import { post, update, remove } from '../../lib/response/fetchUtil';
+import { post, remove } from '../../lib/response/fetchUtil';
 import { RequestTrainingButton } from '@/components/Buttons/Buttons';
+import { RequestsAndUserNames } from '@/lib/prisma/requests';
 
 interface Props extends DictProps {
   course: CourseWithInfo | undefined;
   usersEnrolledCourseIds?: string[];
   usersRequestedCourseIds?: string[];
   enrolledStudents?: UserNamesAndIds;
-  requesters?: UserNamesAndIds;
+  requests?: RequestsAndUserNames;
 }
 
 export default function CourseModal({
@@ -44,7 +45,7 @@ export default function CourseModal({
   usersEnrolledCourseIds,
   usersRequestedCourseIds,
   enrolledStudents,
-  requesters,
+  requests,
 }: Props) {
   const { t } = useTranslation(lang, 'components');
   const { data: session, status } = useSession({ required: true });
@@ -83,7 +84,7 @@ export default function CourseModal({
       });
     }
     return t('CourseModal.requests', {
-      requestCount: course._count.requesters,
+      requestCount: course._count.requests,
     });
   };
 
@@ -111,7 +112,7 @@ export default function CourseModal({
   };
 
   const handleRemoveRequest = async () => {
-    const responseJson = await update('/api/course/request', {
+    const responseJson = await remove('/api/course/request', {
       courseId: course.id,
     });
     notify(responseJson);
@@ -257,15 +258,19 @@ export default function CourseModal({
 
         {courseView === 'attendees' && (
           <AttendeeTable
+            courseId={course.id}
             attendees={enrolledStudents || []}
             noAttendeesText={t('AttendeeList.noAttendeesText')}
+            lang={lang}
           />
         )}
 
         {courseView === 'requests' && (
           <AttendeeTable
-            attendees={requesters || []}
+            courseId={course.id}
+            attendees={requests || []}
             noAttendeesText={t('AttendeeList.noRequestsText')}
+            lang={lang}
           />
         )}
 

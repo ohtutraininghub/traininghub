@@ -10,6 +10,11 @@
     "templateNotFound": "Template by the given id was not found",
     "unprocessableContent": "Unprocessable content"
   },
+  "Countries": {
+    "duplicateError": "Failed to create country tag. A duplicate tag already exists.",
+    "tagCreated": "The country tag was succesfully created!",
+    "tagDeleted": "The country tag was succesfully deleted"
+  },
   "Courses": {
     "addedToCalendar": "Added course to calendar!",
     "courseCreated": "Course successfully created!",
@@ -24,6 +29,11 @@
     "noCancellingAfterDeadline": "No cancelling allowed after cancellation deadline",
     "noEnrollingAfterDeadline": "No enrolling allowed after enrollment deadline",
     "youHaveAlreadyEnrolled": "You have already enrolled!"
+  },
+  "Participations": {
+    "participationAdded": "Participation marked",
+    "participationNotFound": "Participation not found",
+    "participationRemoved": "Participation removed"
   },
   "Requests": {
     "requestRemoved": "Your request was removed",
