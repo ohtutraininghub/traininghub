@@ -64,8 +64,8 @@ describe('Profile Completion API tests', () => {
     );
     it('should update user profile', async () => {
       const request = mockPutRequest({
-        country: 'United States',
-        title: 'Employee',
+        country: country.id,
+        title: title.id,
       });
       const response = await PUT(request);
       const data = await response.json();
@@ -76,39 +76,39 @@ describe('Profile Completion API tests', () => {
     });
     it('should return error if country does not exist', async () => {
       const request = mockPutRequest({
-        country: 'Non-existing country',
-        title: 'Employee',
+        country: '',
+        title: title.id,
       });
       const response = await PUT(request);
       const data = await response.json();
 
       expect(data.message).toBe(`Country or title not found!`);
       expect(data.messageType).toBe(MessageType.ERROR);
-      expect(response.status).toBe(StatusCodeType.NOT_FOUND);
+      expect(response.status).toBe(StatusCodeType.BAD_REQUEST);
     });
     it('should return error if title does not exist', async () => {
       const request = mockPutRequest({
-        country: 'United States',
-        title: 'Non-existing title',
+        country: country.id,
+        title: '',
       });
       const response = await PUT(request);
       const data = await response.json();
 
       expect(data.message).toBe(`Country or title not found!`);
       expect(data.messageType).toBe(MessageType.ERROR);
-      expect(response.status).toBe(StatusCodeType.NOT_FOUND);
+      expect(response.status).toBe(StatusCodeType.BAD_REQUEST);
     });
     it('should return error if both country and title do not exist', async () => {
       const request = mockPutRequest({
-        country: 'Non-existing country',
-        title: 'Non-existing title',
+        country: '',
+        title: '',
       });
       const response = await PUT(request);
       const data = await response.json();
 
       expect(data.message).toBe(`Country or title not found!`);
       expect(data.messageType).toBe(MessageType.ERROR);
-      expect(response.status).toBe(StatusCodeType.NOT_FOUND);
+      expect(response.status).toBe(StatusCodeType.BAD_REQUEST);
     });
   });
 });

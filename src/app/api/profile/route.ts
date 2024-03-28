@@ -1,8 +1,8 @@
 import { prisma } from '@/lib/prisma';
 import {
   StatusCodeType,
-  errorResponse,
   successResponse,
+  errorResponse,
 } from '@/lib/response/responseUtil';
 import { NextRequest } from 'next/server';
 import { getServerAuthSession } from '@/lib/auth';
@@ -15,33 +15,28 @@ export async function PUT(request: NextRequest) {
     const session = await getServerAuthSession();
     const userId = session.user.id;
     const data = await request.json();
-    const country = await prisma.country.findFirst({
-      where: { name: data.country },
-    });
-    const title = await prisma.title.findFirst({
-      where: { name: data.title },
-    });
-    if (!country || !title) {
+
+    if (!data.country || !data.title) {
       return errorResponse({
         message: t('Users.countryOrTitleNotFound'),
-        statusCode: StatusCodeType.NOT_FOUND,
+        statusCode: StatusCodeType.BAD_REQUEST,
       });
     }
+
     await prisma.user.update({
       where: { id: userId },
       data: {
-        country: { connect: { id: country?.id } },
-        title: { connect: { id: title?.id } },
+        country: { connect: { id: data.country } },
+        title: { connect: { id: data.title } },
         profileCompleted: true,
       },
     });
 
     return successResponse({
-      message: t('Users.userCreated'),
+      message: t('Users.userUpdated'),
       statusCode: StatusCodeType.OK,
     });
   } catch (error: unknown) {
-    console.log(error);
     return await handleCommonErrors(error);
   }
 }

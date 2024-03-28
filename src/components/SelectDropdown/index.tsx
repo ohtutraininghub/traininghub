@@ -46,7 +46,7 @@ const SelectDropdown = React.forwardRef<HTMLDivElement, Props>(
           {items.map((item) => (
             <MenuItem
               key={item.id}
-              value={item.name}
+              value={item.id}
               divider
               sx={{
                 '&.Mui-selected': {

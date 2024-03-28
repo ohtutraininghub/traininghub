@@ -49,6 +49,6 @@
   "Users": {
     "countryOrTitleNotFound": "Country or title not found!",
     "roleChanged": "User access role successfully changed!",
-    "userCreated": "User info successfully updated!"
+    "userUpdated": "User info successfully updated!"
   }
 }
