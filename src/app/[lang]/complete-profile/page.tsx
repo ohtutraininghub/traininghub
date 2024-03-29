@@ -5,6 +5,8 @@ import { getTitles } from '@/lib/prisma/title';
 import BackgroundContainer from '@/components/BackgroundContainer';
 import { Locale } from '@/lib/i18n/i18n-config';
 
+export const dynamic = 'force-dynamic';
+
 type Props = {
   params: {
     lang: Locale;
