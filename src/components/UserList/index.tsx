@@ -259,7 +259,7 @@ export default function UserList({ lang, users }: Props) {
               <TableRow key={user.id}>
                 <TableCell component="th" scope="row">
                   <Link
-                    href={`profile/?userId=${user.id}`}
+                    href={`profile/${user.id}`}
                     style={{
                       textDecoration: 'none',
                       color: palette.black.main,
