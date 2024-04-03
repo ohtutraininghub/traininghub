@@ -92,6 +92,13 @@
   "CourseModalCloseButton": {
     "close": "Close"
   },
+  "CreateFeedbackButton": {
+    "button": "Feedback Form",
+    "tooltip": {
+      "active": "Creates a Google Form for course feedback",
+      "disabled": "The feedback form for this course exists already"
+    }
+  },
   "DeleteTemplateButton": {
     "button": {
       "cancel": "Cancel",
