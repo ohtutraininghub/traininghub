@@ -16,8 +16,8 @@ export default async function ProfilePageById({ params }: Props) {
   const userData = await getUserData(userId);
 
   return (
-    <Container>
-      <div style={{ paddingTop: '32px', width: '100%' }}>
+    <Container maxWidth="md">
+      <div style={{ paddingBottom: '20px', paddingTop: '32px' }}>
         <ProfileUserDetails
           name={userData?.name ?? ''}
           email={userData?.email ?? ''}
