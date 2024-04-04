@@ -1,5 +1,6 @@
 import { Course } from '@prisma/client';
 import { calendar as googlecalendar } from '@googleapis/calendar';
+import { forms as googleforms } from '@googleapis/forms';
 import { UserRefreshClient } from 'google-auth-library';
 import { getRefreshToken } from '@/lib/prisma/account';
 import {
@@ -129,6 +130,38 @@ export const updateCourseToCalendars = async (course: Course) => {
           await handleGoogleError(error, user.userId, course.id, eventId)
       );
   });
+};
+
+export const createCourseFeedbackForm = async (course) => {
+  // TODO: Implement logic to determine if a feedback form already exists
+
+  const refreshTokenAuth = await getRefreshTokenAuth(course.userId);
+  const forms = googleforms({ version: 'v1', auth: refreshTokenAuth });
+
+  try {
+    const response = await forms.forms.create({
+      requestBody: {
+        title: `Please provide feedback for the course ${course.name}`,
+        document_title: `${course.name} Feedback`, // Corrected to template literal
+      },
+    });
+
+    const formUrl = response?.data?.responseUrl;
+    if (!formUrl) {
+      throw new Error('Google response did not contain form URL!');
+    }
+
+    // Optional: Save form URL to course
+    // await prisma.course.update({
+    //   where: { id: course.id },
+    //   data: { feedbackFormUrl: formUrl },
+    // });
+
+    return formUrl;
+  } catch (error) {
+    await logHandledException(error); // Awaiting the logging
+    throw error; // Rethrow the error for the caller to handle
+  }
 };
 
 const getRefreshTokenAuth = async (userId: string) => {

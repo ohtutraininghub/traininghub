@@ -18,6 +18,7 @@ import { useState } from 'react';
 import { timeUntilstart } from '@/lib/timedateutils';
 import LocalizedDateTime from '../LocalizedDateTime';
 import CreateSlackButton from './CreateSlackButton';
+import CreateFeedbackButton from './CreateFeedbackButton';
 import { post } from '@/lib/response/fetchUtil';
 import { DictProps } from '@/lib/i18n';
 import { useRouter } from 'next/navigation';
@@ -55,6 +56,13 @@ export default function ProfileCourseList({
   };
   const handleCreateNewChannel = async (id: string) => {
     const responseJson = await post('/api/slack/channel', { courseId: id });
+    notify(responseJson);
+    router.push(`/${lang}/profile`);
+    router.refresh();
+  };
+  const handleCreateNewFeedback = async (id: string) => {
+    console.log(id);
+    const responseJson = await post('/api/forms/create', { courseId: id });
     notify(responseJson);
     router.push(`/${lang}/profile`);
     router.refresh();
@@ -174,6 +182,18 @@ export default function ProfileCourseList({
                               }
                             }}
                             buttonDisabled={Boolean(course.slackChannelId)}
+                          />
+                          <CreateFeedbackButton
+                            lang={lang}
+                            onclick={(
+                              event: React.MouseEvent<HTMLButtonElement>
+                            ) => {
+                              {
+                                event.preventDefault(); // prevents the CourseModal from opening
+                                handleCreateNewFeedback(course.id);
+                              }
+                            }}
+                            buttonDisabled={Boolean(false)}
                           />
                         </Box>
                       )}

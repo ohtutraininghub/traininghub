@@ -93,7 +93,7 @@
     "close": "Close"
   },
   "CreateFeedbackButton": {
-    "button": "Feedback Form",
+    "button": "Feedback",
     "tooltip": {
       "active": "Creates a Google Form for course feedback",
       "disabled": "The feedback form for this course exists already"

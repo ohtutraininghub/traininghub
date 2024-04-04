@@ -53,10 +53,10 @@ const CreateFeedbackButton = ({
           >
             <Image
               style={{ marginRight: isSmallScreen ? 0 : '0.5em' }}
-              src="/slack-logo-png-white.png"
-              width={22}
+              src="/Google_Forms.png"
+              width={16}
               height={22}
-              alt="Slack image"
+              alt="Google Forms logo"
             />
             {!isSmallScreen && t('CreateFeedbackButton.button')}
           </Button>
