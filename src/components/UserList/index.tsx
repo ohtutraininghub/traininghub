@@ -26,7 +26,9 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import { $Enums, User } from '@prisma/client';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 
@@ -82,6 +84,7 @@ export default function UserList({ lang, users }: Props) {
   const { t } = useTranslation(lang, 'admin');
   const { notify } = useMessage();
   const router = useRouter();
+  const { palette } = useTheme();
 
   const [page, setPage] = useState(0);
   const [visibleRowsPerPage, setVisibleRowsPerPage] = useState(5);
@@ -255,7 +258,16 @@ export default function UserList({ lang, users }: Props) {
             {visibleUsers.map((user, userIndex) => (
               <TableRow key={user.id}>
                 <TableCell component="th" scope="row">
-                  {user?.name ?? '-'}
+                  <Link
+                    href={`/profile/${user.id}`}
+                    data-testid={`${user.id}-user-link`}
+                    style={{
+                      textDecoration: 'none',
+                      color: palette.black.main,
+                    }}
+                  >
+                    {user?.name ?? '-'}
+                  </Link>
                 </TableCell>
                 <TableCell component="th" scope="row">
                   {user?.email ?? '-'}
