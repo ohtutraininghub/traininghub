@@ -1,5 +1,6 @@
 import CreateTag from './CreateTag';
 import CreateCountry from './CreateCountry';
+import CreateTitle from './CreateTitle';
 import { Locale } from '@/lib/i18n/i18n-config';
 import { translator } from '@/lib/i18n';
 import UserList from '@/components/UserList';
@@ -23,6 +24,11 @@ export default async function AdminDashboardPage({ params }: Props) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
       <Typography variant="h1">{t('DashboardTitle')}</Typography>
+      <CreateTitle
+        titlesHeader={t('TagsSection.header')}
+        titles={[]}
+        lang={params.lang}
+      />
       <CreateCountry
         countryHeader={t('CountriesSection.header')}
         countries={countries}

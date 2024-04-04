@@ -14,6 +14,7 @@ import { isTrainerOrAdmin, isAdmin } from '@/lib/auth-utils';
 import { TemplateWithCreator } from '@/lib/prisma/templates';
 import { Tag } from '@prisma/client';
 import { Country } from '@prisma/client';
+import { Title } from '@prisma/client';
 import { DictProps } from '@i18n/index';
 import { useTranslation } from '@i18n/client';
 
@@ -26,6 +27,7 @@ export interface userDetails {
 export interface ProfileViewProps extends PropsWithChildren, DictProps {
   tags: Tag[];
   countries: Country[];
+  titles: Title[];
   userDetails: userDetails;
   courses: Course[];
   createdCourses: Course[];
