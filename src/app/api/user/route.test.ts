@@ -63,7 +63,7 @@ describe('User API tests', () => {
       const response = await PUT(req);
       const data = await response.json();
 
-      expect(data.message).toBe('User access role succesfully changed!');
+      expect(data.message).toBe('User access role successfully changed!');
       expect(data.messageType).toBe(MessageType.SUCCESS);
       expect(response.status).toBe(StatusCodeType.OK);
     });

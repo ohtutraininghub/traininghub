@@ -138,4 +138,18 @@ describe('User list', () => {
     const smallConfirmCard = await screen.findByTestId('small-confirm-card');
     expect(smallConfirmCard).toBeInTheDocument();
   });
+
+  it('renders user links with correct href values', async () => {
+    const testerlink = screen.getByTestId(`${users[0].id}-user-link`);
+    expect(testerlink).toBeInTheDocument();
+    expect(testerlink).toHaveAttribute('href', `/profile/${users[0].id}`);
+
+    const trainerlink = screen.getByTestId(`${users[1].id}-user-link`);
+    expect(trainerlink).toBeInTheDocument();
+    expect(trainerlink).toHaveAttribute('href', `/profile/${users[1].id}`);
+
+    const traineelink = screen.getByTestId(`${users[2].id}-user-link`);
+    expect(traineelink).toBeInTheDocument();
+    expect(traineelink).toHaveAttribute('href', `/profile/${users[2].id}`);
+  });
 });
