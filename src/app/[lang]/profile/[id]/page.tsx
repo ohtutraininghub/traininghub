@@ -10,6 +10,7 @@ import {
   getAllUsers,
   getStudentNamesByCourseId,
   getUserData,
+  Users,
 } from '@/lib/prisma/users';
 import {
   RequestsAndUserNames,
@@ -21,8 +22,8 @@ import {
 } from '@/lib/prisma/templates';
 import CreateTag from '@/app/[lang]/admin/dashboard/CreateTag';
 import CreateCountry from '@/app/[lang]/admin/dashboard/CreateCountry';
-import { getTags } from '@/lib/prisma/tags';
-import { getCountries } from '@/lib/prisma/country';
+import { getTags, Tags } from '@/lib/prisma/tags';
+import { getCountries, Countries } from '@/lib/prisma/country';
 import { isAdmin, isTrainerOrAdmin } from '@/lib/auth-utils';
 import UnauthorizedError from '@/components/UnauthorizedError';
 
@@ -37,16 +38,14 @@ type Props = {
 export default async function ProfilePageById({ searchParams, params }: Props) {
   const session = await getServerAuthSession();
   const { t } = await translator(['components', 'admin']);
-  const allUsers = await getAllUsers();
-  const tags = await getTags();
-  const countries = await getCountries();
+  const ownProfile = params.id === session.user.id;
 
-  if (!isAdmin(session.user) && params.id !== session.user.id) {
+  if (!isAdmin(session.user) && !ownProfile) {
     return <UnauthorizedError lang={params.lang} />;
   }
 
   const userData =
-    isAdmin(session.user) && params.id !== session.user.id
+    isAdmin(session.user) && !ownProfile
       ? await getUserData(params.id)
       : await getUserData(session.user.id);
 
@@ -60,15 +59,25 @@ export default async function ProfilePageById({ searchParams, params }: Props) {
     (course) => course.id === searchParams.courseId
   );
 
-  const templates = isAdmin(session.user)
-    ? await getTemplatesWithCreator()
-    : await getTemplatesByUserIdWithCreator(session.user.id);
+  const templates =
+    isAdmin(session.user) && ownProfile
+      ? await getTemplatesWithCreator()
+      : await getTemplatesByUserIdWithCreator(params.id);
 
   let enrolledStudents: UserNamesAndIds | null = [];
   let requests: RequestsAndUserNames | null = [];
   if (isTrainerOrAdmin(session.user) && openedCourse) {
     enrolledStudents = await getStudentNamesByCourseId(openedCourse.id);
     requests = await getRequestsByCourseId(openedCourse.id);
+  }
+
+  let allUsers: Users | null = [];
+  let tags: Tags | null = [];
+  let countries: Countries | null = [];
+  if (isAdmin(session.user)) {
+    allUsers = await getAllUsers();
+    tags = await getTags();
+    countries = await getCountries();
   }
 
   return (
