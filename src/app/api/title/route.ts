@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
       error.code === 'P2002'
     ) {
       return errorResponse({
-        message: t('Tags.duplicateError'),
+        message: t('Titles.duplicateError'),
         statusCode: StatusCodeType.UNPROCESSABLE_CONTENT,
       });
     }
