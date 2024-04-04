@@ -2,6 +2,7 @@
   "consecutiveSpacesNotAllowed": "Consecutive spaces are not allowed",
   "countries": "Country name",
   "countryNameRequired": "A country name is required",
+  "countryRequired": "A country is required",
   "courseId": "Course Id",
   "description": "Description",
   "endDate": "End date",
@@ -29,5 +30,6 @@
   "tagNameRequired": "A tag name is required",
   "tags": "Tag name",
   "titleNameRequired": "A title is required",
+  "titleRequired": "A title is required",
   "titles": "Title"
 }

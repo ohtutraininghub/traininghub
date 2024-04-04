@@ -57,6 +57,8 @@
     "templateUpdated": "Template successfully updated"
   },
   "Users": {
-    "roleChanged": "User access role succesfully changed!"
+    "countryOrTitleNotFound": "Country or title not found!",
+    "roleChanged": "User access role successfully changed!",
+    "userUpdated": "User info successfully updated!"
   }
 }
