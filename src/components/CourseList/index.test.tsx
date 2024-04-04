@@ -37,6 +37,7 @@ jest.mock('next/navigation', () => ({
   },
   useSearchParams: jest.fn(() => new URLSearchParams()),
   usePathname: jest.fn(),
+  useParams: jest.fn().mockReturnValue({ id: '123a' }),
 }));
 
 jest.mock('next-auth/react', () => ({
@@ -51,6 +52,9 @@ describe('CourseList Component', () => {
     emailVerified: null,
     image: '',
     role: Role.ADMIN,
+    countryId: '1',
+    titleId: '1',
+    profileCompleted: true,
   };
 
   const courses: CourseWithInfo[] = [
