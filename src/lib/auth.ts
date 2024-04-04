@@ -85,10 +85,14 @@ export const authOptions: NextAuthOptions = {
           ...session.user,
           id: token.id,
           role: token.role,
+          profileCompleted: token.profileCompleted,
         },
       };
     },
-    jwt: async ({ token, user, account }) => {
+    jwt: async ({ token, user, account, trigger, session }) => {
+      if (trigger === 'update' && session?.profileCompleted) {
+        token.profileCompleted = session.profileCompleted;
+      }
       if (account) {
         // Account is only provided on first call right after sign in
         await updateGoogleAccount(account);
@@ -99,6 +103,7 @@ export const authOptions: NextAuthOptions = {
           ...token,
           id: user.id,
           role: user.role,
+          profileCompleted: user.profileCompleted,
         };
       }
       return token;
