@@ -1,7 +1,7 @@
 import { coursesWithStartDateBetweenDates } from '../prisma/courses';
 import { sendReminderToUsers } from '../slack';
 
-const createDate = (days: number) => {
+const createDateInDays = (days: number) => {
   const startDateStart = new Date();
   startDateStart.setDate(startDateStart.getDate() + days);
   startDateStart.setHours(0, 1, 0, 0);
@@ -12,8 +12,8 @@ const createDate = (days: number) => {
 };
 
 const sendNotificationsBeforeCourseStart = async () => {
-  const threeDays = createDate(3);
-  const oneDay = createDate(1);
+  const threeDays = createDateInDays(3);
+  const oneDay = createDateInDays(1);
   const coursesInThreeDays = await coursesWithStartDateBetweenDates(
     threeDays.startDateStart,
     threeDays.startDateEnd
@@ -21,6 +21,7 @@ const sendNotificationsBeforeCourseStart = async () => {
   coursesInThreeDays.forEach((course) => {
     const emails = course.students.map((student) => student.email);
     if (Array.isArray(emails) && emails.every((email) => email !== null)) {
+      console.log('reminderiiii 3');
       sendReminderToUsers(course, emails as string[], '3 days');
     }
   });
@@ -31,6 +32,7 @@ const sendNotificationsBeforeCourseStart = async () => {
   coursesInOneDay.forEach((course) => {
     const emails = course.students.map((student) => student.email);
     if (Array.isArray(emails) && emails.every((email) => email !== null)) {
+      console.log('reminderiiii 1', emails);
       sendReminderToUsers(course, emails as string[], '1 day');
     }
   });
