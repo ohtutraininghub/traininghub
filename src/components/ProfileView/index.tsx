@@ -48,9 +48,10 @@ export default function ProfileView({
   const { palette } = useTheme();
   const { t } = useTranslation(lang, 'components');
   const currentDate = new Date();
-  const { data: session } = useSession();
+  const { data: session } = useSession({ required: true });
   const userId = session?.user?.id;
-  const profileId = useParams().id;
+  const params = useParams();
+  const profileId = params.id;
   const ownProfile = userId === profileId;
 
   const handleChangeTab = (

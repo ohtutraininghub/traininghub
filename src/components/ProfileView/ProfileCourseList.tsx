@@ -44,8 +44,9 @@ export default function ProfileCourseList({
   const [isCollapsed, setIsCollapsed] = useState(open);
   const { notify } = useMessage();
   const router = useRouter();
-  const { data: session } = useSession();
-  const profileId = useParams().id;
+  const { data: session } = useSession({ required: true });
+  const params = useParams();
+  const profileId = params.id;
   const userId = session?.user.id;
 
   const ownProfile = userId === profileId;
@@ -61,7 +62,7 @@ export default function ProfileCourseList({
   const handleCreateNewChannel = async (id: string) => {
     const responseJson = await post('/api/slack/channel', { courseId: id });
     notify(responseJson);
-    router.push(`/${lang}/profile`);
+    router.push(`/${lang}/profile/${session?.user.id}`);
     router.refresh();
   };
   return (
