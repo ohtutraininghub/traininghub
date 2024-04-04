@@ -21,7 +21,7 @@ export default function TitleChip({ lang, titleId, titleName }: Props) {
   const [backdropOpen, setBackdropOpen] = useState(false);
 
   const confirmTitleDeletionMessage = `${t(
-    'TagList.confirmTagDeletion'
+    'TitleList.confirmTitleDeletion'
   )} ${titleName}`;
 
   const handleDelete = async () => {

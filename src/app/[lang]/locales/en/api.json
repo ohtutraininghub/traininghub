@@ -56,6 +56,11 @@
     "templateNameInUse": "Template name is already in use",
     "templateUpdated": "Template successfully updated"
   },
+  "Titles": {
+    "duplicateError": "Failed to create title. A duplicate title already exists.",
+    "titleCreated": "The title was succesfully created!",
+    "titleDeleted": "The title was succesfully deleted"
+  },
   "Users": {
     "roleChanged": "User access role succesfully changed!"
   }

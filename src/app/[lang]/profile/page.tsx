@@ -89,7 +89,7 @@ export default async function ProfilePage({ searchParams, params }: Props) {
         tags={tags}
       >
         <CreateTitle
-          titlesHeader={t('admin:TagsSection.header')}
+          titlesHeader={t('admin:TitlesSection.header')}
           titles={titles}
           lang={params.lang}
         />

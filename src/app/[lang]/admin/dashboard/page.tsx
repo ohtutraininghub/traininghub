@@ -25,7 +25,7 @@ export default async function AdminDashboardPage({ params }: Props) {
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
       <Typography variant="h1">{t('DashboardTitle')}</Typography>
       <CreateTitle
-        titlesHeader={t('TagsSection.header')}
+        titlesHeader={t('TitlesSection.header')}
         titles={[]}
         lang={params.lang}
       />

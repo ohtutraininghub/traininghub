@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
       data: newTitle,
     });
     return successResponse({
-      message: t('Tags.tagCreated'),
+      message: t('Titles.titleCreated'),
       statusCode: StatusCodeType.CREATED,
     });
   } catch (error: unknown) {
@@ -70,7 +70,7 @@ export async function DELETE(request: NextRequest) {
     });
 
     return successResponse({
-      message: t('Tags.tagDeleted'),
+      message: t('Titles.titleDeleted'),
       statusCode: StatusCodeType.OK,
     });
   } catch (error: unknown) {

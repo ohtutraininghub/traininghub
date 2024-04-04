@@ -54,7 +54,7 @@ export default function TitleForm({ lang }: Props) {
       </FormLabel>
       <Box sx={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
         <OutlinedInput
-          placeholder={t('TagForm.placeholderText')}
+          placeholder={t('TitleForm.placeholderText')}
           {...register('name')}
           inputProps={{
             maxLength: maxTitleLength + 1,
@@ -70,7 +70,7 @@ export default function TitleForm({ lang }: Props) {
           sx={{}}
           data-testid="titleSubmitButton"
         >
-          {t('TagForm.button.submit')}
+          {t('TitleForm.button.submit')}
         </Button>
       </Box>
       <FormFieldError error={errors.name} />

@@ -15,7 +15,7 @@ export default async function TitleList({ lang, titles }: TitleListProps) {
   if (titles.length === 0) {
     return (
       <Typography variant="body1" mt={1}>
-        {`(${t('TagList.noTagsAdded')})`}
+        {`(${t('TitleList.noTitlesAdded')})`}
       </Typography>
     );
   }
