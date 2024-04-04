@@ -40,7 +40,11 @@ describe('Course editing form', () => {
   });
 
   it('allows trainer to save new template', () => {
+    cy.intercept('GET', `/api/auth/session`).as('getUser');
     cy.login('emily.davis@example.com', 'TRAINER');
+    cy.wait('@getUser').then((interception) => {
+      cy.wrap(interception?.response?.body?.user.id).as('userId');
+    });
     cy.contains('Robot Framework Fundamentals').click();
     cy.getCy('editCourseButton').click();
     cy.getCy('saveTemplateButton').click();
@@ -49,7 +53,9 @@ describe('Course editing form', () => {
       .within(() => {
         cy.contains('button', 'Confirm').click();
       });
-    cy.visit('/profile');
+    cy.get('@userId').then((userId) => {
+      cy.visit(`/profile/${userId}`);
+    });
     cy.getCy('myCoursesTab').click();
     cy.getCy('templateListControls').click();
     cy.getCy('templateList').contains('Robot Framework Fundamentals');

@@ -7,7 +7,13 @@ describe('Template editing', () => {
   describe('when logged in as an admin', () => {
     beforeEach(() => {
       cy.login('john.doe@example.com', 'ADMIN');
-      cy.visit('/profile');
+      cy.intercept('GET', `/api/auth/session`).as('getUser');
+      cy.wait('@getUser').then((interception) => {
+        cy.wrap(interception?.response?.body?.user.id).as('userId');
+      });
+      cy.get('@userId').then((userId) => {
+        cy.visit(`/profile/${userId}`);
+      });
       cy.getCy('myCoursesTab').click();
       cy.getCy('templateListControls').click();
     });
@@ -36,7 +42,13 @@ describe('Template editing', () => {
   describe('when logged in as a trainer', () => {
     beforeEach(() => {
       cy.login('emily.davis@example.com', 'TRAINER');
-      cy.visit('/profile');
+      cy.intercept('GET', `/api/auth/session`).as('getUser');
+      cy.wait('@getUser').then((interception) => {
+        cy.wrap(interception?.response?.body?.user.id).as('userId');
+      });
+      cy.get('@userId').then((userId) => {
+        cy.visit(`/profile/${userId}`);
+      });
       cy.getCy('myCoursesTab').click();
       cy.getCy('templateListControls').click();
     });

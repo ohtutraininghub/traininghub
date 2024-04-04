@@ -67,7 +67,13 @@ describe('Profile View', () => {
   describe('when logged in as a trainee', () => {
     beforeEach(() => {
       cy.login(traineeUser.email, traineeUser.role);
-      cy.visit('/profile');
+      cy.intercept('GET', `/api/auth/session`).as('getUser');
+      cy.wait('@getUser').then((interception) => {
+        cy.wrap(interception?.response?.body?.user.id).as('userId');
+      });
+      cy.get('@userId').then((userId) => {
+        cy.visit(`/profile/${userId}`);
+      });
       // close automatically opened dropdown
       cy.getCy('listControls\\.upcomingCourses').click();
     });
@@ -98,7 +104,13 @@ describe('Profile View', () => {
   describe('when logged in as a trainer', () => {
     beforeEach(() => {
       cy.login(trainerUser.email, trainerUser.role);
-      cy.visit('/profile');
+      cy.intercept('GET', `/api/auth/session`).as('getUser');
+      cy.wait('@getUser').then((interception) => {
+        cy.wrap(interception?.response?.body?.user.id).as('userId');
+      });
+      cy.get('@userId').then((userId) => {
+        cy.visit(`/profile/${userId}`);
+      });
       // close automatically opened dropdowns
       cy.getCy('listControls\\.inprogressCourses').click();
       cy.getCy('listControls\\.upcomingCourses').click();
@@ -153,7 +165,13 @@ describe('Profile View', () => {
   describe('when logged in as an admin', () => {
     beforeEach(() => {
       cy.login(adminUser.email, adminUser.role);
-      cy.visit('/profile');
+      cy.intercept('GET', `/api/auth/session`).as('getUser');
+      cy.wait('@getUser').then((interception) => {
+        cy.wrap(interception?.response?.body?.user.id).as('userId');
+      });
+      cy.get('@userId').then((userId) => {
+        cy.visit(`/profile/${userId}`);
+      });
       // close automatically opened dropdowns
       cy.getCy('listControls\\.inprogressCourses').click();
       cy.getCy('listControls\\.upcomingCourses').click();
