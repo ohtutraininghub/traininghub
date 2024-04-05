@@ -22,6 +22,7 @@ import {
 } from '@/lib/prisma/templates';
 import CreateTag from '@/app/[lang]/admin/dashboard/CreateTag';
 import CreateCountry from '@/app/[lang]/admin/dashboard/CreateCountry';
+import CreateTitle from '../../admin/dashboard/CreateTitle';
 import { getTags, Tags } from '@/lib/prisma/tags';
 import { getCountries, Countries } from '@/lib/prisma/country';
 import { isAdmin, isTrainerOrAdmin } from '@/lib/auth-utils';
@@ -107,6 +108,11 @@ export default async function ProfilePageById({ searchParams, params }: Props) {
         tags={tags}
         titles={titles}
       >
+        <CreateTitle
+          titlesHeader={t('admin:TitlesSection.header')}
+          titles={titles}
+          lang={params.lang}
+        />
         <CreateCountry
           countryHeader={t('admin:CountriesSection.header')}
           countries={countries}

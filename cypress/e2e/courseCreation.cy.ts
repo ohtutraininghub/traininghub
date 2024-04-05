@@ -1,5 +1,19 @@
+import { Role } from '@prisma/client';
+
+const trainerUser = {
+  name: 'Tim Trainer',
+  email: 'tim@traininghub.org',
+  role: Role.TRAINER,
+};
+
+const traineeUser = {
+  name: 'Taylor Trainee',
+  email: 'taylor@traininghub.org',
+  role: Role.TRAINEE,
+};
+
 const course = {
-  name: 'Kubernetes Fundamentals',
+  name: 'Kubernetes Fundamentals 2024',
   header: 'Learn Kubernetes',
   description:
     'This course will introduce you to the basic concepts and building blocks of Kubernetes and the architecture of the system.',
@@ -43,7 +57,7 @@ describe('Course creation using template', () => {
   });
 
   it('created templates should be visible in the template select', () => {
-    cy.login('trainer@test.com', 'TRAINER');
+    cy.login(trainerUser.email, trainerUser.role);
     cy.visit('/course/create');
 
     cy.get('#templateSelect').parent().type('{downarrow}');
@@ -52,7 +66,7 @@ describe('Course creation using template', () => {
   });
 
   it('course creation should be successful when template and dates are set', () => {
-    cy.login('trainer@test.com', 'TRAINER');
+    cy.login(trainerUser.email, trainerUser.role);
     cy.visit('/course/create');
 
     cy.get('#templateSelect').parent().type('{downarrow}{downarrow}{enter}');
@@ -73,6 +87,7 @@ describe('Course creation using template', () => {
 describe('Course creation', () => {
   before(() => {
     cy.task('clearDatabase');
+    cy.task('seedDatabase');
   });
 
   beforeEach(() => {
@@ -82,7 +97,7 @@ describe('Course creation', () => {
   });
 
   it('course creation should be successful when the input is valid ', () => {
-    cy.login('trainer@test.com', 'TRAINER');
+    cy.login(trainerUser.email, trainerUser.role);
     cy.visit('/course/create');
 
     cy.getCy('courseFormName').type(course.name);
@@ -110,7 +125,7 @@ describe('Course creation', () => {
   });
 
   it('should prefill the course start and end date', () => {
-    cy.login('trainer@test.com', 'TRAINER');
+    cy.login(trainerUser.email, trainerUser.role);
     cy.visit('/course/create');
     cy.getCy('courseFormName').type(course.name);
     cy.getCy('textEditorTextSelect').click();
@@ -134,7 +149,7 @@ describe('Course creation', () => {
   ];
 
   it('required errors should be displayed correctly', () => {
-    cy.login('trainer@test.com', 'TRAINER');
+    cy.login(trainerUser.email, trainerUser.role);
     cy.visit('/course/create');
     cy.getCy('courseFormMaxStudents')
       .should('not.have.value', '')
@@ -144,7 +159,7 @@ describe('Course creation', () => {
   });
 
   it('should not be possible for end date to be before start date', () => {
-    cy.login('trainer@test.com', 'TRAINER');
+    cy.login(trainerUser.email, trainerUser.role);
     cy.visit('/course/create');
     cy.getCy('courseFormStartDate').type('2030-06-01T08:30');
     cy.getCy('courseFormEndDate').type('2030-05-01T08:30');
@@ -153,7 +168,7 @@ describe('Course creation', () => {
   });
 
   it('should not be possible for start date to be in the past', () => {
-    cy.login('trainer@test.com', 'TRAINER');
+    cy.login(trainerUser.email, trainerUser.role);
     cy.visit('/course/create');
     cy.getCy('courseFormStartDate').type('2020-06-01T08:30');
     cy.getCy('courseFormSubmit').click();
@@ -161,7 +176,7 @@ describe('Course creation', () => {
   });
 
   it('should not be possible for last enroll date to be after the end date', () => {
-    cy.login('trainer@test.com', 'TRAINER');
+    cy.login(trainerUser.email, trainerUser.role);
     cy.visit('/course/create');
     cy.getCy('courseFormEndDate').type('2050-06-01T00:00');
     cy.getCy('courseFormLastEnrollDate').type('2050-06-02T00:00');
@@ -172,7 +187,7 @@ describe('Course creation', () => {
   });
 
   it('should not be possible for last cancel date to be after the end date', () => {
-    cy.login('trainer@test.com', 'TRAINER');
+    cy.login(trainerUser.email, trainerUser.role);
     cy.visit('/course/create');
     cy.getCy('courseFormEndDate').type('2050-06-01T00:00');
     cy.getCy('courseFormLastCancelDate').type('2050-06-02T00:00');
@@ -183,7 +198,7 @@ describe('Course creation', () => {
   });
 
   it('should not be possible to add an invalid url for course image', () => {
-    cy.login('trainer@test.com', 'TRAINER');
+    cy.login(trainerUser.email, trainerUser.role);
     cy.visit('/course/create');
     cy.getCy('courseFormImage').type('invalid url');
     cy.getCy('courseFormSubmit').click();
@@ -191,13 +206,13 @@ describe('Course creation', () => {
   });
 
   it('should not be possible to access course creation page as a trainee', () => {
-    cy.login('trainee@test.com', 'TRAINEE');
+    cy.login(traineeUser.email, traineeUser.role);
     cy.visit('/course/create');
     cy.contains('You are not authorized to view this page');
   });
 
   it('should be able to open a tooltip', () => {
-    cy.login('trainer@test.com', 'TRAINER');
+    cy.login(trainerUser.email, trainerUser.role);
     cy.visit('/course/create');
     cy.getCy('tooltipCourseDescription').trigger('mouseover');
     cy.contains(

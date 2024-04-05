@@ -13,7 +13,6 @@ export const countrySchema = z.object({
         i18n: { key: 'countryNameRequired' },
       },
     })
-
     .refine((value) => !/\s{2,}/.test(value), {
       params: {
         i18n: { key: 'consecutiveSpacesNotAllowed' },
