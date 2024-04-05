@@ -49,6 +49,17 @@ export async function getUserData(userId: string) {
       createdTemplates: {
         orderBy: [{ name: 'asc' }],
       },
+      country: {
+        select: {
+          name: true,
+        },
+      },
+
+      title: {
+        select: {
+          name: true,
+        },
+      },
     },
   });
   return userData;

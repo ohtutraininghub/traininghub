@@ -34,6 +34,8 @@ export default async function ProfilePageById({ params }: Props) {
           name={userData?.name ?? ''}
           email={userData?.email ?? ''}
           image={userData?.image ?? ''}
+          country={userData?.country?.name ?? ''}
+          title={userData?.title?.name ?? ''}
         />
       </div>
     </Container>
