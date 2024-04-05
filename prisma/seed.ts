@@ -7,6 +7,8 @@ const traineeUser = {
   emailVerified: null,
   image: '',
   role: Role.TRAINEE,
+  countryId: 'clum4qgfw000008k095npgxsx',
+  titleId: 'clum4qgfw000008k095npgxwe',
   profileCompleted: true,
 };
 
@@ -16,6 +18,8 @@ const trainerUser = {
   emailVerified: null,
   image: '',
   role: Role.TRAINER,
+  countryId: 'clum4qgfw000008k095npgxsx',
+  titleId: 'clum4qgfw000008k095npgasd',
   profileCompleted: true,
 };
 
@@ -25,6 +29,8 @@ const adminUser = {
   emailVerified: null,
   image: '',
   role: Role.ADMIN,
+  countryId: 'clum4qgfw000008k095npgxsx',
+  titleId: 'clum4qgfw000008k095npgasd',
   profileCompleted: true,
 };
 
@@ -114,7 +120,7 @@ const tagData = [
 ];
 
 const countryData = [
-  { name: 'Finland', countryCode: 'FI' },
+  { id: 'clum4qgfw000008k095npgxsx', name: 'Finland', countryCode: 'FI' },
   { name: 'Sweden', countryCode: 'SE' },
   { name: 'Norway', countryCode: 'NO' },
   { name: 'Denmark', countryCode: 'DK' },
@@ -127,8 +133,8 @@ const countryData = [
 ];
 
 const titleData = [
-  { name: 'Employee' },
-  { name: 'Management' },
+  { id: 'clum4qgfw000008k095npgxwe', name: 'Employee' },
+  { id: 'clum4qgfw000008k095npgasd', name: 'Management' },
   { name: 'Team Lead' },
 ];
 
@@ -140,8 +146,8 @@ const userData: User[] = [
     emailVerified: null,
     image: 'https://example.com/johndoe.jpg',
     role: 'ADMIN',
-    countryId: null,
-    titleId: null,
+    countryId: 'clum4qgfw000008k095npgxsx',
+    titleId: 'clum4qgfw000008k095npgasd',
     profileCompleted: true,
   },
   {
@@ -151,8 +157,8 @@ const userData: User[] = [
     emailVerified: null,
     image: 'https://example.com/alicesmith.jpg',
     role: 'ADMIN',
-    countryId: null,
-    titleId: null,
+    countryId: 'clum4qgfw000008k095npgxsx',
+    titleId: 'clum4qgfw000008k095npgasd',
     profileCompleted: true,
   },
   {
@@ -162,8 +168,8 @@ const userData: User[] = [
     emailVerified: null,
     image: 'https://example.com/bobjohnson.jpg',
     role: 'TRAINEE',
-    countryId: null,
-    titleId: null,
+    countryId: 'clum4qgfw000008k095npgxsx',
+    titleId: 'clum4qgfw000008k095npgxwe',
     profileCompleted: true,
   },
   {
@@ -173,8 +179,8 @@ const userData: User[] = [
     emailVerified: null,
     image: 'https://example.com/emilydavis.jpg',
     role: 'TRAINER',
-    countryId: null,
-    titleId: null,
+    countryId: 'clum4qgfw000008k095npgxsx',
+    titleId: 'clum4qgfw000008k095npgxwe',
     profileCompleted: true,
   },
   {
@@ -184,8 +190,8 @@ const userData: User[] = [
     emailVerified: null,
     image: 'https://example.com/chrismiller.jpg',
     role: 'ADMIN',
-    countryId: null,
-    titleId: null,
+    countryId: 'clum4qgfw000008k095npgxsx',
+    titleId: 'clum4qgfw000008k095npgxwe',
     profileCompleted: true,
   },
   {
@@ -195,8 +201,8 @@ const userData: User[] = [
     emailVerified: null,
     image: 'https://example.com/sophiawhite.jpg',
     role: 'TRAINER',
-    countryId: null,
-    titleId: null,
+    countryId: 'clum4qgfw000008k095npgxsx',
+    titleId: 'clum4qgfw000008k095npgxwe',
     profileCompleted: true,
   },
   {
@@ -206,8 +212,8 @@ const userData: User[] = [
     emailVerified: null,
     image: 'https://example.com/danielbrown.jpg',
     role: 'ADMIN',
-    countryId: null,
-    titleId: null,
+    countryId: 'clum4qgfw000008k095npgxsx',
+    titleId: 'clum4qgfw000008k095npgxwe',
     profileCompleted: true,
   },
   {
@@ -217,8 +223,8 @@ const userData: User[] = [
     emailVerified: null,
     image: 'https://example.com/oliviataylor.jpg',
     role: 'TRAINER',
-    countryId: null,
-    titleId: null,
+    countryId: 'clum4qgfw000008k095npgxsx',
+    titleId: 'clum4qgfw000008k095npgxwe',
     profileCompleted: true,
   },
   {
@@ -228,8 +234,8 @@ const userData: User[] = [
     emailVerified: null,
     image: 'https://example.com/michaelwilson.jpg',
     role: 'TRAINER',
-    countryId: null,
-    titleId: null,
+    countryId: 'clum4qgfw000008k095npgxsx',
+    titleId: 'clum4qgfw000008k095npgxwe',
     profileCompleted: true,
   },
   {
@@ -239,9 +245,9 @@ const userData: User[] = [
     emailVerified: null,
     image: 'https://example.com/ellamoore.jpg',
     role: 'TRAINEE',
-    countryId: null,
-    titleId: null,
-    profileCompleted: false,
+    countryId: 'clum4qgfw000008k095npgxsx',
+    titleId: 'clum4qgfw000008k095npgxwe',
+    profileCompleted: true,
   },
 ];
 
