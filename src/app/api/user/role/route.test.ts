@@ -35,7 +35,7 @@ const mockUpdateRequest = (body: any) => {
   }).req;
 };
 
-jest.mock('../../../lib/auth', () => ({
+jest.mock('../../../../lib/auth', () => ({
   getServerAuthSession: jest.fn(),
 }));
 

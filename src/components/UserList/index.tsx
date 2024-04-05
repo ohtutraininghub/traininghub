@@ -146,7 +146,7 @@ export default function UserList({ lang, users }: Props) {
 
   async function handleUserRoleChange(userId: string, newRole: $Enums.Role) {
     try {
-      await update('/api/user', { userId, newRole });
+      await update('/api/user/role', { userId, newRole });
       router.refresh();
       notify({
         message: t('EditUsers.infoText'),
