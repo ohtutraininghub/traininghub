@@ -4,7 +4,6 @@ const adminUser = {
   name: 'Anna Admin',
   email: 'anna@traininghub.org',
   role: Role.ADMIN,
-  profileCompleted: true,
 };
 
 describe('User list in admin dashboard', () => {
