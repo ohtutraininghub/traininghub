@@ -62,8 +62,10 @@
     "titleDeleted": "The title was succesfully deleted"
   },
   "Users": {
+    "countryChanged": "User country successfully changed!",
     "countryOrTitleNotFound": "Country or title not found!",
     "roleChanged": "User access role successfully changed!",
+    "titleChanged": "User title successfully changed!",
     "userUpdated": "User info successfully updated!"
   }
 }

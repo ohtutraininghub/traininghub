@@ -5,16 +5,13 @@ import ProfileCourseList from '@/components/ProfileView/ProfileCourseList';
 import ProfileTemplateList from '@/components/ProfileView/ProfileTemplateList';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import { Course, User } from '@prisma/client';
+import { Country, Course, Tag, Title, User } from '@prisma/client';
 import { PropsWithChildren, SyntheticEvent, useState } from 'react';
 import { useTheme } from '@mui/material/styles';
 import { useSession } from 'next-auth/react';
 import UserList from '@/components/UserList';
 import { isTrainerOrAdmin, isAdmin } from '@/lib/auth-utils';
 import { TemplateWithCreator } from '@/lib/prisma/templates';
-import { Tag } from '@prisma/client';
-import { Country } from '@prisma/client';
-import { Title } from '@prisma/client';
 import { DictProps } from '@i18n/index';
 import { useTranslation } from '@i18n/client';
 
@@ -44,6 +41,8 @@ export default function ProfileView({
   children,
   templates,
   tags,
+  countries,
+  titles,
 }: ProfileViewProps) {
   const [selectedTab, setSelectedTab] = useState(0);
   const { palette } = useTheme();
@@ -174,7 +173,12 @@ export default function ProfileView({
           }}
         >
           {children}
-          <UserList users={users} lang={lang} />
+          <UserList
+            users={users}
+            lang={lang}
+            countries={countries}
+            titles={titles}
+          />
         </div>
       )}
     </div>
