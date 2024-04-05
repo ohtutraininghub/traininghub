@@ -21,10 +21,19 @@ const traineeUser = {
   role: Role.TRAINEE,
 };
 
+const newCountry = {
+  id: 'cloeouh4x0000qiexq8tqqwer',
+  name: 'Country 1',
+  countryCode: 'C1',
+};
+
 beforeEach(async () => {
   await clearDatabase();
   await prisma.user.create({
     data: traineeUser,
+  });
+  await prisma.country.create({
+    data: newCountry,
   });
 });
 
@@ -35,82 +44,43 @@ const mockUpdateRequest = (body: any) => {
   }).req;
 };
 
-jest.mock('../../../lib/auth', () => ({
+jest.mock('../../../../lib/auth', () => ({
   getServerAuthSession: jest.fn(),
 }));
 
 describe('User API tests', () => {
   describe('PUT', () => {
-    it("Updating another user's user role succeeds with admin rights", async () => {
+    it("should update another user's country with admin rights", async () => {
       (getServerAuthSession as jest.Mock).mockImplementation(async () =>
         Promise.resolve({
           user: adminUser,
         })
       );
 
-      const traineeUserInDb = await prisma.user.findFirst({
-        where: {
-          role: Role.TRAINEE,
-        },
-      });
-
       const updatedUser = {
-        userId: traineeUserInDb?.id,
-        newRole: Role.TRAINER,
+        userId: traineeUser.id,
+        countryId: newCountry.id,
       };
 
       const req = mockUpdateRequest(updatedUser);
       const response = await PUT(req);
       const data = await response.json();
 
-      expect(data.message).toBe('User access role successfully changed!');
+      expect(data.message).toBe('User country successfully changed!');
       expect(data.messageType).toBe(MessageType.SUCCESS);
       expect(response.status).toBe(StatusCodeType.OK);
     });
 
-    it("Updating someone's user role fails with trainee rights", async () => {
-      (getServerAuthSession as jest.Mock).mockImplementation(async () =>
-        Promise.resolve({
-          user: traineeUser,
-        })
-      );
-
-      const traineeUserInDb = await prisma.user.findFirst({
-        where: {
-          role: Role.TRAINEE,
-        },
-      });
-
-      const updatedUser = {
-        userId: traineeUserInDb?.id,
-        newRole: Role.ADMIN,
-      };
-
-      const req = mockUpdateRequest(updatedUser);
-      const response = await PUT(req);
-      const data = await response.json();
-
-      expect(data.message).toBe('Forbidden');
-      expect(data.messageType).toBe(MessageType.ERROR);
-      expect(response.status).toBe(StatusCodeType.FORBIDDEN);
-    });
-
-    it("Updating someone's user role fails with trainer rights", async () => {
+    it('should not update user country with trainer rights', async () => {
       (getServerAuthSession as jest.Mock).mockImplementation(async () =>
         Promise.resolve({
           user: trainerUser,
         })
       );
 
-      const trainerUserInDb = await prisma.user.findFirst({
-        where: {
-          role: Role.TRAINER,
-        },
-      });
-
       const updatedUser = {
-        userId: trainerUserInDb?.id,
-        newRole: Role.ADMIN,
+        userId: traineeUser.id,
+        countryId: newCountry.id,
       };
 
       const req = mockUpdateRequest(updatedUser);
@@ -122,7 +92,7 @@ describe('User API tests', () => {
       expect(response.status).toBe(StatusCodeType.FORBIDDEN);
     });
 
-    it('Updating the user role for a non-existing user fails and throws error', async () => {
+    it('should not update the country for a non-existing user and should throw an error', async () => {
       (getServerAuthSession as jest.Mock).mockImplementation(async () =>
         Promise.resolve({
           user: adminUser,
@@ -131,31 +101,26 @@ describe('User API tests', () => {
 
       const updatedUser = {
         userId: 'foo',
-        newRole: Role.ADMIN,
+        countryId: newCountry.id,
       };
 
       const req = mockUpdateRequest(updatedUser);
+
       await expect(async () => {
         await PUT(req);
       }).rejects.toThrow();
     });
 
-    it('Updating the user role to a non-existing role fails and throws error', async () => {
+    it('should not update the country for a non-existing country and should throw an error', async () => {
       (getServerAuthSession as jest.Mock).mockImplementation(async () =>
         Promise.resolve({
           user: adminUser,
         })
       );
 
-      const traineeUserInDb = await prisma.user.findFirst({
-        where: {
-          role: Role.TRAINEE,
-        },
-      });
-
       const updatedUser = {
-        userId: traineeUserInDb?.id,
-        newRole: 'foo',
+        userId: traineeUser.id,
+        countryId: 'foo',
       };
 
       const req = mockUpdateRequest(updatedUser);
