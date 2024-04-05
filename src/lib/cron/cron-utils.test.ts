@@ -50,7 +50,6 @@ const courseInThreeDays = [
 ];
 
 var mockSendReminderToUsers = jest.fn((...args: any[]): void => {
-  console.log('UUUUGERI BUUUUUGERI CALLATTTUUUUU');
   return;
 });
 
