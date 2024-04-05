@@ -41,7 +41,7 @@ jest.mock('../../../../lib/auth', () => ({
 
 describe('User API tests', () => {
   describe('PUT', () => {
-    it("Updating another user's user role succeeds with admin rights", async () => {
+    it("should update another user's user role with admin rights", async () => {
       (getServerAuthSession as jest.Mock).mockImplementation(async () =>
         Promise.resolve({
           user: adminUser,
@@ -68,7 +68,7 @@ describe('User API tests', () => {
       expect(response.status).toBe(StatusCodeType.OK);
     });
 
-    it("Updating someone's user role fails with trainee rights", async () => {
+    it('should not update user role with trainee rights', async () => {
       (getServerAuthSession as jest.Mock).mockImplementation(async () =>
         Promise.resolve({
           user: traineeUser,
@@ -95,7 +95,7 @@ describe('User API tests', () => {
       expect(response.status).toBe(StatusCodeType.FORBIDDEN);
     });
 
-    it("Updating someone's user role fails with trainer rights", async () => {
+    it('should not update user role with trainer rights', async () => {
       (getServerAuthSession as jest.Mock).mockImplementation(async () =>
         Promise.resolve({
           user: trainerUser,
@@ -122,7 +122,7 @@ describe('User API tests', () => {
       expect(response.status).toBe(StatusCodeType.FORBIDDEN);
     });
 
-    it('Updating the user role for a non-existing user fails and throws error', async () => {
+    it('should not update the user role for a non-existing user fails and should throw an error', async () => {
       (getServerAuthSession as jest.Mock).mockImplementation(async () =>
         Promise.resolve({
           user: adminUser,
@@ -140,7 +140,7 @@ describe('User API tests', () => {
       }).rejects.toThrow();
     });
 
-    it('Updating the user role to a non-existing role fails and throws error', async () => {
+    it('should not update user role to a non-existing role and should throw error', async () => {
       (getServerAuthSession as jest.Mock).mockImplementation(async () =>
         Promise.resolve({
           user: adminUser,

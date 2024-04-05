@@ -49,7 +49,7 @@ jest.mock('../../../../lib/auth', () => ({
 
 describe('User API tests', () => {
   describe('PUT', () => {
-    it("Updating another user's title succeeds with admin rights", async () => {
+    it("should update another user's title with admin rights", async () => {
       (getServerAuthSession as jest.Mock).mockImplementation(async () =>
         Promise.resolve({
           user: adminUser,
@@ -70,7 +70,7 @@ describe('User API tests', () => {
       expect(response.status).toBe(StatusCodeType.OK);
     });
 
-    it('Updating user title fails with trainer rights', async () => {
+    it('should not update user title with trainer rights', async () => {
       (getServerAuthSession as jest.Mock).mockImplementation(async () =>
         Promise.resolve({
           user: trainerUser,
@@ -91,7 +91,7 @@ describe('User API tests', () => {
       expect(response.status).toBe(StatusCodeType.FORBIDDEN);
     });
 
-    it('Updating the title for a non-existing user fails and throws error', async () => {
+    it('should not update title for a non-existing user and should throw error', async () => {
       (getServerAuthSession as jest.Mock).mockImplementation(async () =>
         Promise.resolve({
           user: adminUser,
@@ -110,7 +110,7 @@ describe('User API tests', () => {
       }).rejects.toThrow();
     });
 
-    it('Updating the title for a non-existing title fails and throws error', async () => {
+    it('should not update title for a non-existing title and should throw error', async () => {
       (getServerAuthSession as jest.Mock).mockImplementation(async () =>
         Promise.resolve({
           user: adminUser,
