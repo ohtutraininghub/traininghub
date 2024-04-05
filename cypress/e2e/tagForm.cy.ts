@@ -1,12 +1,21 @@
+import { Role } from '@prisma/client';
+
+const adminUser = {
+  name: 'Anna Admin',
+  email: 'anna@traininghub.org',
+  role: Role.ADMIN,
+};
+
 describe('Tag form tests', () => {
   beforeEach(() => {
     cy.task('clearDatabase');
+    cy.task('seedDatabase');
   });
 
   it('shoud display the correct error message when a too long tag is submitted', () => {
     const tooLongTag =
       'Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat';
-    cy.login('admin@test.com', 'ADMIN');
+    cy.login(adminUser.email, adminUser.role);
     cy.visit('/admin/dashboard');
     cy.getCy('tagFormInput').type(tooLongTag);
     cy.getCy('tagSubmitButton').click();
@@ -14,7 +23,7 @@ describe('Tag form tests', () => {
   });
 
   it('should display the correct error message when an empty tag is submitted', () => {
-    cy.login('admin@test.com', 'ADMIN');
+    cy.login(adminUser.email, adminUser.role);
     cy.visit('/admin/dashboard');
     cy.getCy('tagFormInput').type(' ');
     cy.getCy('tagSubmitButton').click();
@@ -22,7 +31,7 @@ describe('Tag form tests', () => {
   });
 
   it('should display the correct error message when a tag with extra spaces is submitted', () => {
-    cy.login('admin@test.com', 'ADMIN');
+    cy.login(adminUser.email, adminUser.role);
     cy.visit('/admin/dashboard');
     cy.getCy('tagFormInput').type('Robot  Framework');
     cy.getCy('tagSubmitButton').click();

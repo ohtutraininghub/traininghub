@@ -1,8 +1,16 @@
+import { Role } from '@prisma/client';
+
+const adminUser = {
+  name: 'Anna Admin',
+  email: 'anna@traininghub.org',
+  role: Role.ADMIN,
+};
+
 describe('Tag list', () => {
   beforeEach(() => {
     cy.task('clearDatabase');
     cy.task('seedDatabase');
-    cy.login('admin@test.com', 'ADMIN');
+    cy.login(adminUser.email, adminUser.role);
     cy.get('[aria-label^="SpeedDial"]').click();
     cy.getCy('dashboard').click();
   });

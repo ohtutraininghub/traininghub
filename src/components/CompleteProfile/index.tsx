@@ -8,11 +8,12 @@ import { useTranslation } from '@i18n/client';
 import { DictProps } from '@i18n/index';
 import { MessageType } from '@/lib/response/responseUtil';
 import { useMessage } from '../Providers/MessageProvider';
-import { update } from '@/lib/response/fetchUtil';
+import { update as Update } from '@/lib/response/fetchUtil';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { userInfoSchema, UserInfoSchemaType } from '@/lib/zod/user';
 import { Controller, useForm } from 'react-hook-form';
 import FormFieldError from '@/components/FormFieldError';
+import { useSession } from 'next-auth/react';
 
 interface Props extends DictProps {
   countries: Country[];
@@ -23,6 +24,7 @@ export default function CompleteProfile({ countries, titles, lang }: Props) {
   const { t } = useTranslation(lang, 'components');
   const router = useRouter();
   const { notify } = useMessage();
+  const { update } = useSession();
 
   const {
     control,
@@ -39,9 +41,10 @@ export default function CompleteProfile({ countries, titles, lang }: Props) {
 
   const submitForm = async (data: UserInfoSchemaType) => {
     try {
-      const responseJson = await update('/api/profile', data);
+      const responseJson = await Update('/api/profile', data);
       notify(responseJson);
       reset();
+      await update({ profileCompleted: true });
       router.push('/');
     } catch (error) {
       notify({
