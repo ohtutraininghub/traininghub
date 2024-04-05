@@ -2,7 +2,7 @@ import React from 'react';
 import '@testing-library/jest-dom';
 import { fireEvent, screen } from '@testing-library/react';
 import { renderWithTheme } from '@/lib/test-utils';
-import { Role } from '@prisma/client';
+import { Country, Role, Title } from '@prisma/client';
 import ProfileView from './index';
 import { useSession } from 'next-auth/react';
 import { useParams } from 'next/navigation';
@@ -217,6 +217,7 @@ describe('ProfileView Tests', () => {
         templates={[template]}
         tags={[]}
         countries={[]}
+        titles={[]}
       />
     );
 
@@ -281,6 +282,7 @@ describe('ProfileView Tests', () => {
         templates={[template]}
         tags={[]}
         countries={[]}
+        titles={[]}
       />
     );
 
@@ -342,6 +344,7 @@ describe('ProfileView Tests', () => {
           { id: '2', name: 'Git' },
         ]}
         countries={[]}
+        titles={[]}
       />
     );
 
