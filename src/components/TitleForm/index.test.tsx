@@ -62,7 +62,7 @@ describe('Title form: adding a new title', () => {
     });
   });
 
-  it('any leading and trailing spaces are trimmed from the submitted title', async () => {
+  it('trims any leading and trailing spaces from the submitted title', async () => {
     renderWithTheme(<TitleForm lang="en" />);
     const inputField = screen.getByRole('textbox');
 
