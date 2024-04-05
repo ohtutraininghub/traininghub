@@ -50,7 +50,7 @@ jest.mock('../../../../lib/auth', () => ({
 
 describe('User API tests', () => {
   describe('PUT', () => {
-    it("Updating another user's country succeeds with admin rights", async () => {
+    it("should update another user's country with admin rights", async () => {
       (getServerAuthSession as jest.Mock).mockImplementation(async () =>
         Promise.resolve({
           user: adminUser,
@@ -71,7 +71,7 @@ describe('User API tests', () => {
       expect(response.status).toBe(StatusCodeType.OK);
     });
 
-    it('Updating user country fails with trainer rights', async () => {
+    it('should not update user country with trainer rights', async () => {
       (getServerAuthSession as jest.Mock).mockImplementation(async () =>
         Promise.resolve({
           user: trainerUser,
@@ -92,7 +92,7 @@ describe('User API tests', () => {
       expect(response.status).toBe(StatusCodeType.FORBIDDEN);
     });
 
-    it('Updating the country for a non-existing user fails and throws error', async () => {
+    it('should not update the country for a non-existing user and should throw an error', async () => {
       (getServerAuthSession as jest.Mock).mockImplementation(async () =>
         Promise.resolve({
           user: adminUser,
@@ -111,7 +111,7 @@ describe('User API tests', () => {
       }).rejects.toThrow();
     });
 
-    it('Updating the country for a non-existing country fails and throws error', async () => {
+    it('should not update the country for a non-existing country and should throw an error', async () => {
       (getServerAuthSession as jest.Mock).mockImplementation(async () =>
         Promise.resolve({
           user: adminUser,
