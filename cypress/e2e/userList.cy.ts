@@ -129,4 +129,48 @@ describe('User list in admin dashboard', () => {
       });
     });
   });
+
+  describe('when updating title', () => {
+    it('displays confim card when another title is selected', () => {
+      cy.getCy('filter-button').click();
+      cy.getCy('filter-input-Name').type(adminUser.name);
+      cy.get('@userId').then((userId) => {
+        cy.getCy(`${userId}-title-select`).click();
+      });
+      cy.get('[data-value="clum4qgfw000008k095npgxwe"]').click();
+      cy.getCy('small-confirm-card').should('be.visible');
+    });
+
+    it('keeps old title if cancel button is pressed', () => {
+      cy.getCy('filter-button').click();
+      cy.getCy('filter-input-Name').type(adminUser.name);
+      cy.get('@userId').then((userId) => {
+        cy.getCy(`${userId}-title-select`).click();
+      });
+      cy.get('[data-value="clum4qgfw000008k095npgxwe"]').click();
+      cy.getCy('cancel-button').click();
+      cy.getCy('small-confirm-card').should('not.exist');
+      cy.get('@userId').then((userId) => {
+        cy.getCy(`${userId}-title-select`)
+          .find('p')
+          .should('contain', 'Management');
+      });
+    });
+
+    it('updates title when confirm button is pressed', () => {
+      cy.getCy('filter-button').click();
+      cy.getCy('filter-input-Name').type(adminUser.name);
+      cy.get('@userId').then((userId) => {
+        cy.getCy(`${userId}-title-select`).click();
+      });
+      cy.get('[data-value="clum4qgfw000008k095npgxwe"]').click();
+      cy.getCy('confirm-button').click();
+      cy.getCy('small-confirm-card').should('not.exist');
+      cy.get('@userId').then((userId) => {
+        cy.getCy(`${userId}-title-select`)
+          .find('p')
+          .should('contain', 'Employee');
+      });
+    });
+  });
 });
