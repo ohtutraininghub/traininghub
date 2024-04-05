@@ -48,25 +48,15 @@ const courseInThreeDays = [
     slackChannelId: '123',
   },
 ];
-/* 
-mockCoursesWithStartDateBetweenDates.mockReturnValueOnce(
-  Promise.resolve(courseInOneDay)
-);
-mockCoursesWithStartDateBetweenDates.mockReturnValueOnce(
-  Promise.resolve(courseInThreeDays)
-); */
+
+var mockSendReminderToUsers = jest.fn((...args: any[]): void => {
+  console.log('UUUUGERI BUUUUUGERI CALLATTTUUUUU');
+  return;
+});
 
 jest.mock('../slack/index', () => ({
-  sendReminderToUsers: jest.fn(),
+  sendReminderToUsers: (...args: any[]) => mockSendReminderToUsers(...args),
 }));
-
-/* jest.mock('../prisma/courses', () => {
-  return jest.fn().mockImplementation(() => {
-    return {
-      coursesWithStartDateBetweenDates: mockCoursesWithStartDateBetweenDates,
-    };
-  });
-}); */
 
 jest.mock('../prisma/courses', () => ({
   coursesWithStartDateBetweenDates: jest
@@ -76,15 +66,13 @@ jest.mock('../prisma/courses', () => ({
     })
     .mockImplementationOnce((startDate, endDate) => {
       return Promise.resolve(courseInOneDay);
-    })
-    .mockImplementationOnce((startDate, endDate) => {
-      return Promise.resolve(courseInOneDay);
     }),
 }));
 
 describe('Tests for cron-utils', () => {
-  it('should call sendReminderToUsers with the correct parameters', () => {
-    sendNotificationsBeforeCourseStart();
+  it('should call sendReminderToUsers with the correct parameters', async () => {
+    await sendNotificationsBeforeCourseStart();
+    expect(mockSendReminderToUsers).toHaveBeenCalledTimes(2);
     expect(mockSendReminderToUsers).toHaveBeenNthCalledWith(
       1,
       {
@@ -106,7 +94,7 @@ describe('Tests for cron-utils', () => {
         image: null,
         slackChannelId: '123',
       },
-      'email2@email.com',
+      ['email2@email.com'],
       '3 days'
     );
     expect(mockSendReminderToUsers).toHaveBeenNthCalledWith(
@@ -131,33 +119,7 @@ describe('Tests for cron-utils', () => {
         image: null,
         slackChannelId: '123',
       },
-      'email1@email.com',
-      '1 day'
-    );
-
-    expect(mockSendReminderToUsers).toHaveBeenNthCalledWith(
-      3,
-      {
-        students: [
-          {
-            email: 'email1@email.com',
-          },
-          { email: 'hotmail@email.gov.uk' },
-        ],
-        id: '123',
-        name: 'testCourse1',
-        description: 'testDescription',
-        summary: 'testSummary',
-        startDate: inOneDay,
-        endDate: inOneDay,
-        lastEnrollDate: null,
-        lastCancelDate: null,
-        maxStudents: '10',
-        createdById: '123',
-        image: null,
-        slackChannelId: '123',
-      },
-      'hotmail@email.gov.uk',
+      ['email1@email.com', 'hotmail@email.gov.uk'],
       '1 day'
     );
   });

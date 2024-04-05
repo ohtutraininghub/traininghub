@@ -21,7 +21,6 @@ const sendNotificationsBeforeCourseStart = async () => {
   coursesInThreeDays.forEach((course) => {
     const emails = course.students.map((student) => student.email);
     if (Array.isArray(emails) && emails.every((email) => email !== null)) {
-      console.log('reminderiiii 3');
       sendReminderToUsers(course, emails as string[], '3 days');
     }
   });
@@ -32,7 +31,6 @@ const sendNotificationsBeforeCourseStart = async () => {
   coursesInOneDay.forEach((course) => {
     const emails = course.students.map((student) => student.email);
     if (Array.isArray(emails) && emails.every((email) => email !== null)) {
-      console.log('reminderiiii 1', emails);
       sendReminderToUsers(course, emails as string[], '1 day');
     }
   });
