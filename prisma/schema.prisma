@@ -49,7 +49,7 @@ model Country {
 
 model Title {
   id    String @id @default(cuid())
-  name  String @unique
+  name  String @unique @db.Citext
   users User[] @relation(name: "title")
 }
 
