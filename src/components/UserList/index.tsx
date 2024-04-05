@@ -148,7 +148,7 @@ export default function UserList({ lang, users, countries, titles }: Props) {
 
   async function handleUserRoleChange(userId: string, newRole: $Enums.Role) {
     try {
-      await update('/api/user', { userId, newRole });
+      await update('/api/user/role', { userId, newRole });
       router.refresh();
       notify({
         message: t('EditUsers.infoText'),
@@ -161,6 +161,24 @@ export default function UserList({ lang, users, countries, titles }: Props) {
         messageType: MessageType.ERROR,
       });
     }
+  }
+
+  async function handleUserCountryChange(userId: string, countryId: string) {
+    const responseJson = await update('/api/user/country', {
+      userId,
+      countryId,
+    });
+    router.refresh();
+    notify(responseJson);
+  }
+
+  async function handleUserTitleChange(userId: string, titleId: string) {
+    const responseJson = await update('/api/user/title', {
+      userId,
+      titleId,
+    });
+    router.refresh();
+    notify(responseJson);
   }
 
   const tableHeaders: TableHeader[] = [
@@ -408,7 +426,14 @@ export default function UserList({ lang, users, countries, titles }: Props) {
                               )
                             )
                           }
-                          onSubmit={() => {}}
+                          onSubmit={() =>
+                            handleUserCountryChange(
+                              user.id,
+                              filteredUsers[
+                                page * visibleRowsPerPage + userIndex
+                              ].countryId || ''
+                            )
+                          }
                         />
                       )}
                   </Box>
@@ -473,7 +498,14 @@ export default function UserList({ lang, users, countries, titles }: Props) {
                               )
                             )
                           }
-                          onSubmit={() => {}}
+                          onSubmit={() =>
+                            handleUserTitleChange(
+                              user.id,
+                              filteredUsers[
+                                page * visibleRowsPerPage + userIndex
+                              ].titleId || ''
+                            )
+                          }
                         />
                       )}
                   </Box>
