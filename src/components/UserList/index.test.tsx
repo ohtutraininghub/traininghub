@@ -121,6 +121,7 @@ describe('User list', () => {
     renderWithTheme(
       <UserList lang="en" users={users} countries={countries} titles={titles} />
     );
+    mockFetch.mockClear();
   });
   it('renders all columns', () => {
     const nameColumn = screen.getByText('EditUsers.tableHeaders.name');
@@ -203,6 +204,46 @@ describe('User list', () => {
 
     const smallConfirmCard = await screen.findByTestId('small-confirm-card');
     expect(smallConfirmCard).toBeInTheDocument();
+  });
+
+  it('pressing confirm button after changing country calls fetch update', async () => {
+    const dropdown = within(
+      await screen.findByTestId('1a-country-select')
+    ).getByRole('combobox');
+
+    await userEvent.click(dropdown);
+    const countryOption = await screen.findByRole('option', {
+      name: 'Country 2',
+    });
+    await userEvent.click(countryOption);
+
+    const smallConfirmCard = await screen.findByTestId('small-confirm-card');
+    expect(smallConfirmCard).toBeInTheDocument();
+
+    const confirmButton = await screen.findByTestId('confirm-button');
+    await userEvent.click(confirmButton);
+
+    expect(mockFetch).toHaveBeenCalledTimes(1);
+  });
+
+  it('pressing confirm button after changing title calls fetch update', async () => {
+    const dropdown = within(
+      await screen.findByTestId('1a-title-select')
+    ).getByRole('combobox');
+
+    await userEvent.click(dropdown);
+    const titleOption = await screen.findByRole('option', {
+      name: 'Title 2',
+    });
+    await userEvent.click(titleOption);
+
+    const smallConfirmCard = await screen.findByTestId('small-confirm-card');
+    expect(smallConfirmCard).toBeInTheDocument();
+
+    const confirmButton = await screen.findByTestId('confirm-button');
+    await userEvent.click(confirmButton);
+
+    expect(mockFetch).toHaveBeenCalledTimes(1);
   });
 
   it('renders user links with correct href values', async () => {
