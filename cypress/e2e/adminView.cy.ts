@@ -1,7 +1,18 @@
+import { Role } from '@prisma/client';
+
+const adminUser = {
+  name: 'Anna Admin',
+  email: 'anna@traininghub.org',
+  role: Role.ADMIN,
+  profileCompleted: true,
+};
+
 describe('Admin view', () => {
   beforeEach(() => {
     cy.task('clearDatabase');
-    cy.login('admin@test.com', 'ADMIN');
+    cy.task('seedDatabase');
+    cy.login(adminUser.email, adminUser.role);
+
     cy.get('[aria-label^="SpeedDial"]').click();
     cy.getCy('dashboard').click();
   });
@@ -25,8 +36,8 @@ describe('User list', () => {
     cy.intercept('GET', `/api/auth/session`).as('getUser');
 
     cy.task('clearDatabase');
-    cy.task('seedUsers');
-    cy.login('admin@test.com', 'ADMIN');
+    cy.task('seedDatabase');
+    cy.login(adminUser.email, adminUser.role);
 
     // Wait for the intercepted request to complete
     cy.wait('@getUser').then((interception) => {
@@ -40,15 +51,15 @@ describe('User list', () => {
 
   it('displays logged user when searched', () => {
     cy.getCy('filter-button').click();
-    cy.getCy('filter-input-Name').type('test user');
-    cy.get('tbody>tr>th').contains('Test User');
-    cy.get('tbody>tr>th').contains('admin@test.com');
+    cy.getCy('filter-input-Name').type(adminUser.name);
+    cy.get('tbody>tr>th').contains(adminUser.name);
+    cy.get('tbody>tr>th').contains(adminUser.email);
     cy.get('tbody>tr>th').contains('admin');
   });
 
   it('displays confim card when another role is selected', () => {
     cy.getCy('filter-button').click();
-    cy.getCy('filter-input-Name').type('test user');
+    cy.getCy('filter-input-Name').type(adminUser.name);
     cy.get('@userId').then((userId) => {
       cy.getCy(`${userId}-role-select`).click();
     });
@@ -58,7 +69,7 @@ describe('User list', () => {
 
   it('keeps old role if cancel button is pressed', () => {
     cy.getCy('filter-button').click();
-    cy.getCy('filter-input-Name').type('test user');
+    cy.getCy('filter-input-Name').type(adminUser.name);
     cy.get('@userId').then((userId) => {
       cy.getCy(`${userId}-role-select`).click();
     });
@@ -72,7 +83,7 @@ describe('User list', () => {
 
   it('updates role when confirm button is pressed', () => {
     cy.getCy('filter-button').click();
-    cy.getCy('filter-input-Name').type('test user');
+    cy.getCy('filter-input-Name').type(adminUser.name);
     cy.get('@userId').then((userId) => {
       cy.getCy(`${userId}-role-select`).click();
     });

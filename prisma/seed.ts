@@ -7,6 +7,7 @@ const traineeUser = {
   emailVerified: null,
   image: '',
   role: Role.TRAINEE,
+  profileCompleted: true,
 };
 
 const trainerUser = {
@@ -15,6 +16,7 @@ const trainerUser = {
   emailVerified: null,
   image: '',
   role: Role.TRAINER,
+  profileCompleted: true,
 };
 
 const adminUser = {
@@ -23,6 +25,7 @@ const adminUser = {
   emailVerified: null,
   image: '',
   role: Role.ADMIN,
+  profileCompleted: true,
 };
 
 const currentDate = new Date().setHours(9, 0, 0, 0).valueOf();
@@ -139,7 +142,7 @@ const userData: User[] = [
     role: 'ADMIN',
     countryId: null,
     titleId: null,
-    profileCompleted: false,
+    profileCompleted: true,
   },
   {
     id: '123002',
@@ -150,7 +153,7 @@ const userData: User[] = [
     role: 'ADMIN',
     countryId: null,
     titleId: null,
-    profileCompleted: false,
+    profileCompleted: true,
   },
   {
     id: '123003',
@@ -161,7 +164,7 @@ const userData: User[] = [
     role: 'TRAINEE',
     countryId: null,
     titleId: null,
-    profileCompleted: false,
+    profileCompleted: true,
   },
   {
     id: 'clsiom8xf000008k12bgf6bw6',
@@ -172,7 +175,7 @@ const userData: User[] = [
     role: 'TRAINER',
     countryId: null,
     titleId: null,
-    profileCompleted: false,
+    profileCompleted: true,
   },
   {
     id: '123005',
@@ -183,7 +186,7 @@ const userData: User[] = [
     role: 'ADMIN',
     countryId: null,
     titleId: null,
-    profileCompleted: false,
+    profileCompleted: true,
   },
   {
     id: '123006',
@@ -194,7 +197,7 @@ const userData: User[] = [
     role: 'TRAINER',
     countryId: null,
     titleId: null,
-    profileCompleted: false,
+    profileCompleted: true,
   },
   {
     id: '123007',
@@ -205,7 +208,7 @@ const userData: User[] = [
     role: 'ADMIN',
     countryId: null,
     titleId: null,
-    profileCompleted: false,
+    profileCompleted: true,
   },
   {
     id: '123008',
@@ -216,7 +219,7 @@ const userData: User[] = [
     role: 'TRAINER',
     countryId: null,
     titleId: null,
-    profileCompleted: false,
+    profileCompleted: true,
   },
   {
     id: '123009',
@@ -227,7 +230,7 @@ const userData: User[] = [
     role: 'TRAINER',
     countryId: null,
     titleId: null,
-    profileCompleted: false,
+    profileCompleted: true,
   },
   {
     id: '123010',
