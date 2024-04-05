@@ -26,6 +26,7 @@ import { getTags, Tags } from '@/lib/prisma/tags';
 import { getCountries, Countries } from '@/lib/prisma/country';
 import { isAdmin, isTrainerOrAdmin } from '@/lib/auth-utils';
 import UnauthorizedError from '@/components/UnauthorizedError';
+import { getTitles, Titles } from '@/lib/prisma/title';
 
 type Props = {
   searchParams: { courseId?: string };
@@ -74,10 +75,12 @@ export default async function ProfilePageById({ searchParams, params }: Props) {
   let allUsers: Users | null = [];
   let tags: Tags | null = [];
   let countries: Countries | null = [];
+  let titles: Titles | null = [];
   if (isAdmin(session.user)) {
     allUsers = await getAllUsers();
     tags = await getTags();
     countries = await getCountries();
+    titles = await getTitles();
   }
 
   return (
@@ -102,6 +105,7 @@ export default async function ProfilePageById({ searchParams, params }: Props) {
         templates={templates}
         countries={countries}
         tags={tags}
+        titles={titles}
       >
         <CreateCountry
           countryHeader={t('admin:CountriesSection.header')}
