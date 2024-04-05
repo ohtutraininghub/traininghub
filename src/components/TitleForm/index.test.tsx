@@ -45,7 +45,7 @@ jest.mock('../../lib/i18n/client', () => ({
 }));
 
 describe('Title form: adding a new title', () => {
-  it('correct values are submitted from the title form', async () => {
+  it('submits correct values from the title form', async () => {
     renderWithTheme(<TitleForm lang="en" />);
     const inputField = screen.getByRole('textbox');
 
