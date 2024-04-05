@@ -17,12 +17,22 @@ describe('User list in admin dashboard', () => {
     cy.getCy('dashboard').click();
   });
 
-  it('displays logged user when searched', () => {
-    cy.getCy('filter-button').click();
-    cy.getCy('filter-input-Name').type('test user');
-    cy.get('tbody>tr>th').contains('Test User');
-    cy.get('tbody>tr>th').contains('admin@test.com');
-    cy.get('tbody>tr>th').contains('admin');
+  describe('when using filter row', () => {
+    it('displays logged user when searched by name', () => {
+      cy.getCy('filter-button').click();
+      cy.getCy('filter-input-Name').type('test user');
+      cy.get('tbody>tr>th').contains('Test User');
+      cy.get('tbody>tr>th').contains('admin@test.com');
+      cy.get('tbody>tr>th').contains('admin');
+    });
+
+    it('displays logged user when searched by email', () => {
+      cy.getCy('filter-button').click();
+      cy.getCy('filter-input-Email').type('admin@test.com');
+      cy.get('tbody>tr>th').contains('Test User');
+      cy.get('tbody>tr>th').contains('admin@test.com');
+      cy.get('tbody>tr>th').contains('admin');
+    });
   });
 
   describe('when updating role', () => {
