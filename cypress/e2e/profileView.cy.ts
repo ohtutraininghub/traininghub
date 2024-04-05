@@ -71,9 +71,11 @@ describe('Profile View', () => {
       // close automatically opened dropdown
       cy.getCy('listControls\\.upcomingCourses').click();
     });
-    it('should display the username and email', () => {
+    it('should display the username, email, country and title', () => {
       cy.contains('Taylor Trainee');
       cy.contains('taylor@traininghub.org');
+      cy.contains('Finland');
+      cy.contains('Employee');
     });
     it('should not show my courses tab for trainee', () => {
       cy.contains('My courses').should('not.exist');
