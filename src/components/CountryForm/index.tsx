@@ -14,6 +14,7 @@ import * as React from 'react';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import { countries } from './countries';
+import { useTheme } from '@mui/material/styles';
 
 interface Props extends DictProps {}
 
@@ -21,6 +22,7 @@ export default function CountryForm({ lang }: Props) {
   const router = useRouter();
   const { notify } = useMessage();
   const { t } = useTranslation(lang, 'admin');
+  const theme = useTheme();
 
   const {
     formState: { errors, isSubmitting },
@@ -61,7 +63,12 @@ export default function CountryForm({ lang }: Props) {
             setCountryCode(newValue?.code || null);
           }}
           id="country-select"
-          sx={{ width: 300 }}
+          sx={{
+            width: 226,
+            [theme.breakpoints.down('sm')]: {
+              width: 211,
+            },
+          }}
           options={countries}
           autoHighlight
           getOptionLabel={(option) => option.label}
