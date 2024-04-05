@@ -25,7 +25,7 @@ describe('User list', () => {
     cy.intercept('GET', `/api/auth/session`).as('getUser');
 
     cy.task('clearDatabase');
-    cy.task('seedUsers');
+    cy.task('seedDatabase');
     cy.login('admin@test.com', 'ADMIN');
 
     // Wait for the intercepted request to complete

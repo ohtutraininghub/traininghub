@@ -27,10 +27,12 @@
     "label": "Users",
     "searchTooltip": "Filter table with {{headerValue}}",
     "tableHeaders": {
+      "countryId": "Country",
       "email": "Email",
       "emailVerified": "Email Verified",
       "name": "Name",
-      "role": "Role"
+      "role": "Role",
+      "titleId": "Title"
     }
   },
   "TagForm": {

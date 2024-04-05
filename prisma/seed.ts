@@ -7,6 +7,9 @@ const traineeUser = {
   emailVerified: null,
   image: '',
   role: Role.TRAINEE,
+  countryId: 'clum4qgfw000008k095npgxsx',
+  titleId: 'clum4qgfw000008k095npgxwe',
+  profileCompleted: true,
 };
 
 const trainerUser = {
@@ -15,6 +18,9 @@ const trainerUser = {
   emailVerified: null,
   image: '',
   role: Role.TRAINER,
+  countryId: 'clum4qgfw000008k095npgxsx',
+  titleId: 'clum4qgfw000008k095npgasd',
+  profileCompleted: true,
 };
 
 const adminUser = {
@@ -23,6 +29,9 @@ const adminUser = {
   emailVerified: null,
   image: '',
   role: Role.ADMIN,
+  countryId: 'clum4qgfw000008k095npgxsx',
+  titleId: 'clum4qgfw000008k095npgasd',
+  profileCompleted: true,
 };
 
 const currentDate = new Date().setHours(9, 0, 0, 0).valueOf();
@@ -111,7 +120,7 @@ const tagData = [
 ];
 
 const countryData = [
-  { name: 'Finland', countryCode: 'FI' },
+  { id: 'clum4qgfw000008k095npgxsx', name: 'Finland', countryCode: 'FI' },
   { name: 'Sweden', countryCode: 'SE' },
   { name: 'Norway', countryCode: 'NO' },
   { name: 'Denmark', countryCode: 'DK' },
@@ -124,8 +133,8 @@ const countryData = [
 ];
 
 const titleData = [
-  { name: 'Employee' },
-  { name: 'Management' },
+  { id: 'clum4qgfw000008k095npgxwe', name: 'Employee' },
+  { id: 'clum4qgfw000008k095npgasd', name: 'Management' },
   { name: 'Team Lead' },
 ];
 
@@ -137,9 +146,9 @@ const userData: User[] = [
     emailVerified: null,
     image: 'https://example.com/johndoe.jpg',
     role: 'ADMIN',
-    countryId: null,
-    titleId: null,
-    profileCompleted: false,
+    countryId: 'clum4qgfw000008k095npgxsx',
+    titleId: 'clum4qgfw000008k095npgasd',
+    profileCompleted: true,
   },
   {
     id: '123002',
@@ -148,9 +157,9 @@ const userData: User[] = [
     emailVerified: null,
     image: 'https://example.com/alicesmith.jpg',
     role: 'ADMIN',
-    countryId: null,
-    titleId: null,
-    profileCompleted: false,
+    countryId: 'clum4qgfw000008k095npgxsx',
+    titleId: 'clum4qgfw000008k095npgasd',
+    profileCompleted: true,
   },
   {
     id: '123003',
@@ -159,9 +168,9 @@ const userData: User[] = [
     emailVerified: null,
     image: 'https://example.com/bobjohnson.jpg',
     role: 'TRAINEE',
-    countryId: null,
-    titleId: null,
-    profileCompleted: false,
+    countryId: 'clum4qgfw000008k095npgxsx',
+    titleId: 'clum4qgfw000008k095npgxwe',
+    profileCompleted: true,
   },
   {
     id: 'clsiom8xf000008k12bgf6bw6',
@@ -170,9 +179,9 @@ const userData: User[] = [
     emailVerified: null,
     image: 'https://example.com/emilydavis.jpg',
     role: 'TRAINER',
-    countryId: null,
-    titleId: null,
-    profileCompleted: false,
+    countryId: 'clum4qgfw000008k095npgxsx',
+    titleId: 'clum4qgfw000008k095npgxwe',
+    profileCompleted: true,
   },
   {
     id: '123005',
@@ -181,9 +190,9 @@ const userData: User[] = [
     emailVerified: null,
     image: 'https://example.com/chrismiller.jpg',
     role: 'ADMIN',
-    countryId: null,
-    titleId: null,
-    profileCompleted: false,
+    countryId: 'clum4qgfw000008k095npgxsx',
+    titleId: 'clum4qgfw000008k095npgxwe',
+    profileCompleted: true,
   },
   {
     id: '123006',
@@ -192,9 +201,9 @@ const userData: User[] = [
     emailVerified: null,
     image: 'https://example.com/sophiawhite.jpg',
     role: 'TRAINER',
-    countryId: null,
-    titleId: null,
-    profileCompleted: false,
+    countryId: 'clum4qgfw000008k095npgxsx',
+    titleId: 'clum4qgfw000008k095npgxwe',
+    profileCompleted: true,
   },
   {
     id: '123007',
@@ -203,9 +212,9 @@ const userData: User[] = [
     emailVerified: null,
     image: 'https://example.com/danielbrown.jpg',
     role: 'ADMIN',
-    countryId: null,
-    titleId: null,
-    profileCompleted: false,
+    countryId: 'clum4qgfw000008k095npgxsx',
+    titleId: 'clum4qgfw000008k095npgxwe',
+    profileCompleted: true,
   },
   {
     id: '123008',
@@ -214,9 +223,9 @@ const userData: User[] = [
     emailVerified: null,
     image: 'https://example.com/oliviataylor.jpg',
     role: 'TRAINER',
-    countryId: null,
-    titleId: null,
-    profileCompleted: false,
+    countryId: 'clum4qgfw000008k095npgxsx',
+    titleId: 'clum4qgfw000008k095npgxwe',
+    profileCompleted: true,
   },
   {
     id: '123009',
@@ -225,9 +234,9 @@ const userData: User[] = [
     emailVerified: null,
     image: 'https://example.com/michaelwilson.jpg',
     role: 'TRAINER',
-    countryId: null,
-    titleId: null,
-    profileCompleted: false,
+    countryId: 'clum4qgfw000008k095npgxsx',
+    titleId: 'clum4qgfw000008k095npgxwe',
+    profileCompleted: true,
   },
   {
     id: '123010',
@@ -236,9 +245,9 @@ const userData: User[] = [
     emailVerified: null,
     image: 'https://example.com/ellamoore.jpg',
     role: 'TRAINEE',
-    countryId: null,
-    titleId: null,
-    profileCompleted: false,
+    countryId: 'clum4qgfw000008k095npgxsx',
+    titleId: 'clum4qgfw000008k095npgxwe',
+    profileCompleted: true,
   },
 ];
 
