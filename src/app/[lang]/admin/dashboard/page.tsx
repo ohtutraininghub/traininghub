@@ -7,6 +7,7 @@ import { Typography } from '@mui/material';
 import { getAllUsers } from '@/lib/prisma/users';
 import { getTags } from '@/lib/prisma/tags';
 import { getCountries } from '@/lib/prisma/country';
+import { getTitles } from '@/lib/prisma/title';
 
 export const dynamic = 'force-dynamic';
 
@@ -18,6 +19,7 @@ export default async function AdminDashboardPage({ params }: Props) {
   const { t } = await translator('admin');
   const tags = await getTags();
   const countries = await getCountries();
+  const titles = await getTitles();
   const users = await getAllUsers();
 
   return (
@@ -33,7 +35,12 @@ export default async function AdminDashboardPage({ params }: Props) {
         tags={tags}
         lang={params.lang}
       />
-      <UserList users={users} lang={params.lang} />
+      <UserList
+        users={users}
+        lang={params.lang}
+        countries={countries}
+        titles={titles}
+      />
     </div>
   );
 }
