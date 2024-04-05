@@ -173,7 +173,10 @@ export default function UserList({ lang, users, countries, titles }: Props) {
   }
 
   async function handleUserTitleChange(userId: string, titleId: string) {
-    const responseJson = await update('/api/user/country', { userId, titleId });
+    const responseJson = await update('/api/user/title', {
+      userId,
+      titleId,
+    });
     router.refresh();
     notify(responseJson);
   }
