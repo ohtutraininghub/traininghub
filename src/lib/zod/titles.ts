@@ -29,7 +29,7 @@ export const titleSchema = z.object({
 
 export const titleDeleteSchema = z
   .object({
-    tagId: z.string().cuid(),
+    titleId: z.string().cuid(),
   })
   .strict();
 

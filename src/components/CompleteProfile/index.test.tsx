@@ -30,6 +30,12 @@ jest.mock('../../lib/response/responseUtil', () => ({
   MessageType: {},
 }));
 
+jest.mock('next-auth/react', () => ({
+  useSession: () => ({
+    update: jest.fn(),
+  }),
+}));
+
 var mockFetch = jest.fn((...args: any[]) =>
   Promise.resolve({
     json: () => Promise.resolve({ args: args }),
