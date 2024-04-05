@@ -1,6 +1,26 @@
+import { Role } from '@prisma/client';
+
 const currentDate = new Date().setHours(9, 0, 0, 0).valueOf();
 const msDay = 24 * 60 * 60 * 1000;
 const msHour = 60 * 60 * 1000;
+
+const traineeUser = {
+  name: 'Taylor Trainee',
+  email: 'taylor@traininghub.org',
+  role: Role.TRAINEE,
+};
+
+const trainerUser = {
+  name: 'Tim Trainer',
+  email: 'tim@traininghub.org',
+  role: Role.TRAINER,
+};
+
+const adminUser = {
+  name: 'Anna Admin',
+  email: 'anna@traininghub.org',
+  role: Role.ADMIN,
+};
 
 const testCourses = [
   {
@@ -46,8 +66,14 @@ describe('Profile View', () => {
 
   describe('when logged in as a trainee', () => {
     beforeEach(() => {
-      cy.login('ella.moore@example.com', 'TRAINEE');
-      cy.visit('/profile/123010'); //ella moore's user id
+      cy.login(traineeUser.email, traineeUser.role);
+      cy.intercept('GET', `/api/auth/session`).as('getUser');
+      cy.wait('@getUser', { timeout: 10000 }).then((interception) => {
+        cy.wrap(interception?.response?.body?.user.id).as('userId');
+      });
+      cy.get('@userId').then((userId) => {
+        cy.visit(`/profile/${userId}`);
+      });
       // close automatically opened dropdown
       cy.getCy('listControls\\.upcomingCourses').click();
     });
@@ -77,8 +103,14 @@ describe('Profile View', () => {
   });
   describe('when logged in as a trainer', () => {
     beforeEach(() => {
-      cy.login('emily.davis@example.com', 'TRAINER');
-      cy.visit('/profile/clsiom8xf000008k12bgf6bw6'); //emily davis's user id
+      cy.login(trainerUser.email, trainerUser.role);
+      cy.intercept('GET', `/api/auth/session`).as('getUser');
+      cy.wait('@getUser', { timeout: 10000 }).then((interception) => {
+        cy.wrap(interception?.response?.body?.user.id).as('userId');
+      });
+      cy.get('@userId').then((userId) => {
+        cy.visit(`/profile/${userId}`);
+      });
       // close automatically opened dropdowns
       cy.getCy('listControls\\.inprogressCourses').click();
       cy.getCy('listControls\\.upcomingCourses').click();
@@ -132,8 +164,14 @@ describe('Profile View', () => {
   });
   describe('when logged in as an admin', () => {
     beforeEach(() => {
-      cy.login('john.doe@example.com', 'ADMIN');
-      cy.visit('/profile/clsiortzr000008k10sundybm'); //john doe's user id
+      cy.login(adminUser.email, adminUser.role);
+      cy.intercept('GET', `/api/auth/session`).as('getUser');
+      cy.wait('@getUser', { timeout: 10000 }).then((interception) => {
+        cy.wrap(interception?.response?.body?.user.id).as('userId');
+      });
+      cy.get('@userId').then((userId) => {
+        cy.visit(`/profile/${userId}`);
+      });
       // close automatically opened dropdowns
       cy.getCy('listControls\\.inprogressCourses').click();
       cy.getCy('listControls\\.upcomingCourses').click();
