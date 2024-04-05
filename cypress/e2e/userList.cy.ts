@@ -85,4 +85,48 @@ describe('User list in admin dashboard', () => {
       });
     });
   });
+
+  describe('when updating country', () => {
+    it('displays confim card when another country is selected', () => {
+      cy.getCy('filter-button').click();
+      cy.getCy('filter-input-Name').type(adminUser.name);
+      cy.get('@userId').then((userId) => {
+        cy.getCy(`${userId}-country-select`).click();
+      });
+      cy.get('[data-value="clumicdtg0003fyakdum2yzdv"]').click();
+      cy.getCy('small-confirm-card').should('be.visible');
+    });
+
+    it('keeps old country if cancel button is pressed', () => {
+      cy.getCy('filter-button').click();
+      cy.getCy('filter-input-Name').type(adminUser.name);
+      cy.get('@userId').then((userId) => {
+        cy.getCy(`${userId}-country-select`).click();
+      });
+      cy.get('[data-value="clumicdtg0003fyakdum2yzdv"]').click();
+      cy.getCy('cancel-button').click();
+      cy.getCy('small-confirm-card').should('not.exist');
+      cy.get('@userId').then((userId) => {
+        cy.getCy(`${userId}-country-select`)
+          .find('p')
+          .should('contain', 'Finland');
+      });
+    });
+
+    it('updates country when confirm button is pressed', () => {
+      cy.getCy('filter-button').click();
+      cy.getCy('filter-input-Name').type(adminUser.name);
+      cy.get('@userId').then((userId) => {
+        cy.getCy(`${userId}-country-select`).click();
+      });
+      cy.get('[data-value="clumicdtg0003fyakdum2yzdv"]').click();
+      cy.getCy('confirm-button').click();
+      cy.getCy('small-confirm-card').should('not.exist');
+      cy.get('@userId').then((userId) => {
+        cy.getCy(`${userId}-country-select`)
+          .find('p')
+          .should('contain', 'Germany');
+      });
+    });
+  });
 });
