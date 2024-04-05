@@ -1,3 +1,12 @@
+import { Role } from '@prisma/client';
+
+const adminUser = {
+  name: 'Anna Admin',
+  email: 'anna@traininghub.org',
+  role: Role.ADMIN,
+  profileCompleted: true,
+};
+
 describe('User list in admin dashboard', () => {
   beforeEach(() => {
     // Intercepting the session request to get the user ID
@@ -5,7 +14,7 @@ describe('User list in admin dashboard', () => {
 
     cy.task('clearDatabase');
     cy.task('seedDatabase');
-    cy.login('admin@test.com', 'ADMIN');
+    cy.login(adminUser.email, adminUser.role);
 
     // Wait for the intercepted request to complete
     cy.wait('@getUser').then((interception) => {
@@ -20,17 +29,17 @@ describe('User list in admin dashboard', () => {
   describe('when using filter row', () => {
     it('displays logged user when searched by name', () => {
       cy.getCy('filter-button').click();
-      cy.getCy('filter-input-Name').type('test user');
-      cy.get('tbody>tr>th').contains('Test User');
-      cy.get('tbody>tr>th').contains('admin@test.com');
+      cy.getCy('filter-input-Name').type(adminUser.name);
+      cy.get('tbody>tr>th').contains(adminUser.name);
+      cy.get('tbody>tr>th').contains(adminUser.email);
       cy.get('tbody>tr>th').contains('admin');
     });
 
     it('displays logged user when searched by email', () => {
       cy.getCy('filter-button').click();
-      cy.getCy('filter-input-Email').type('admin@test.com');
-      cy.get('tbody>tr>th').contains('Test User');
-      cy.get('tbody>tr>th').contains('admin@test.com');
+      cy.getCy('filter-input-Email').type(adminUser.email);
+      cy.get('tbody>tr>th').contains(adminUser.name);
+      cy.get('tbody>tr>th').contains(adminUser.email);
       cy.get('tbody>tr>th').contains('admin');
     });
   });
@@ -38,7 +47,7 @@ describe('User list in admin dashboard', () => {
   describe('when updating role', () => {
     it('displays confim card when another role is selected', () => {
       cy.getCy('filter-button').click();
-      cy.getCy('filter-input-Name').type('test user');
+      cy.getCy('filter-input-Name').type(adminUser.name);
       cy.get('@userId').then((userId) => {
         cy.getCy(`${userId}-role-select`).click();
       });
@@ -48,7 +57,7 @@ describe('User list in admin dashboard', () => {
 
     it('keeps old role if cancel button is pressed', () => {
       cy.getCy('filter-button').click();
-      cy.getCy('filter-input-Name').type('test user');
+      cy.getCy('filter-input-Name').type(adminUser.name);
       cy.get('@userId').then((userId) => {
         cy.getCy(`${userId}-role-select`).click();
       });
@@ -62,7 +71,7 @@ describe('User list in admin dashboard', () => {
 
     it('updates role when confirm button is pressed', () => {
       cy.getCy('filter-button').click();
-      cy.getCy('filter-input-Name').type('test user');
+      cy.getCy('filter-input-Name').type(adminUser.name);
       cy.get('@userId').then((userId) => {
         cy.getCy(`${userId}-role-select`).click();
       });
