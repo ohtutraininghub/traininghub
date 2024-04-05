@@ -1,10 +1,19 @@
+import { Role } from '@prisma/client';
+
+const traineeUser = {
+  name: 'Taylor Trainee',
+  email: 'taylor@traininghub.org',
+  role: Role.TRAINEE,
+};
+
 describe('Course request', () => {
   beforeEach(() => {
+    cy.task('clearDatabase');
     cy.task('seedDatabase');
   });
 
   it('Requesting a course and removing request should be successful', () => {
-    cy.login('trainee@test.com', 'TRAINEE');
+    cy.login(traineeUser.email, traineeUser.role);
     cy.contains('Request trainings').click();
     cy.contains('Git Fundamentals').click();
     cy.getCy('request-button').click();
@@ -19,7 +28,7 @@ describe('Course request', () => {
   });
 
   it('Course with highest request number should be sorted first', () => {
-    cy.login('trainee@test.com', 'TRAINEE');
+    cy.login(traineeUser.email, traineeUser.role);
     cy.contains('Request trainings').click();
 
     // Before requesting a course, the first course should be Git Fundamentals
@@ -36,7 +45,7 @@ describe('Course request', () => {
   });
 
   it('Requesting a course increases the request number', () => {
-    cy.login('trainee@test.com', 'TRAINEE');
+    cy.login(traineeUser.email, traineeUser.role);
     cy.contains('Request trainings').click();
     cy.contains('Git Fundamentals').click();
     cy.getCy('student-count').should('contain', 'Requests: 0');
@@ -48,7 +57,7 @@ describe('Course request', () => {
   });
 
   it('When in request view, course dates are not displayed but expired is displayed instead', () => {
-    cy.login('trainee@test.com', 'TRAINEE');
+    cy.login(traineeUser.email, traineeUser.role);
     cy.contains('Request trainings').click();
     cy.getCy('grid-view')
       .first()

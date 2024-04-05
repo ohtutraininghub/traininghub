@@ -23,6 +23,7 @@ export default withAuth(async function middleware(req) {
       pathname.startsWith('/static') ||
       pathname.startsWith('/public') ||
       pathname.startsWith('/monitoring') || // exclude sentry tunnel route
+      pathname.startsWith('/complete-profile') ||
       PUBLIC_FILE.test(pathname)
     )
   ) {
@@ -30,7 +31,16 @@ export default withAuth(async function middleware(req) {
     const locale = nextLocale?.value ?? i18n.defaultLocale;
 
     const pathnameIsMissingLocale = checkForMissingLocale(pathname);
-
+    // Redirect to complete profile if user is authenticated but profile is not completed
+    if (
+      isAuthenticated &&
+      !token.profileCompleted &&
+      !pathname.includes('/complete-profile')
+    ) {
+      return NextResponse.redirect(
+        new URL(`/${locale}/complete-profile`, req.url)
+      );
+    }
     // Redirect if there is no locale
     if (pathnameIsMissingLocale) {
       // e.g. incoming request is /products

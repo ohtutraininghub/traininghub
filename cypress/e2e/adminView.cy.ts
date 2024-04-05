@@ -1,7 +1,18 @@
+import { Role } from '@prisma/client';
+
+const adminUser = {
+  name: 'Anna Admin',
+  email: 'anna@traininghub.org',
+  role: Role.ADMIN,
+  profileCompleted: true,
+};
+
 describe('Admin view', () => {
   beforeEach(() => {
     cy.task('clearDatabase');
-    cy.login('admin@test.com', 'ADMIN');
+    cy.task('seedDatabase');
+    cy.login(adminUser.email, adminUser.role);
+
     cy.get('[aria-label^="SpeedDial"]').click();
     cy.getCy('dashboard').click();
   });
@@ -15,6 +26,6 @@ describe('Admin view', () => {
   });
 
   it('user list should be accessible', () => {
-    cy.get('h2').eq(2).contains('Users');
+    cy.get('h2').eq(3).contains('Users');
   });
 });

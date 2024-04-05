@@ -48,5 +48,19 @@
   },
   "TagsSection": {
     "header": "Tags"
+  },
+  "TitleForm": {
+    "button": {
+      "submit": "Submit"
+    },
+    "label": "New title",
+    "placeholderText": "Title name"
+  },
+  "TitleList": {
+    "confirmTitleDeletion": "Are you sure you want to delete the following title:",
+    "noTitlesAdded": "No titles added"
+  },
+  "TitlesSection": {
+    "header": "Titles"
   }
 }
