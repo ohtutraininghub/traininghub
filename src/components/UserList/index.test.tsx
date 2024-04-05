@@ -206,7 +206,7 @@ describe('User list', () => {
     expect(smallConfirmCard).toBeInTheDocument();
   });
 
-  it('pressing confirm button after changing country calls fetch update', async () => {
+  it('should call fetch update when pressing confirm button after changing country', async () => {
     const dropdown = within(
       await screen.findByTestId('1a-country-select')
     ).getByRole('combobox');
@@ -226,7 +226,7 @@ describe('User list', () => {
     expect(mockFetch).toHaveBeenCalledTimes(1);
   });
 
-  it('pressing confirm button after changing title calls fetch update', async () => {
+  it('should call fetch update pressing confirm button after changing title', async () => {
     const dropdown = within(
       await screen.findByTestId('1a-title-select')
     ).getByRole('combobox');
