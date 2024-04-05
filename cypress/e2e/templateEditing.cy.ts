@@ -7,13 +7,7 @@ describe('Template editing', () => {
   describe('when logged in as an admin', () => {
     beforeEach(() => {
       cy.login('john.doe@example.com', 'ADMIN');
-      cy.intercept('GET', `/api/auth/session`).as('getUser');
-      cy.wait('@getUser').then((interception) => {
-        cy.wrap(interception?.response?.body?.user.id).as('userId');
-      });
-      cy.get('@userId').then((userId) => {
-        cy.visit(`/profile/${userId}`);
-      });
+      cy.visit('/profile/clsiortzr000008k10sundybm');
       cy.getCy('myCoursesTab').click();
       cy.getCy('templateListControls').click();
     });
@@ -42,13 +36,7 @@ describe('Template editing', () => {
   describe('when logged in as a trainer', () => {
     beforeEach(() => {
       cy.login('emily.davis@example.com', 'TRAINER');
-      cy.intercept('GET', `/api/auth/session`).as('getUser');
-      cy.wait('@getUser').then((interception) => {
-        cy.wrap(interception?.response?.body?.user.id).as('userId');
-      });
-      cy.get('@userId').then((userId) => {
-        cy.visit(`/profile/${userId}`);
-      });
+      cy.visit('/profile/clsiom8xf000008k12bgf6bw6'); //emily davis's user id
       cy.getCy('myCoursesTab').click();
       cy.getCy('templateListControls').click();
     });
