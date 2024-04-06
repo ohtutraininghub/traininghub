@@ -60,7 +60,7 @@ describe('Course editing form', () => {
   });
 
   it('allows trainer to save new template', () => {
-    cy.login(trainerUser.email, trainerUser.role);
+    cy.login('emily.davis@example.com', 'TRAINER');
     cy.contains('Robot Framework Fundamentals').click();
     cy.getCy('editCourseButton').click();
     cy.getCy('saveTemplateButton').click();
@@ -69,7 +69,8 @@ describe('Course editing form', () => {
       .within(() => {
         cy.contains('button', 'Confirm').click();
       });
-    cy.visit('/profile');
+
+    cy.visit('/profile/clsiom8xf000008k12bgf6bw6'); //emily davis's user id
     cy.getCy('myCoursesTab').click();
     cy.getCy('templateListControls').click();
     cy.getCy('templateList').contains('Robot Framework Fundamentals');

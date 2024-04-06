@@ -19,7 +19,12 @@ import { useTranslation } from '@/lib/i18n/client';
 import { useSession } from 'next-auth/react';
 import Loading from '@/app/[lang]/loading';
 import { UserNamesAndIds } from '@/lib/prisma/users';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import {
+  usePathname,
+  useRouter,
+  useSearchParams,
+  useParams,
+} from 'next/navigation';
 import { useState, useEffect } from 'react';
 import TrainerTools from './TrainerTools';
 import { isTrainerOrAdmin } from '@/lib/auth-utils';
@@ -56,6 +61,14 @@ export default function CourseModal({
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const { notify } = useMessage();
+
+  /* if course is opened from profile, enroll & request buttons are only 
+  shown to the user whose profile it is */
+  let showEnrollButton = true;
+  const params = useParams();
+  if (params.id) {
+    showEnrollButton = params.id === session?.user.id;
+  }
 
   //Reset view to course description when modal is opened/closed
   useEffect(() => {
@@ -325,7 +338,7 @@ export default function CourseModal({
                 <Typography sx={{ mb: 1 }} data-testid="student-count">
                   {studentCount()}
                 </Typography>
-                {!isInRequestView ? (
+                {!isInRequestView && showEnrollButton ? (
                   <EnrollHolder
                     lang={lang}
                     isUserEnrolled={isUserEnrolled}
@@ -335,16 +348,18 @@ export default function CourseModal({
                     lastCancelDate={course.lastCancelDate}
                   />
                 ) : (
-                  <RequestTrainingButton
-                    onClick={
-                      !hasUserRequested ? handleRequest : handleRemoveRequest
-                    }
-                    text={
-                      !hasUserRequested
-                        ? t('RequestTraining.button.request')
-                        : t('RequestTraining.button.removeRequest')
-                    }
-                  />
+                  showEnrollButton && (
+                    <RequestTrainingButton
+                      onClick={
+                        !hasUserRequested ? handleRequest : handleRemoveRequest
+                      }
+                      text={
+                        !hasUserRequested
+                          ? t('RequestTraining.button.request')
+                          : t('RequestTraining.button.removeRequest')
+                      }
+                    />
+                  )
                 )}
               </Box>
               <Box

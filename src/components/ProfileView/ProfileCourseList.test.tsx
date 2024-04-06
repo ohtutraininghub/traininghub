@@ -2,8 +2,22 @@ import React from 'react';
 import { screen } from '@testing-library/react';
 import { renderWithTheme } from '@/lib/test-utils';
 import ProfileCourseList from './ProfileCourseList';
-import { Course } from '@prisma/client';
+import { Course, Role } from '@prisma/client';
 import userEvent from '@testing-library/user-event';
+import { useSession } from 'next-auth/react';
+import { useParams } from 'next/navigation';
+
+const adminUser = {
+  id: '123a',
+  name: 'Ada Admin',
+  email: 'admin@traininghub.org',
+  emailVerified: null,
+  image: '',
+  role: Role.ADMIN,
+  countryId: '1',
+  titleId: '1',
+  profileCompleted: true,
+};
 
 const testCourses: Course[] = [
   {
@@ -42,6 +56,10 @@ jest.mock('../../lib/response/fetchUtil', () => ({
   post: (...args: any[]) => mockFetch(...args),
 }));
 
+jest.mock('next-auth/react', () => ({
+  useSession: jest.fn(),
+}));
+
 jest.mock('next/navigation', () => ({
   useRouter() {
     return {
@@ -49,10 +67,18 @@ jest.mock('next/navigation', () => ({
       refresh: jest.fn(),
     };
   },
+  useParams: jest.fn().mockReturnValue({ id: '1' }),
 }));
 
 describe('ProfileCourseList component', () => {
   it('has a header and expand/close controls', () => {
+    (useParams as jest.Mock).mockReturnValue({ id: adminUser.id });
+    (useSession as jest.Mock).mockReturnValue({
+      data: {
+        user: adminUser,
+      },
+      status: 'authenticated',
+    });
     renderWithTheme(
       <ProfileCourseList
         lang="en"

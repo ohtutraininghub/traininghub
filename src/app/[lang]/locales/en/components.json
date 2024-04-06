@@ -144,12 +144,15 @@
       "coursesInprogress": "Courses in progress",
       "endedCourses": "Ended courses",
       "endedCreatedCourses": "Ended created courses",
+      "templates": "Course templates",
       "templatesAdmin": "All course templates",
       "templatesTrainer": "My course templates",
       "upcomingCourses": "Upcoming courses",
       "upcomingCreatedCourses": "Upcoming created courses"
     },
     "label": {
+      "Courses": "Courses",
+      "Enrollments": "Enrollments",
       "additionalInfo": "Additional information",
       "adminDashboard": "Admin dashboard",
       "myCourses": "My courses",

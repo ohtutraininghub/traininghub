@@ -21,6 +21,7 @@ jest.mock('next/navigation', () => ({
     push: jest.fn(),
     refresh: jest.fn(),
   })),
+  useParams: jest.fn().mockReturnValue({ id: '1' }),
 }));
 
 // Mocking the remove function, used by DeleteTemplateButton
