@@ -99,6 +99,10 @@ describe('Profile View', () => {
       cy.getCy('listControls\\.endedCourses').click();
       cy.contains(testCourses[0].name);
     });
+    it('should not be possible to visit other users profiles', () => {
+      cy.visit('/profile/cluo35ozy000208jy18sdfe4a'); // trainer's user id
+      cy.contains('You are not authorized to view this page');
+    });
   });
   describe('when logged in as a trainer', () => {
     beforeEach(() => {
@@ -154,6 +158,10 @@ describe('Profile View', () => {
       // trainer user doesn't have any templates
       cy.contains('My course templates (0)');
     });
+    it('should not be possible to visit other users profiles', () => {
+      cy.visit('/profile/cluo340vw000108jyfdxm12jm'); // trainee's user id
+      cy.contains('You are not authorized to view this page');
+    });
   });
   describe('when logged in as an admin', () => {
     beforeEach(() => {
@@ -191,6 +199,30 @@ describe('Profile View', () => {
       cy.contains(templateData[1].name);
       cy.contains(templateData[0].createdBy);
       cy.contains(templateData[1].createdBy);
+    });
+    it('should show different tab names when viewing other profiles', () => {
+      cy.visit('/profile/cluo35ozy000208jy18sdfe4a'); // trainer's user id
+      cy.contains('My enrollments').should('not.exist');
+      cy.contains('My courses').should('not.exist');
+      cy.contains('Admin dashboard').should('not.exist');
+      cy.contains('Enrollments');
+      cy.contains('Courses');
+    });
+    it('should show trainees enrolled courses for admin', () => {
+      cy.visit('/profile/cluo340vw000108jyfdxm12jm'); // trainee's user id
+      cy.contains('Taylor Trainee');
+      // trainee has enrolled in 5 courses
+      cy.contains('Courses in progress (1)');
+      cy.contains('Upcoming courses (2)');
+      cy.contains('Ended courses (2)');
+    });
+    it('should show trainers created courses and templates for admin', () => {
+      cy.visit('/profile/cluo35ozy000208jy18sdfe4a'); // trainer's user id
+      cy.contains('Tim Trainer');
+      cy.getCy('myCoursesTab').click();
+      cy.contains('Upcoming created courses (3)');
+      cy.contains('Ended created courses (2)');
+      cy.contains('Course templates (0)');
     });
   });
 });
