@@ -35,6 +35,7 @@ const SelectDropdown = React.forwardRef<HTMLDivElement, Props>(
           name={`${field.name}Select`}
           id={`${field.name}-select`}
           labelId={`${field.name}-label`}
+          data-testid={`${field.name}-select`}
           color="secondary"
           sx={{
             display: 'flex',
