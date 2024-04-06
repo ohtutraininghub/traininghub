@@ -2,7 +2,7 @@ import { Role, User } from '@prisma/client';
 import { clearDatabase, prisma } from '../src/lib/prisma';
 
 const traineeUser = {
-  id: '123000',
+  id: 'cluo340vw000108jyfdxm12jm',
   name: 'Taylor Trainee',
   email: 'taylor@traininghub.org',
   emailVerified: null,
@@ -14,7 +14,7 @@ const traineeUser = {
 };
 
 const trainerUser = {
-  id: '123001',
+  id: 'cluo35ozy000208jy18sdfe4a',
   name: 'Tim Trainer',
   email: 'tim@traininghub.org',
   emailVerified: null,
@@ -26,7 +26,7 @@ const trainerUser = {
 };
 
 const adminUser = {
-  id: '123011',
+  id: 'cluo36844000308jy411a7nub',
   name: 'Anna Admin',
   email: 'anna@traininghub.org',
   emailVerified: null,

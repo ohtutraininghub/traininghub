@@ -5,21 +5,21 @@ const msDay = 24 * 60 * 60 * 1000;
 const msHour = 60 * 60 * 1000;
 
 const traineeUser = {
-  id: '123000',
+  id: 'cluo340vw000108jyfdxm12jm',
   name: 'Taylor Trainee',
   email: 'taylor@traininghub.org',
   role: Role.TRAINEE,
 };
 
 const trainerUser = {
-  id: '123001',
+  id: 'cluo35ozy000208jy18sdfe4a',
   name: 'Tim Trainer',
   email: 'tim@traininghub.org',
   role: Role.TRAINER,
 };
 
 const adminUser = {
-  id: '123011',
+  id: 'cluo36844000308jy411a7nub',
   name: 'Anna Admin',
   email: 'anna@traininghub.org',
   role: Role.ADMIN,
@@ -70,7 +70,7 @@ describe('Profile View', () => {
   describe('when logged in as a trainee', () => {
     beforeEach(() => {
       cy.login(traineeUser.email, traineeUser.role);
-      cy.visit('/profile/123000'); // trainee user id
+      cy.visit('/profile/cluo340vw000108jyfdxm12jm'); // trainee user id
       // close automatically opened dropdown
       cy.getCy('listControls\\.upcomingCourses').click();
     });
@@ -101,7 +101,7 @@ describe('Profile View', () => {
   describe('when logged in as a trainer', () => {
     beforeEach(() => {
       cy.login(trainerUser.email, trainerUser.role);
-      cy.visit('/profile/123001'); // trainer user id
+      cy.visit('/profile/cluo35ozy000208jy18sdfe4a'); // trainer user id
       // close automatically opened dropdowns
       cy.getCy('listControls\\.inprogressCourses').click();
       cy.getCy('listControls\\.upcomingCourses').click();
@@ -156,7 +156,7 @@ describe('Profile View', () => {
   describe('when logged in as an admin', () => {
     beforeEach(() => {
       cy.login(adminUser.email, adminUser.role);
-      cy.visit('/profile/123011'); // admin user id
+      cy.visit('/profile/cluo36844000308jy411a7nub'); // admin user id
       // close automatically opened dropdowns
       cy.getCy('listControls\\.inprogressCourses').click();
       cy.getCy('listControls\\.upcomingCourses').click();
