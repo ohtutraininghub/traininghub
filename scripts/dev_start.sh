@@ -13,4 +13,4 @@ trap "docker compose down" INT TERM
 npx prisma migrate dev --skip-seed
 
 # Start the project in terminal
-npm run dev:next
+npm-run-all --parallel dev:next cron
