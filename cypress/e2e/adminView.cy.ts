@@ -21,6 +21,14 @@ describe('Admin view', () => {
     cy.get('h1').contains('Admin dashboard');
   });
 
+  it('titlelist should be accessible', () => {
+    cy.get('h2').contains('Titles');
+  });
+
+  it('countrylist should be accessible', () => {
+    cy.get('h2').contains('Countries');
+  });
+
   it('taglist should be accessible', () => {
     cy.get('h2').contains('Tags');
   });
