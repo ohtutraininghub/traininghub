@@ -248,9 +248,9 @@ const userData: User[] = [
     emailVerified: null,
     image: 'https://example.com/ellamoore.jpg',
     role: 'TRAINEE',
-    countryId: 'clum4qgfw000008k095npgxsx',
-    titleId: 'clum4qgfw000008k095npgxwe',
-    profileCompleted: true,
+    countryId: null,
+    titleId: null,
+    profileCompleted: false,
   },
 ];
 

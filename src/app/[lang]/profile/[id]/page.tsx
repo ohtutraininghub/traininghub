@@ -99,6 +99,8 @@ export default async function ProfilePageById({ searchParams, params }: Props) {
           name: userData.name ?? '',
           email: userData.email ?? '',
           image: userData.image ?? '',
+          country: userData.country?.name ?? '',
+          title: userData.title?.name ?? '',
         }}
         courses={userData?.courses ?? []}
         createdCourses={userData?.createdCourses ?? []}

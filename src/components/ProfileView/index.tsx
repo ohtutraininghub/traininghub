@@ -20,6 +20,8 @@ export interface userDetails {
   name: string;
   email: string;
   image: string;
+  country: string;
+  title: string;
 }
 
 export interface ProfileViewProps extends PropsWithChildren, DictProps {
@@ -68,6 +70,8 @@ export default function ProfileView({
         name={userDetails.name}
         email={userDetails.email}
         image={userDetails.image}
+        country={userDetails.country}
+        title={userDetails.title}
       />
       <Tabs
         value={selectedTab}
