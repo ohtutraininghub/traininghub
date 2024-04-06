@@ -43,7 +43,3 @@ next-env.d.ts
 # Cypress
 cypress/screenshots
 cypress/downloads
-
-# javascript files compiled for cron job
-/src/**/*.js
-!/src/cron.js
