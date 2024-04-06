@@ -8,12 +8,16 @@ export interface ProfileUserDetailProps {
   name: string;
   email: string;
   image: string;
+  country: string;
+  title: string;
 }
 
 export default function ProfileUserDetails({
   name,
   email,
   image,
+  country,
+  title,
 }: ProfileUserDetailProps) {
   const { palette } = useTheme();
 
@@ -50,6 +54,15 @@ export default function ProfileUserDetails({
         style={{ color: palette.white.main }}
       >
         {name}
+      </Typography>
+      <Typography variant="overline" style={{ color: palette.white.main }}>
+        {title}
+      </Typography>
+      <Typography
+        variant="overline"
+        style={{ color: palette.white.main, padding: 0 }}
+      >
+        {country}
       </Typography>
       <Box
         style={{
