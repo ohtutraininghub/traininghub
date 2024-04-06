@@ -127,7 +127,7 @@ const countryData = [
   { name: 'Sweden', countryCode: 'SE' },
   { name: 'Norway', countryCode: 'NO' },
   { name: 'Denmark', countryCode: 'DK' },
-  { name: 'Germany', countryCode: 'DE' },
+  { id: 'clumicdtg0003fyakdum2yzdv', name: 'Germany', countryCode: 'DE' },
   { name: 'Netherlands', countryCode: 'NL' },
   { name: 'Switzerland', countryCode: 'CH' },
   { name: 'United Kingdom', countryCode: 'GB' },
