@@ -72,6 +72,7 @@ model Course {
   calendar       Calendar[]
   image          String?
   slackChannelId String?
+  googleFormsId  String?
 }
 
 model Request {
