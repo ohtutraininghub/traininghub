@@ -28,7 +28,7 @@ export default async function AdminDashboardPage({ params }: Props) {
       <Typography variant="h1">{t('DashboardTitle')}</Typography>
       <CreateTitle
         titlesHeader={t('TitlesSection.header')}
-        titles={[]}
+        titles={titles}
         lang={params.lang}
       />
       <CreateCountry
