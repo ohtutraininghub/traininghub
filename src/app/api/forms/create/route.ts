@@ -49,8 +49,10 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    // Assuming formResponse contains the details of the created form
-    return successResponse(formResponse.data);
+    return successResponse({
+      message: t('GoogleForms.formCreated'),
+      statusCode: StatusCodeType.CREATED,
+    });
   } catch (error) {
     return handleCommonErrors(error);
   }

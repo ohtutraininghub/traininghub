@@ -11,6 +11,7 @@ import {
 } from '@/lib/prisma/calendar';
 import { logHandledException } from '@/lib/sentry';
 import { isProduction } from '../env-utils';
+import { prisma } from '@/lib/prisma';
 
 export const insertCourseToCalendar = async (
   userId: string,
@@ -133,34 +134,75 @@ export const updateCourseToCalendars = async (course: Course) => {
 };
 
 export const createCourseFeedbackForm = async (course) => {
-  // TODO: Implement logic to determine if a feedback form already exists
-
   const refreshTokenAuth = await getRefreshTokenAuth(course.userId);
   const forms = googleforms({ version: 'v1', auth: refreshTokenAuth });
-
-  try {
-    const response = await forms.forms.create({
-      requestBody: {
-        info: {
-          title: `Please provide feedback for the course: ${course.name}`,
-          document_title: `${course.name} Feedback`,
+  const newForm = {
+    info: {
+      title: `Please provide feedback for the course: ${course.name}`,
+      document_title: `${course.name} Feedback`,
+    },
+  };
+  const feedbackItems = {
+    requests: [
+      {
+        createItem: {
+          item: {
+            title: 'Rate the course from 1 to 5',
+            questionItem: {
+              question: {
+                scaleQuestion: {
+                  low: 1,
+                  high: 5,
+                  lowLabel: 'Not useful',
+                  highLabel: 'Very useful',
+                },
+              },
+            },
+          },
+          location: {
+            index: 0,
+          },
         },
       },
+      {
+        createItem: {
+          item: {
+            title: 'How was the course?',
+            questionItem: {
+              question: {
+                required: false,
+                textQuestion: {
+                  paragraph: false,
+                },
+              },
+            },
+          },
+          location: {
+            index: 1,
+          },
+        },
+      },
+    ],
+  };
+  try {
+    const response = await forms.forms.create({
+      requestBody: newForm,
     });
 
+    const formId = response?.data?.formId;
     const formUrl = response?.data?.responderUri;
-    console.log(formUrl);
-    if (!formUrl) {
-      throw new Error('Google response did not contain form URL!');
-    }
 
-    // Optional: Save form URL to course
-    // await prisma.course.update({
-    //   where: { id: course.id },
-    //   data: { feedbackFormUrl: formUrl },
-    // });
+    await forms.forms.batchUpdate({
+      formId: formId,
+      requestBody: feedbackItems,
+    });
 
-    return formUrl;
+    await prisma.course.update({
+      where: { id: course.id },
+      data: { googleFormsId: formId },
+    });
+
+    return { ok: true, data: { formId, formUrl } };
   } catch (error) {
     await logHandledException(error); // Awaiting the logging
     throw error; // Rethrow the error for the caller to handle
