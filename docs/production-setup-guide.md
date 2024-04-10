@@ -59,16 +59,21 @@ Example: `postgresql://admin:password@localhost:5433/traininghub-db?schema=publi
 Slack setup is required for sending messages to Slack.
 
 - Create new [Slack app](https://api.slack.com/) from scratch
-- Features
-  - OAuth & Permissions
-    - Install app to workspace
-    - Here you can obtain `Bot User OAuth Token` for `SLACK_BOT_TOKEN`.
-  - Bot Token Scopes:
-    - `channels:read`
-    - `channels:manage`
-    - `chat:write`
-    - `users:read`
-    - `users:read.email`
+- Slack App settings
+  - Features
+    - OAuth & Permissions
+      - Add Bot Token Scopes:
+        - `channels:read`
+        - `channels:manage`
+        - `chat:write`
+        - `users:read`
+        - `users:read.email`
+      - Install app to workspace
+      - Now you can obtain `Bot User OAuth Token` for `SLACK_BOT_TOKEN`.
+- In workspace, create new channel `new-trainings` (name can be modified in [constants.ts](https://github.com/ohtutraininghub/traininghub/blob/staging/src/lib/slack/constants.ts))
+  - View channel details
+    - Integrations
+      - Add Slack app to the channel
 
 ## GitHub secrets
 
