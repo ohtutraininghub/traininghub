@@ -1,4 +1,4 @@
-FROM node:18-alpine as builder
+FROM node:21-alpine as builder
 
 # Passed in workflow via docker_build_args
 ARG NEXTAUTH_URL
@@ -17,6 +17,8 @@ ENV NEXT_PUBLIC_SENTRY_ENVIRONMENT=$NEXT_PUBLIC_SENTRY_ENVIRONMENT
 ENV SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN
 ENV SENTRY_ORG=$SENTRY_ORG
 ENV SENTRY_PROJECT=$SENTRY_PROJECT
+ENV HOST_URL=$HOST_URL
+ENV SLACK_BOT_TOKEN=$SLACK_BOT_TOKEN
 
 # Add required static envs for build
 ENV HUSKY 0
@@ -31,7 +33,7 @@ RUN apk add --no-cache libc6-compat && \
   npm ci && \
   npm run build
 
-FROM node:18-alpine as runner
+FROM node:21-alpine as runner
 
 ENV NODE_ENV production
 ENV NEXT_TELEMETRY_DISABLED 1

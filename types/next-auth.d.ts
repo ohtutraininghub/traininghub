@@ -10,11 +10,15 @@ declare module 'next-auth' {
       email: string;
       image: string;
       role: Role;
+      countryId: string;
+      titleId: string;
+      profileCompleted: boolean;
     };
   }
-
+  types;
   interface User extends DefaultUser {
     role: Role;
+    profileCompleted: boolean;
   }
 }
 
@@ -22,5 +26,6 @@ declare module 'next-auth/jwt' {
   interface JWT {
     id: string;
     role: Role;
+    profileCompleted: boolean;
   }
 }

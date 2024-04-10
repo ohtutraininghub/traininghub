@@ -10,6 +10,8 @@ import React from 'react';
 
 // This implementation is from emotion-js
 // https://github.com/emotion-js/emotion/issues/2928#issuecomment-1319747902
+// Magic lines
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function ThemeRegistry(props: { options: any; children: any }) {
   const { options, children } = props;
 

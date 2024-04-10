@@ -11,7 +11,7 @@ import {
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
-import FormFieldError from '@/components/FormFieldError/FormFieldError';
+import FormFieldError from '@/components/FormFieldError';
 import { useMessage } from '../Providers/MessageProvider';
 import { post } from '@/lib/response/fetchUtil';
 import { DictProps } from '@/lib/i18n';
@@ -22,7 +22,7 @@ interface Props extends DictProps {}
 export default function TagForm({ lang }: Props) {
   const router = useRouter();
   const { notify } = useMessage();
-  const { t } = useTranslation(lang, 'components');
+  const { t } = useTranslation(lang, 'admin');
 
   const {
     register,
@@ -54,7 +54,7 @@ export default function TagForm({ lang }: Props) {
       </FormLabel>
       <Box sx={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
         <OutlinedInput
-          placeholder="Tag name"
+          placeholder={t('TagForm.placeholderText')}
           {...register('name')}
           inputProps={{
             maxLength: maxTagLength + 1,
@@ -70,7 +70,7 @@ export default function TagForm({ lang }: Props) {
           sx={{}}
           data-testid="tagSubmitButton"
         >
-          {t('TagForm.submit')}
+          {t('TagForm.button.submit')}
         </Button>
       </Box>
       <FormFieldError error={errors.name} />

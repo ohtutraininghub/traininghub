@@ -14,6 +14,8 @@ declare module '@mui/material/styles' {
     coverBlue: PaletteColor;
     black: PaletteColor;
     white: PaletteColor;
+    modal: PaletteColor;
+    success: PaletteColor;
   }
   // eslint-disable-next-line no-unused-vars
   interface PaletteOptions {
@@ -22,6 +24,8 @@ declare module '@mui/material/styles' {
     coverBlue?: PaletteColorOptions;
     black?: PaletteColorOptions;
     white?: PaletteColorOptions;
+    modal?: PaletteColorOptions;
+    success?: PaletteColorOptions;
   }
 }
 
@@ -67,6 +71,13 @@ let theme = createTheme({
     },
     white: {
       main: '#ffffff',
+    },
+    modal: { main: '#000000bf' },
+    success: {
+      main: '#4caf50',
+      light: '#66bb6a',
+      dark: '#388e3c',
+      contrastText: '#f6f4f2',
     },
   },
   typography: {
@@ -115,6 +126,16 @@ let theme = createTheme({
           color: '#ffffff',
           backgroundColor: '#0081aa',
           height: 65,
+        },
+      },
+    },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          '&.Mui-disabled': {
+            color: 'rgba(255, 255, 255, 0.5)',
+            backgroundColor: 'rgba(125, 125, 125)',
+          },
         },
       },
     },

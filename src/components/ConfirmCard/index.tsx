@@ -2,8 +2,17 @@
 
 import { DictProps } from '@i18n/index';
 import { useTranslation } from '@i18n/client';
-import { Backdrop, Box, Button, Card, Typography } from '@mui/material';
-import { Dispatch, SetStateAction } from 'react';
+import {
+  Backdrop,
+  Box,
+  Button,
+  Card,
+  Typography,
+  Checkbox,
+  FormGroup,
+  FormControlLabel,
+} from '@mui/material';
+import { Dispatch, SetStateAction, useState } from 'react';
 import { useTheme } from '@mui/material/styles';
 
 interface Props extends DictProps {
@@ -11,6 +20,8 @@ interface Props extends DictProps {
   setBackdropOpen: Dispatch<SetStateAction<boolean>>;
   confirmMessage: string;
   handleClick: () => void;
+  includeCheckbox?: boolean;
+  onNotifyChange?: (isChecked: boolean) => void;
 }
 
 export function ConfirmCard({
@@ -19,9 +30,15 @@ export function ConfirmCard({
   confirmMessage,
   handleClick,
   lang,
+  includeCheckbox = false,
+  onNotifyChange,
 }: Props) {
   const { t } = useTranslation(lang, 'components');
   const { palette } = useTheme();
+  const theme = useTheme();
+
+  const [isNotifyChecked, setIsNotifyChecked] = useState(false);
+
   return (
     <Backdrop
       sx={{ zIndex: 1200 }}
@@ -30,6 +47,7 @@ export function ConfirmCard({
     >
       <Card
         raised
+        data-testid="confirmCard"
         sx={{
           display: 'flex',
           flexDirection: 'column',
@@ -41,6 +59,7 @@ export function ConfirmCard({
           backgroundColor: palette.coverBlue.main,
           position: 'relative',
         }}
+        onClick={(event) => event.stopPropagation()} // Stop event propagation here
       >
         <Box
           sx={{
@@ -55,6 +74,7 @@ export function ConfirmCard({
             width: '100%',
             height: '100%',
             transform: 'scaleX(-1)',
+            flexDirection: 'column',
           }}
         />
         <Typography
@@ -74,13 +94,47 @@ export function ConfirmCard({
             justifyContent: 'flex-end',
             margin: '0.5em 0',
             gap: 1,
+            flexDirection: 'column',
           }}
           className="button-container"
           display="flex"
         >
-          <Button variant="outlined" onClick={() => setBackdropOpen(false)}>
+          {includeCheckbox && (
+            <FormGroup>
+              <FormControlLabel
+                sx={{
+                  color: palette.white.main,
+                  '& .MuiFormControlLabel-label': {
+                    fontSize: '16px',
+                    fontFamily: 'Roboto',
+                    zIndex: 1,
+                    [theme.breakpoints.up('sm')]: {
+                      fontSize: '14px',
+                    },
+                  },
+                }}
+                label={t('ConfirmCard.checkbox.label')}
+                control={
+                  <Checkbox
+                    sx={{ color: palette.white.main }}
+                    checked={isNotifyChecked}
+                    onChange={(event) => {
+                      setIsNotifyChecked(event.target.checked);
+                      onNotifyChange && onNotifyChange(event.target.checked);
+                    }}
+                  />
+                }
+              />
+            </FormGroup>
+          )}
+          <Button
+            variant="outlined"
+            data-testid="confirmCardCancel"
+            onClick={() => setBackdropOpen(false)}
+          >
             {t('ConfirmCard.cancel')}
           </Button>
+
           <Button
             variant="contained"
             data-testid="confirmCardConfirm"

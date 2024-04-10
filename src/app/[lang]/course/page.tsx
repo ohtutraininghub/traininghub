@@ -1,5 +1,5 @@
 import React from 'react';
-import CourseForm from '@/components/CourseForm/CourseForm';
+import CourseForm from '@/components/CourseForm';
 import { getServerAuthSession } from '@/lib/auth';
 import { hasCourseEditRights } from '@/lib/auth-utils';
 import { getCourseById } from '@/lib/prisma/courses';
@@ -27,5 +27,12 @@ export default async function CourseEditPage({ params }: Props) {
     redirect('/');
   }
 
-  return <CourseForm lang={params.lang} tags={tags} courseData={course} />;
+  return (
+    <CourseForm
+      lang={params.lang}
+      tags={tags}
+      courseData={course}
+      templates={[]}
+    />
+  );
 }

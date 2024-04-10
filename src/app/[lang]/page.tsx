@@ -1,6 +1,6 @@
-import CourseList from '@/components/CourseList/CourseList';
+import CourseList from '@/components/CourseList';
 import { notFound } from 'next/navigation';
-import { getCourses, getEnrolledCourseIdsByUserId } from '@/lib/prisma/courses';
+import { getAllCourses } from '@/lib/prisma/courses';
 import { getServerAuthSession } from '@/lib/auth';
 import { prisma } from '@/lib/prisma/index';
 import { Locale } from '@/lib/i18n/i18n-config';
@@ -8,8 +8,17 @@ import BackgroundContainer from '@/components/BackgroundContainer';
 import SpeedDialMenu from '@/components/SpeedDialMenu';
 import SearchMenu from '@/components/SearchMenu';
 import { isTrainerOrAdmin } from '@/lib/auth-utils';
-import { UserNamesAndIds, getStudentNamesByCourseId } from '@/lib/prisma/users';
+import {
+  UserNamesAndIds,
+  getStudentNamesByCourseId,
+  getUsersEnrolls,
+  getUsersRequests,
+} from '@/lib/prisma/users';
 import BackToTopToggle from '@/components/BackToTopToggle';
+import {
+  RequestsAndUserNames,
+  getRequestsByCourseId,
+} from '@/lib/prisma/requests';
 
 export const dynamic = 'force-dynamic';
 
@@ -28,7 +37,7 @@ type Props = {
 
 export default async function HomePage({ searchParams, params }: Props) {
   const session = await getServerAuthSession();
-  const courses = await getCourses();
+  const courses = await getAllCourses();
   const courseId = searchParams.courseId;
   const openedCourse = courses.find((course) => course.id === courseId);
 
@@ -36,13 +45,26 @@ export default async function HomePage({ searchParams, params }: Props) {
     notFound();
   }
 
-  let enrolledStudents: UserNamesAndIds | null = null;
+  let enrolledStudents: UserNamesAndIds | null = [];
   if (isTrainerOrAdmin(session.user) && openedCourse) {
     enrolledStudents = await getStudentNamesByCourseId(openedCourse.id);
   }
 
-  const usersEnrolledCourseIds = await getEnrolledCourseIdsByUserId(
-    session.user.id
+  let requests: RequestsAndUserNames | null = [];
+  if (isTrainerOrAdmin(session.user) && openedCourse) {
+    requests = await getRequestsByCourseId(openedCourse.id);
+  }
+
+  const usersEnrolls = await getUsersEnrolls(session.user.id);
+
+  const usersEnrolledCourseIds = usersEnrolls?.courses.map(
+    (course) => course.id
+  );
+
+  const usersRequests = await getUsersRequests(session.user.id);
+
+  const usersRequestedCourseIds = usersRequests.map(
+    (request) => request.courseId
   );
 
   const tags = await prisma.tag.findMany({});
@@ -60,7 +82,9 @@ export default async function HomePage({ searchParams, params }: Props) {
         courses={courses}
         openedCourse={openedCourse}
         usersEnrolledCourseIds={usersEnrolledCourseIds}
+        usersRequestedCourseIds={usersRequestedCourseIds}
         enrolledStudents={enrolledStudents}
+        requests={requests}
         searchCourses={{
           courseName: searchParams.courseName,
           courseTag: searchParams.courseTag,

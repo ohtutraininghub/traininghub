@@ -1,0 +1,69 @@
+name: Heroku deploy flow
+
+on:
+  workflow_call:
+    inputs:
+      ENVIRONMENT_NAME:
+        required: true
+        type: string
+
+jobs:
+  heroku-deploy:
+    runs-on: ubuntu-22.04
+    environment: ${{ inputs.ENVIRONMENT_NAME }}
+    if: ${{ github.event_name == 'push' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Heroku deploy
+        uses: akhileshns/heroku-deploy@v3.12.14
+        with:
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
+          heroku_email: ${{ secrets.HEROKU_EMAIL }}
+          usedocker: true
+          docker_build_args: |
+            NEXTAUTH_URL
+            NEXTAUTH_SECRET
+            SENTRY_ENVIRONMENT
+            NEXT_PUBLIC_SENTRY_ENVIRONMENT
+            SENTRY_AUTH_TOKEN
+            SENTRY_ORG
+            SENTRY_PROJECT
+            HOST_URL
+            SLACK_BOT_TOKEN
+        env:
+          # NEXTAUTH
+          HD_NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL }}
+          HD_NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
+
+          # GOOGLE
+          HD_GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          HD_GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+
+          # SENTRY
+          HD_SENTRY_ENVIRONMENT: ${{ inputs.ENVIRONMENT_NAME }}
+          HD_SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          HD_SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+          HD_SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
+
+          # SLACK
+          HD_HOST_URL: ${{ secrets.HOST_URL }}
+          HD_SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+
+          # BUILD TIME ARGS
+
+          # NEXTAUTH
+          NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL }}
+          NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
+
+          # SENTRY
+          SENTRY_ENVIRONMENT: ${{ inputs.ENVIRONMENT_NAME }}
+          NEXT_PUBLIC_SENTRY_ENVIRONMENT: ${{ inputs.ENVIRONMENT_NAME }}
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+          SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
+
+          # SLACK
+          HOST_URL: ${{ secrets.HOST_URL }}
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}

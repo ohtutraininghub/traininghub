@@ -1,3 +1,5 @@
+import { Role } from '@prisma/client';
+
 describe('BackToTopToggle button', () => {
   const course = {
     name: 'Kubernetes Fundamentals part 2',
@@ -8,18 +10,22 @@ describe('BackToTopToggle button', () => {
     endDate: '2030-07-01T08:30',
     maxStudents: '100',
   };
-
+  const trainerUser = {
+    name: 'Tim Trainer',
+    email: 'tim@traininghub.org',
+    role: Role.TRAINER,
+  };
   beforeEach(() => {
     cy.task('seedDatabase');
   });
 
   it('does not initially show backToTopToggle component', () => {
-    cy.login('testuser@test.com', 'TRAINER');
+    cy.login(trainerUser.email, 'TRAINER');
     cy.getCy('backToTopToggle').should('not.be.visible');
   });
 
   it('shows the button after scrolling down and scrolls back to top when clicked', () => {
-    cy.login('testuser@test.com', 'TRAINER');
+    cy.login(trainerUser.email, 'TRAINER');
     cy.visit('/course/create');
     // create new course to fill course view further and enable scrolling down
     cy.getCy('courseFormName').type(course.name);
@@ -33,7 +39,8 @@ describe('BackToTopToggle button', () => {
 
     cy.getCy('courseFormStartDate').type(course.startDate);
     cy.getCy('courseFormEndDate').type(course.endDate);
-    cy.getCy('courseFormMaxStudents').clear().type(course.maxStudents);
+    cy.getCy('courseFormMaxStudents').clear();
+    cy.getCy('courseFormMaxStudents').type(course.maxStudents);
     cy.getCy('courseFormSubmit').click();
     // view at top, button should not be visible
     cy.getCy('backToTopToggle').should('not.be.visible');

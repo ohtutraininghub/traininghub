@@ -23,6 +23,6 @@
     "strict": true,
     "target": "es5"
   },
-  "exclude": ["cypress.config.ts", "cypress", "node_modules"],
+  "exclude": ["node_modules", "./cypress.config.ts", "cypress", "**/*.cy.tsx"],
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"]
 }

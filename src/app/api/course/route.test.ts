@@ -1,29 +1,35 @@
 import { MessageType, StatusCodeType } from '@/lib/response/responseUtil';
-import { GET, POST, PUT } from './route';
+import { GET, POST, PUT, DELETE } from './route';
 import { prisma, clearDatabase } from '@/lib/prisma';
 import { NextRequest } from 'next/server';
 import { createMocks } from 'node-mocks-http';
 import { Role } from '@prisma/client';
+import { getServerAuthSession } from '@/lib/auth';
 
-const testUser = {
+const adminUser = {
   id: 'clo079ls3000108jsbdbsc8pv',
+  role: Role.ADMIN,
+};
+
+const trainerUser = {
+  id: 'cls31nwpr000308jycjsj3em1',
+  role: Role.TRAINER,
+};
+
+const traineeUser = {
+  id: 'cls1rqioq000008jlf156ate0',
+  role: Role.TRAINEE,
 };
 
 beforeEach(async () => {
   await clearDatabase();
-  await prisma.user.create({
-    data: { id: testUser.id },
+  await prisma.user.createMany({
+    data: [adminUser, trainerUser, traineeUser],
   });
 });
 
 jest.mock('../../../lib/auth', () => ({
-  getServerAuthSession: async () =>
-    Promise.resolve({
-      user: {
-        id: testUser.id,
-        role: Role.TRAINER,
-      },
-    }),
+  getServerAuthSession: jest.fn(),
 }));
 
 const newCourse = {
@@ -126,8 +132,21 @@ const mockUpdateRequest = (body: any) => {
   }).req;
 };
 
+const mockDeleteRequest = (body: any) => {
+  return createMocks<NextRequest>({
+    method: 'DELETE',
+    json: () => body,
+  }).req;
+};
+
 describe('Course API tests', () => {
   describe('GET', () => {
+    (getServerAuthSession as jest.Mock).mockImplementation(async () =>
+      Promise.resolve({
+        user: adminUser,
+      })
+    );
+
     it('returns an empty list from the database at the beginning of the tests', async () => {
       const response = await GET();
       const data = await response.json();
@@ -137,6 +156,12 @@ describe('Course API tests', () => {
   });
 
   describe('POST', () => {
+    (getServerAuthSession as jest.Mock).mockImplementation(async () =>
+      Promise.resolve({
+        user: adminUser,
+      })
+    );
+
     it('adds new course in to the database', async () => {
       const req = mockPostRequest(newCourse);
       const response = await POST(req);
@@ -240,6 +265,12 @@ describe('Course API tests', () => {
   });
 
   describe('PUT', () => {
+    (getServerAuthSession as jest.Mock).mockImplementation(async () =>
+      Promise.resolve({
+        user: adminUser,
+      })
+    );
+
     const courseDataWithDate = {
       id: 'cloh5jr6h000008l40614d1vr',
       name: 'Spaghetti coding 101',
@@ -249,7 +280,7 @@ describe('Course API tests', () => {
       lastEnrollDate: new Date(Date.now() + 1000 * 60 * 60 * 24),
       lastCancelDate: new Date(Date.now() + 1000 * 60 * 60 * 12),
       maxStudents: 200,
-      createdById: testUser.id,
+      createdById: adminUser.id,
       tags: [],
     };
 
@@ -266,7 +297,7 @@ describe('Course API tests', () => {
 
       const response = await PUT(req);
       const data = await response.json();
-      expect(data.message).toContain('Course by given id was not found');
+      expect(data.message).toContain('Course by the given id was not found');
       expect(data.messageType).toBe(MessageType.ERROR);
       expect(response.status).toBe(404);
     });
@@ -369,6 +400,128 @@ describe('Course API tests', () => {
       expect(data.message).toBe('Unprocessable content');
       expect(data.messageType).toBe(MessageType.ERROR);
       expect(response.status).toBe(StatusCodeType.UNPROCESSABLE_CONTENT);
+    });
+  });
+
+  describe('DELETE', () => {
+    const courseDataWithDate = {
+      id: 'cloh5jr6h000008l40614d1vr',
+      name: 'Spaghetti coding 101',
+      description: 'Security by obscurity',
+      startDate: new Date(Date.now() + 1000 * 60 * 60 * 24),
+      endDate: new Date(Date.now() + 1000 * 60 * 60 * 24 * 2),
+      lastEnrollDate: new Date(Date.now() + 1000 * 60 * 60 * 24),
+      lastCancelDate: new Date(Date.now() + 1000 * 60 * 60 * 12),
+      maxStudents: 200,
+      createdById: adminUser.id,
+      tags: [],
+    };
+
+    it('Succeeds when deleting own course', async () => {
+      (getServerAuthSession as jest.Mock).mockImplementation(async () =>
+        Promise.resolve({
+          user: adminUser,
+        })
+      );
+
+      await prisma.course.create({
+        data: {
+          ...courseDataWithDate,
+          tags: {
+            connect: [],
+          },
+        },
+      });
+
+      const courseInDb = await prisma.course.findFirst();
+      const req = mockDeleteRequest({ courseId: courseInDb?.id });
+      const response = await DELETE(req);
+      const data = await response.json();
+
+      expect(data.message).toBe('Course successfully deleted!');
+      expect(data.messageType).toBe(MessageType.SUCCESS);
+      expect(response.status).toBe(StatusCodeType.OK);
+    });
+
+    it("Admin can delete another user's course", async () => {
+      (getServerAuthSession as jest.Mock).mockImplementation(async () =>
+        Promise.resolve({
+          user: adminUser,
+        })
+      );
+
+      const courseByOtherUser = {
+        id: 'cloh5jr6h000008l40614d1vr',
+        name: 'Bad course',
+        description: 'Admins please delete this',
+        startDate: new Date(Date.now() + 1000 * 60 * 60 * 24),
+        endDate: new Date(Date.now() + 1000 * 60 * 60 * 24 * 2),
+        lastEnrollDate: new Date(Date.now() + 1000 * 60 * 60 * 24),
+        lastCancelDate: new Date(Date.now() + 1000 * 60 * 60 * 12),
+        maxStudents: 200,
+        createdById: trainerUser.id,
+        tags: [],
+      };
+
+      await prisma.course.create({
+        data: {
+          ...courseByOtherUser,
+          tags: {
+            connect: [],
+          },
+        },
+      });
+
+      const courseInDb = await prisma.course.findFirst();
+      const req = mockDeleteRequest({ courseId: courseInDb?.id });
+      const response = await DELETE(req);
+      const data = await response.json();
+
+      expect(data.message).toBe('Course successfully deleted!');
+      expect(data.messageType).toBe(MessageType.SUCCESS);
+      expect(response.status).toBe(StatusCodeType.OK);
+    });
+
+    it("Fails when trying to delete another user's course", async () => {
+      (getServerAuthSession as jest.Mock).mockImplementation(async () =>
+        Promise.resolve({
+          user: trainerUser,
+        })
+      );
+
+      await prisma.course.create({
+        data: {
+          ...courseDataWithDate,
+          tags: {
+            connect: [],
+          },
+        },
+      });
+
+      const courseInDb = await prisma.course.findFirst();
+      const req = mockDeleteRequest({ courseId: courseInDb?.id });
+      const response = await DELETE(req);
+      const data = await response.json();
+
+      expect(data.message).toContain('Forbidden');
+      expect(data.messageType).toBe(MessageType.ERROR);
+      expect(response.status).toBe(StatusCodeType.FORBIDDEN);
+    });
+
+    it('Fails when trying to delete nonexistent course', async () => {
+      (getServerAuthSession as jest.Mock).mockImplementation(async () =>
+        Promise.resolve({
+          user: adminUser,
+        })
+      );
+
+      const req = mockDeleteRequest({ courseId: 'clryw94tr000008l5aol5bakq' });
+      const response = await DELETE(req);
+      const data = await response.json();
+
+      expect(data.message).toContain('Course by the given id was not found');
+      expect(data.messageType).toBe(MessageType.ERROR);
+      expect(response.status).toBe(404);
     });
   });
 });

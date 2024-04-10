@@ -1,9 +1,19 @@
 {
+  "AddSlackButton": {
+    "button": "slack",
+    "tooltip": {
+      "active": "Creates a slack channel for this course",
+      "disabled": "The slack channel for this course exists already"
+    }
+  },
   "AttendeeList": {
     "header": {
-      "text": "Attendees"
+      "name": "Name",
+      "participation": "Participation",
+      "requestDate": "Request Date"
     },
-    "noAttendeesText": "No enrolled students"
+    "noAttendeesText": "No enrolled students",
+    "noRequestsText": "No requests"
   },
   "CalendarPrompt": {
     "addPrompt": "Do you want to add this course to your Google calendar?",
@@ -13,19 +23,42 @@
     },
     "checkbox": {
       "remember": "Remember my decision"
-    }
+    },
+    "enrollmentDeadlineHeader": "Note: Enrollment deadline ",
+    "enrolls": "Enrolls: {{studentCount}} / {{maxStudentCount}}"
   },
   "CancelEnroll": {
     "cancelEnrollment": "Cancel enrollment",
     "confirmCancellation": "Are you sure you want to unenroll from the course?",
     "pastCancellationDate": "The course starts soon. Contact the trainer if you want to cancel your enrollment."
   },
+  "CompleteProfile": {
+    "button": "Save Details",
+    "countryLabel": "Country",
+    "emptyField": "Field cannot be empty",
+    "error": "Profile update failed",
+    "subtitle": "Please fill in the following information to complete your profile",
+    "success": "Profile updated successfully",
+    "title": "Complete your profile",
+    "titleLabel": "Title"
+  },
   "ConfirmCard": {
     "cancel": "Cancel",
+    "checkbox": {
+      "label": "Notify participants on Slack"
+    },
     "confirm": "Confirm"
   },
+  "ConfirmRemoveCourse": {
+    "button": {
+      "text": "This course and all of its details will be removed"
+    }
+  },
   "CourseCard": {
-    "enrolls": "Enrolls: {{studentCount}} / {{maxStudentCount}}"
+    "enrolls": "Enrolls: {{studentCount}} / {{maxStudentCount}}",
+    "expired": "Expired",
+    "learnMore": "Learn more",
+    "requests": "Requests: {{requestCount}}"
   },
   "CourseFilter": {
     "button": {
@@ -39,6 +72,13 @@
       "tag": "Tag"
     }
   },
+  "CourseFormEditButton": {
+    "confirmEdit": "Are you sure you want to edit this training?",
+    "update": "Update"
+  },
+  "CourseFormSubmitButton": {
+    "submit": "Submit"
+  },
   "CourseList": {
     "courses": "Courses",
     "gridControlLabel": "Grid",
@@ -51,16 +91,33 @@
   "CourseModal": {
     "button": {
       "viewCourseDetailsLabel": "Details",
-      "viewEnrolledStudentsLabel": "Students"
+      "viewEnrolledStudentsLabel": "Students",
+      "viewRequestsLabel": "Requests"
     },
+    "courseImageAltText": "Course title image",
     "enrollmentDeadlineHeader": "Note: Enrollment deadline ",
-    "enrolls": "Enrolls: {{studentCount}} / {{maxStudentCount}}"
+    "enrolls": "Enrolls: {{studentCount}} / {{maxStudentCount}}",
+    "requests": "Requests: {{requestCount}}"
   },
   "CourseModalCloseButton": {
     "close": "Close"
   },
+  "DeleteTemplateButton": {
+    "button": {
+      "cancel": "Cancel",
+      "confirm": "Confirm",
+      "delete": "Delete"
+    },
+    "confirmDelete": "Are you sure you want to delete this template?"
+  },
   "EditButton": {
-    "editCourse": "Edit course"
+    "editCourse": "Edit"
+  },
+  "EditTemplate": {
+    "button": {
+      "edit": "Edit"
+    },
+    "confirmEdit": "Are you sure you want to edit this template?"
   },
   "EnrollButton": {
     "confirmEnroll": "Confirm enroll?",
@@ -74,9 +131,6 @@
     "actions": "Actions",
     "newCourse": "Add New Course"
   },
-  "NewTagButton": {
-    "newTag": "Add New Tag"
-  },
   "ProfileMenu": {
     "confirmSignOut": "Are you sure you want to sign out?",
     "home": "Home",
@@ -84,6 +138,45 @@
     "profileTitle": "Profile",
     "signOut": "Sign out",
     "viewProfile": "View profile"
+  },
+  "ProfileView": {
+    "header": {
+      "coursesInprogress": "Courses in progress",
+      "endedCourses": "Ended courses",
+      "endedCreatedCourses": "Ended created courses",
+      "templates": "Course templates",
+      "templatesAdmin": "All course templates",
+      "templatesTrainer": "My course templates",
+      "upcomingCourses": "Upcoming courses",
+      "upcomingCreatedCourses": "Upcoming created courses"
+    },
+    "label": {
+      "Courses": "Courses",
+      "Enrollments": "Enrollments",
+      "additionalInfo": "Additional information",
+      "adminDashboard": "Admin dashboard",
+      "myCourses": "My courses",
+      "myEnrollments": "My enrollments"
+    }
+  },
+  "RemoveCourse": {
+    "button": {
+      "text": "Remove"
+    }
+  },
+  "RequestTraining": {
+    "button": {
+      "removeRequest": "Remove request",
+      "request": "Request"
+    }
+  },
+  "SaveTemplateButton": {
+    "button": {
+      "cancel": "Cancel",
+      "confirm": "Confirm",
+      "save": "Save as a template"
+    },
+    "confirmSave": "This course will be saved to your templates"
   },
   "SearchMenu": {
     "button": {
@@ -104,12 +197,13 @@
       "closeTooltip": "Got it"
     }
   },
-  "TagForm": {
-    "label": "New tag",
-    "submit": "Submit"
-  },
-  "TagList": {
-    "noTagsAdded": "No tags added"
+  "TemplateSearchBar": {
+    "Filter": {
+      "notFound": "No templates to show"
+    },
+    "Label": {
+      "text": "Search templates by name or creator"
+    }
   },
   "TextEditor": {
     "Dropdown": {
@@ -146,8 +240,16 @@
       "urlLabel": "URL"
     }
   },
+  "ToggleTrainingsButton": {
+    "currentTrainings": "Current trainings",
+    "requestTrainings": "Request trainings"
+  },
   "UnauthorizedError": {
     "backToHome": "Back to home",
     "unauthorizedMessage": "You are not authorized to view this page"
+  },
+  "button": {
+    "text": "Remove",
+    "tooltip": "Removes the course from the database"
   }
 }

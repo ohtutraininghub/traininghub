@@ -1,7 +1,18 @@
 {
-  "CreateTag": {
-    "addNewTag": "Add new tag",
-    "tagsLabel": "Tags"
+  "CountriesSection": {
+    "header": "Countries"
+  },
+  "CountryForm": {
+    "button": {
+      "submit": "Submit"
+    },
+    "chooseCountry": "Choose country",
+    "label": "New country",
+    "placeholderText": "Country name"
+  },
+  "CountryList": {
+    "confirmCountryDeletion": "Are you sure you want to delete the following country:",
+    "noCountriesAdded": "No countries added"
   },
   "DashboardTitle": "Admin dashboard",
   "EditUsers": {
@@ -16,10 +27,40 @@
     "label": "Users",
     "searchTooltip": "Filter table with {{headerValue}}",
     "tableHeaders": {
+      "countryId": "Country",
       "email": "Email",
       "emailVerified": "Email Verified",
       "name": "Name",
-      "role": "Role"
+      "role": "Role",
+      "titleId": "Title"
     }
+  },
+  "TagForm": {
+    "button": {
+      "submit": "Submit"
+    },
+    "label": "New tag",
+    "placeholderText": "Tag name"
+  },
+  "TagList": {
+    "confirmTagDeletion": "Are you sure you want to delete the following tag:",
+    "noTagsAdded": "No tags added"
+  },
+  "TagsSection": {
+    "header": "Tags"
+  },
+  "TitleForm": {
+    "button": {
+      "submit": "Submit"
+    },
+    "label": "New title",
+    "placeholderText": "Title name"
+  },
+  "TitleList": {
+    "confirmTitleDeletion": "Are you sure you want to delete the following title:",
+    "noTitlesAdded": "No titles added"
+  },
+  "TitlesSection": {
+    "header": "Titles"
   }
 }

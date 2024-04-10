@@ -3,18 +3,32 @@ CourseFilterLogic works in conjunction; e.g. if a courseName AND courseTag AND c
 to the user. If one of the contidions is not chosen, e.g. courseName being null, courses are filtered by the conjunction of courseTag AND courseDates etc.
 */
 
-import { CourseWithTagsAndStudentCount } from '@/lib/prisma/courses';
+import { CourseWithInfo } from '@/lib/prisma/courses';
 
 export function filterCourses(
-  courses: CourseWithTagsAndStudentCount[],
+  courses: CourseWithInfo[],
   searchCourses: {
     courseName?: string | undefined;
     courseTag?: string | undefined;
     startDate?: string;
     endDate?: string;
-  }
+  },
+  showPastCourses: boolean
 ) {
   let filteredCourses = [...courses];
+
+  if (showPastCourses) {
+    filteredCourses = filteredCourses.sort(
+      (a, b) => b._count.requests - a._count.requests
+    );
+    filteredCourses = filteredCourses.filter(
+      (course) => new Date(course.endDate) < new Date()
+    );
+  } else {
+    filteredCourses = filteredCourses.filter(
+      (course) => new Date(course.endDate) >= new Date()
+    );
+  }
 
   if (searchCourses?.courseName) {
     const searchName = searchCourses.courseName.toLowerCase();

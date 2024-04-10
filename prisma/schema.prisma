@@ -19,33 +19,92 @@ enum Role {
 }
 
 model User {
-  id             String     @id @default(cuid())
-  name           String?
-  email          String?    @unique
-  emailVerified  DateTime?
-  image          String?
-  courses        Course[]
-  createdCourses Course[]   @relation(name: "createdCourses")
-  accounts       Account[]
-  sessions       Session[]
-  role           Role       @default(TRAINEE)
-  calendar       Calendar[]
+  id               String          @id @default(cuid())
+  name             String?
+  email            String?         @unique
+  emailVerified    DateTime?
+  countryId        String?
+  country          Country?        @relation(name: "country", fields: [countryId], references: [id])
+  titleId          String?
+  title            Title?          @relation(name: "title", fields: [titleId], references: [id])
+  image            String?
+  courses          Course[]
+  createdCourses   Course[]        @relation(name: "createdCourses")
+  createdTemplates Template[]      @relation(name: "createdTemplates")
+  requests         Request[]
+  participations   Participation[]
+  accounts         Account[]
+  sessions         Session[]
+  role             Role            @default(TRAINEE)
+  calendar         Calendar[]
+  profileCompleted Boolean         @default(false)
+}
+
+model Country {
+  id          String @id @default(cuid())
+  name        String
+  countryCode String
+  users       User[] @relation(name: "country")
+}
+
+model Title {
+  id    String @id @default(cuid())
+  name  String @unique @db.Citext
+  users User[] @relation(name: "title")
 }
 
 model Course {
-  id             String     @id @default(cuid())
+  id             String          @id @default(cuid())
   name           String
   description    String
+  summary        String?
   startDate      DateTime
   endDate        DateTime
   lastEnrollDate DateTime?
   lastCancelDate DateTime?
   maxStudents    Int
   students       User[]
+  requests       Request[]
+  participations Participation[]
   tags           Tag[]
-  createdBy      User?      @relation(name: "createdCourses", references: [id], fields: [createdById])
+  createdBy      User?           @relation(name: "createdCourses", references: [id], fields: [createdById])
   createdById    String
   calendar       Calendar[]
+  image          String?
+  slackChannelId String?
+}
+
+model Request {
+  id       String   @id @default(cuid())
+  user     User     @relation(fields: [userId], references: [id])
+  userId   String
+  course   Course   @relation(fields: [courseId], references: [id])
+  courseId String
+  date     DateTime
+
+  @@unique([userId, courseId])
+}
+
+model Participation {
+  id       String @id @default(cuid())
+  user     User   @relation(fields: [userId], references: [id])
+  userId   String
+  course   Course @relation(fields: [courseId], references: [id])
+  courseId String
+
+  @@unique([userId, courseId])
+}
+
+model Template {
+  id          String  @id @default(cuid())
+  name        String
+  description String
+  summary     String?
+  maxStudents Int
+  tags        Tag[]
+  createdBy   User?   @relation(name: "createdTemplates", references: [id], fields: [createdById])
+  createdById String
+  image       String?
 }
 
 model Calendar {
@@ -61,9 +120,10 @@ model Calendar {
 }
 
 model Tag {
-  id      String   @id @default(cuid())
-  name    String   @unique @db.Citext
-  courses Course[]
+  id        String     @id @default(cuid())
+  name      String     @unique @db.Citext
+  courses   Course[]
+  templates Template[]
 }
 
 model Account {

@@ -10,7 +10,7 @@ import { isPastDeadline } from '@/lib/timedateutils';
 import InfoBox from './InfoBox';
 
 interface Props extends DictProps {
-  isUserEnrolled: boolean;
+  isUserEnrolled?: boolean;
   courseId: string;
   isCourseFull: boolean;
   lastEnrollDate: Date | null;

@@ -1,6 +1,6 @@
 'use client';
 
-import Button from '@mui/material/Button';
+import { Button } from '@mui/material';
 import { useState } from 'react';
 import { ConfirmCard } from '../ConfirmCard';
 import { signOut } from 'next-auth/react';
@@ -46,10 +46,53 @@ export function CourseModalCloseButton({ lang }: CourseModalCloseButtonProps) {
   const handleClick = () => {
     const params = new URLSearchParams(searchParams);
     params.delete('courseId');
-    router.replace(`${pathname}?` + params);
+    router.replace(`${pathname}?${params}`);
   };
 
   return (
-    <Button onClick={handleClick}>{t('CourseModalCloseButton.close')}</Button>
+    <Button onClick={handleClick} data-testid="course-modal-close-button">
+      {t('CourseModalCloseButton.close')}
+    </Button>
+  );
+}
+
+export function ToggleTrainingsButton({
+  text,
+  onClick,
+}: {
+  text: string;
+  onClick: () => void;
+}) {
+  return (
+    <Button
+      sx={{
+        fontSize: { xs: '0.8rem', md: '1rem' },
+        paddingX: { xs: '0.8rem', sm: '1rem' },
+        paddingY: { xs: '0.3rem', sm: '0.375rem' },
+        borderRadius: '13px',
+        height: '50px',
+      }}
+      variant="contained"
+      onClick={onClick}
+      data-testid="toggle-past-trainings-button"
+    >
+      {text}
+    </Button>
+  );
+}
+
+interface RequestTrainingButtonProps {
+  onClick: () => void;
+  text: string;
+}
+
+export function RequestTrainingButton({
+  onClick,
+  text,
+}: RequestTrainingButtonProps) {
+  return (
+    <Button onClick={onClick} data-testid="request-button">
+      {text}
+    </Button>
   );
 }

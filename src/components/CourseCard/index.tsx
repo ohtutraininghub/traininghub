@@ -4,31 +4,38 @@ import Typography from '@mui/material/Typography';
 import CardContent from '@mui/material/CardContent';
 import Card from '@mui/material/Card';
 import Link from 'next/link';
-import { CourseWithTagsAndStudentCount } from '@/lib/prisma/courses';
+import { CourseWithInfo } from '@/lib/prisma/courses';
 import LocalizedDateTime from '../LocalizedDateTime';
 import { useTheme } from '@mui/material/styles';
-import { Box, Button } from '@mui/material';
+import { Box, Button, useMediaQuery } from '@mui/material';
 import CardHeader from '@mui/material/CardHeader';
 import PeopleIcon from '@mui/icons-material/People';
+import HowToRegIcon from '@mui/icons-material/HowToReg';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import { usePathname, useSearchParams } from 'next/navigation';
+import { useTranslation } from '@/lib/i18n/client';
+import { DictProps } from '@/lib/i18n';
+import { ImageContainer } from '../ImageContainer';
 
-interface Props {
-  course: CourseWithTagsAndStudentCount;
-  enrolls: string;
+interface Props extends DictProps {
+  course: CourseWithInfo;
+  studentCount: string;
 }
 
-const CourseCard = ({ course, enrolls }: Props) => {
+const CourseCard = ({ course, studentCount, lang }: Props) => {
   const theme = useTheme();
   const searchParams = useSearchParams();
   const pathname = usePathname();
+  const { t } = useTranslation(lang, 'components');
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
+  const isExpired = new Date(course.endDate) < new Date();
 
   const getURL = () => {
     const params = new URLSearchParams(Array.from(searchParams.entries()));
     params.set('courseId', course.id);
     return `${pathname}?${params.toString()}`;
   };
-
   return (
     <Link href={getURL()} style={{ textDecoration: 'none' }}>
       <Card
@@ -36,7 +43,9 @@ const CourseCard = ({ course, enrolls }: Props) => {
           backgroundColor: theme.palette.coverBlue.dark,
           color: theme.palette.white.main,
           width: 450, // fixed dimensions for styling
-          height: '300px',
+          minHeight: 300,
+          /* allow expanding in height in mobile view if needed to display
+           course image and summary on very narrow viewports */
           [theme.breakpoints.up('sm')]: {
             // adjust to smaller card size for mobile
             height: '540px',
@@ -52,16 +61,22 @@ const CourseCard = ({ course, enrolls }: Props) => {
         }}
       >
         <CardHeader
+          sx={{ paddingBottom: !course.image ? '1rem' : 0 }}
           title={
             <Box>
               <CalendarTodayIcon
                 sx={{ fontSize: '0.8rem', marginRight: '8px' }}
               />
-              <LocalizedDateTime
-                variant="range-short"
-                startDate={course.startDate}
-                endDate={course.endDate}
-              />
+              {!isExpired ? (
+                <LocalizedDateTime
+                  data-testid="course-card-date-range"
+                  variant="range-short"
+                  startDate={course.startDate}
+                  endDate={course.endDate}
+                />
+              ) : (
+                t('CourseCard.expired')
+              )}
             </Box>
           }
           titleTypographyProps={{
@@ -81,11 +96,29 @@ const CourseCard = ({ course, enrolls }: Props) => {
             justifyContent: 'space-between',
           }}
         >
-          <Box>
-            <Typography variant="h3" m={2}>
-              {course.name}
+          <Typography variant="h3">{course.name}</Typography>
+
+          {course.image && (
+            <ImageContainer
+              imageUrl={course.image}
+              width={isMobile ? 100 : 125}
+              height={isMobile ? 100 : 125}
+              altText={t('CourseModal.courseImageAltText')}
+            />
+          )}
+
+          {course.summary && (
+            <Typography
+              variant="body1"
+              width="90%"
+              color="surface.light"
+              sx={{
+                textShadow: '1px 1px 1px black',
+              }}
+            >
+              {course.summary}
             </Typography>
-          </Box>
+          )}
           <Box
             sx={{
               alignItems: 'center',
@@ -104,8 +137,8 @@ const CourseCard = ({ course, enrolls }: Props) => {
                   display: { xs: 'none', sm: 'block' }, // no render for too small viewports to save space for title
                 }}
               >
-                <PeopleIcon />
-                <Typography>{enrolls}</Typography>
+                {!isExpired ? <PeopleIcon /> : <HowToRegIcon />}
+                <Typography>{studentCount}</Typography>
               </Box>
             </Box>
             <Button
@@ -119,7 +152,7 @@ const CourseCard = ({ course, enrolls }: Props) => {
                 boxShadow: '0px 0px 15px rgba(0, 0, 0, 0.7)',
               }}
             >
-              Learn more
+              {t('CourseCard.learnMore')}
             </Button>
           </Box>
         </CardContent>

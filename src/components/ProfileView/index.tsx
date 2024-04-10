@@ -2,38 +2,65 @@
 
 import ProfileUserDetails from '@/components/ProfileView/ProfileUserDetails';
 import ProfileCourseList from '@/components/ProfileView/ProfileCourseList';
+import ProfileTemplateList from '@/components/ProfileView/ProfileTemplateList';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import { Course, Role, User } from '@prisma/client';
-import { PropsWithChildren, useState } from 'react';
+import { Country, Course, Tag, Title, User } from '@prisma/client';
+import { PropsWithChildren, SyntheticEvent, useState } from 'react';
 import { useTheme } from '@mui/material/styles';
 import { useSession } from 'next-auth/react';
 import UserList from '@/components/UserList';
+import { isTrainerOrAdmin, isAdmin } from '@/lib/auth-utils';
+import { TemplateWithCreator } from '@/lib/prisma/templates';
+import { DictProps } from '@i18n/index';
+import { useTranslation } from '@i18n/client';
+import { useParams } from 'next/navigation';
 
 export interface userDetails {
   name: string;
   email: string;
   image: string;
+  country: string;
+  title: string;
 }
 
-export interface ProfileViewProps extends PropsWithChildren {
+export interface ProfileViewProps extends PropsWithChildren, DictProps {
+  tags: Tag[];
+  countries: Country[];
+  titles: Title[];
   userDetails: userDetails;
   courses: Course[];
+  createdCourses: Course[];
   users: User[];
+  templates: TemplateWithCreator[];
 }
 
 export default function ProfileView({
+  lang,
   userDetails,
   courses,
+  createdCourses,
   users,
   children,
+  templates,
+  tags,
+  countries,
+  titles,
 }: ProfileViewProps) {
   const [selectedTab, setSelectedTab] = useState(0);
   const { palette } = useTheme();
+  const { t } = useTranslation(lang, 'components');
   const currentDate = new Date();
-  const { data: session } = useSession();
+  const { data: session } = useSession({ required: true });
+  const userId = session?.user?.id;
+  const params = useParams();
+  const profileId = params.id;
+  const ownProfile = userId === profileId;
 
-  const handleChangeTab = (event: React.ChangeEvent<{}>, newValue: number) => {
+  const handleChangeTab = (
+    event: SyntheticEvent<Element, Event>,
+    newValue: number
+  ) => {
     setSelectedTab(newValue);
   };
 
@@ -43,6 +70,8 @@ export default function ProfileView({
         name={userDetails.name}
         email={userDetails.email}
         image={userDetails.image}
+        country={userDetails.country}
+        title={userDetails.title}
       />
       <Tabs
         value={selectedTab}
@@ -57,34 +86,98 @@ export default function ProfileView({
           },
         }}
       >
-        <Tab label="My courses" />
-        <Tab label="Additional information" />
-        {session?.user.role === Role.ADMIN && <Tab label="Admin dashboard" />}
+        <Tab
+          label={
+            ownProfile
+              ? t('ProfileView.label.myEnrollments')
+              : t('ProfileView.label.Enrollments')
+          }
+          data-testid="myEnrollmentsTab"
+        />
+        {isTrainerOrAdmin((session?.user as User) || {}) && (
+          <Tab
+            label={
+              ownProfile
+                ? t('ProfileView.label.myCourses')
+                : t('ProfileView.label.Courses')
+            }
+            data-testid="myCoursesTab"
+          />
+        )}
+        {isAdmin((session?.user as User) || {}) && ownProfile && (
+          <Tab
+            label={t('ProfileView.label.adminDashboard')}
+            data-testid="adminDashboardTab"
+          />
+        )}
       </Tabs>
 
       {selectedTab === 0 && (
         <>
           <ProfileCourseList
-            headerText="Courses in progress"
+            lang={lang}
+            headerText={t('ProfileView.header.coursesInprogress')}
             courses={courses.filter(
               (course: Course) =>
                 course.startDate <= currentDate && course.endDate >= currentDate
             )}
             open={true}
+            id={'inprogressCourses'}
           />
           <ProfileCourseList
-            headerText="Upcoming courses"
+            lang={lang}
+            headerText={t('ProfileView.header.upcomingCourses')}
             courses={courses.filter(
               (course: Course) => course.startDate > currentDate
             )}
             open={true}
             timer={true}
+            id={'upcomingCourses'}
           />
           <ProfileCourseList
-            headerText="Ended courses"
+            lang={lang}
+            headerText={t('ProfileView.header.endedCourses')}
             courses={courses.filter(
               (course: Course) => course.endDate < currentDate
             )}
+            open={false}
+            id={'endedCourses'}
+          />
+        </>
+      )}
+      {selectedTab === 1 && (
+        <>
+          <ProfileCourseList
+            lang={lang}
+            headerText={t('ProfileView.header.upcomingCreatedCourses')}
+            courses={createdCourses.filter(
+              (createdCourse: Course) =>
+                createdCourse.startDate >= currentDate ||
+                createdCourse.endDate >= currentDate
+            )}
+            open={true}
+            timer={true}
+            id={'upcomingCreated'}
+          />
+          <ProfileCourseList
+            lang={lang}
+            headerText={t('ProfileView.header.endedCreatedCourses')}
+            courses={createdCourses.filter(
+              (createdCourse: Course) => createdCourse.endDate < currentDate
+            )}
+            open={true}
+            id={'endedCreated'}
+          />
+          <ProfileTemplateList
+            headerText={
+              isAdmin((session?.user as User) || {}) && ownProfile
+                ? t('ProfileView.header.templatesAdmin')
+                : !ownProfile
+                  ? t('ProfileView.header.templates')
+                  : t('ProfileView.header.templatesTrainer')
+            }
+            templates={templates}
+            tags={tags}
             open={false}
           />
         </>
@@ -99,7 +192,12 @@ export default function ProfileView({
           }}
         >
           {children}
-          <UserList users={users} lang="en" />
+          <UserList
+            users={users}
+            lang={lang}
+            countries={countries}
+            titles={titles}
+          />
         </div>
       )}
     </div>

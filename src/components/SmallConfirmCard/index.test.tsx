@@ -8,8 +8,8 @@ describe('Small confirm card', () => {
       <SmallConfirmCard
         confirmTooltip="confirm"
         cancelTooltip="cancel"
-        onSubmit={() => console.log('submitting')}
-        onCancel={() => console.log('canceling')}
+        onSubmit={() => {}}
+        onCancel={() => {}}
       />
     );
     const confirmButton = screen.getByTestId('confirm-button');

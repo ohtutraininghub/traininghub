@@ -2,6 +2,7 @@ import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import TextSnippetIcon from '@mui/icons-material/TextSnippet';
 import PeopleIcon from '@mui/icons-material/People';
+import HowToRegIcon from '@mui/icons-material/HowToReg';
 import Typography from '@mui/material/Typography';
 
 interface Props {
@@ -11,14 +12,16 @@ interface Props {
     _newView: string | null
   ) => void;
   viewCourseDetailsLabel: string;
-  viewEnrolledStudentsLabel: string;
+  viewStudentsLabel: string;
+  viewRequestsLabel: string;
 }
 
 export default function TrainerTools({
   courseView,
   handleCourseViewToggle,
   viewCourseDetailsLabel,
-  viewEnrolledStudentsLabel,
+  viewStudentsLabel,
+  viewRequestsLabel,
 }: Props) {
   return (
     <>
@@ -57,7 +60,20 @@ export default function TrainerTools({
           >
             <PeopleIcon sx={{ color: 'white.main' }} />
           </ToggleButton>
-          §{' '}
+          <ToggleButton
+            data-testid="toggle-requests-list"
+            value="requests"
+            aria-label="requests list"
+            sx={{
+              width: '72px',
+              '&.Mui-selected, &.Mui-selected:hover': {
+                color: 'secondary.contrastText',
+                backgroundColor: 'coverBlue.dark',
+              },
+            }}
+          >
+            <HowToRegIcon sx={{ color: 'white.main' }} />
+          </ToggleButton>
         </ToggleButtonGroup>
       </div>
       <div>
@@ -83,7 +99,19 @@ export default function TrainerTools({
             mr: '6px',
           }}
         >
-          {viewEnrolledStudentsLabel}
+          {viewStudentsLabel}
+        </Typography>
+        <Typography
+          variant="caption"
+          sx={{
+            fontWeight: 500,
+            color: 'white.main',
+            textTransform: 'uppercase',
+            ml: '6px',
+            mr: '6px',
+          }}
+        >
+          {viewRequestsLabel}
         </Typography>
       </div>
     </>

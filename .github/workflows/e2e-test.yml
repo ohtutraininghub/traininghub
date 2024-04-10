@@ -1,0 +1,44 @@
+name: E2E test flow
+
+on:
+  workflow_call:
+
+jobs:
+  e2e-test:
+    runs-on: ubuntu-22.04
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_USER: 'admin'
+          POSTGRES_PASSWORD: 'password'
+        options: >-
+          --health-cmd pg_isready  --health-interval 10s  --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5433:5432
+    env:
+      DATABASE_URL: 'postgresql://admin:password@localhost:5433/traininghub-db?schema=public'
+      NEXTAUTH_SECRET: 'verySekretTestingSekret'
+      NEXTAUTH_URL: 'http://localhost:3000'
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+      - name: install
+        run: npm ci
+      - name: migrate database
+        run: npx prisma migrate deploy
+      - name: cypress run
+        uses: cypress-io/github-action@v6
+        with:
+          build: npm run cypress:build
+          start: npm run cypress:start
+          browser: chrome
+          config: baseUrl=http://localhost:3000
+      - name: store screenshots
+        uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots
+          if-no-files-found: ignore

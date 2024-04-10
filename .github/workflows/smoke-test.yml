@@ -1,0 +1,19 @@
+name: Smoke test flow
+
+on:
+  workflow_call:
+
+jobs:
+  smoke-test:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+      - name: install
+        run: npm ci
+      - name: lint
+        run: npm run lint:test
+      - name: prettier
+        run: npm run format:test
+      - name: build
+        run: npm run build

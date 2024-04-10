@@ -17,27 +17,54 @@ import TimerIcon from '@mui/icons-material/Timer';
 import { useState } from 'react';
 import { timeUntilstart } from '@/lib/timedateutils';
 import LocalizedDateTime from '../LocalizedDateTime';
+import CreateSlackButton from './CreateSlackButton';
+import { post } from '@/lib/response/fetchUtil';
+import { DictProps } from '@/lib/i18n';
+import { useRouter, useParams } from 'next/navigation';
+import { useMessage } from '../Providers/MessageProvider';
+import { useSession } from 'next-auth/react';
 
-export interface ProfileCourseListProps {
+export interface ProfileCourseListProps extends DictProps {
   headerText: string;
   courses: Course[];
   open: boolean;
   timer?: boolean;
+  id: string;
 }
 
 export default function ProfileCourseList({
+  lang,
   headerText,
   courses,
   open,
   timer,
+  id,
 }: ProfileCourseListProps) {
   const { palette } = useTheme();
   const [isCollapsed, setIsCollapsed] = useState(open);
+  const { notify } = useMessage();
+  const router = useRouter();
+  const { data: session } = useSession({ required: true });
+  const params = useParams();
+  const profileId = params.id;
+  const userId = session?.user.id;
+
+  const ownProfile = userId === profileId;
 
   const handleToggleCollapse = () => {
     setIsCollapsed(!isCollapsed);
   };
 
+  const isCourseInProgress = (course: Course) => {
+    const currentDate = new Date();
+    return course.startDate <= currentDate && course.endDate >= currentDate;
+  };
+  const handleCreateNewChannel = async (id: string) => {
+    const responseJson = await post('/api/slack/channel', { courseId: id });
+    notify(responseJson);
+    router.push(`/${lang}/profile/${session?.user.id}`);
+    router.refresh();
+  };
   return (
     <Box
       sx={{
@@ -51,7 +78,7 @@ export default function ProfileCourseList({
           paddingLeft: '10px',
         }}
         variant="subtitle2"
-        data-testid="listHeader"
+        data-testid={`listHeader.${id}`}
       >
         {`${headerText} (${courses.length})`}
         <Tooltip
@@ -62,7 +89,7 @@ export default function ProfileCourseList({
           <IconButton
             sx={{ color: palette.white.main }}
             onClick={handleToggleCollapse}
-            data-testid="listControls"
+            data-testid={`listControls.${id}`}
           >
             {isCollapsed ? <ExpandLessIcon /> : <ExpandMoreIcon />}
           </IconButton>
@@ -88,7 +115,7 @@ export default function ProfileCourseList({
               {courses.map((course: Course, count: number) => (
                 <React.Fragment key={course.id}>
                   <Link
-                    href={`profile/?courseId=${course.id}`}
+                    href={`/${lang}/profile/${profileId}?courseId=${course.id}`}
                     style={{ textDecoration: 'none' }}
                   >
                     <ListItem
@@ -114,14 +141,49 @@ export default function ProfileCourseList({
                         sx={{ color: palette.black.main }}
                       />
                       {timer && (
-                        <NoSsr>
-                          <Chip
-                            icon={<TimerIcon />}
-                            label={timeUntilstart(course.startDate)}
-                            size="small"
-                            style={{ marginLeft: 'auto' }}
-                          />
-                        </NoSsr>
+                        <Box
+                          sx={{
+                            display: 'flex',
+                            gap: 1,
+                            alignItems: 'center',
+                            mr: '0.5em',
+                          }}
+                        >
+                          <NoSsr>
+                            <Chip
+                              icon={<TimerIcon />}
+                              label={
+                                isCourseInProgress(course)
+                                  ? 'In Progress'
+                                  : timeUntilstart(course.startDate)
+                              }
+                              size="small"
+                              sx={{
+                                marginLeft: 'auto',
+                              }}
+                              color={
+                                isCourseInProgress(course)
+                                  ? 'success'
+                                  : 'default'
+                              }
+                              data-testid={`courseTimer.${course.id}`}
+                            />
+                          </NoSsr>
+                          {ownProfile && (
+                            <CreateSlackButton
+                              lang={lang}
+                              onclick={(
+                                event: React.MouseEvent<HTMLButtonElement>
+                              ) => {
+                                {
+                                  event.preventDefault(); // prevents the CourseModal from opening
+                                  handleCreateNewChannel(course.id);
+                                }
+                              }}
+                              buttonDisabled={Boolean(course.slackChannelId)}
+                            />
+                          )}
+                        </Box>
                       )}
                     </ListItem>
                   </Link>

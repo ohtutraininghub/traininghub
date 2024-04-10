@@ -25,9 +25,8 @@ export const timeUntilstart = (startDate: Date): string => {
     return `Starts in ${Math.floor(asMinutes)} ${
       Math.floor(asMinutes) === 1 ? 'minute' : 'minutes'
     }`;
-  } else {
-    return `Starts soon...`;
   }
+  return `Starts soon...`;
 };
 
 export const msUntilStart = (startDate: Date): number => {
@@ -62,4 +61,8 @@ export const dateToDateTimeLocal = (date: Date) => {
   return new Date(date.getTime() - date.getTimezoneOffset() * 60000)
     .toISOString()
     .slice(0, -1);
+};
+
+export const dateToUnixTimestamp = (date: Date) => {
+  return date.getTime() / 1000;
 };

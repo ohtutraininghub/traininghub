@@ -1,4 +1,4 @@
-import CourseForm from '@/components/CourseForm/CourseForm';
+import CourseForm from '@/components/CourseForm';
 import { getServerAuthSession } from '@/lib/auth';
 import { hasCourseEditRights } from '@/lib/auth-utils';
 import { getCourseById } from '@/lib/prisma/courses';
@@ -31,7 +31,12 @@ export default async function CourseEditPage({ params }: Props) {
   return (
     <BackgroundContainer>
       <div style={{ paddingTop: '32px', width: '100%' }}>
-        <CourseForm lang={params.lang} tags={tags} courseData={course} />
+        <CourseForm
+          lang={params.lang}
+          tags={tags}
+          courseData={course}
+          templates={[]}
+        />
       </div>
     </BackgroundContainer>
   );

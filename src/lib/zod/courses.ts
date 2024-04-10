@@ -67,6 +67,7 @@ const courseSchemaBase = z
     description: z
       .string()
       .min(1)
+      .regex(/^(?!<p><\/p>$).+$/)
       .transform((desc) => DOMPurify.sanitize(desc)),
     startDate: z
       .string()
@@ -97,14 +98,17 @@ const courseSchemaBase = z
       .nullish()
       .transform((value) => (value ? value : null))
       .pipe(z.coerce.date().nullable()),
+    image: z.union([z.string().url().nullish(), z.literal('')]),
     maxStudents: z.number().min(1),
     tags: z.array(z.string().min(1)),
+    summary: z.string().max(150).nullish(),
   })
   .strict();
 
 const courseSchemaBaseWithId = courseSchemaBase.extend({
   id: z.string().min(1),
   createdById: z.string(),
+  slackChannelId: z.string().nullish(),
 });
 
 export const courseSchema = withRefine(courseSchemaBase);
@@ -117,6 +121,19 @@ export const courseEnrollSchema = z
   .object({
     courseId: z.string().min(1),
     insertToCalendar: z.boolean().nullish(),
+  })
+  .strict();
+
+export const courseIdSchema = z
+  .object({
+    courseId: z.string().cuid(),
+  })
+  .strict();
+
+export const courseAndUserSchema = z
+  .object({
+    courseId: z.string().cuid(),
+    userId: z.string().cuid(),
   })
   .strict();
 

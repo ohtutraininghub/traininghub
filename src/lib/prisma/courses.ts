@@ -18,6 +18,23 @@ export type CourseWithTagsAndStudentCount = prismaClient.CourseGetPayload<{
   };
 }>;
 
+export type CourseWithInfo = prismaClient.CourseGetPayload<{
+  include: {
+    createdBy: {
+      select: {
+        name: true;
+      };
+    };
+    tags: true;
+    _count: {
+      select: {
+        students: true;
+        requests: true;
+      };
+    };
+  };
+}>;
+
 export type GetCoursesType = prismaClient.PromiseReturnType<typeof getCourses>;
 
 export const getCourseById = async (courseId: Course['id']) => {
@@ -32,6 +49,11 @@ export const getCourseById = async (courseId: Course['id']) => {
 export const getCourses = async () => {
   return await prisma.course.findMany({
     include: {
+      createdBy: {
+        select: {
+          name: true,
+        },
+      },
       _count: {
         select: {
           students: true,
@@ -44,21 +66,22 @@ export const getCourses = async () => {
   });
 };
 
-export const getEnrolledCourseIdsByUserId = async (userId: string) => {
-  return (
-    await prisma.course.findMany({
-      where: {
-        students: {
-          some: {
-            id: {
-              equals: userId,
-            },
-          },
+export const getAllCourses = async () => {
+  return await prisma.course.findMany({
+    include: {
+      createdBy: {
+        select: {
+          name: true,
         },
       },
-      select: {
-        id: true,
+      _count: {
+        select: {
+          students: true,
+          requests: true,
+        },
       },
-    })
-  ).map((data) => data.id);
+      tags: true,
+    },
+    orderBy: [{ startDate: 'asc' }, { name: 'asc' }],
+  });
 };
