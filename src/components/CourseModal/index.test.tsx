@@ -6,6 +6,7 @@ import { screen } from '@testing-library/react';
 import { useSession } from 'next-auth/react';
 import userEvent from '@testing-library/user-event';
 import { waitFor } from '@testing-library/dom';
+import { useParams } from 'next/navigation';
 
 const adminUser = {
   id: '123a',
@@ -111,6 +112,7 @@ jest.mock('next/navigation', () => ({
   },
   useSearchParams: jest.fn(),
   usePathname: jest.fn(),
+  useParams: jest.fn(),
 }));
 
 jest.mock('next-auth/react', () => ({
@@ -119,6 +121,7 @@ jest.mock('next-auth/react', () => ({
 
 describe('CourseModal component', () => {
   it('renders toggle button for viewing enrolled students if user is an admin', async () => {
+    (useParams as jest.Mock).mockReturnValue({ id: adminUser.id });
     (useSession as jest.Mock).mockReturnValue({
       data: {
         user: adminUser,
@@ -139,6 +142,7 @@ describe('CourseModal component', () => {
   });
 
   it('renders toggle button for viewing enrolled students if user is a trainer', async () => {
+    (useParams as jest.Mock).mockReturnValue({ id: trainerUser.id });
     (useSession as jest.Mock).mockReturnValue({
       data: {
         user: trainerUser,
@@ -159,6 +163,7 @@ describe('CourseModal component', () => {
   });
 
   it('does not render button for viewing enrolled students if user is a trainee', async () => {
+    (useParams as jest.Mock).mockReturnValue({ id: traineeUser.id });
     (useSession as jest.Mock).mockReturnValue({
       data: {
         user: traineeUser,
@@ -178,6 +183,7 @@ describe('CourseModal component', () => {
     expect(trainerTools).not.toBeInTheDocument;
   });
   it('changes the view to students when the toggle button is clicked', async () => {
+    (useParams as jest.Mock).mockReturnValue({ id: trainerUser.id });
     (useSession as jest.Mock).mockReturnValue({
       data: {
         user: trainerUser,
@@ -207,6 +213,7 @@ describe('CourseModal component', () => {
     });
   });
   it('changes the view to requests when the toggle button is clicked', async () => {
+    (useParams as jest.Mock).mockReturnValue({ id: adminUser.id });
     (useSession as jest.Mock).mockReturnValue({
       data: {
         user: adminUser,
@@ -248,6 +255,7 @@ describe('CourseModal component', () => {
     });
   });
   it('should not render request button for upcoming course', async () => {
+    (useParams as jest.Mock).mockReturnValue({ id: traineeUser.id });
     (useSession as jest.Mock).mockReturnValue({
       data: {
         user: traineeUser,
@@ -259,6 +267,7 @@ describe('CourseModal component', () => {
     expect(screen.queryByTestId('request-button')).not.toBeInTheDocument();
   });
   it('calls request post function with correct values if user has not previously requested', async () => {
+    (useParams as jest.Mock).mockReturnValue({ id: traineeUser.id });
     (useSession as jest.Mock).mockReturnValue({
       data: {
         user: traineeUser,
@@ -278,6 +287,7 @@ describe('CourseModal component', () => {
     });
   });
   it('should remove request if user has previously requested', async () => {
+    (useParams as jest.Mock).mockReturnValue({ id: traineeUser.id });
     (useSession as jest.Mock).mockReturnValue({
       data: {
         user: traineeUser,

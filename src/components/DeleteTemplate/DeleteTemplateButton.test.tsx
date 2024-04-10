@@ -1,10 +1,4 @@
-import {
-  render,
-  screen,
-  fireEvent,
-  renderHook,
-  waitFor,
-} from '@testing-library/react';
+import { screen, fireEvent, waitFor } from '@testing-library/react';
 import { DeleteTemplateButton } from './DeleteTemplateButton';
 import { renderWithTheme } from '@/lib/test-utils';
 
@@ -24,6 +18,7 @@ jest.mock('next/navigation', () => ({
     push: jest.fn(),
     refresh: jest.fn(),
   })),
+  useParams: jest.fn().mockReturnValue({ id: '1' }),
 }));
 
 // Mocking the remove function

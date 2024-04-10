@@ -7,7 +7,7 @@ describe('Template list', () => {
   describe('when logged in as an admin', () => {
     beforeEach(() => {
       cy.login('john.doe@example.com', 'ADMIN');
-      cy.visit('/profile');
+      cy.visit('/profile/clsiortzr000008k10sundybm'); //john doe's user id
       cy.getCy('myCoursesTab').click();
       cy.getCy('templateListControls').click();
     });
@@ -37,7 +37,7 @@ describe('Template list', () => {
   describe('when logged in as a trainer', () => {
     beforeEach(() => {
       cy.login('emily.davis@example.com', 'TRAINER');
-      cy.visit('/profile');
+      cy.visit('/profile/clsiom8xf000008k12bgf6bw6'); //emily davis's user id
       cy.getCy('myCoursesTab').click();
       cy.getCy('templateListControls').click();
     });
@@ -55,7 +55,7 @@ describe('Template list', () => {
   describe('TemplateSearchBar Functionality', () => {
     beforeEach(() => {
       cy.login('john.doe@example.com', 'ADMIN');
-      cy.visit('/profile');
+      cy.visit('/profile/clsiortzr000008k10sundybm'); //john doe's user id
       cy.getCy('myCoursesTab').click();
       cy.getCy('templateListControls').click();
     });

@@ -14,11 +14,14 @@ import { isTrainerOrAdmin, isAdmin } from '@/lib/auth-utils';
 import { TemplateWithCreator } from '@/lib/prisma/templates';
 import { DictProps } from '@i18n/index';
 import { useTranslation } from '@i18n/client';
+import { useParams } from 'next/navigation';
 
 export interface userDetails {
   name: string;
   email: string;
   image: string;
+  country: string;
+  title: string;
 }
 
 export interface ProfileViewProps extends PropsWithChildren, DictProps {
@@ -48,7 +51,11 @@ export default function ProfileView({
   const { palette } = useTheme();
   const { t } = useTranslation(lang, 'components');
   const currentDate = new Date();
-  const { data: session } = useSession();
+  const { data: session } = useSession({ required: true });
+  const userId = session?.user?.id;
+  const params = useParams();
+  const profileId = params.id;
+  const ownProfile = userId === profileId;
 
   const handleChangeTab = (
     event: SyntheticEvent<Element, Event>,
@@ -63,6 +70,8 @@ export default function ProfileView({
         name={userDetails.name}
         email={userDetails.email}
         image={userDetails.image}
+        country={userDetails.country}
+        title={userDetails.title}
       />
       <Tabs
         value={selectedTab}
@@ -78,16 +87,24 @@ export default function ProfileView({
         }}
       >
         <Tab
-          label={t('ProfileView.label.myEnrollments')}
+          label={
+            ownProfile
+              ? t('ProfileView.label.myEnrollments')
+              : t('ProfileView.label.Enrollments')
+          }
           data-testid="myEnrollmentsTab"
         />
         {isTrainerOrAdmin((session?.user as User) || {}) && (
           <Tab
-            label={t('ProfileView.label.myCourses')}
+            label={
+              ownProfile
+                ? t('ProfileView.label.myCourses')
+                : t('ProfileView.label.Courses')
+            }
             data-testid="myCoursesTab"
           />
         )}
-        {isAdmin((session?.user as User) || {}) && (
+        {isAdmin((session?.user as User) || {}) && ownProfile && (
           <Tab
             label={t('ProfileView.label.adminDashboard')}
             data-testid="adminDashboardTab"
@@ -153,9 +170,11 @@ export default function ProfileView({
           />
           <ProfileTemplateList
             headerText={
-              isAdmin((session?.user as User) || {})
+              isAdmin((session?.user as User) || {}) && ownProfile
                 ? t('ProfileView.header.templatesAdmin')
-                : t('ProfileView.header.templatesTrainer')
+                : !ownProfile
+                  ? t('ProfileView.header.templates')
+                  : t('ProfileView.header.templatesTrainer')
             }
             templates={templates}
             tags={tags}

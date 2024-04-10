@@ -20,8 +20,9 @@ import LocalizedDateTime from '../LocalizedDateTime';
 import CreateSlackButton from './CreateSlackButton';
 import { post } from '@/lib/response/fetchUtil';
 import { DictProps } from '@/lib/i18n';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import { useMessage } from '../Providers/MessageProvider';
+import { useSession } from 'next-auth/react';
 
 export interface ProfileCourseListProps extends DictProps {
   headerText: string;
@@ -41,9 +42,14 @@ export default function ProfileCourseList({
 }: ProfileCourseListProps) {
   const { palette } = useTheme();
   const [isCollapsed, setIsCollapsed] = useState(open);
-
   const { notify } = useMessage();
   const router = useRouter();
+  const { data: session } = useSession({ required: true });
+  const params = useParams();
+  const profileId = params.id;
+  const userId = session?.user.id;
+
+  const ownProfile = userId === profileId;
 
   const handleToggleCollapse = () => {
     setIsCollapsed(!isCollapsed);
@@ -56,7 +62,7 @@ export default function ProfileCourseList({
   const handleCreateNewChannel = async (id: string) => {
     const responseJson = await post('/api/slack/channel', { courseId: id });
     notify(responseJson);
-    router.push(`/${lang}/profile`);
+    router.push(`/${lang}/profile/${session?.user.id}`);
     router.refresh();
   };
   return (
@@ -109,7 +115,7 @@ export default function ProfileCourseList({
               {courses.map((course: Course, count: number) => (
                 <React.Fragment key={course.id}>
                   <Link
-                    href={`profile/?courseId=${course.id}`}
+                    href={`/${lang}/profile/${profileId}?courseId=${course.id}`}
                     style={{ textDecoration: 'none' }}
                   >
                     <ListItem
@@ -163,18 +169,20 @@ export default function ProfileCourseList({
                               data-testid={`courseTimer.${course.id}`}
                             />
                           </NoSsr>
-                          <CreateSlackButton
-                            lang={lang}
-                            onclick={(
-                              event: React.MouseEvent<HTMLButtonElement>
-                            ) => {
-                              {
-                                event.preventDefault(); // prevents the CourseModal from opening
-                                handleCreateNewChannel(course.id);
-                              }
-                            }}
-                            buttonDisabled={Boolean(course.slackChannelId)}
-                          />
+                          {ownProfile && (
+                            <CreateSlackButton
+                              lang={lang}
+                              onclick={(
+                                event: React.MouseEvent<HTMLButtonElement>
+                              ) => {
+                                {
+                                  event.preventDefault(); // prevents the CourseModal from opening
+                                  handleCreateNewChannel(course.id);
+                                }
+                              }}
+                              buttonDisabled={Boolean(course.slackChannelId)}
+                            />
+                          )}
                         </Box>
                       )}
                     </ListItem>

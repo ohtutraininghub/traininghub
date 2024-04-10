@@ -28,6 +28,7 @@ export interface ProfileMenuProps extends DictProps {}
 
 export default function ProfileMenu({ lang }: ProfileMenuProps) {
   const { data: session, status } = useSession({ required: true });
+  const userId = session?.user.id;
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const [backdropOpen, setBackdropOpen] = useState(false);
@@ -125,7 +126,7 @@ export default function ProfileMenu({ lang }: ProfileMenuProps) {
             {t('home')}
           </MenuItem>
         </Link>
-        <Link href="/profile" style={{ textDecoration: 'none' }}>
+        <Link href={`/profile/${userId}`} style={{ textDecoration: 'none' }}>
           <MenuItem
             data-testid="viewProfileMenuItem"
             style={{ color: theme.palette.black.main }}

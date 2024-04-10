@@ -2,6 +2,7 @@ import { Role, User } from '@prisma/client';
 import { clearDatabase, prisma } from '../src/lib/prisma';
 
 const traineeUser = {
+  id: 'cluo340vw000108jyfdxm12jm',
   name: 'Taylor Trainee',
   email: 'taylor@traininghub.org',
   emailVerified: null,
@@ -13,6 +14,7 @@ const traineeUser = {
 };
 
 const trainerUser = {
+  id: 'cluo35ozy000208jy18sdfe4a',
   name: 'Tim Trainer',
   email: 'tim@traininghub.org',
   emailVerified: null,
@@ -24,6 +26,7 @@ const trainerUser = {
 };
 
 const adminUser = {
+  id: 'cluo36844000308jy411a7nub',
   name: 'Anna Admin',
   email: 'anna@traininghub.org',
   emailVerified: null,
@@ -124,7 +127,7 @@ const countryData = [
   { name: 'Sweden', countryCode: 'SE' },
   { name: 'Norway', countryCode: 'NO' },
   { name: 'Denmark', countryCode: 'DK' },
-  { name: 'Germany', countryCode: 'DE' },
+  { id: 'clumicdtg0003fyakdum2yzdv', name: 'Germany', countryCode: 'DE' },
   { name: 'Netherlands', countryCode: 'NL' },
   { name: 'Switzerland', countryCode: 'CH' },
   { name: 'United Kingdom', countryCode: 'GB' },
@@ -245,9 +248,9 @@ const userData: User[] = [
     emailVerified: null,
     image: 'https://example.com/ellamoore.jpg',
     role: 'TRAINEE',
-    countryId: 'clum4qgfw000008k095npgxsx',
-    titleId: 'clum4qgfw000008k095npgxwe',
-    profileCompleted: true,
+    countryId: null,
+    titleId: null,
+    profileCompleted: false,
   },
 ];
 

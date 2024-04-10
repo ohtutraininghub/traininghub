@@ -8,6 +8,7 @@ import { DictProps } from '@/lib/i18n';
 import { ConfirmCard } from '../ConfirmCard';
 import { useRouter } from 'next/navigation';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { useParams } from 'next/navigation';
 
 interface DeleteTemplateButtonProps extends DictProps {
   templateId: string;
@@ -24,6 +25,8 @@ export function DeleteTemplateButton({
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const router = useRouter();
   const { notify } = useMessage();
+  const params = useParams();
+  const profileId = params.id;
 
   const handleDialogOpen = () => {
     setDialogOpen(!dialogOpen);
@@ -34,7 +37,7 @@ export function DeleteTemplateButton({
       templateId: templateId,
     });
     notify(responseJson);
-    router.push('/en/profile');
+    router.push(`/${lang}/profile/${profileId}`);
     router.refresh();
   };
 
