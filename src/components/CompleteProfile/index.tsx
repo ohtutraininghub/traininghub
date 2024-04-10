@@ -45,8 +45,8 @@ export default function CompleteProfile({ countries, titles, lang }: Props) {
       notify(responseJson);
       reset();
       await update({ profileCompleted: true });
-      router.push('/');
       router.refresh();
+      router.push('/');
     } catch (error) {
       notify({
         message: t('CompleteProfile.error'),
