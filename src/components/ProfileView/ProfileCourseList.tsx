@@ -61,7 +61,6 @@ export default function ProfileCourseList({
     router.refresh();
   };
   const handleCreateNewFeedback = async (id: string) => {
-    console.log(id);
     const responseJson = await post('/api/forms/create', { courseId: id });
     notify(responseJson);
     router.push(`/${lang}/profile`);

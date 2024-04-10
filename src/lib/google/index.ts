@@ -141,12 +141,15 @@ export const createCourseFeedbackForm = async (course) => {
   try {
     const response = await forms.forms.create({
       requestBody: {
-        title: `Please provide feedback for the course ${course.name}`,
-        document_title: `${course.name} Feedback`, // Corrected to template literal
+        info: {
+          title: `Please provide feedback for the course: ${course.name}`,
+          document_title: `${course.name} Feedback`,
+        },
       },
     });
 
-    const formUrl = response?.data?.responseUrl;
+    const formUrl = response?.data?.responderUri;
+    console.log(formUrl);
     if (!formUrl) {
       throw new Error('Google response did not contain form URL!');
     }

@@ -32,13 +32,12 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    // Uncomment and use this check if you want to prevent creating multiple forms for the same course
-    // if (course.formsId) {
-    //     return errorResponse({
-    //         message: t('GoogleForm.FormAlreadyExists'),
-    //         statusCode: StatusCodeType.BAD_REQUEST,
-    //     });
-    // }
+    if (course.googleFormsId) {
+      return errorResponse({
+        message: t('GoogleForms.formAlreadyExists'),
+        statusCode: StatusCodeType.BAD_REQUEST,
+      });
+    }
 
     const formResponse = await createCourseFeedbackForm(course);
     if (!formResponse.ok) {
