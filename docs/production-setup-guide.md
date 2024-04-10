@@ -91,8 +91,6 @@ Slack setup is required for sending messages to Slack.
 `SENTRY_ORG`: defined when creating Sentry project  
 `SENTRY_PROJECT`: defined when creating Sentry project
 
-`SLACK_BOT_TOKEN`: refer to Slack setup
-
 ### Environments
 
 This projects uses GitHub [environments](https://docs.github.com/en/actions/deployment/targeting-different-environments/using-environments-for-deployment) in actions.
@@ -102,11 +100,13 @@ This projects uses GitHub [environments](https://docs.github.com/en/actions/depl
 `DATABASE_URL`: refer to PostgreSQL setup  
 `HEROKU_APP_NAME`: refer to Heroku setup  
 `NEXTAUTH_URL`: staging URL, refer to Heroku setup  
-`HOST_URL`: staging URL, refer to Heroku setup
+`HOST_URL`: staging URL, refer to Heroku setup  
+`SLACK_BOT_TOKEN`: refer to Slack setup
 
 #### production
 
 `DATABASE_URL`: refer to PostgreSQL setup  
 `HEROKU_APP_NAME`: refer to Heroku setup  
 `NEXTAUTH_URL`: production URL, refer to Heroku setup  
-`HOST_URL`: production URL, refer to Heroku setup
+`HOST_URL`: production URL, refer to Heroku setup  
+`SLACK_BOT_TOKEN`: refer to Slack setup
