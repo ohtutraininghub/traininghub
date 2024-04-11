@@ -5,7 +5,7 @@
     "plugin:cypress/recommended",
     "plugin:@typescript-eslint/recommended"
   ],
-  "ignorePatterns": ["**/*test.tsx", "**/*test.ts", "**/*.js"], // Ignore jest test files
+  "ignorePatterns": ["**/*test.tsx", "**/*test.ts"], // Ignore jest test files
   "parser": "@typescript-eslint/parser",
   "plugins": ["@typescript-eslint", "cypress"],
   "rules": {
