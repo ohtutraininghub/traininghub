@@ -11,7 +11,7 @@ import {
 } from '@/lib/prisma/calendar';
 import { logHandledException } from '@/lib/sentry';
 import { isProduction } from '../env-utils';
-import { prisma } from '@/lib/prisma';
+import { createNewFormRequest, createQuizItems } from './requests';
 
 export const insertCourseToCalendar = async (
   userId: string,
@@ -137,58 +137,10 @@ export const createCourseFeedbackForm = async (
   userId: string,
   course: Course
 ) => {
-  console.log('Creating feedback form for course:', course.name);
   const refreshTokenAuth = await getRefreshTokenAuth(userId);
   const forms = googleforms({ version: 'v1', auth: refreshTokenAuth });
-  const newForm = {
-    info: {
-      title: `Please provide feedback for the course: ${course.name}`,
-      document_title: `${course.name} Feedback`,
-    },
-  };
-  const feedbackItems = {
-    requests: [
-      {
-        createItem: {
-          item: {
-            title: 'Rate the course from 1 to 5',
-            questionItem: {
-              question: {
-                required: true,
-                scaleQuestion: {
-                  low: 1,
-                  high: 5,
-                  lowLabel: 'Not useful',
-                  highLabel: 'Very useful',
-                },
-              },
-            },
-          },
-          location: {
-            index: 0,
-          },
-        },
-      },
-      {
-        createItem: {
-          item: {
-            title: 'How was the course?',
-            questionItem: {
-              question: {
-                required: false,
-                textQuestion: {
-                  paragraph: false,
-                },
-              },
-            },
-          },
-          location: {
-            index: 1,
-          },
-        },
-      },
-    ],
-  };
+  const newForm = createNewFormRequest(course);
+  const feedbackItems = createQuizItems();
   try {
     const response = await forms.forms.create({
       requestBody: newForm,
@@ -197,19 +149,20 @@ export const createCourseFeedbackForm = async (
     const formId = response?.data?.formId;
     const formUrl = response?.data?.responderUri;
 
+    if (formId === null || formId === undefined) {
+      return { ok: false, data: { formId, formUrl } };
+    }
+
     await forms.forms.batchUpdate({
       formId: formId,
       requestBody: feedbackItems,
     });
 
-    await prisma.course.update({
-      where: { id: course.id },
-      data: { googleFormsId: formId },
-    });
-
     return { ok: true, data: { formId, formUrl } };
   } catch (error) {
-    await logHandledException(error); // Awaiting the logging
+    if (error instanceof Error) {
+      logHandledException(error); // Awaiting the logging
+    }
     throw error; // Rethrow the error for the caller to handle
   }
 };

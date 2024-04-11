@@ -329,6 +329,49 @@ export const createBlocksUpdatedTraining = (
   return blocks;
 };
 
+export const createBlocksCourseFeedback = (course: Course) => {
+  const blocks = [
+    {
+      type: 'header',
+      text: {
+        type: 'plain_text',
+        text: 'Your feedback is valued!',
+        emoji: true,
+      },
+    },
+    {
+      type: 'section',
+      text: {
+        type: 'mrkdwn',
+        text: `*${course.name}* organizer would like to hear your thoughts on the course`,
+      },
+    },
+    {
+      type: 'section',
+      text: {
+        type: 'mrkdwn',
+        text:
+          course.summary ||
+          'Leave your feedback through the link below :point_down:',
+      },
+    },
+    {
+      type: 'context',
+      elements: [
+        {
+          type: 'mrkdwn',
+          text: ':link:',
+        },
+        {
+          type: 'mrkdwn',
+          text: `*Feedback:* <https://docs.google.com/forms/d/e/${course.googleFormsId}/viewform?usp=sf_link>`,
+        },
+      ],
+    },
+  ];
+  return blocks;
+};
+
 const formatDateForSlack = (date: Date) => {
   const dateUnix = dateToUnixTimestamp(date);
   return `<!date^${dateUnix}^{date_short} {time}|${date.toLocaleDateString()}>`;

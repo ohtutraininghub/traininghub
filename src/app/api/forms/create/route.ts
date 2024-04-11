@@ -8,6 +8,8 @@ import { translator } from '@/lib/i18n';
 import { StatusCodeType } from '@/lib/response/responseUtil';
 import { hasCourseEditRights, isTrainerOrAdmin } from '@/lib/auth-utils';
 import { courseIdSchema } from '@/lib/zod/courses';
+import { getStudentEmailsByCourseId } from '@/lib/prisma/users';
+import { sendFeedbackRequestedMessage } from '@/lib/slack';
 
 export async function POST(request: NextRequest) {
   try {
@@ -45,6 +47,19 @@ export async function POST(request: NextRequest) {
         message: t('GoogleForms.formCreationFailed'),
         statusCode: StatusCodeType.BAD_REQUEST,
       });
+    }
+
+    await prisma.course.update({
+      where: { id: course.id },
+      data: { googleFormsId: formResponse.data.formId },
+    });
+
+    const students = await getStudentEmailsByCourseId(course.id);
+    const studentEmails = students.map((student) => student.email);
+    console.log('studentEmails', studentEmails);
+
+    for (const studentEmail of studentEmails) {
+      await sendFeedbackRequestedMessage(studentEmail, course);
     }
 
     return successResponse({
