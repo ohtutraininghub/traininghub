@@ -56,10 +56,13 @@ export async function POST(request: NextRequest) {
 
     const students = await getStudentEmailsByCourseId(course.id);
     const studentEmails = students.map((student) => student.email);
-    console.log('studentEmails', studentEmails);
 
     for (const studentEmail of studentEmails) {
-      await sendFeedbackRequestedMessage(studentEmail, course);
+      await sendFeedbackRequestedMessage(
+        studentEmail,
+        course,
+        formResponse.data.formUrl
+      );
     }
 
     return successResponse({

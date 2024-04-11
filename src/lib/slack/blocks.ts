@@ -330,6 +330,8 @@ export const createBlocksUpdatedTraining = (
 };
 
 export const createBlocksCourseFeedback = (course: Course) => {
+  const formId = course.googleFormsId;
+  console.log('formId', formId);
   const blocks = [
     {
       type: 'header',
@@ -350,9 +352,7 @@ export const createBlocksCourseFeedback = (course: Course) => {
       type: 'section',
       text: {
         type: 'mrkdwn',
-        text:
-          course.summary ||
-          'Leave your feedback through the link below :point_down:',
+        text: 'Leave your feedback through the link below :point_down:',
       },
     },
     {
@@ -364,7 +364,7 @@ export const createBlocksCourseFeedback = (course: Course) => {
         },
         {
           type: 'mrkdwn',
-          text: `*Feedback:* <https://docs.google.com/forms/d/e/${course.googleFormsId}/viewform?usp=sf_link>`,
+          text: `<https://docs.google.com/forms/d/e/${formId}/viewform?usp=sf_link|Leave feedback>`,
         },
       ],
     },
