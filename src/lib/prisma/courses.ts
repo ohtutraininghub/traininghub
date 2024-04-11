@@ -85,3 +85,32 @@ export const getAllCourses = async () => {
     orderBy: [{ startDate: 'asc' }, { name: 'asc' }],
   });
 };
+
+export const getCourseDataForCsv = async (courseId: Course['id']) => {
+  return await prisma.course.findFirst({
+    include: {
+      createdBy: {
+        select: {
+          name: true,
+        },
+      },
+      students: {
+        select: {
+          name: true,
+          country: {
+            select: {
+              name: true,
+            },
+          },
+          title: {
+            select: {
+              name: true,
+            },
+          },
+        },
+        orderBy: [{ name: 'asc' }],
+      },
+    },
+    where: { id: courseId },
+  });
+};
