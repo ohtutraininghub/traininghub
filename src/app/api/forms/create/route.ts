@@ -54,15 +54,12 @@ export async function POST(request: NextRequest) {
       data: { googleFormsId: formResponse.data.formId },
     });
 
+    const formUrl = formResponse.data.formUrl;
     const students = await getStudentEmailsByCourseId(course.id);
     const studentEmails = students.map((student) => student.email);
 
     for (const studentEmail of studentEmails) {
-      await sendFeedbackRequestedMessage(
-        studentEmail,
-        course,
-        formResponse.data.formUrl
-      );
+      await sendFeedbackRequestedMessage(studentEmail, course, formUrl);
     }
 
     return successResponse({

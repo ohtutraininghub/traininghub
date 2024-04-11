@@ -50,10 +50,11 @@ export const sendTrainingCancelledMessage = async (
 
 export const sendFeedbackRequestedMessage = async (
   userEmail: string,
-  course: Course
+  course: Course,
+  feedbackFormUrl: string
 ) => {
   // if (!isProduction()) return;
-  const blocks = createBlocksCourseFeedback(course);
+  const blocks = createBlocksCourseFeedback(course, feedbackFormUrl);
   await sendMessageToUser(userEmail, blocks);
 };
 

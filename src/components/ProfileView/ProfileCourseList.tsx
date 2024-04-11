@@ -192,7 +192,7 @@ export default function ProfileCourseList({
                                 handleCreateNewFeedback(course.id);
                               }
                             }}
-                            buttonDisabled={Boolean(false)}
+                            buttonDisabled={Boolean(course.googleFormsId)}
                           />
                         </Box>
                       )}
