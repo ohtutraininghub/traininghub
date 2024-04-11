@@ -17,9 +17,9 @@ export async function GET(request: NextRequest) {
       });
     }
     const fromDate = new Date(
-      request.nextUrl.searchParams.get('startDate') || ''
+      request.nextUrl.searchParams.get('fromDate') || ''
     );
-    const toDate = new Date(request.nextUrl.searchParams.get('endDate') || '');
+    const toDate = new Date(request.nextUrl.searchParams.get('toDate') || '');
     if (!fromDate || !toDate) {
       return errorResponse({
         message: t('Common.unprocessableContent'),
