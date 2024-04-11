@@ -39,12 +39,10 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    const formResponse = await createCourseFeedbackForm(course);
+    const formResponse = await createCourseFeedbackForm(user.id, course);
     if (!formResponse.ok) {
       return errorResponse({
-        message: `${t('GoogleForms.formCreationFailed')}: ${
-          formResponse.error
-        }`,
+        message: t('GoogleForms.formCreationFailed'),
         statusCode: StatusCodeType.BAD_REQUEST,
       });
     }

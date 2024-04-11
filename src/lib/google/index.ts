@@ -133,8 +133,12 @@ export const updateCourseToCalendars = async (course: Course) => {
   });
 };
 
-export const createCourseFeedbackForm = async (course) => {
-  const refreshTokenAuth = await getRefreshTokenAuth(course.userId);
+export const createCourseFeedbackForm = async (
+  userId: string,
+  course: Course
+) => {
+  console.log('Creating feedback form for course:', course.name);
+  const refreshTokenAuth = await getRefreshTokenAuth(userId);
   const forms = googleforms({ version: 'v1', auth: refreshTokenAuth });
   const newForm = {
     info: {
@@ -150,6 +154,7 @@ export const createCourseFeedbackForm = async (course) => {
             title: 'Rate the course from 1 to 5',
             questionItem: {
               question: {
+                required: true,
                 scaleQuestion: {
                   low: 1,
                   high: 5,
