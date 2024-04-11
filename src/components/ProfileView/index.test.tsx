@@ -6,6 +6,7 @@ import { Country, Role, Title } from '@prisma/client';
 import ProfileView from './index';
 import { useSession } from 'next-auth/react';
 import { useParams } from 'next/navigation';
+import UserList from '../UserList';
 
 // Mocking translation and fetch utilities
 jest.mock('../../lib/i18n/client', () => ({
@@ -165,6 +166,8 @@ describe('ProfileView Tests', () => {
           name: traineeUser.name,
           email: traineeUser.email,
           image: traineeUser.image,
+          country: traineeUser.countryId,
+          title: traineeUser.titleId,
         }}
         courses={testCourses}
         createdCourses={[]}
@@ -173,6 +176,7 @@ describe('ProfileView Tests', () => {
         templates={[]}
         tags={[]}
         countries={[]}
+        titles={[]}
       />
     );
 
@@ -205,6 +209,8 @@ describe('ProfileView Tests', () => {
           name: trainerUser.name,
           email: trainerUser.email,
           image: trainerUser.image,
+          country: trainerUser.countryId,
+          title: trainerUser.titleId,
         }}
         courses={testCourses}
         createdCourses={
@@ -271,6 +277,8 @@ describe('ProfileView Tests', () => {
           name: adminUser.name,
           email: adminUser.email,
           image: adminUser.image,
+          country: adminUser.countryId,
+          title: adminUser.titleId,
         }}
         courses={testCourses}
         createdCourses={
@@ -333,19 +341,27 @@ describe('ProfileView Tests', () => {
           name: adminUser.name,
           email: adminUser.email,
           image: adminUser.image,
+          country: adminUser.countryId,
+          title: adminUser.titleId,
         }}
         courses={[]}
         createdCourses={[]}
         users={[traineeUser, trainerUser]}
-        children={[]}
         templates={[]}
         tags={[
           { id: '1', name: 'Testing' },
           { id: '2', name: 'Git' },
         ]}
-        countries={[]}
-        titles={[]}
-      />
+        countries={[{ id: '1', name: 'Finland', countryCode: 'FI' }]}
+        titles={[{ id: '1', name: 'Employee' }]}
+      >
+        <UserList
+          users={[traineeUser, trainerUser]}
+          lang="en"
+          countries={[{ id: '1', name: 'Finland', countryCode: 'FI' }]}
+          titles={[{ id: '1', name: 'Employee' }]}
+        />
+      </ProfileView>
     );
 
     const adminDashboard = screen.getByText('ProfileView.label.adminDashboard');
