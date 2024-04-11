@@ -86,8 +86,8 @@ export const getAllCourses = async () => {
   });
 };
 
-export const getCourseDataForCsv = async (courseId: Course['id']) => {
-  return await prisma.course.findFirst({
+export const getCourseDataForCsv = async () => {
+  return await prisma.course.findMany({
     include: {
       createdBy: {
         select: {
@@ -111,6 +111,6 @@ export const getCourseDataForCsv = async (courseId: Course['id']) => {
         orderBy: [{ name: 'asc' }],
       },
     },
-    where: { id: courseId },
+    orderBy: [{ startDate: 'asc' }, { name: 'asc' }],
   });
 };
