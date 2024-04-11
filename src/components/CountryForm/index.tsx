@@ -15,8 +15,21 @@ import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import { countries } from './countries';
 import { useTheme } from '@mui/material/styles';
+import { DownloadTrainingSessionsAsCSV } from '../CsvCreator';
 
 interface Props extends DictProps {}
+
+const trainingSessions = [
+  {
+    trainingName: 'Web Development Basics',
+    trainerName: 'Jane Doe',
+    participants: [
+      { name: 'John Smith', country: 'USA', title: 'Developer' },
+      { name: 'Sara Wilson', country: 'Canada', title: 'Manager' },
+    ],
+    date: '2024-04-12',
+  },
+];
 
 export default function CountryForm({ lang }: Props) {
   const router = useRouter();
@@ -109,6 +122,16 @@ export default function CountryForm({ lang }: Props) {
           data-testid="countrySubmitButton"
         >
           {t('CountryForm.button.submit')}
+        </Button>
+        <Button
+          onClick={() => {
+            DownloadTrainingSessionsAsCSV(trainingSessions);
+          }}
+          variant="contained"
+          sx={{}}
+          data-testid="countrySubmitButton"
+        >
+          Download CSV
         </Button>
       </Box>
       <FormFieldError error={errors.name} />

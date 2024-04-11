@@ -9,7 +9,6 @@ import { getAllUsers } from '@/lib/prisma/users';
 import { getTags } from '@/lib/prisma/tags';
 import { getCountries } from '@/lib/prisma/country';
 import { getTitles } from '@/lib/prisma/title';
-
 export const dynamic = 'force-dynamic';
 
 interface Props {
