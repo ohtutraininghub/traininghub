@@ -99,14 +99,44 @@ beforeEach(async () => {
   });
 });
 
+const authenticateAsAdmin = async () => {
+  (getServerAuthSession as jest.Mock).mockImplementation(async () =>
+    Promise.resolve({
+      user: adminUser,
+    })
+  );
+};
+
+const authenticateAsTrainer = async () => {
+  (getServerAuthSession as jest.Mock).mockImplementation(async () =>
+    Promise.resolve({
+      user: trainerUser,
+    })
+  );
+};
+
+const authenticateAsTrainee = async () => {
+  (getServerAuthSession as jest.Mock).mockImplementation(async () =>
+    Promise.resolve({
+      user: traineeUser,
+    })
+  );
+};
+
 describe('Course Statistics API tests', () => {
   describe('GET', () => {
-    (getServerAuthSession as jest.Mock).mockImplementation(async () =>
-      Promise.resolve({
-        user: adminUser,
-      })
-    );
+    it('should fail as a trainee', async () => {
+      authenticateAsTrainee();
+      const response = await GET(mockGetRequest());
+      expect(response.status).toBe(403);
+    });
+    it('should fail as a trainer', async () => {
+      authenticateAsTrainer();
+      const response = await GET(mockGetRequest());
+      expect(response.status).toBe(403);
+    });
     it('should return courses that start before and ends within the search frame', async () => {
+      authenticateAsAdmin();
       const response = await GET(mockGetRequest());
       const data = await response.json();
       expect(data.data).toEqual(
@@ -117,6 +147,7 @@ describe('Course Statistics API tests', () => {
       expect(response.status).toBe(200);
     });
     it('should return courses that start within and ends after the search frame', async () => {
+      authenticateAsAdmin();
       const response = await GET(mockGetRequest());
       const data = await response.json();
       expect(data.data).toEqual(
@@ -127,6 +158,7 @@ describe('Course Statistics API tests', () => {
       expect(response.status).toBe(200);
     });
     it('should return courses that start within and ends within the search frame', async () => {
+      authenticateAsAdmin();
       const response = await GET(mockGetRequest());
       const data = await response.json();
       expect(data.data).toEqual(
@@ -137,6 +169,7 @@ describe('Course Statistics API tests', () => {
       expect(response.status).toBe(200);
     });
     it('should return courses that start before and ends after the search frame', async () => {
+      authenticateAsAdmin();
       const response = await GET(mockGetRequest());
       const data = await response.json();
       expect(data.data).toEqual(
@@ -147,6 +180,7 @@ describe('Course Statistics API tests', () => {
       expect(response.status).toBe(200);
     });
     it('should not return courses that start before and ends before the search frame', async () => {
+      authenticateAsAdmin();
       const response = await GET(mockGetRequest());
       const data = await response.json();
       expect(data.data).not.toEqual(
@@ -157,6 +191,7 @@ describe('Course Statistics API tests', () => {
       expect(response.status).toBe(200);
     });
     it('should not return courses that start after and ends after the search frame', async () => {
+      authenticateAsAdmin();
       const response = await GET(mockGetRequest());
       const data = await response.json();
       expect(data.data).not.toEqual(
