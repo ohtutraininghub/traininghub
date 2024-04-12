@@ -35,6 +35,10 @@
     "participationNotFound": "Participation not found",
     "participationRemoved": "Participation removed"
   },
+  "Reminders": {
+    "remindersSent": "Reminders sent succesfully",
+    "sendingRemindersFailed": "Failed to send reminders"
+  },
   "Requests": {
     "requestRemoved": "Your request was removed",
     "requestSuccessfull": "Request successfully sent!",
