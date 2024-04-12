@@ -36,8 +36,7 @@
     "participationRemoved": "Participation removed"
   },
   "Reminders": {
-    "remindersSent": "Reminders sent succesfully",
-    "sendingRemindersFailed": "Failed to send reminders"
+    "remindersSent": "Reminders sent succesfully"
   },
   "Requests": {
     "requestRemoved": "Your request was removed",

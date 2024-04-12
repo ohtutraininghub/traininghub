@@ -1,6 +1,8 @@
 import { handleSendNotifications } from './route';
+import { MessageType } from '@/lib/response/responseUtil';
 import { NextRequest } from 'next/server';
 import { createMocks } from 'node-mocks-http';
+import sendNotificationsBeforeCourseStart from '@/lib/cron/cron-utils';
 
 const mockGetRequest = () => {
   const { req } = createMocks<NextRequest>({
@@ -27,17 +29,35 @@ const mockGetRequestWithWrongToken = () => {
   req.headers.get = jest.fn().mockReturnValue('Bearer ' + 'wrong-token');
   return req;
 };
+jest.mock('../../../lib/cron/cron-utils', () => ({
+  __esModule: true,
+  default: jest.fn(),
+}));
 
 describe('handleSendNotifications', () => {
   it('should return success response if Bearer token is correct', async () => {
     const request = mockGetRequest();
     const response = await handleSendNotifications(request);
+    const data = await response.json();
+
+    expect(data.message).toBe('Reminders sent succesfully');
+    expect(data.messageType).toBe(MessageType.SUCCESS);
     expect(response.status).toBe(200);
   });
+  it('should call notification sender if Bearer token is correct', async () => {
+    const request = mockGetRequest();
+    const response = await handleSendNotifications(request);
 
+    expect(response.status).toBe(200);
+    expect(sendNotificationsBeforeCourseStart).toHaveBeenCalled();
+  });
   it('should return unauthorized response if wrong token is used', async () => {
     const request = mockGetRequestWithWrongToken();
     const response = await handleSendNotifications(request);
+    const data = await response.json();
+
+    expect(data.message).toBe('Forbidden');
+    expect(data.messageType).toBe(MessageType.ERROR);
     expect(response.status).toBe(401);
   });
 });
