@@ -35,6 +35,9 @@ jest.mock('../../../lib/cron/cron-utils', () => ({
 }));
 
 describe('handleSendNotifications', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
   it('should return success response if Bearer token is correct', async () => {
     const request = mockGetRequest();
     const response = await handleSendNotifications(request);
@@ -49,7 +52,7 @@ describe('handleSendNotifications', () => {
     const response = await handleSendNotifications(request);
 
     expect(response.status).toBe(200);
-    expect(sendNotificationsBeforeCourseStart).toHaveBeenCalled();
+    expect(sendNotificationsBeforeCourseStart).toHaveBeenCalledTimes(1);
   });
   it('should return unauthorized response if wrong token is used', async () => {
     const request = mockGetRequestWithWrongToken();
@@ -59,5 +62,12 @@ describe('handleSendNotifications', () => {
     expect(data.message).toBe('Forbidden');
     expect(data.messageType).toBe(MessageType.ERROR);
     expect(response.status).toBe(401);
+  });
+  it('should not call notification sender if Bearer token is incorrect', async () => {
+    const request = mockGetRequestWithWrongToken();
+    const response = await handleSendNotifications(request);
+
+    expect(response.status).toBe(401);
+    expect(sendNotificationsBeforeCourseStart).not.toHaveBeenCalled();
   });
 });
