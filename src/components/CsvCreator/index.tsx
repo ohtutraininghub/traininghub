@@ -9,28 +9,25 @@ type TrainingSession = {
   date: string;
 };
 
-// Function to convert data to CSV and trigger download
 export function DownloadTrainingSessionsAsCSV(sessions: TrainingSession[]) {
-  // Convert data to CSV string
-  const csvContent = sessions
-    .map((session) => {
-      const participantDetails = session.participants
-        .map(
-          (participant) =>
-            `${participant.name},${participant.country},${participant.title}`
-        )
-        .join('\n');
+  const csvHeader =
+    'Training Name,Trainer Name,Participant Name,Country,Title,Date\n';
 
-      return [
-        session.trainingName,
-        session.trainerName,
-        participantDetails,
-        session.date,
-      ].join(',');
+  const csvContent = sessions
+    .flatMap((session) => {
+      return session.participants.map((participant) => {
+        return [
+          session.trainingName,
+          session.trainerName,
+          participant.name,
+          participant.country,
+          participant.title,
+          session.date,
+        ].join(',');
+      });
     })
     .join('\n');
 
-  const csvHeader = 'Training Name,Trainer Name,Participant Details,Date\n';
   const csv = csvHeader + csvContent;
 
   // Trigger download
