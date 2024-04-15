@@ -22,15 +22,15 @@ export default function ExportForm({ lang }: Props) {
     resolver: zodResolver(exportStatsFormSchema),
   });
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: { xs: 'column', sm: 'row' },
-        gap: '2rem',
-        alignItems: 'center',
-      }}
-    >
-      <form onSubmit={() => {}}>
+    <form onSubmit={() => {}}>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: { xs: 'column', sm: 'row' },
+          gap: '1rem',
+          alignItems: 'center',
+        }}
+      >
         <FormControl>
           <FormLabel
             sx={{
@@ -111,7 +111,7 @@ export default function ExportForm({ lang }: Props) {
         >
           {t('ExportStats.button')}
         </Button>
-      </form>
-    </Box>
+      </Box>
+    </form>
   );
 }
