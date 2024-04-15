@@ -32,6 +32,16 @@
     "confirmCancellation": "Are you sure you want to unenroll from the course?",
     "pastCancellationDate": "The course starts soon. Contact the trainer if you want to cancel your enrollment."
   },
+  "CompleteProfile": {
+    "button": "Save Details",
+    "countryLabel": "Country",
+    "emptyField": "Field cannot be empty",
+    "error": "Profile update failed",
+    "subtitle": "Please fill in the following information to complete your profile",
+    "success": "Profile updated successfully",
+    "title": "Complete your profile",
+    "titleLabel": "Title"
+  },
   "ConfirmCard": {
     "cancel": "Cancel",
     "checkbox": {
@@ -141,12 +151,15 @@
       "coursesInprogress": "Courses in progress",
       "endedCourses": "Ended courses",
       "endedCreatedCourses": "Ended created courses",
+      "templates": "Course templates",
       "templatesAdmin": "All course templates",
       "templatesTrainer": "My course templates",
       "upcomingCourses": "Upcoming courses",
       "upcomingCreatedCourses": "Upcoming created courses"
     },
     "label": {
+      "Courses": "Courses",
+      "Enrollments": "Enrollments",
       "additionalInfo": "Additional information",
       "adminDashboard": "Admin dashboard",
       "myCourses": "My courses",

@@ -26,19 +26,23 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
-import { $Enums, User } from '@prisma/client';
+import { useTheme } from '@mui/material/styles';
+import { $Enums, Country, Title, User } from '@prisma/client';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 
 interface Props extends DictProps {
   users: Users;
+  countries: Country[];
+  titles: Title[];
 }
 
 type Order = 'asc' | 'desc';
 
 type TableHeader = Exclude<
   keyof Users[number],
-  'image' | 'id' | 'countryId' | 'titleId' | 'profileCompleted'
+  'image' | 'id' | 'profileCompleted'
 >;
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
@@ -69,19 +73,22 @@ function getComparator<Key extends keyof any>(
 
 function checkFilterConditions(
   user: User,
-  headerFilters: [string, string, string]
+  headerFilters: [string, string, string, string, string]
 ) {
   return (
     user.name?.toLowerCase().indexOf(headerFilters[0].toLowerCase()) !== -1 &&
     user.email?.toLowerCase().indexOf(headerFilters[1].toLowerCase()) !== -1 &&
-    user.role.toLowerCase().indexOf(headerFilters[2].toLowerCase()) !== -1
+    user.role.toLowerCase().indexOf(headerFilters[2].toLowerCase()) !== -1 &&
+    user.countryId?.indexOf(headerFilters[3].toLowerCase()) !== -1 &&
+    user.titleId?.indexOf(headerFilters[4].toLowerCase()) !== -1
   );
 }
 
-export default function UserList({ lang, users }: Props) {
+export default function UserList({ lang, users, countries, titles }: Props) {
   const { t } = useTranslation(lang, 'admin');
   const { notify } = useMessage();
   const router = useRouter();
+  const { palette } = useTheme();
 
   const [page, setPage] = useState(0);
   const [visibleRowsPerPage, setVisibleRowsPerPage] = useState(5);
@@ -90,11 +97,9 @@ export default function UserList({ lang, users }: Props) {
   // list of users used to keep track of user role changes before saving
   const [filteredUsers, setFilteredUsers] = useState<User[]>(users);
   const [displayFilterRow, setDisplayFilterRow] = useState(false);
-  const [headerFilters, setHeaderFilters] = useState<[string, string, string]>([
-    '',
-    '',
-    '',
-  ]);
+  const [headerFilters, setHeaderFilters] = useState<
+    [string, string, string, string, string]
+  >(['', '', '', '', '']);
 
   useEffect(() => {
     setFilteredUsers((prevFilteredUsers) =>
@@ -143,7 +148,7 @@ export default function UserList({ lang, users }: Props) {
 
   async function handleUserRoleChange(userId: string, newRole: $Enums.Role) {
     try {
-      await update('/api/user', { userId, newRole });
+      await update('/api/user/role', { userId, newRole });
       router.refresh();
       notify({
         message: t('EditUsers.infoText'),
@@ -158,7 +163,31 @@ export default function UserList({ lang, users }: Props) {
     }
   }
 
-  const tableHeaders: TableHeader[] = ['name', 'email', 'role'];
+  async function handleUserCountryChange(userId: string, countryId: string) {
+    const responseJson = await update('/api/user/country', {
+      userId,
+      countryId,
+    });
+    router.refresh();
+    notify(responseJson);
+  }
+
+  async function handleUserTitleChange(userId: string, titleId: string) {
+    const responseJson = await update('/api/user/title', {
+      userId,
+      titleId,
+    });
+    router.refresh();
+    notify(responseJson);
+  }
+
+  const tableHeaders: TableHeader[] = [
+    'name',
+    'email',
+    'role',
+    'countryId',
+    'titleId',
+  ];
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
@@ -188,7 +217,7 @@ export default function UserList({ lang, users }: Props) {
             sx={{ marginLeft: 'auto' }}
             onClick={() => {
               setDisplayFilterRow((prev) => !prev);
-              setHeaderFilters(['', '', '']);
+              setHeaderFilters(['', '', '', '', '']);
             }}
           >
             <FilterAlt />
@@ -255,79 +284,231 @@ export default function UserList({ lang, users }: Props) {
             {visibleUsers.map((user, userIndex) => (
               <TableRow key={user.id}>
                 <TableCell component="th" scope="row">
-                  {user?.name ?? '-'}
+                  <Link
+                    href={`/profile/${user.id}`}
+                    data-testid={`${user.id}-user-link`}
+                    style={{
+                      textDecoration: 'none',
+                      color: palette.black.main,
+                    }}
+                  >
+                    {user?.name ?? '-'}
+                  </Link>
                 </TableCell>
                 <TableCell component="th" scope="row">
                   {user?.email ?? '-'}
                 </TableCell>
 
-                <TableCell
-                  component="th"
-                  scope="row"
-                  sx={{ display: 'flex', minWidth: '210px' }}
-                >
-                  <Select
-                    data-testid={`${user.id}-role-select`}
-                    sx={{
-                      '& .MuiSelect-select': {
-                        padding: '0.5rem',
-                      },
-                    }}
-                    fullWidth
-                    onChange={(event) => {
-                      setFilteredUsers((prevUsers) =>
-                        prevUsers.map((prevUser, index) =>
-                          index === page * visibleRowsPerPage + userIndex
-                            ? {
-                                ...user,
-                                role: event.target.value as $Enums.Role,
-                              }
-                            : prevUser
-                        )
-                      );
-                    }}
-                    value={
-                      filteredUsers[page * visibleRowsPerPage + userIndex].role
-                    }
-                  >
-                    {Object.keys($Enums.Role).map((enumKey) => (
-                      <MenuItem key={enumKey} value={enumKey}>
-                        <Typography sx={{ fontSize: '0.875rem' }}>
-                          {enumKey.toLowerCase()}
-                        </Typography>
-                      </MenuItem>
-                    ))}
-                  </Select>
-
-                  {user.role !==
-                    users.find((filteredUser) => filteredUser.id === user.id)
-                      ?.role && (
-                    <SmallConfirmCard
-                      confirmTooltip={t('EditUsers.confirmCard.confirm')}
-                      cancelTooltip={t('EditUsers.confirmCard.cancel')}
-                      onCancel={() =>
+                <TableCell component="th" scope="row">
+                  <Box sx={{ display: 'flex' }}>
+                    <Select
+                      data-testid={`${user.id}-role-select`}
+                      sx={{
+                        '& .MuiSelect-select': {
+                          padding: '0.5rem',
+                        },
+                      }}
+                      fullWidth
+                      onChange={(event) => {
                         setFilteredUsers((prevUsers) =>
                           prevUsers.map((prevUser, index) =>
                             index === page * visibleRowsPerPage + userIndex
                               ? {
                                   ...user,
-                                  role:
-                                    users.find((u) => u.id === prevUser.id)
-                                      ?.role ?? prevUser.role,
+                                  role: event.target.value as $Enums.Role,
                                 }
                               : prevUser
                           )
-                        )
-                      }
-                      onSubmit={async () => {
-                        await handleUserRoleChange(
-                          user.id,
-                          filteredUsers[page * visibleRowsPerPage + userIndex]
-                            .role
                         );
                       }}
-                    />
-                  )}
+                      value={
+                        filteredUsers[page * visibleRowsPerPage + userIndex]
+                          .role
+                      }
+                    >
+                      {Object.keys($Enums.Role).map((enumKey) => (
+                        <MenuItem key={enumKey} value={enumKey}>
+                          <Typography sx={{ fontSize: '0.875rem' }}>
+                            {enumKey.toLowerCase()}
+                          </Typography>
+                        </MenuItem>
+                      ))}
+                    </Select>
+
+                    {user.role !==
+                      users.find((filteredUser) => filteredUser.id === user.id)
+                        ?.role && (
+                      <SmallConfirmCard
+                        confirmTooltip={t('EditUsers.confirmCard.confirm')}
+                        cancelTooltip={t('EditUsers.confirmCard.cancel')}
+                        onCancel={() =>
+                          setFilteredUsers((prevUsers) =>
+                            prevUsers.map((prevUser, index) =>
+                              index === page * visibleRowsPerPage + userIndex
+                                ? {
+                                    ...user,
+                                    role:
+                                      users.find((u) => u.id === prevUser.id)
+                                        ?.role ?? prevUser.role,
+                                  }
+                                : prevUser
+                            )
+                          )
+                        }
+                        onSubmit={async () => {
+                          await handleUserRoleChange(
+                            user.id,
+                            filteredUsers[page * visibleRowsPerPage + userIndex]
+                              .role
+                          );
+                        }}
+                      />
+                    )}
+                  </Box>
+                </TableCell>
+
+                <TableCell component="th" scope="row">
+                  <Box sx={{ display: 'flex' }}>
+                    <Select
+                      data-testid={`${user.id}-country-select`}
+                      sx={{
+                        display: 'flex',
+                        '& .MuiSelect-select': {
+                          padding: '0.5rem',
+                        },
+                      }}
+                      fullWidth
+                      onChange={(event) => {
+                        setFilteredUsers((prevUsers) =>
+                          prevUsers.map((prevUser, index) =>
+                            index === page * visibleRowsPerPage + userIndex
+                              ? {
+                                  ...user,
+                                  countryId: event.target.value,
+                                }
+                              : prevUser
+                          )
+                        );
+                      }}
+                      value={
+                        filteredUsers[page * visibleRowsPerPage + userIndex]
+                          .countryId
+                      }
+                    >
+                      {countries.map((country) => (
+                        <MenuItem key={country.id} value={country.id}>
+                          <Typography sx={{ fontSize: '0.875rem' }}>
+                            {country.name}
+                          </Typography>
+                        </MenuItem>
+                      ))}
+                    </Select>
+
+                    {user.countryId &&
+                      user.countryId !==
+                        users.find(
+                          (filteredUser) => filteredUser.id === user.id
+                        )?.countryId && (
+                        <SmallConfirmCard
+                          confirmTooltip={t('EditUsers.confirmCard.confirm')}
+                          cancelTooltip={t('EditUsers.confirmCard.cancel')}
+                          onCancel={() =>
+                            setFilteredUsers((prevUsers) =>
+                              prevUsers.map((prevUser, index) =>
+                                index === page * visibleRowsPerPage + userIndex
+                                  ? {
+                                      ...user,
+                                      countryId:
+                                        users.find((u) => u.id === prevUser.id)
+                                          ?.countryId ?? '',
+                                    }
+                                  : prevUser
+                              )
+                            )
+                          }
+                          onSubmit={() =>
+                            handleUserCountryChange(
+                              user.id,
+                              filteredUsers[
+                                page * visibleRowsPerPage + userIndex
+                              ].countryId || ''
+                            )
+                          }
+                        />
+                      )}
+                  </Box>
+                </TableCell>
+
+                <TableCell component="th" scope="row">
+                  <Box sx={{ display: 'flex' }}>
+                    <Select
+                      data-testid={`${user.id}-title-select`}
+                      sx={{
+                        display: 'flex',
+                        '& .MuiSelect-select': {
+                          padding: '0.5rem',
+                        },
+                      }}
+                      fullWidth
+                      onChange={(event) => {
+                        setFilteredUsers((prevUsers) =>
+                          prevUsers.map((prevUser, index) =>
+                            index === page * visibleRowsPerPage + userIndex
+                              ? {
+                                  ...user,
+                                  titleId: event.target.value,
+                                }
+                              : prevUser
+                          )
+                        );
+                      }}
+                      value={
+                        filteredUsers[page * visibleRowsPerPage + userIndex]
+                          .titleId
+                      }
+                    >
+                      {titles.map((title) => (
+                        <MenuItem key={title.id} value={title.id}>
+                          <Typography sx={{ fontSize: '0.875rem' }}>
+                            {title.name}
+                          </Typography>
+                        </MenuItem>
+                      ))}
+                    </Select>
+
+                    {user.titleId &&
+                      user.titleId !==
+                        users.find(
+                          (filteredUser) => filteredUser.id === user.id
+                        )?.titleId && (
+                        <SmallConfirmCard
+                          confirmTooltip={t('EditUsers.confirmCard.confirm')}
+                          cancelTooltip={t('EditUsers.confirmCard.cancel')}
+                          onCancel={() =>
+                            setFilteredUsers((prevUsers) =>
+                              prevUsers.map((prevUser, index) =>
+                                index === page * visibleRowsPerPage + userIndex
+                                  ? {
+                                      ...user,
+                                      titleId:
+                                        users.find((u) => u.id === prevUser.id)
+                                          ?.titleId ?? '',
+                                    }
+                                  : prevUser
+                              )
+                            )
+                          }
+                          onSubmit={() =>
+                            handleUserTitleChange(
+                              user.id,
+                              filteredUsers[
+                                page * visibleRowsPerPage + userIndex
+                              ].titleId || ''
+                            )
+                          }
+                        />
+                      )}
+                  </Box>
                 </TableCell>
               </TableRow>
             ))}

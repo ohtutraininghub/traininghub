@@ -27,11 +27,21 @@
     "label": "Users",
     "searchTooltip": "Filter table with {{headerValue}}",
     "tableHeaders": {
+      "countryId": "Country",
       "email": "Email",
       "emailVerified": "Email Verified",
       "name": "Name",
-      "role": "Role"
+      "role": "Role",
+      "titleId": "Title"
     }
+  },
+  "ExportStats": {
+    "button": "Export CSV",
+    "fromDate": "From:",
+    "header": "Export course statistics",
+    "toDate": "To:",
+    "tooltipFrom": "Choose start date for statistics",
+    "tooltipTo": "Choose end date for statistics"
   },
   "TagForm": {
     "button": {
@@ -46,5 +56,19 @@
   },
   "TagsSection": {
     "header": "Tags"
+  },
+  "TitleForm": {
+    "button": {
+      "submit": "Submit"
+    },
+    "label": "New title",
+    "placeholderText": "Title name"
+  },
+  "TitleList": {
+    "confirmTitleDeletion": "Are you sure you want to delete the following title:",
+    "noTitlesAdded": "No titles added"
+  },
+  "TitlesSection": {
+    "header": "Titles"
   }
 }

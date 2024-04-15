@@ -2,9 +2,11 @@ import React from 'react';
 import '@testing-library/jest-dom';
 import { fireEvent, screen } from '@testing-library/react';
 import { renderWithTheme } from '@/lib/test-utils';
-import { Role } from '@prisma/client';
+import { Country, Role, Title } from '@prisma/client';
 import ProfileView from './index';
 import { useSession } from 'next-auth/react';
+import { useParams } from 'next/navigation';
+import UserList from '../UserList';
 
 // Mocking translation and fetch utilities
 jest.mock('../../lib/i18n/client', () => ({
@@ -27,6 +29,7 @@ jest.mock('next/navigation', () => ({
     push: jest.fn(),
     refresh: jest.fn(),
   })),
+  useParams: jest.fn(),
 }));
 
 jest.mock('../../lib/response/responseUtil', () => ({
@@ -40,6 +43,9 @@ const adminUser = {
   emailVerified: null,
   image: '',
   role: Role.ADMIN,
+  countryId: '1',
+  titleId: '1',
+  profileCompleted: true,
 };
 
 const trainerUser = {
@@ -49,6 +55,9 @@ const trainerUser = {
   emailVerified: null,
   image: '',
   role: Role.TRAINER,
+  countryId: '1',
+  titleId: '1',
+  profileCompleted: true,
 };
 
 const template = {
@@ -87,6 +96,7 @@ const testCourses = [
       { id: '2', name: 'Git' },
     ],
     image: 'http://test-image.com',
+    slackChannelId: '123',
   },
   {
     id: '5678',
@@ -104,6 +114,7 @@ const testCourses = [
       { id: '4', name: 'Jest' },
     ],
     image: 'http://test-image.com',
+    slackChannelId: '1234',
   },
   {
     id: '91011',
@@ -121,6 +132,7 @@ const testCourses = [
       { id: '6', name: 'E2E' },
     ],
     image: 'http://test-image.com',
+    slackChannelId: '1235',
   },
 ];
 
@@ -132,10 +144,14 @@ const traineeUser = {
   image: '',
   role: Role.TRAINEE,
   courses: testCourses,
+  countryId: '1',
+  titleId: '1',
+  profileCompleted: true,
 };
 
 describe('ProfileView Tests', () => {
   it('should render correct dropdowns and tabs for trainee', async () => {
+    (useParams as jest.Mock).mockReturnValue({ id: traineeUser.id });
     (useSession as jest.Mock).mockReturnValue({
       data: {
         user: traineeUser,
@@ -150,6 +166,8 @@ describe('ProfileView Tests', () => {
           name: traineeUser.name,
           email: traineeUser.email,
           image: traineeUser.image,
+          country: traineeUser.countryId,
+          title: traineeUser.titleId,
         }}
         courses={testCourses}
         createdCourses={[]}
@@ -157,6 +175,8 @@ describe('ProfileView Tests', () => {
         children={[]}
         templates={[]}
         tags={[]}
+        countries={[]}
+        titles={[]}
       />
     );
 
@@ -174,6 +194,7 @@ describe('ProfileView Tests', () => {
     expect(inProgressCourses).toBeInTheDocument();
   });
   it('should render correct dropdowns for trainer', async () => {
+    (useParams as jest.Mock).mockReturnValue({ id: trainerUser.id });
     (useSession as jest.Mock).mockReturnValue({
       data: {
         user: trainerUser,
@@ -188,6 +209,8 @@ describe('ProfileView Tests', () => {
           name: trainerUser.name,
           email: trainerUser.email,
           image: trainerUser.image,
+          country: trainerUser.countryId,
+          title: trainerUser.titleId,
         }}
         courses={testCourses}
         createdCourses={
@@ -199,6 +222,8 @@ describe('ProfileView Tests', () => {
         children={[]}
         templates={[template]}
         tags={[]}
+        countries={[]}
+        titles={[]}
       />
     );
 
@@ -237,6 +262,7 @@ describe('ProfileView Tests', () => {
     expect(templatesTrainer).toBeInTheDocument();
   });
   it('should render correct dropdowns for admin', async () => {
+    (useParams as jest.Mock).mockReturnValue({ id: adminUser.id });
     (useSession as jest.Mock).mockReturnValue({
       data: {
         user: adminUser,
@@ -251,6 +277,8 @@ describe('ProfileView Tests', () => {
           name: adminUser.name,
           email: adminUser.email,
           image: adminUser.image,
+          country: adminUser.countryId,
+          title: adminUser.titleId,
         }}
         courses={testCourses}
         createdCourses={
@@ -261,6 +289,8 @@ describe('ProfileView Tests', () => {
         children={[]}
         templates={[template]}
         tags={[]}
+        countries={[]}
+        titles={[]}
       />
     );
 
@@ -296,6 +326,7 @@ describe('ProfileView Tests', () => {
     expect(templatesTrainer).not.toBeInTheDocument();
   });
   it('should be possible to access admin dashboard as an admin', async () => {
+    (useParams as jest.Mock).mockReturnValue({ id: adminUser.id });
     (useSession as jest.Mock).mockReturnValue({
       data: {
         user: adminUser,
@@ -310,17 +341,27 @@ describe('ProfileView Tests', () => {
           name: adminUser.name,
           email: adminUser.email,
           image: adminUser.image,
+          country: adminUser.countryId,
+          title: adminUser.titleId,
         }}
         courses={[]}
         createdCourses={[]}
         users={[traineeUser, trainerUser]}
-        children={[]}
         templates={[]}
         tags={[
           { id: '1', name: 'Testing' },
           { id: '2', name: 'Git' },
         ]}
-      />
+        countries={[{ id: '1', name: 'Finland', countryCode: 'FI' }]}
+        titles={[{ id: '1', name: 'Employee' }]}
+      >
+        <UserList
+          users={[traineeUser, trainerUser]}
+          lang="en"
+          countries={[{ id: '1', name: 'Finland', countryCode: 'FI' }]}
+          titles={[{ id: '1', name: 'Employee' }]}
+        />
+      </ProfileView>
     );
 
     const adminDashboard = screen.getByText('ProfileView.label.adminDashboard');

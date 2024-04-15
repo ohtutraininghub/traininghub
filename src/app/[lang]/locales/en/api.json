@@ -51,6 +51,9 @@
     "channelCreationFailed": "Failed to create channel",
     "channelCreationSuccess": "Channel created successfully!"
   },
+  "Statistics": {
+    "invalidDateRange": "Invalid date range"
+  },
   "Tags": {
     "duplicateError": "Failed to create tag. A duplicate tag already exists.",
     "tagCreated": "The tag was succesfully created!",
@@ -62,7 +65,16 @@
     "templateNameInUse": "Template name is already in use",
     "templateUpdated": "Template successfully updated"
   },
+  "Titles": {
+    "duplicateError": "Failed to create title. A duplicate title already exists.",
+    "titleCreated": "The title was succesfully created!",
+    "titleDeleted": "The title was succesfully deleted"
+  },
   "Users": {
-    "roleChanged": "User access role succesfully changed!"
+    "countryChanged": "User country successfully changed!",
+    "countryOrTitleNotFound": "Country or title not found!",
+    "roleChanged": "User access role successfully changed!",
+    "titleChanged": "User title successfully changed!",
+    "userUpdated": "User info successfully updated!"
   }
 }

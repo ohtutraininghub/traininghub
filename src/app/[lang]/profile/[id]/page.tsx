@@ -10,6 +10,7 @@ import {
   getAllUsers,
   getStudentNamesByCourseId,
   getUserData,
+  Users,
 } from '@/lib/prisma/users';
 import {
   RequestsAndUserNames,
@@ -19,46 +20,70 @@ import {
   getTemplatesWithCreator,
   getTemplatesByUserIdWithCreator,
 } from '@/lib/prisma/templates';
-import CreateTag from '../admin/dashboard/CreateTag';
-import CreateCountry from '../admin/dashboard/CreateCountry';
-import { getTags } from '@/lib/prisma/tags';
-import { getCountries } from '@/lib/prisma/country';
+import CreateTag from '@/app/[lang]/admin/dashboard/CreateTag';
+import CreateCountry from '@/app/[lang]/admin/dashboard/CreateCountry';
+import CreateTitle from '../../admin/dashboard/CreateTitle';
+import UserList from '@/components/UserList';
+import { getTags, Tags } from '@/lib/prisma/tags';
+import { getCountries, Countries } from '@/lib/prisma/country';
 import { isAdmin, isTrainerOrAdmin } from '@/lib/auth-utils';
+import UnauthorizedError from '@/components/UnauthorizedError';
+import { getTitles, Titles } from '@/lib/prisma/title';
+import ExportStats from '@/components/ExportStats';
 
 type Props = {
   searchParams: { courseId?: string };
-  params: { lang: Locale };
+  params: {
+    id: string;
+    lang: Locale;
+  };
 };
 
-export default async function ProfilePage({ searchParams, params }: Props) {
+export default async function ProfilePageById({ searchParams, params }: Props) {
   const session = await getServerAuthSession();
   const { t } = await translator(['components', 'admin']);
-  const allUsers = await getAllUsers();
-  const userData = await getUserData(session.user.id);
-  const tags = await getTags();
-  const countries = await getCountries();
+  const ownProfile = params.id === session.user.id;
+
+  if (!isAdmin(session.user) && !ownProfile) {
+    return <UnauthorizedError lang={params.lang} />;
+  }
+
+  const userData =
+    isAdmin(session.user) && !ownProfile
+      ? await getUserData(params.id)
+      : await getUserData(session.user.id);
 
   if (!userData) {
     notFound();
   }
+
   const allCourses = userData?.createdCourses.concat(userData?.courses) ?? [];
   const enrolledCourseIds = userData.courses.map((course) => course.id) ?? [];
   const openedCourse = allCourses.find(
     (course) => course.id === searchParams.courseId
   );
 
-  const templates = isAdmin(session.user)
-    ? await getTemplatesWithCreator()
-    : await getTemplatesByUserIdWithCreator(session.user.id);
+  const templates =
+    isAdmin(session.user) && ownProfile
+      ? await getTemplatesWithCreator()
+      : await getTemplatesByUserIdWithCreator(params.id);
 
   let enrolledStudents: UserNamesAndIds | null = [];
-  if (isTrainerOrAdmin(session.user) && openedCourse) {
-    enrolledStudents = await getStudentNamesByCourseId(openedCourse.id);
-  }
-
   let requests: RequestsAndUserNames | null = [];
   if (isTrainerOrAdmin(session.user) && openedCourse) {
+    enrolledStudents = await getStudentNamesByCourseId(openedCourse.id);
     requests = await getRequestsByCourseId(openedCourse.id);
+  }
+
+  let allUsers: Users | null = [];
+  let tags: Tags | null = [];
+  let countries: Countries | null = [];
+  let titles: Titles | null = [];
+  if (isAdmin(session.user)) {
+    allUsers = await getAllUsers();
+    tags = await getTags();
+    countries = await getCountries();
+    titles = await getTitles();
   }
 
   return (
@@ -76,6 +101,8 @@ export default async function ProfilePage({ searchParams, params }: Props) {
           name: userData.name ?? '',
           email: userData.email ?? '',
           image: userData.image ?? '',
+          country: userData.country?.name ?? '',
+          title: userData.title?.name ?? '',
         }}
         courses={userData?.courses ?? []}
         createdCourses={userData?.createdCourses ?? []}
@@ -83,15 +110,28 @@ export default async function ProfilePage({ searchParams, params }: Props) {
         templates={templates}
         countries={countries}
         tags={tags}
+        titles={titles}
       >
-        <CreateCountry
-          countryHeader={t('admin:CountriesSection.header')}
-          countries={countries}
-          lang={params.lang}
-        />
+        <ExportStats lang={params.lang} />
         <CreateTag
           tagsHeader={t('admin:TagsSection.header')}
           tags={tags}
+          lang={params.lang}
+        />
+        <UserList
+          users={allUsers}
+          lang={params.lang}
+          countries={countries}
+          titles={titles}
+        />
+        <CreateTitle
+          titlesHeader={t('admin:TitlesSection.header')}
+          titles={titles}
+          lang={params.lang}
+        />
+        <CreateCountry
+          countryHeader={t('admin:CountriesSection.header')}
+          countries={countries}
           lang={params.lang}
         />
       </ProfileView>
