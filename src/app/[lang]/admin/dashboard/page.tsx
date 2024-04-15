@@ -9,6 +9,7 @@ import { getAllUsers } from '@/lib/prisma/users';
 import { getTags } from '@/lib/prisma/tags';
 import { getCountries } from '@/lib/prisma/country';
 import { getTitles } from '@/lib/prisma/title';
+import ExportStats from '@/components/ExportStats';
 
 export const dynamic = 'force-dynamic';
 
@@ -26,16 +27,7 @@ export default async function AdminDashboardPage({ params }: Props) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
       <Typography variant="h1">{t('DashboardTitle')}</Typography>
-      <CreateTitle
-        titlesHeader={t('TitlesSection.header')}
-        titles={titles}
-        lang={params.lang}
-      />
-      <CreateCountry
-        countryHeader={t('CountriesSection.header')}
-        countries={countries}
-        lang={params.lang}
-      />
+      <ExportStats lang={params.lang} />
       <CreateTag
         tagsHeader={t('TagsSection.header')}
         tags={tags}
@@ -46,6 +38,16 @@ export default async function AdminDashboardPage({ params }: Props) {
         lang={params.lang}
         countries={countries}
         titles={titles}
+      />
+      <CreateTitle
+        titlesHeader={t('TitlesSection.header')}
+        titles={titles}
+        lang={params.lang}
+      />
+      <CreateCountry
+        countryHeader={t('CountriesSection.header')}
+        countries={countries}
+        lang={params.lang}
       />
     </div>
   );
