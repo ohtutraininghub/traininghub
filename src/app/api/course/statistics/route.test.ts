@@ -72,14 +72,14 @@ const startsBeforeEndsBefore = {
   name: 'JavaScript',
   description: 'Ruby fundamentals',
   startDate: '2100-09-05T00:00:00Z',
-  endDate: '2100-09-25T00:00:00Z',
+  endDate: '2100-09-09T00:00:00Z',
   maxStudents: 20,
 };
 const startsAfterEndsAfter = {
   createdById: adminUser.id,
   name: 'TypeScript',
   description: 'Ruby fundamentals',
-  startDate: '2100-09-05T00:00:00Z',
+  startDate: '2100-09-21T00:00:00Z',
   endDate: '2100-09-25T00:00:00Z',
   maxStudents: 20,
 };
@@ -95,6 +95,8 @@ beforeEach(async () => {
       startsWithinEndsAfter,
       startsWithinEndsWithin,
       startsBeforeEndsAfter,
+      startsBeforeEndsBefore,
+      startsAfterEndsAfter,
     ],
   });
 });
