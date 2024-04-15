@@ -54,7 +54,7 @@ export async function POST(request: NextRequest) {
       data: { googleFormsId: formResponse.data.formId },
     });
 
-    const formUrl = formResponse.data.formUrl;
+    const formUrl = formResponse.data.formUrl ?? '';
     const students = await getStudentEmailsByCourseId(course.id);
     const studentEmails = students.map((student) => student.email);
 
