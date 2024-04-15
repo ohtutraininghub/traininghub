@@ -20,9 +20,9 @@ export async function GET(request: NextRequest) {
       request.nextUrl.searchParams.get('fromDate') || ''
     );
     const toDate = new Date(request.nextUrl.searchParams.get('toDate') || '');
-    if (!fromDate || !toDate) {
+    if (!fromDate.valueOf() || !toDate.valueOf()) {
       return errorResponse({
-        message: t('Common.unprocessableContent'),
+        message: t('Statistics.invalidDateRange'),
         statusCode: StatusCodeType.UNPROCESSABLE_CONTENT,
       });
     }

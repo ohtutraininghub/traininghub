@@ -35,6 +35,24 @@ const mockGetRequest = () => {
   }).req;
 };
 
+const mockGetRequestWithoutStartDate = () => {
+  return createMocks<NextRequest>({
+    method: 'GET',
+    nextUrl: {
+      searchParams: new URLSearchParams('toDate=2100-09-20T23:59:59Z'),
+    },
+  }).req;
+};
+
+const mockGetRequestWithoutEndDate = () => {
+  return createMocks<NextRequest>({
+    method: 'GET',
+    nextUrl: {
+      searchParams: new URLSearchParams('fromDate=2100-09-20T23:59:59Z'),
+    },
+  }).req;
+};
+
 const startsBeforeEndsWithin = {
   createdById: adminUser.id,
   name: 'Python',
@@ -202,6 +220,20 @@ describe('Course Statistics API tests', () => {
         ])
       );
       expect(response.status).toBe(200);
+    });
+    it('should return error message when from date is missing from the search params', async () => {
+      authenticateAsAdmin();
+      const response = await GET(mockGetRequestWithoutStartDate());
+      const data = await response.json();
+      expect(response.status).toBe(422);
+      expect(data.message).toContain('Invalid date range');
+    });
+    it('should return error message when to date is missing from the search params', async () => {
+      authenticateAsAdmin();
+      const response = await GET(mockGetRequestWithoutEndDate());
+      const data = await response.json();
+      expect(response.status).toBe(422);
+      expect(data.message).toContain('Invalid date range');
     });
   });
 });
