@@ -28,8 +28,26 @@ describe('ExportStats', () => {
     renderWithTheme(<ExportForm lang="en" />);
   });
 
-  it('should render ExportStats header', async () => {
+  it('should render form label for from date', async () => {
     renderWithTheme(<ExportForm lang="en" />);
-    expect(screen.getByText('ExportStats.header')).toBeInTheDocument();
+    expect(screen.getByText('ExportStats.fromDate')).toBeInTheDocument();
+  });
+  it('should render form input field for from date', async () => {
+    renderWithTheme(<ExportForm lang="en" />);
+    expect(screen.getByTestId('exportFormFromDate')).toBeInTheDocument();
+  });
+
+  it('should render form label for to date', async () => {
+    renderWithTheme(<ExportForm lang="en" />);
+    expect(screen.getByText('ExportStats.toDate')).toBeInTheDocument();
+  });
+  it('should render form input field for to date', async () => {
+    renderWithTheme(<ExportForm lang="en" />);
+    expect(screen.getByTestId('exportFormToDate')).toBeInTheDocument();
+  });
+
+  it('should render export button', async () => {
+    renderWithTheme(<ExportForm lang="en" />);
+    expect(screen.getByText('ExportStats.button')).toBeInTheDocument();
   });
 });

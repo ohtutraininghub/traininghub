@@ -26,15 +26,11 @@ jest.mock('../../lib/i18n/client', () => ({
 
 describe('ExportForm', () => {
   it('should render ExportForm', async () => {
-    renderWithTheme(<ExportForm lang="en" />);
+    renderWithTheme(<ExportStats lang="en" />);
   });
 
-  it('should render form label for from date', async () => {
-    renderWithTheme(<ExportForm lang="en" />);
-    expect(screen.getByText('ExportStats.fromDate')).toBeInTheDocument();
-  });
-  it('should render form input field for from date', async () => {
-    renderWithTheme(<ExportForm lang="en" />);
-    expect(screen.getByTestId('exportFormFromDate')).toBeInTheDocument();
+  it('should render ExportStats header', async () => {
+    renderWithTheme(<ExportStats lang="en" />);
+    expect(screen.getByText('ExportStats.header')).toBeInTheDocument();
   });
 });
