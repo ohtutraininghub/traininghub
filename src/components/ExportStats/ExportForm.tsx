@@ -40,7 +40,7 @@ export default function ExportForm({ lang }: Props) {
         >
           {t('ExportStats.fromDate')}
           <StyledTooltip
-            data-testid="tooltipStartDate"
+            data-testid="tooltipFromDate"
             lang={lang}
             title={t('ExportStats.tooltipFrom')}
           />
@@ -56,13 +56,13 @@ export default function ExportForm({ lang }: Props) {
               marginTop: '0px',
             },
           }}
-          {...register('startDate')}
-          id="exportFormStartDate"
+          {...register('fromDate')}
+          id="exportFormFromDate"
           type="date"
-          inputProps={{ 'data-testid': 'exportFormStartDate' }}
+          inputProps={{ 'data-testid': 'exportFormFromDate' }}
           defaultValue={`${new Date().getFullYear()}-01-01`}
         />
-        <FormFieldError error={errors.startDate} />
+        <FormFieldError error={errors.fromDate} />
       </FormControl>
       <FormControl>
         <FormLabel
@@ -74,14 +74,14 @@ export default function ExportForm({ lang }: Props) {
         >
           {t('ExportStats.toDate')}
           <StyledTooltip
-            data-testid="tooltipEndDate"
+            data-testid="tooltipToDate"
             lang={lang}
             title={t('ExportStats.tooltipTo')}
           />
         </FormLabel>
         <Input
-          {...register('endDate')}
-          id="exportFormEndDate"
+          {...register('toDate')}
+          id="exportFormToDate"
           type="date"
           sx={{
             width: '100%',
@@ -93,10 +93,10 @@ export default function ExportForm({ lang }: Props) {
               marginTop: '0px',
             },
           }}
-          inputProps={{ 'data-testid': 'exportFormEndDate' }}
+          inputProps={{ 'data-testid': 'exportFormToDate' }}
           defaultValue={new Date().toISOString().split('T')[0]}
         />
-        <FormFieldError error={errors.endDate} />
+        <FormFieldError error={errors.toDate} />
       </FormControl>
       <Button
         type="submit"

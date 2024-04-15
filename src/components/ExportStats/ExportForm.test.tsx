@@ -1,9 +1,8 @@
 import React from 'react';
 import '@testing-library/jest-dom';
-import ExportStats from '.';
+import ExportForm from '.';
 import { screen } from '@testing-library/react';
 import { renderWithTheme } from '@/lib/test-utils';
-import ExportForm from './ExportForm';
 
 jest.mock('next/navigation', () => ({
   useRouter: () => ({
@@ -24,17 +23,13 @@ jest.mock('../../lib/i18n/client', () => ({
   },
 }));
 
-describe('ExportForm', () => {
-  it('should render ExportForm', async () => {
+describe('ExportStats', () => {
+  it('should render ExportStats', async () => {
     renderWithTheme(<ExportForm lang="en" />);
   });
 
-  it('should render form label for from date', async () => {
+  it('should render ExportStats header', async () => {
     renderWithTheme(<ExportForm lang="en" />);
-    expect(screen.getByText('ExportStats.fromDate')).toBeInTheDocument();
-  });
-  it('should render form input field for from date', async () => {
-    renderWithTheme(<ExportForm lang="en" />);
-    expect(screen.getByTestId('exportFormFromDate')).toBeInTheDocument();
+    expect(screen.getByText('ExportStats.header')).toBeInTheDocument();
   });
 });
