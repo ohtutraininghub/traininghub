@@ -53,7 +53,7 @@ export const sendFeedbackRequestedMessage = async (
   course: Course,
   feedbackFormUrl: string
 ) => {
-  // if (!isProduction()) return;
+  if (!isProduction()) return;
   const blocks = createBlocksCourseFeedback(course, feedbackFormUrl);
   await sendMessageToUser(userEmail, blocks);
 };
