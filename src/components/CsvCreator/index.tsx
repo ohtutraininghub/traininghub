@@ -6,12 +6,13 @@ type TrainingSession = {
     country: string;
     title: string;
   }>;
-  date: string;
+  startDate: Date;
+  endDate: Date;
 };
 
 export function DownloadTrainingSessionsAsCSV(sessions: TrainingSession[]) {
   const csvHeader =
-    'Training Name,Trainer Name,Participant Name,Country,Title,Date\n';
+    'Training Name,Trainer Name,Participant Name,Country,Title,Start Date, End Date\n';
 
   const csvContent = sessions
     .flatMap((session) => {
@@ -22,7 +23,8 @@ export function DownloadTrainingSessionsAsCSV(sessions: TrainingSession[]) {
           participant.name,
           participant.country,
           participant.title,
-          session.date,
+          session.startDate,
+          session.endDate,
         ].join(',');
       });
     })
