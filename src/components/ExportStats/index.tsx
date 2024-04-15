@@ -1,14 +1,13 @@
 'use client';
-
 import { Typography } from '@mui/material';
 import ExportForm from './ExportForm';
 import { DictProps } from '@/lib/i18n';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@/lib/i18n/client';
 
 interface Props extends DictProps {}
 
 export default function ExportStats({ lang }: Props) {
-  const { t } = useTranslation('admin');
+  const { t } = useTranslation(lang, 'admin');
   return (
     <div
       style={{

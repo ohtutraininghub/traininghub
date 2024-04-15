@@ -1,5 +1,4 @@
 'use client';
-
 import { Box, FormControl, FormLabel, Input, Button } from '@mui/material';
 import StyledTooltip from '../StyledTooltip';
 import { useForm } from 'react-hook-form';
@@ -10,12 +9,12 @@ import {
 } from '@/lib/zod/statistics';
 import { zodResolver } from '@hookform/resolvers/zod';
 import FormFieldError from '../FormFieldError';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@/lib/i18n/client';
 
 interface Props extends DictProps {}
 
 export default function ExportForm({ lang }: Props) {
-  const { t } = useTranslation('admin');
+  const { t } = useTranslation(lang, 'admin');
   const { register } = useForm();
   const {
     formState: { errors, isSubmitting },
