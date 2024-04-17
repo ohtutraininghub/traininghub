@@ -6,11 +6,15 @@ type CoursesForCsv = {
     country?: { name: string } | null;
     title?: { name: string } | null;
   }>;
-  startDate: Date;
-  endDate: Date;
+  startDate: string;
+  endDate: string;
 };
 
-export function DownloadTrainingSessionsAsCSV(courses: CoursesForCsv[]) {
+export function DownloadTrainingSessionsAsCSV(
+  fromDate: Date,
+  toDate: Date,
+  courses: CoursesForCsv[]
+) {
   const csvHeader =
     'Training Name,Trainer Name,Participant Name,Country,Title,Start Date, End Date\n';
 
@@ -23,8 +27,8 @@ export function DownloadTrainingSessionsAsCSV(courses: CoursesForCsv[]) {
           student.name,
           student.country?.name ?? '',
           student.title?.name ?? '',
-          course.startDate.toISOString().slice(0, 10),
-          course.endDate.toISOString().slice(0, 10),
+          course.startDate.slice(0, 10),
+          course.endDate.slice(0, 10),
         ].join(',');
       });
     })
@@ -36,7 +40,13 @@ export function DownloadTrainingSessionsAsCSV(courses: CoursesForCsv[]) {
   const url = URL.createObjectURL(blob);
   const link = document.createElement('a');
   link.setAttribute('href', url);
-  link.setAttribute('download', 'training_sessions.csv');
+  const file_name =
+    `training-data_${ 
+    fromDate.toISOString().slice(0, 10) 
+    }_${ 
+    toDate.toISOString().slice(0, 10) 
+    }.csv`;
+  link.setAttribute('download', file_name);
   document.body.appendChild(link); // Required for Firefox
   link.click();
   document.body.removeChild(link); // Cleanup
