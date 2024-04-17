@@ -69,8 +69,8 @@ export default function ProfileCourseList({
   const handleCreateNewFeedback = async (id: string) => {
     const responseJson = await post('/api/forms/create', { courseId: id });
     notify(responseJson);
-    router.push(`/${lang}/profile/${session?.user.id}`);
     router.refresh();
+    router.push(`/${lang}/profile/${session?.user.id}`);
   };
   return (
     <Box
@@ -176,34 +176,42 @@ export default function ProfileCourseList({
                               data-testid={`courseTimer.${course.id}`}
                             />
                           </NoSsr>
-                          {ownProfile && (
-                            <CreateSlackButton
-                              lang={lang}
-                              onclick={(
-                                event: React.MouseEvent<HTMLButtonElement>
-                              ) => {
-                                {
-                                  event.preventDefault(); // prevents the CourseModal from opening
-                                  handleCreateNewChannel(course.id);
-                                }
-                              }}
-                              buttonDisabled={Boolean(course.slackChannelId)}
-                            />
-                          )}
-                          {ownProfile && (
-                            <CreateFeedbackButton
-                              lang={lang}
-                              onclick={(
-                                event: React.MouseEvent<HTMLButtonElement>
-                              ) => {
-                                {
-                                  event.preventDefault(); // prevents the CourseModal from opening
-                                  handleCreateNewFeedback(course.id);
-                                }
-                              }}
-                              buttonDisabled={Boolean(course.googleFormsId)}
-                            />
-                          )}
+                          <Box
+                            sx={{
+                              display: 'flex',
+                              gap: 1,
+                              flexDirection: { xs: 'column', sm: 'row' },
+                            }}
+                          >
+                            {ownProfile && (
+                              <CreateSlackButton
+                                lang={lang}
+                                onclick={(
+                                  event: React.MouseEvent<HTMLButtonElement>
+                                ) => {
+                                  {
+                                    event.preventDefault(); // prevents the CourseModal from opening
+                                    handleCreateNewChannel(course.id);
+                                  }
+                                }}
+                                buttonDisabled={Boolean(course.slackChannelId)}
+                              />
+                            )}
+                            {ownProfile && (
+                              <CreateFeedbackButton
+                                lang={lang}
+                                onclick={(
+                                  event: React.MouseEvent<HTMLButtonElement>
+                                ) => {
+                                  {
+                                    event.preventDefault(); // prevents the CourseModal from opening
+                                    handleCreateNewFeedback(course.id);
+                                  }
+                                }}
+                                buttonDisabled={Boolean(course.googleFormsId)}
+                              />
+                            )}
+                          </Box>
                         </Box>
                       )}
                     </ListItem>
