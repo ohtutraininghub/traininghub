@@ -169,7 +169,7 @@ export default function ProfileCourseList({
                               data-testid={`courseTimer.${course.id}`}
                             />
                           </NoSsr>
-                          {ownProfile && (
+                          {ownProfile && course.createdById === userId && (
                             <CreateSlackButton
                               lang={lang}
                               onclick={(
