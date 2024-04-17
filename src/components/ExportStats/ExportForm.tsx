@@ -13,6 +13,7 @@ import { useTranslation } from '@/lib/i18n/client';
 import { useMessage } from '../Providers/MessageProvider';
 import { DownloadTrainingSessionsAsCSV } from '@/lib/csv-utils';
 import { MessageType } from '@/lib/response/responseUtil';
+import { get } from '@/lib/response/fetchUtil';
 
 interface Props extends DictProps {}
 
@@ -38,7 +39,7 @@ export default function ExportForm({ lang }: Props) {
     );
 
     const url = `/api/course/statistics?${params.toString()}`;
-    const res = await fetch(url, { method: 'GET' });
+    const res = await get(url);
     if (!res.ok) {
       notify(await res.json());
       return;
