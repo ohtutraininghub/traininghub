@@ -40,12 +40,9 @@ export function DownloadTrainingSessionsAsCSV(
   const url = URL.createObjectURL(blob);
   const link = document.createElement('a');
   link.setAttribute('href', url);
-  const file_name =
-    `training-data_${ 
-    fromDate.toISOString().slice(0, 10) 
-    }_${ 
-    toDate.toISOString().slice(0, 10) 
-    }.csv`;
+  const file_name = `training-data_${fromDate
+    .toISOString()
+    .slice(0, 10)}_${toDate.toISOString().slice(0, 10)}.csv`;
   link.setAttribute('download', file_name);
   document.body.appendChild(link); // Required for Firefox
   link.click();
