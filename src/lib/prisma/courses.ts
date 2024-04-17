@@ -35,8 +35,6 @@ export type CourseWithInfo = prismaClient.CourseGetPayload<{
   };
 }>;
 
-export type GetCoursesType = prismaClient.PromiseReturnType<typeof getCourses>;
-
 export const getCourseById = async (courseId: Course['id']) => {
   return await prisma.course.findFirst({
     include: {
@@ -87,7 +85,7 @@ export const getAllCourses = async () => {
 };
 
 export const getCoursesForCsv = async (fromDate: Date, toDate: Date) => {
-  return await prisma.course.findMany({
+  const courses = await prisma.course.findMany({
     include: {
       createdBy: {
         select: {
@@ -122,4 +120,18 @@ export const getCoursesForCsv = async (fromDate: Date, toDate: Date) => {
       ],
     },
   });
+
+  const formattedCourses = courses.map((course) => ({
+    name: course.name,
+    createdBy: { name: course.createdBy ? course.createdBy.name : null },
+    students: course.students.map((student) => ({
+      name: student.name,
+      country: { name: student.country ? student.country.name : null },
+      title: { name: student.title ? student.title.name : null },
+    })),
+    startDate: course.startDate,
+    endDate: course.endDate,
+  }));
+
+  return formattedCourses;
 };
