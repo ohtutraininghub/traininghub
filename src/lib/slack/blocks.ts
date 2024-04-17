@@ -329,6 +329,47 @@ export const createBlocksUpdatedTraining = (
   return blocks;
 };
 
+export const createBlocksCourseFeedback = (course: Course, formUrl: string) => {
+  const blocks = [
+    {
+      type: 'header',
+      text: {
+        type: 'plain_text',
+        text: 'Your feedback is valued!',
+        emoji: true,
+      },
+    },
+    {
+      type: 'section',
+      text: {
+        type: 'mrkdwn',
+        text: `*${course.name}* organizer would like to hear your thoughts on the course`,
+      },
+    },
+    {
+      type: 'section',
+      text: {
+        type: 'mrkdwn',
+        text: 'Leave your feedback through the link below :point_down:',
+      },
+    },
+    {
+      type: 'context',
+      elements: [
+        {
+          type: 'mrkdwn',
+          text: ':link:',
+        },
+        {
+          type: 'mrkdwn',
+          text: `<${formUrl}|Feedback Form>`,
+        },
+      ],
+    },
+  ];
+  return blocks;
+};
+
 const formatDateForSlack = (date: Date) => {
   const dateUnix = dateToUnixTimestamp(date);
   return `<!date^${dateUnix}^{date_short} {time}|${date.toLocaleDateString()}>`;
