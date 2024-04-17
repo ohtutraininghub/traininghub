@@ -1,5 +1,5 @@
 import { prisma } from '.';
-import { Course, Prisma, Prisma as prismaClient } from '@prisma/client';
+import { Course, Prisma as prismaClient } from '@prisma/client';
 
 export type CourseWithTags = prismaClient.CourseGetPayload<{
   include: {
@@ -34,12 +34,6 @@ export type CourseWithInfo = prismaClient.CourseGetPayload<{
     };
   };
 }>;
-
-export type GetCoursesType = prismaClient.PromiseReturnType<typeof getCourses>;
-
-export type GetCoursesForCsvType = Prisma.PromiseReturnType<
-  typeof getCoursesForCsv
->;
 
 export const getCourseById = async (courseId: Course['id']) => {
   return await prisma.course.findFirst({
