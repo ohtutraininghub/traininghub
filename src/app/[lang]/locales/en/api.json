@@ -48,6 +48,9 @@
     "channelCreationFailed": "Failed to create channel",
     "channelCreationSuccess": "Channel created successfully!"
   },
+  "Statistics": {
+    "invalidDateRange": "Invalid date range"
+  },
   "Tags": {
     "duplicateError": "Failed to create tag. A duplicate tag already exists.",
     "tagCreated": "The tag was succesfully created!",

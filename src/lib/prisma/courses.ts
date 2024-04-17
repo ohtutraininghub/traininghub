@@ -108,3 +108,41 @@ export const getAllCourses = async () => {
     orderBy: [{ startDate: 'asc' }, { name: 'asc' }],
   });
 };
+
+export const getCoursesForCsv = async (fromDate: Date, toDate: Date) => {
+  return await prisma.course.findMany({
+    include: {
+      createdBy: {
+        select: {
+          name: true,
+        },
+      },
+      students: {
+        select: {
+          name: true,
+          country: {
+            select: {
+              name: true,
+            },
+          },
+          title: {
+            select: {
+              name: true,
+            },
+          },
+        },
+        orderBy: [{ name: 'asc' }],
+      },
+    },
+    orderBy: [{ startDate: 'asc' }, { name: 'asc' }],
+    where: {
+      OR: [
+        { startDate: { gte: fromDate, lte: toDate } },
+        { endDate: { gte: fromDate, lte: toDate } },
+        {
+          AND: [{ startDate: { lte: fromDate } }, { endDate: { gte: toDate } }],
+        },
+      ],
+    },
+  });
+};

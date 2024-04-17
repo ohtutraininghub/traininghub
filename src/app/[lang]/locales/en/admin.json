@@ -35,6 +35,14 @@
       "titleId": "Title"
     }
   },
+  "ExportStats": {
+    "button": "Export CSV",
+    "fromDate": "From:",
+    "header": "Export course statistics",
+    "toDate": "To:",
+    "tooltipFrom": "Choose start date for statistics",
+    "tooltipTo": "Choose end date for statistics"
+  },
   "TagForm": {
     "button": {
       "submit": "Submit"

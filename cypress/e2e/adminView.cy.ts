@@ -34,7 +34,7 @@ describe('Admin view', () => {
   });
 
   it('user list should be accessible', () => {
-    cy.get('h2').eq(3).contains('Users');
+    cy.get('h2').eq(2).contains('Users');
   });
   it('should be possible to visit user profile', () => {
     cy.get('a').contains('Alice Smith').click();

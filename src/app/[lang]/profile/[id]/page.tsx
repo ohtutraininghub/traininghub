@@ -23,11 +23,13 @@ import {
 import CreateTag from '@/app/[lang]/admin/dashboard/CreateTag';
 import CreateCountry from '@/app/[lang]/admin/dashboard/CreateCountry';
 import CreateTitle from '../../admin/dashboard/CreateTitle';
+import UserList from '@/components/UserList';
 import { getTags, Tags } from '@/lib/prisma/tags';
 import { getCountries, Countries } from '@/lib/prisma/country';
 import { isAdmin, isTrainerOrAdmin } from '@/lib/auth-utils';
 import UnauthorizedError from '@/components/UnauthorizedError';
 import { getTitles, Titles } from '@/lib/prisma/title';
+import ExportStats from '@/components/ExportStats';
 
 type Props = {
   searchParams: { courseId?: string };
@@ -110,6 +112,18 @@ export default async function ProfilePageById({ searchParams, params }: Props) {
         tags={tags}
         titles={titles}
       >
+        <ExportStats lang={params.lang} />
+        <CreateTag
+          tagsHeader={t('admin:TagsSection.header')}
+          tags={tags}
+          lang={params.lang}
+        />
+        <UserList
+          users={allUsers}
+          lang={params.lang}
+          countries={countries}
+          titles={titles}
+        />
         <CreateTitle
           titlesHeader={t('admin:TitlesSection.header')}
           titles={titles}
@@ -118,11 +132,6 @@ export default async function ProfilePageById({ searchParams, params }: Props) {
         <CreateCountry
           countryHeader={t('admin:CountriesSection.header')}
           countries={countries}
-          lang={params.lang}
-        />
-        <CreateTag
-          tagsHeader={t('admin:TagsSection.header')}
-          tags={tags}
           lang={params.lang}
         />
       </ProfileView>
