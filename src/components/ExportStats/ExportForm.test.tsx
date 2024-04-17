@@ -1,8 +1,10 @@
 import React from 'react';
 import '@testing-library/jest-dom';
 import ExportForm from '.';
-import { screen } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import { renderWithTheme } from '@/lib/test-utils';
+import { act } from 'react-dom/test-utils';
+import userEvent from '@testing-library/user-event';
 
 jest.mock('next/navigation', () => ({
   useRouter: () => ({
@@ -21,6 +23,32 @@ jest.mock('../../lib/i18n/client', () => ({
       },
     };
   },
+}));
+
+jest.mock('../Providers/MessageProvider', () => ({
+  useMessage() {
+    return {
+      notify: jest.fn(),
+    };
+  },
+}));
+
+jest.mock('../../lib/response/responseUtil', () => ({
+  MessageType: {
+    SUCCESS: 'success',
+    ERROR: 'error',
+  },
+}));
+
+const mockFetch = jest.fn((...args: any[]) =>
+  Promise.resolve({
+    json: () => Promise.resolve({ args: args }),
+    ok: true,
+  })
+);
+
+jest.mock('../../lib/response/fetchUtil', () => ({
+  get: (...args: any[]) => mockFetch(...args),
 }));
 
 describe('ExportStats', () => {
@@ -49,5 +77,14 @@ describe('ExportStats', () => {
   it('should render export button', async () => {
     renderWithTheme(<ExportForm lang="en" />);
     expect(screen.getByText('ExportStats.button')).toBeInTheDocument();
+  });
+
+  it('should call fetch when button is pressed', async () => {
+    renderWithTheme(<ExportForm lang="en" />);
+    const button = screen.getByText('ExportStats.button');
+    await userEvent.click(button);
+    await waitFor(() => {
+      expect(mockFetch).toHaveBeenCalled();
+    });
   });
 });

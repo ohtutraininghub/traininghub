@@ -24,6 +24,32 @@ jest.mock('../../lib/i18n/client', () => ({
   },
 }));
 
+jest.mock('../Providers/MessageProvider', () => ({
+  useMessage() {
+    return {
+      notify: jest.fn(),
+    };
+  },
+}));
+
+jest.mock('../../lib/response/responseUtil', () => ({
+  MessageType: {
+    SUCCESS: 'success',
+    ERROR: 'error',
+  },
+}));
+
+const mockFetch = jest.fn((...args: any[]) =>
+  Promise.resolve({
+    json: () => Promise.resolve({ args: args }),
+    ok: true,
+  })
+);
+
+jest.mock('../../lib/response/fetchUtil', () => ({
+  get: (...args: any[]) => mockFetch(...args),
+}));
+
 describe('ExportForm', () => {
   it('should render ExportForm', async () => {
     renderWithTheme(<ExportStats lang="en" />);
