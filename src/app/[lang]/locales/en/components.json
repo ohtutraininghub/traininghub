@@ -149,13 +149,13 @@
   "ProfileView": {
     "header": {
       "coursesInprogress": "Courses in progress",
+      "createdCourses": "Created courses",
       "endedCourses": "Ended courses",
       "endedCreatedCourses": "Ended created courses",
       "templates": "Course templates",
       "templatesAdmin": "All course templates",
       "templatesTrainer": "My course templates",
-      "upcomingCourses": "Upcoming courses",
-      "upcomingCreatedCourses": "Upcoming created courses"
+      "upcomingCourses": "Upcoming courses"
     },
     "label": {
       "Courses": "Courses",

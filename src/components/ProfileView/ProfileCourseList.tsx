@@ -183,7 +183,7 @@ export default function ProfileCourseList({
                               flexDirection: { xs: 'column', sm: 'row' },
                             }}
                           >
-                            {ownProfile && (
+                            {ownProfile && course.createdById === userId && (
                               <CreateSlackButton
                                 lang={lang}
                                 onclick={(
@@ -197,7 +197,7 @@ export default function ProfileCourseList({
                                 buttonDisabled={Boolean(course.slackChannelId)}
                               />
                             )}
-                            {ownProfile && (
+                            {ownProfile && course.createdById === userId && (
                               <CreateFeedbackButton
                                 lang={lang}
                                 onclick={(
