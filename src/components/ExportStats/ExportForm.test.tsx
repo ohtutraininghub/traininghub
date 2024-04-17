@@ -3,7 +3,6 @@ import '@testing-library/jest-dom';
 import ExportForm from '.';
 import { screen, waitFor } from '@testing-library/react';
 import { renderWithTheme } from '@/lib/test-utils';
-import { act } from 'react-dom/test-utils';
 import userEvent from '@testing-library/user-event';
 
 jest.mock('next/navigation', () => ({
