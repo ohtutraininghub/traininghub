@@ -20,8 +20,8 @@ import {
   getTemplatesWithCreator,
   getTemplatesByUserIdWithCreator,
 } from '@/lib/prisma/templates';
-import CreateTag from '@/app/[lang]/admin/dashboard/CreateTag';
-import CreateCountry from '@/app/[lang]/admin/dashboard/CreateCountry';
+import CreateTag from '../../../../components/CreateTag/CreateTag';
+import CreateCountry from '../../../../components/CreateCountry/CreateCountry';
 import CreateTitle from '../../../../components/CreateTitle/CreateTitle';
 import UserList from '@/components/UserList';
 import { getTags, Tags } from '@/lib/prisma/tags';

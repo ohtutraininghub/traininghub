@@ -1,5 +1,5 @@
-import CreateTag from './CreateTag';
-import CreateCountry from './CreateCountry';
+import CreateTag from '../../../../components/CreateTag/CreateTag';
+import CreateCountry from '../../../../components/CreateCountry/CreateCountry';
 import CreateTitle from '../../../../components/CreateTitle/CreateTitle';
 import { Locale } from '@/lib/i18n/i18n-config';
 import { translator } from '@/lib/i18n';
