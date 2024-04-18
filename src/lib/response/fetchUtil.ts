@@ -5,9 +5,7 @@ import {
 } from './responseUtil';
 
 export const get = async (url: RequestInfo | URL) => {
-  const response = await fetch(url, { method: 'GET' });
-  const responseAsJson = await responseToJson(response);
-  return responseAsJson;
+  return await fetch(url, { method: 'GET' });
 };
 
 export const post = async (url: RequestInfo | URL, data?: unknown) => {

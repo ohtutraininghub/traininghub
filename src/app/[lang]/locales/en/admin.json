@@ -37,6 +37,8 @@
   },
   "ExportStats": {
     "button": "Export CSV",
+    "downloadFailed": "Could not start download",
+    "downloadStarted": "Download started",
     "fromDate": "From:",
     "header": "Export course statistics",
     "toDate": "To:",

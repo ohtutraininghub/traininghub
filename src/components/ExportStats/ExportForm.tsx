@@ -10,19 +10,62 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod';
 import FormFieldError from '../FormFieldError';
 import { useTranslation } from '@/lib/i18n/client';
+import { useMessage } from '../Providers/MessageProvider';
+import { DownloadTrainingSessionsAsCSV } from '@/lib/csv-utils';
+import { MessageType } from '@/lib/response/responseUtil';
+import { get } from '@/lib/response/fetchUtil';
 
 interface Props extends DictProps {}
 
 export default function ExportForm({ lang }: Props) {
   const { t } = useTranslation(lang, 'admin');
-  const { register } = useForm();
+  const { notify } = useMessage();
   const {
     formState: { errors, isSubmitting },
+    handleSubmit,
+    register,
   } = useForm<ExportStatsFormType>({
     resolver: zodResolver(exportStatsFormSchema),
   });
+
+  const submitForm = async (data: ExportStatsFormType) => {
+    const params = new URLSearchParams();
+    params.set('fromDate', data.fromDate.valueOf().toString());
+    // Adding the number of milliseconds in a day to the toDate value in order to
+    // include the full duration of the day
+    params.set(
+      'toDate',
+      (data.toDate.valueOf() + 60 * 60 * 24 * 1000 - 1).toString()
+    );
+
+    const url = `/api/course/statistics?${params.toString()}`;
+    const res = await get(url);
+    if (!res.ok) {
+      notify(await res.json());
+      return;
+    }
+    const responseJson = await res.json();
+
+    try {
+      DownloadTrainingSessionsAsCSV(
+        data.fromDate,
+        data.toDate,
+        responseJson.data
+      );
+      notify({
+        message: t('ExportStats.downloadStarted'),
+        messageType: MessageType.SUCCESS,
+      });
+    } catch (error) {
+      notify({
+        message: t('ExportStats.downloadFailed'),
+        messageType: MessageType.ERROR,
+      });
+    }
+  };
+
   return (
-    <form onSubmit={() => {}}>
+    <form onSubmit={handleSubmit(submitForm)}>
       <Box
         sx={{
           display: 'flex',
