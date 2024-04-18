@@ -105,7 +105,7 @@
   "CreateFeedbackButton": {
     "button": "Feedback",
     "tooltip": {
-      "active": "Creates a Google Form for course feedback",
+      "active": "Creates a Google Form for course feedback and sends it in Slack",
       "disabled": "The feedback form for this course exists already"
     }
   },
