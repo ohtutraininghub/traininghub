@@ -32,7 +32,7 @@
   },
   "GoogleForms": {
     "formAlreadyExists": "Google form already exists",
-    "formCreated": "Google form successfully created and sended in Slack to participants!",
+    "formCreated": "Google form successfully created and sended to participants in Slack!",
     "formCreationFailed": "Failed to create Google form",
     "formDeleted": "Google form successfully deleted"
   },
