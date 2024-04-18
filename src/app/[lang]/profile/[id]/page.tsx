@@ -20,9 +20,9 @@ import {
   getTemplatesWithCreator,
   getTemplatesByUserIdWithCreator,
 } from '@/lib/prisma/templates';
-import CreateTag from '../../../../components/CreateTag/CreateTag';
-import CreateCountry from '../../../../components/CreateCountry/CreateCountry';
-import CreateTitle from '../../../../components/CreateTitle/CreateTitle';
+import CreateTag from '@/components/CreateTag';
+import CreateCountry from '@/components/CreateCountry';
+import CreateTitle from '@/components/CreateTitle';
 import UserList from '@/components/UserList';
 import { getTags, Tags } from '@/lib/prisma/tags';
 import { getCountries, Countries } from '@/lib/prisma/country';

@@ -1,6 +1,6 @@
-import CreateTag from '../../../../components/CreateTag/CreateTag';
-import CreateCountry from '../../../../components/CreateCountry/CreateCountry';
-import CreateTitle from '../../../../components/CreateTitle/CreateTitle';
+import CreateTag from '@/components/CreateTag';
+import CreateCountry from '@/components/CreateCountry';
+import CreateTitle from '@/components/CreateTitle';
 import { Locale } from '@/lib/i18n/i18n-config';
 import { translator } from '@/lib/i18n';
 import UserList from '@/components/UserList';
