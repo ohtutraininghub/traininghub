@@ -136,6 +136,7 @@ export default function CourseForm({
       createdById: _createdById,
       id: _id,
       slackChannelId: _slackChannelId,
+      googleFormsId: _googleFormsId,
       ...dataWithoutExtras
     } = data;
     const responseJson = await post('/api/template', dataWithoutExtras);

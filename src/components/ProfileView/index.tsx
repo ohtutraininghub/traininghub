@@ -146,7 +146,7 @@ export default function ProfileView({
         <>
           <ProfileCourseList
             lang={lang}
-            headerText={t('ProfileView.header.upcomingCreatedCourses')}
+            headerText={t('ProfileView.header.createdCourses')}
             courses={createdCourses.filter(
               (createdCourse: Course) =>
                 createdCourse.startDate >= currentDate ||
