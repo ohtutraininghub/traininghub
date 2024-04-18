@@ -106,6 +106,7 @@ export default function CourseModal({
       const params = new URLSearchParams(searchParams);
       params.delete('courseId');
       router.replace(`${pathname}?${params}`);
+      router.refresh();
     }
   };
 

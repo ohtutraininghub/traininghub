@@ -76,6 +76,7 @@ export default async function HomePage({ searchParams, params }: Props) {
         initialTags={tags}
         lang={params.lang}
       />
+
       {isTrainerOrAdmin(session.user) && <SpeedDialMenu />}
       <CourseList
         lang={params.lang}
