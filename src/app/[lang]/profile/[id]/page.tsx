@@ -22,7 +22,7 @@ import {
 } from '@/lib/prisma/templates';
 import CreateTag from '@/app/[lang]/admin/dashboard/CreateTag';
 import CreateCountry from '@/app/[lang]/admin/dashboard/CreateCountry';
-import CreateTitle from '../../admin/dashboard/CreateTitle';
+import CreateTitle from '../../../../components/CreateTitle/CreateTitle';
 import UserList from '@/components/UserList';
 import { getTags, Tags } from '@/lib/prisma/tags';
 import { getCountries, Countries } from '@/lib/prisma/country';
