@@ -23,7 +23,9 @@ import { post } from '@/lib/response/fetchUtil';
 import { DictProps } from '@/lib/i18n';
 import { useRouter, useParams } from 'next/navigation';
 import { useMessage } from '../Providers/MessageProvider';
-import { useSession } from 'next-auth/react';
+import { useSession, signIn } from 'next-auth/react';
+import { FORMS_SCOPE } from '@/lib/google/constants';
+import { hasGoogleFormsScope } from '@/lib/prisma/account';
 
 export interface ProfileCourseListProps extends DictProps {
   headerText: string;
@@ -67,6 +69,19 @@ export default function ProfileCourseList({
     router.refresh();
   };
   const handleCreateNewFeedback = async (id: string) => {
+    // Check if the scope for Google Forms is included
+    const hasFormsScope = await hasGoogleFormsScope(session?.user.id);
+    if (!hasFormsScope) {
+      // Trigger sign-in with additional scopes
+      signIn('google', {
+        callbackUrl: `${window.location.origin}/${lang}/profile/${session?.user.id}`,
+        prompt: 'consent', // Force consent to ensure scopes are granted
+        scopes: FORMS_SCOPE,
+      });
+      return;
+    }
+
+    // If the scope is available, proceed with API call
     const responseJson = await post('/api/forms/create', { courseId: id });
     notify(responseJson);
     router.refresh();
