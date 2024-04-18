@@ -21,6 +21,10 @@ describe('Admin view', () => {
     cy.get('h1').contains('Admin dashboard');
   });
 
+  it('export course statistics should be accessible', () => {
+    cy.get('h2').contains('Export course statistics');
+  });
+
   it('titlelist should be accessible', () => {
     cy.get('h2').contains('Titles');
   });
