@@ -144,6 +144,7 @@ export default function ExportForm({ lang }: Props) {
         </FormControl>
         <Button
           type="submit"
+          data-testid="exportStatsButton"
           disabled={isSubmitting}
           variant="contained"
           color="primary"
