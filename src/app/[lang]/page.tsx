@@ -76,20 +76,7 @@ export default async function HomePage({ searchParams, params }: Props) {
         initialTags={tags}
         lang={params.lang}
       />
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'start',
-          flexDirection: 'column',
-          color: 'white',
-        }}
-      >
-        <h4>JSON.stringify(searchParams): {JSON.stringify(searchParams)}</h4>
-        <h4>courseId: {courseId}</h4>
-        <h4>openedCourse: {JSON.stringify(openedCourse)}</h4>
-        <h4>all course Ids: {courses.map((c) => c.id)}</h4>
-      </div>
+
       {isTrainerOrAdmin(session.user) && <SpeedDialMenu />}
       <CourseList
         lang={params.lang}
