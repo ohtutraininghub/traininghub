@@ -143,7 +143,9 @@ describe('Google Forms API tests', () => {
       const response = await POST(req);
       const data = await response.json();
 
-      expect(data.message).toBe('Google form successfully created');
+      expect(data.message).toBe(
+        'Google form successfully created and sended to participants in Slack!'
+      );
       expect(data.messageType).toBe('success');
 
       expect(createCourseFeedbackForm).toHaveBeenCalledWith(
