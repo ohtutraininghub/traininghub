@@ -24,12 +24,15 @@ jest.mock('../../../../lib/auth', () => ({
   getServerAuthSession: jest.fn(),
 }));
 
+const fromDate = new Date('2100-09-10T00:00:00Z');
+const toDate = new Date('2100-09-20T23:59:59Z');
+
 const mockGetRequest = () => {
   return createMocks<NextRequest>({
     method: 'GET',
     nextUrl: {
       searchParams: new URLSearchParams(
-        'fromDate=2100-09-10T00:00:00Z&toDate=2100-09-20T23:59:59Z'
+        `fromDate=${fromDate.valueOf()}&toDate=${toDate.valueOf()}`
       ),
     },
   }).req;
@@ -39,7 +42,7 @@ const mockGetRequestWithoutStartDate = () => {
   return createMocks<NextRequest>({
     method: 'GET',
     nextUrl: {
-      searchParams: new URLSearchParams('toDate=2100-09-20T23:59:59Z'),
+      searchParams: new URLSearchParams(`toDate=${toDate.valueOf()}`),
     },
   }).req;
 };
@@ -48,7 +51,7 @@ const mockGetRequestWithoutEndDate = () => {
   return createMocks<NextRequest>({
     method: 'GET',
     nextUrl: {
-      searchParams: new URLSearchParams('fromDate=2100-09-20T23:59:59Z'),
+      searchParams: new URLSearchParams(`toDate=${toDate.valueOf()}`),
     },
   }).req;
 };

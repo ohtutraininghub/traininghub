@@ -123,7 +123,7 @@ describe('Profile View', () => {
       // close ended created courses dropdown
       cy.getCy('listControls\\.endedCreated').click();
       // trainer user is the creator of 2 upcoming courses and one ongoing course
-      cy.contains('Upcoming created courses (3)');
+      cy.contains('Created courses (3)');
       cy.contains(testCourses[0].name).should('not.exist');
       cy.contains(testCourses[1].name).contains('In Progress');
       cy.contains(testCourses[2].name);
@@ -180,7 +180,7 @@ describe('Profile View', () => {
     it('should not show upcoming created courses for admin', () => {
       cy.getCy('myCoursesTab').click();
       // admin isn't the creator of any courses
-      cy.contains('Upcoming created courses (0)');
+      cy.contains('Created courses (0)');
       cy.contains('No courses to show.');
     });
     it('should not show ended created courses for admin', () => {
@@ -220,7 +220,7 @@ describe('Profile View', () => {
       cy.visit('/profile/cluo35ozy000208jy18sdfe4a'); // trainer's user id
       cy.contains('Tim Trainer');
       cy.getCy('myCoursesTab').click();
-      cy.contains('Upcoming created courses (3)');
+      cy.contains('Created courses (3)');
       cy.contains('Ended created courses (2)');
       cy.contains('Course templates (0)');
     });

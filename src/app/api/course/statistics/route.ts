@@ -16,11 +16,19 @@ export async function GET(request: NextRequest) {
         statusCode: StatusCodeType.FORBIDDEN,
       });
     }
+
     const fromDate = new Date(
-      request.nextUrl.searchParams.get('fromDate') || ''
+      parseInt(request.nextUrl.searchParams.get('fromDate') || '')
     );
-    const toDate = new Date(request.nextUrl.searchParams.get('toDate') || '');
-    if (!fromDate.valueOf() || !toDate.valueOf()) {
+    const toDate = new Date(
+      parseInt(request.nextUrl.searchParams.get('toDate') || '')
+    );
+
+    if (
+      !fromDate.valueOf() ||
+      !toDate.valueOf() ||
+      fromDate.valueOf() > toDate.valueOf()
+    ) {
       return errorResponse({
         message: t('Statistics.invalidDateRange'),
         statusCode: StatusCodeType.UNPROCESSABLE_CONTENT,
