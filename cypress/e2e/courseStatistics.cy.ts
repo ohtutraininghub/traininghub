@@ -20,17 +20,21 @@ describe('Exporting Course Statistics', () => {
     cy.getCy('dashboard').click();
   });
 
-  it('should display Download started when correct dateframe is given', () => {
+  it('should export csv file when correct dateframe is given', () => {
     cy.getCy('exportFormFromDate').type(fromDate);
     cy.getCy('exportFormToDate').type(toDate);
     cy.getCy('exportStatsButton').click();
     cy.contains('Download started');
+    cy.readFile(`cypress/downloads/training-data_${fromDate}_${toDate}.csv`);
   });
 
-  it('should display Invalid date range when incorrect dateframe is given', () => {
+  it('should not export csv file when incorrect dateframe is given', () => {
     cy.getCy('exportFormFromDate').type(toDate);
     cy.getCy('exportFormToDate').type(fromDate);
     cy.getCy('exportStatsButton').click();
     cy.contains('Invalid date range');
+    cy.readFile(
+      `cypress/downloads/training-data_${toDate}_${fromDate}.csv`
+    ).should('not.exist');
   });
 });
