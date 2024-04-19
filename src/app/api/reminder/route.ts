@@ -8,7 +8,7 @@ import { handleCommonErrors } from '@/lib/response/errorUtil';
 import { translator } from '@/lib/i18n';
 import sendNotificationsBeforeCourseStart from '@/lib/cron/cron-utils';
 
-export async function handleSendNotifications(request: NextRequest) {
+export async function POST(request: NextRequest) {
   const { t } = await translator('api');
 
   const authToken = request.headers.get('authorization')?.split(' ')[1];

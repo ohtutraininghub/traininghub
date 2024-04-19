@@ -1,4 +1,4 @@
-import { handleSendNotifications } from './route';
+import { POST } from './route';
 import { MessageType } from '@/lib/response/responseUtil';
 import { NextRequest } from 'next/server';
 import { createMocks } from 'node-mocks-http';
@@ -40,7 +40,7 @@ describe('handleSendNotifications', () => {
   });
   it('should return success response if Bearer token is correct', async () => {
     const request = mockGetRequest();
-    const response = await handleSendNotifications(request);
+    const response = await POST(request);
     const data = await response.json();
 
     expect(data.message).toBe('Reminders sent succesfully');
@@ -49,14 +49,14 @@ describe('handleSendNotifications', () => {
   });
   it('should call notification sender if Bearer token is correct', async () => {
     const request = mockGetRequest();
-    const response = await handleSendNotifications(request);
+    const response = await POST(request);
 
     expect(response.status).toBe(200);
     expect(sendNotificationsBeforeCourseStart).toHaveBeenCalledTimes(1);
   });
   it('should return unauthorized response if wrong token is used', async () => {
     const request = mockGetRequestWithWrongToken();
-    const response = await handleSendNotifications(request);
+    const response = await POST(request);
     const data = await response.json();
 
     expect(data.message).toBe('Forbidden');
@@ -65,7 +65,7 @@ describe('handleSendNotifications', () => {
   });
   it('should not call notification sender if Bearer token is incorrect', async () => {
     const request = mockGetRequestWithWrongToken();
-    const response = await handleSendNotifications(request);
+    const response = await POST(request);
 
     expect(response.status).toBe(401);
     expect(sendNotificationsBeforeCourseStart).not.toHaveBeenCalled();
