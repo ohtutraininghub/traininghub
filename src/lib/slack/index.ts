@@ -16,6 +16,7 @@ import {
   createBlocksUpdatedTraining,
   createBlocksTrainingCancelled,
   createBlocksCourseReminder,
+  createBlocksCourseFeedback,
 } from './blocks';
 import { isProduction } from '../env-utils';
 
@@ -45,6 +46,16 @@ export const sendTrainingCancelledMessage = async (
 ) => {
   if (!isProduction()) return;
   const blocks = createBlocksTrainingCancelled(course);
+  await sendMessageToUser(userEmail, blocks);
+};
+
+export const sendFeedbackRequestedMessage = async (
+  userEmail: string,
+  course: Course,
+  feedbackFormUrl: string
+) => {
+  if (!isProduction()) return;
+  const blocks = createBlocksCourseFeedback(course, feedbackFormUrl);
   await sendMessageToUser(userEmail, blocks);
 };
 

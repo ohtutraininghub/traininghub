@@ -1,5 +1,6 @@
 import { Course } from '@prisma/client';
 import { calendar as googlecalendar } from '@googleapis/calendar';
+import { forms as googleforms } from '@googleapis/forms';
 import { UserRefreshClient } from 'google-auth-library';
 import { getRefreshToken } from '@/lib/prisma/account';
 import {
@@ -10,6 +11,7 @@ import {
 } from '@/lib/prisma/calendar';
 import { logHandledException } from '@/lib/sentry';
 import { isProduction } from '../env-utils';
+import { createNewFormRequest, createQuizItems } from './requests';
 
 export const insertCourseToCalendar = async (
   userId: string,
@@ -129,6 +131,40 @@ export const updateCourseToCalendars = async (course: Course) => {
           await handleGoogleError(error, user.userId, course.id, eventId)
       );
   });
+};
+
+export const createCourseFeedbackForm = async (
+  userId: string,
+  course: Course
+) => {
+  const refreshTokenAuth = await getRefreshTokenAuth(userId);
+  const forms = googleforms({ version: 'v1', auth: refreshTokenAuth });
+  const newForm = createNewFormRequest(course);
+  const feedbackItems = createQuizItems();
+  try {
+    const response = await forms.forms.create({
+      requestBody: newForm,
+    });
+
+    const formId = response?.data?.formId;
+    const formUrl = response?.data?.responderUri;
+
+    if (formId === null || formId === undefined) {
+      return { ok: false, data: { formId, formUrl } };
+    }
+
+    await forms.forms.batchUpdate({
+      formId: formId,
+      requestBody: feedbackItems,
+    });
+
+    return { ok: true, data: { formId, formUrl } };
+  } catch (error) {
+    if (error instanceof Error) {
+      logHandledException(error); // Awaiting the logging
+    }
+    throw error; // Rethrow the error for the caller to handle
+  }
 };
 
 const getRefreshTokenAuth = async (userId: string) => {

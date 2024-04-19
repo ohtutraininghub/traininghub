@@ -35,8 +35,6 @@ export type CourseWithInfo = prismaClient.CourseGetPayload<{
   };
 }>;
 
-export type GetCoursesType = prismaClient.PromiseReturnType<typeof getCourses>;
-
 export const getCourseById = async (courseId: Course['id']) => {
   return await prisma.course.findFirst({
     include: {
@@ -110,28 +108,36 @@ export const getAllCourses = async () => {
 };
 
 export const getCoursesForCsv = async (fromDate: Date, toDate: Date) => {
-  return await prisma.course.findMany({
+  const courses = await prisma.course.findMany({
     include: {
       createdBy: {
         select: {
           name: true,
         },
       },
-      students: {
+      participations: {
         select: {
-          name: true,
-          country: {
+          user: {
             select: {
               name: true,
-            },
-          },
-          title: {
-            select: {
-              name: true,
+              country: {
+                select: {
+                  name: true,
+                },
+              },
+              title: {
+                select: {
+                  name: true,
+                },
+              },
             },
           },
         },
-        orderBy: [{ name: 'asc' }],
+        orderBy: {
+          user: {
+            name: 'asc',
+          },
+        },
       },
     },
     orderBy: [{ startDate: 'asc' }, { name: 'asc' }],
@@ -145,4 +151,24 @@ export const getCoursesForCsv = async (fromDate: Date, toDate: Date) => {
       ],
     },
   });
+
+  const formattedCourses = courses.map((course) => ({
+    name: course.name,
+    createdBy: { name: course.createdBy ? course.createdBy.name : null },
+    students: course.participations.map((participation) => ({
+      name: participation.user.name,
+      country: {
+        name: participation.user.country
+          ? participation.user.country.name
+          : null,
+      },
+      title: {
+        name: participation.user.title ? participation.user.title.name : null,
+      },
+    })),
+    startDate: course.startDate,
+    endDate: course.endDate,
+  }));
+
+  return formattedCourses;
 };
