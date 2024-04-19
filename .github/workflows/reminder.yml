@@ -1,0 +1,13 @@
+name: Daily course reminder
+on:
+  schedule:
+    - cron: '0 9 * * *'
+jobs:
+  cron:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Daily course reminder
+        run: |
+          curl --request POST \
+          --url ${{ vars.REMINDER_API_URL }} \
+          --header 'Authorization: Bearer ${{ secrets.AUTH_TOKEN }}'
