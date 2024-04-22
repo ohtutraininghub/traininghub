@@ -5,6 +5,7 @@ if [ ! -f $ENV_FILE ]; then
   NEXTAUTH_SECRET=$(openssl rand -base64 32)
   NEXTAUTH_URL=http://localhost:3000
   HOST_URL=http://localhost:3000
+  API_AUTH_TOKEN=$(openssl rand -base64 32)
 
   echo "# Required for Prisma" > $ENV_FILE
   echo "DATABASE_URL=$DATABASE_URL" >> $ENV_FILE
@@ -16,6 +17,9 @@ if [ ! -f $ENV_FILE ]; then
   echo "# Required for Slack" >> $ENV_FILE
   echo "SLACK_BOT_TOKEN=" >> $ENV_FILE
   echo "HOST_URL=$HOST_URL" >> $ENV_FILE
+  echo "" >> $ENV_FILE
+  echo "# Required for authenticating API calls" >> $ENV_FILE
+  echo "API_AUTH_TOKEN=$API_AUTH_TOKEN" >> $ENV_FILE
 fi
 
 # Setup .env.test file if not exists for development
@@ -24,7 +28,7 @@ if [ ! -f $ENV_TEST_FILE ]; then
   DATABASE_URL=postgresql://admin:password@localhost:5434/traininghub-db?schema=public
   NEXTAUTH_SECRET=$(openssl rand -base64 32)
   NEXTAUTH_URL=http://localhost:3000
-  AUTH_TOKEN=$(openssl rand -base64 32)
+  API_AUTH_TOKEN=$(openssl rand -base64 32)
 
   echo "# Required for Prisma" > $ENV_TEST_FILE
   echo "DATABASE_URL=$DATABASE_URL" >> $ENV_TEST_FILE
@@ -34,7 +38,7 @@ if [ ! -f $ENV_TEST_FILE ]; then
   echo "NEXTAUTH_URL=$NEXTAUTH_URL" >> $ENV_TEST_FILE
   echo "" >> $ENV_TEST_FILE
   echo "# Required for authenticating API calls" >> $ENV_TEST_FILE
-  echo "AUTH_TOKEN=$AUTH_TOKEN" >> $ENV_TEST_FILE
+  echo "API_AUTH_TOKEN=$API_AUTH_TOKEN" >> $ENV_TEST_FILE
 fi
 
 # Install depencies

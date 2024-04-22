@@ -13,10 +13,10 @@ export async function POST(request: NextRequest) {
 
   const authToken = request.headers.get('authorization')?.split(' ')[1];
   try {
-    if (authToken && authToken === process.env.AUTH_TOKEN) {
+    if (authToken && authToken === process.env.API_AUTH_TOKEN) {
       sendNotificationsBeforeCourseStart();
       return successResponse({
-        message: t('Reminders.remindersSent'), // change the messages
+        message: t('Reminders.remindersSent'),
         statusCode: StatusCodeType.OK,
       });
     }

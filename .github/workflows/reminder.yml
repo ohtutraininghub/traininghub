@@ -9,5 +9,5 @@ jobs:
       - name: Daily course reminder
         run: |
           curl --request POST \
-          --url ${{ vars.REMINDER_API_URL }} \
-          --header 'Authorization: Bearer ${{ secrets.AUTH_TOKEN }}'
+          --url ${{ secrets.REMINDER_API_URL }} \
+          --header 'Authorization: Bearer ${{ secrets.API_AUTH_TOKEN }}'
