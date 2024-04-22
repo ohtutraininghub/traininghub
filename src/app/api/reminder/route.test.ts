@@ -4,17 +4,19 @@ import { NextRequest } from 'next/server';
 import { createMocks } from 'node-mocks-http';
 import sendNotificationsBeforeCourseStart from '@/lib/cron/cron-utils';
 
+process.env.API_AUTH_TOKEN = 'test-token';
+
 const mockGetRequest = () => {
   const { req } = createMocks<NextRequest>({
     method: 'POST',
     headers: {
-      authorization: 'Bearer ' + process.env.AUTH_TOKEN,
+      authorization: 'Bearer ' + process.env.API_AUTH_TOKEN,
     },
   });
 
   req.headers.get = jest
     .fn()
-    .mockReturnValue('Bearer ' + process.env.AUTH_TOKEN);
+    .mockReturnValue('Bearer ' + process.env.API_AUTH_TOKEN);
   return req;
 };
 
