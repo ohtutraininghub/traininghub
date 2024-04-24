@@ -185,38 +185,36 @@ export default function ProfileCourseList({
                               flexDirection: { xs: 'column', sm: 'row' },
                             }}
                           >
-                            {(ownProfile && course.createdById === userId) ||
-                              (user && isAdmin(user) && (
-                                <CreateSlackButton
-                                  lang={lang}
-                                  onclick={(
-                                    event: React.MouseEvent<HTMLButtonElement>
-                                  ) => {
-                                    {
-                                      event.preventDefault(); // prevents the CourseModal from opening
-                                      handleCreateNewChannel(course.id);
-                                    }
-                                  }}
-                                  buttonDisabled={Boolean(
-                                    course.slackChannelId
-                                  )}
-                                />
-                              ))}
-                            {(ownProfile && course.createdById === userId) ||
-                              (user && isAdmin(user) && (
-                                <CreateFeedbackButton
-                                  lang={lang}
-                                  onclick={(
-                                    event: React.MouseEvent<HTMLButtonElement>
-                                  ) => {
-                                    {
-                                      event.preventDefault(); // prevents the CourseModal from opening
-                                      handleCreateNewFeedback(course.id);
-                                    }
-                                  }}
-                                  buttonDisabled={Boolean(course.googleFormsId)}
-                                />
-                              ))}
+                            {((ownProfile && course.createdById === userId) ||
+                              (user && isAdmin(user))) && (
+                              <CreateSlackButton
+                                lang={lang}
+                                onclick={(
+                                  event: React.MouseEvent<HTMLButtonElement>
+                                ) => {
+                                  {
+                                    event.preventDefault(); // prevents the CourseModal from opening
+                                    handleCreateNewChannel(course.id);
+                                  }
+                                }}
+                                buttonDisabled={Boolean(course.slackChannelId)}
+                              />
+                            )}
+                            {((ownProfile && course.createdById === userId) ||
+                              (user && isAdmin(user))) && (
+                              <CreateFeedbackButton
+                                lang={lang}
+                                onclick={(
+                                  event: React.MouseEvent<HTMLButtonElement>
+                                ) => {
+                                  {
+                                    event.preventDefault(); // prevents the CourseModal from opening
+                                    handleCreateNewFeedback(course.id);
+                                  }
+                                }}
+                                buttonDisabled={Boolean(course.googleFormsId)}
+                              />
+                            )}
                           </Box>
                         </Box>
                       )}
