@@ -10,3 +10,11 @@ Zod is used to validate data, ensuring it matches the expected format before it'
 This is particularly useful when dealing with user input or data from external sources, where there's a risk of receiving malformed or unexpected data. 
 The ```.refine``` is a method that is used to add additional validation rules to the schema. 
 For instance when checking that a number is an integer or that a string is a valid email address.
+
+## Type inference
+The ```z.infer``` is used to create TypeScript types based on the Zod schemas. 
+This allows TypeScript to understand the shape of the data and provide type checking and autocompletion in the code editor.
+```
+z.infer<typeof mySchema>
+```
+
