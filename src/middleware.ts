@@ -1,13 +1,26 @@
 import { getToken } from 'next-auth/jwt';
 import { withAuth } from 'next-auth/middleware';
-import { NextResponse } from 'next/server';
+import { NextResponse, NextFetchEvent, NextRequest } from 'next/server';
 import { checkForMissingLocale } from '@i18n/index';
 import { cookies } from 'next/headers';
 import { i18n } from './lib/i18n/i18n-config';
+import { NextRequestWithAuth } from 'next-auth/middleware';
 
 const PUBLIC_FILE = /\.(.*)$/;
 
-export default withAuth(async function middleware(req) {
+export default async function middleware(
+  req: NextRequest,
+  event: NextFetchEvent
+) {
+  const { pathname } = req.nextUrl;
+
+  if (pathname.startsWith('/api/reminder')) {
+    return NextResponse.next();
+  }
+  return withAuthResult(req as NextRequestWithAuth, event);
+}
+
+const withAuthResult = withAuth(async function middleware(req) {
   const token = await getToken({ req });
   const { pathname, search } = req.nextUrl;
 

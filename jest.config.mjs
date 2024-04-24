@@ -19,7 +19,10 @@ const clientTestConfig = {
 const serverTestConfig = {
   displayName: 'Server-side',
   testEnvironment: 'jest-environment-node',
-  testMatch: ['<rootDir>/src/app/api/**/*.test.ts'],
+  testMatch: [
+    '<rootDir>/src/app/api/**/*.test.ts',
+    '<rootDir>/src/lib/cron/**/*.test.ts',
+  ],
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
 };
 

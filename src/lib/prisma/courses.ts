@@ -64,6 +64,29 @@ export const getCourses = async () => {
   });
 };
 
+export const coursesWithStartDateBetweenDates = async (
+  startDateStart: Date,
+  startDateEnd: Date
+) => {
+  const coursesWithStudents = await prisma.course.findMany({
+    where: {
+      startDate: {
+        gte: startDateStart,
+        lte: startDateEnd,
+      },
+    },
+    include: {
+      students: {
+        select: {
+          email: true,
+        },
+      },
+    },
+  });
+
+  return coursesWithStudents;
+};
+
 export const getAllCourses = async () => {
   return await prisma.course.findMany({
     include: {
