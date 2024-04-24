@@ -24,6 +24,7 @@ import { DictProps } from '@/lib/i18n';
 import { useRouter, useParams } from 'next/navigation';
 import { useMessage } from '../Providers/MessageProvider';
 import { useSession } from 'next-auth/react';
+import { isAdmin } from '@/lib/auth-utils';
 
 export interface ProfileCourseListProps extends DictProps {
   headerText: string;
@@ -48,7 +49,8 @@ export default function ProfileCourseList({
   const { data: session } = useSession({ required: true });
   const params = useParams();
   const profileId = params.id;
-  const userId = session?.user.id;
+  const user = session?.user;
+  const userId = user?.id;
 
   const ownProfile = userId === profileId;
 
@@ -183,34 +185,38 @@ export default function ProfileCourseList({
                               flexDirection: { xs: 'column', sm: 'row' },
                             }}
                           >
-                            {ownProfile && course.createdById === userId && (
-                              <CreateSlackButton
-                                lang={lang}
-                                onclick={(
-                                  event: React.MouseEvent<HTMLButtonElement>
-                                ) => {
-                                  {
-                                    event.preventDefault(); // prevents the CourseModal from opening
-                                    handleCreateNewChannel(course.id);
-                                  }
-                                }}
-                                buttonDisabled={Boolean(course.slackChannelId)}
-                              />
-                            )}
-                            {ownProfile && course.createdById === userId && (
-                              <CreateFeedbackButton
-                                lang={lang}
-                                onclick={(
-                                  event: React.MouseEvent<HTMLButtonElement>
-                                ) => {
-                                  {
-                                    event.preventDefault(); // prevents the CourseModal from opening
-                                    handleCreateNewFeedback(course.id);
-                                  }
-                                }}
-                                buttonDisabled={Boolean(course.googleFormsId)}
-                              />
-                            )}
+                            {(ownProfile && course.createdById === userId) ||
+                              (user && isAdmin(user) && (
+                                <CreateSlackButton
+                                  lang={lang}
+                                  onclick={(
+                                    event: React.MouseEvent<HTMLButtonElement>
+                                  ) => {
+                                    {
+                                      event.preventDefault(); // prevents the CourseModal from opening
+                                      handleCreateNewChannel(course.id);
+                                    }
+                                  }}
+                                  buttonDisabled={Boolean(
+                                    course.slackChannelId
+                                  )}
+                                />
+                              ))}
+                            {(ownProfile && course.createdById === userId) ||
+                              (user && isAdmin(user) && (
+                                <CreateFeedbackButton
+                                  lang={lang}
+                                  onclick={(
+                                    event: React.MouseEvent<HTMLButtonElement>
+                                  ) => {
+                                    {
+                                      event.preventDefault(); // prevents the CourseModal from opening
+                                      handleCreateNewFeedback(course.id);
+                                    }
+                                  }}
+                                  buttonDisabled={Boolean(course.googleFormsId)}
+                                />
+                              ))}
                           </Box>
                         </Box>
                       )}
