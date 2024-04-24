@@ -32,6 +32,7 @@ jobs:
             SENTRY_PROJECT
             HOST_URL
             SLACK_BOT_TOKEN
+            API_AUTH_TOKEN
         env:
           # NEXTAUTH
           HD_NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL }}
@@ -67,3 +68,6 @@ jobs:
           # SLACK
           HOST_URL: ${{ secrets.HOST_URL }}
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+
+          # REMINDER API
+          API_AUTH_TOKEN: ${{ secrets.API_AUTH_TOKEN }}
