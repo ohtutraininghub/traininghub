@@ -7,7 +7,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Daily course reminder
+        env:
+          REMINDER_API_URL: ${{ secrets.REMINDER_API_URL }}
         run: |
           curl --request POST \
-          --url ${{ secrets.REMINDER_API_URL }} \
-          --header 'Authorization: Bearer ${{ secrets.API_AUTH_TOKEN }}'
+          --url $REMINDER_API_URL \
+          --header "Authorization: Bearer ${{ secrets.API_AUTH_TOKEN }}"
