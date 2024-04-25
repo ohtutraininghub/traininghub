@@ -70,27 +70,18 @@ export default function ProfileCourseList({
     router.refresh();
   };
   const handleCreateNewFeedback = async (id: string) => {
-    const response = await fetch('/api/forms/checkScope', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ userId: session?.user.id }),
-    });
-
-    const data = await response.json();
-    if (!response.ok) {
-      notify(data.message);
-      if (response.status === 400 && !data.hasRequiredScope) {
-        signIn(
-          'google',
-          { callbackUrl: `/${lang}/profile/${session?.user.id}` },
-          `scope=${FORMS_SCOPE}`
-        );
-      }
+    const responseJson = await post('/api/forms/create', { courseId: id });
+    if (
+      responseJson.messageType === 'error' &&
+      responseJson.message === 'You do not have required scope'
+    ) {
+      signIn(
+        'google',
+        { callbackUrl: `/${lang}/profile/${session?.user.id}` },
+        `scope=${FORMS_SCOPE}`
+      );
       return;
     }
-    const responseJson = await post('/api/forms/create', { courseId: id });
     notify(responseJson);
     router.refresh();
     router.push(`/${lang}/profile/${session?.user.id}`);
