@@ -24,6 +24,7 @@ import { DictProps } from '@/lib/i18n';
 import { useRouter, useParams } from 'next/navigation';
 import { useMessage } from '../Providers/MessageProvider';
 import { useSession, signIn } from 'next-auth/react';
+import { isAdmin } from '@/lib/auth-utils';
 import { FORMS_SCOPE } from '@/lib/google/constants';
 
 export interface ProfileCourseListProps extends DictProps {
@@ -49,7 +50,8 @@ export default function ProfileCourseList({
   const { data: session } = useSession({ required: true });
   const params = useParams();
   const profileId = params.id;
-  const userId = session?.user.id;
+  const user = session?.user;
+  const userId = user?.id;
 
   const ownProfile = userId === profileId;
 
@@ -204,7 +206,8 @@ export default function ProfileCourseList({
                               flexDirection: { xs: 'column', sm: 'row' },
                             }}
                           >
-                            {ownProfile && course.createdById === userId && (
+                            {((ownProfile && course.createdById === userId) ||
+                              (user && isAdmin(user))) && (
                               <CreateSlackButton
                                 lang={lang}
                                 onclick={(
@@ -218,7 +221,8 @@ export default function ProfileCourseList({
                                 buttonDisabled={Boolean(course.slackChannelId)}
                               />
                             )}
-                            {ownProfile && course.createdById === userId && (
+                            {((ownProfile && course.createdById === userId) ||
+                              (user && isAdmin(user))) && (
                               <CreateFeedbackButton
                                 lang={lang}
                                 onclick={(
