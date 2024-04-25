@@ -1,7 +1,7 @@
 name: Daily course reminder
 on:
   schedule:
-    - cron: '* * * * *'
+    - cron: '0 6 * * *'
 jobs:
   cron:
     runs-on: ubuntu-latest
