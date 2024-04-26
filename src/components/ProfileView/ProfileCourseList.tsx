@@ -23,8 +23,9 @@ import { post } from '@/lib/response/fetchUtil';
 import { DictProps } from '@/lib/i18n';
 import { useRouter, useParams } from 'next/navigation';
 import { useMessage } from '../Providers/MessageProvider';
-import { useSession } from 'next-auth/react';
+import { useSession, signIn } from 'next-auth/react';
 import { isAdmin } from '@/lib/auth-utils';
+import { FORMS_SCOPE } from '@/lib/google/constants';
 
 export interface ProfileCourseListProps extends DictProps {
   headerText: string;
@@ -70,6 +71,17 @@ export default function ProfileCourseList({
   };
   const handleCreateNewFeedback = async (id: string) => {
     const responseJson = await post('/api/forms/create', { courseId: id });
+    if (
+      responseJson.messageType === 'error' &&
+      responseJson.message === 'You do not have required scope'
+    ) {
+      signIn(
+        'google',
+        { callbackUrl: `/${lang}/profile/${session?.user.id}` },
+        `scope=${FORMS_SCOPE}`
+      );
+      return;
+    }
     notify(responseJson);
     router.refresh();
     router.push(`/${lang}/profile/${session?.user.id}`);

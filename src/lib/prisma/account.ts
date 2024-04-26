@@ -1,6 +1,6 @@
 import { prisma } from '@/lib/prisma';
 import { Account } from 'next-auth';
-import { CALENDAR_SCOPE } from '../google/constants';
+import { CALENDAR_SCOPE, FORMS_SCOPE } from '../google/constants';
 
 export const getRefreshToken = async (userId: string, provider: string) => {
   return await prisma.account.findFirst({
@@ -16,6 +16,15 @@ export const hasGoogleCalendarScope = async (userId: string) => {
   });
 
   return scopes?.scope?.includes(CALENDAR_SCOPE) ?? false;
+};
+
+export const hasGoogleFormsScope = async (userId: string) => {
+  const scopes = await prisma.account.findFirst({
+    where: { userId: userId, provider: 'google' },
+    select: { scope: true },
+  });
+
+  return scopes?.scope?.includes(FORMS_SCOPE) ?? false;
 };
 
 export const updateGoogleAccount = async (account: Account) => {

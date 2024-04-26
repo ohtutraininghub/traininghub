@@ -10,11 +10,13 @@ import { hasCourseEditRights, isTrainerOrAdmin } from '@/lib/auth-utils';
 import { courseIdSchema } from '@/lib/zod/courses';
 import { getStudentEmailsByCourseId } from '@/lib/prisma/users';
 import { sendFeedbackRequestedMessage } from '@/lib/slack';
+import { hasGoogleFormsScope } from '@/lib/prisma/account';
 
 export async function POST(request: NextRequest) {
   try {
     const { t } = await translator('api');
     const { user } = await getServerAuthSession();
+    const hasGoogleFormsPermission = await hasGoogleFormsScope(user.id);
     const body = courseIdSchema.parse(await request.json());
     const course = await prisma.course.findFirst({
       where: { id: body.courseId },
@@ -41,11 +43,19 @@ export async function POST(request: NextRequest) {
       });
     }
 
+    console.log('hasGoogleFormsPermission', hasGoogleFormsPermission);
+    if (!hasGoogleFormsPermission) {
+      return errorResponse({
+        message: t('GoogleForms.missingScope'),
+        statusCode: StatusCodeType.BAD_REQUEST,
+      });
+    }
+
     const formResponse = await createCourseFeedbackForm(user.id, course);
     if (!formResponse.ok) {
       return errorResponse({
         message: t('GoogleForms.formCreationFailed'),
-        statusCode: StatusCodeType.BAD_REQUEST,
+        statusCode: StatusCodeType.FORBIDDEN,
       });
     }
 

@@ -52,6 +52,9 @@ jobs:
           HD_HOST_URL: ${{ secrets.HOST_URL }}
           HD_SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
 
+          # REMINDER API
+          HD_API_AUTH_TOKEN: ${{ secrets.API_AUTH_TOKEN }}
+
           # BUILD TIME ARGS
 
           # NEXTAUTH
