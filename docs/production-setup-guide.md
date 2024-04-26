@@ -11,12 +11,13 @@ It's easier to create one Google account handle all accounts.
 
 #### Google
 
-Google setup is required for Google sign in and Google calendar usage.
+Google setup is required for Google sign in, Google calendar and Google forms usage.
 
 Follow the instructions in [Google's documentation on setting up OAuth 2.0 credentials](https://support.google.com/cloud/answer/6158849).
 
 - Library
   - Enable Google Calendar API
+  - Enable Google Forms API
 - Credentials (OAuth 2.0 Client IDs)
   - Example authorized JavaScript origins in development environment: `http://localhost:3000`
   - Example authorized redirect URIs in development envinronment: `http://localhost:3000/api/auth/callback/google`
@@ -27,6 +28,7 @@ Follow the instructions in [Google's documentation on setting up OAuth 2.0 crede
     - `/auth/userinfo.profile`
     - `openid`
     - `/auth/calendar.events.owned`
+    - `/auth/forms.body`
   - Test Users: add emails which are allowed in testing
 
 #### Sentry
