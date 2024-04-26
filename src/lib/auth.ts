@@ -17,8 +17,7 @@ import { isProduction } from './env-utils';
 const scopes =
   'openid ' +
   'https://www.googleapis.com/auth/userinfo.email ' +
-  'https://www.googleapis.com/auth/userinfo.profile ' +
-  'https://www.googleapis.com/auth/forms.body';
+  'https://www.googleapis.com/auth/userinfo.profile';
 
 export const authOptions: NextAuthOptions = {
   providers: [
