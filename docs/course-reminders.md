@@ -2,11 +2,11 @@
 
 ### Scheduling with GitHub Actions
 
-[Documentation](https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#schedule)
+[GitHub Actions Documentation about scheduling](https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#schedule)
 
-Daily course reminders are scheduled with GitHub Actions [reminder workflow](https://github.com/ohtutraininghub/traininghub/actions/workflows/reminder.yml). Once a day (currently set to 6.00 UTC) the workflow calls for the /api/reminder route and the call is authorized with Bearer token. After successful authorization, the function responsible for checking upcoming courses and sending reminders on Slack is called.
+Daily course reminders are scheduled with GitHub Actions [reminder workflow](.github/workflows/reminder.yml). Once a day (currently set to 6.00 UTC) the workflow calls for the /api/reminder route and the call is authorized with Bearer token. After successful authorization, the function responsible for checking upcoming courses and sending reminders on Slack is called.
 
-In the [production setup guide](https://github.com/ohtutraininghub/traininghub/blob/staging/docs/production-setup-guide.md) are instructions for setting up API URL and authentication token.
+In the [production setup guide](./production-setup-guide.md) are instructions for setting up API URL and authentication token.
 
 #### Important notes from the GitHub Actions documentation
 

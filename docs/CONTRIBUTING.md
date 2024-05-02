@@ -67,7 +67,7 @@ Most importantly pull request should be linked to task or set of tasks.
 - TypeScript
   - Should not use `any` type unless it has good reason
 - Form validation
-  - Form validation should use [Zod](https://github.com/ohtutraininghub/traininghub/blob/staging/docs/zod-documentation.md) library
+  - Form validation should use [Zod](./zod-documentation.md) library
   - Schema is only defined once and its used in frontend and backend (api folder)
 - UI
   - The styling should follow same format as other parts of site
@@ -127,4 +127,4 @@ You can also refer to [Prisma customizing migrations](https://www.prisma.io/docs
 
 #### Course reminders
 
-Course reminders are scheduled with GitHub Actions workflow. For more details see [documentation]().
+Course reminders are scheduled with GitHub Actions workflow. For more details see [documentation](./course-reminders.md).
