@@ -5,6 +5,7 @@ import { createMocks } from 'node-mocks-http';
 import { NextRequest } from 'next/server';
 import { POST } from './route';
 import { createCourseFeedbackForm } from '@/lib/google';
+import { hasGoogleFormsScope } from '@/lib/prisma/account';
 
 const traineeUser = {
   id: 'cls1rqioq000008jlf156ate0',
@@ -34,6 +35,10 @@ jest.mock('../../../../lib/auth', () => ({
   getServerAuthSession: jest.fn(),
 }));
 
+jest.mock('../../../../lib/prisma/account', () => ({
+  hasGoogleFormsScope: jest.fn(),
+}));
+
 beforeEach(async () => {
   await clearDatabase();
   await prisma.user.createMany({
@@ -47,6 +52,20 @@ const mockPostRequest = (body: any) => {
     json: () => body,
   }).req;
 };
+
+createCourseFeedbackForm.mockImplementation(async (userId, course) => {
+  if (await hasGoogleFormsScope(userId)) {
+    return {
+      ok: true,
+      data: {
+        formId: 'mocked-google-form-id',
+        formUrl: 'mocked-google-form-url',
+      },
+    };
+  } else {
+    throw new Error('Missing required scope.');
+  }
+});
 
 jest.mock('../../../../lib/google', () => ({
   getRefreshToken: jest.fn().mockResolvedValue({
@@ -64,10 +83,13 @@ jest.mock('../../../../lib/google', () => ({
       formUrl: 'mocked-google-form-url',
     },
   }),
+  addGoogleFormsScope: jest.fn().mockResolvedValue({
+    ok: true,
+  }),
 }));
 
 describe('Google Forms API tests', () => {
-  describe('POST', () => {
+  describe('Form creation', () => {
     it('Forbidden if user is a trainee', async () => {
       (getServerAuthSession as jest.Mock).mockImplementation(async () =>
         Promise.resolve({
@@ -128,7 +150,7 @@ describe('Google Forms API tests', () => {
       expect(data.message).toBe('Google form already exists');
       expect(data.messageType).toBe('error');
     });
-    it('Creates a new feedback form', async () => {
+    it('Fails if user has no required scope', async () => {
       (getServerAuthSession as jest.Mock).mockImplementation(async () =>
         Promise.resolve({
           user: trainerUser,
@@ -143,15 +165,30 @@ describe('Google Forms API tests', () => {
       const response = await POST(req);
       const data = await response.json();
 
+      expect(data.message).toBe('You do not have required scope');
+      expect(data.messageType).toBe('error');
+
+      expect(createCourseFeedbackForm).toHaveBeenCalledTimes(0);
+    });
+    it('Successfully creates a feedback form when required scope is added', async () => {
+      (getServerAuthSession as jest.Mock).mockImplementation(async () =>
+        Promise.resolve({ user: trainerUser })
+      );
+      (hasGoogleFormsScope as jest.Mock).mockResolvedValue(true); // Mocking scope has been granted
+
+      const courseInDb = await prisma.course.create({
+        data: { ...courseDataWithDate, tags: { connect: [] } },
+      });
+
+      const req = mockPostRequest({ courseId: courseInDb.id });
+      const response = await POST(req);
+      const data = await response.json();
+
       expect(data.message).toBe(
         'Google form successfully created and sended to participants in Slack!'
       );
       expect(data.messageType).toBe('success');
-
-      expect(createCourseFeedbackForm).toHaveBeenCalledWith(
-        trainerUser.id,
-        courseInDb
-      );
+      expect(createCourseFeedbackForm).toHaveBeenCalledTimes(1);
     });
   });
 });
