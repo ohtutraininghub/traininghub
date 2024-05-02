@@ -93,7 +93,7 @@ Slack setup is required for sending messages to Slack.
 `SENTRY_ORG`: defined when creating Sentry project  
 `SENTRY_PROJECT`: defined when creating Sentry project
 
-`API_AUTH_TOKEN`: e.g. run command openssl rand -base64 32 (This is used to authenticate the api call from [reminder workflow](.github/workflows/reminder.yml))
+`API_AUTH_TOKEN`: e.g. run command openssl rand -base64 32 (This is used to authenticate the api call from [reminder workflow](https://github.com/ohtutraininghub/traininghub/blob/staging/.github/workflows/reminder.yml))
 `REMINDER_API_URL`: production URL/api/reminder e.g. "https://production.com/api/reminder"
 
 ### Environments
