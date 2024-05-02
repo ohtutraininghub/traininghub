@@ -67,7 +67,7 @@ Most importantly pull request should be linked to task or set of tasks.
 - TypeScript
   - Should not use `any` type unless it has good reason
 - Form validation
-  - Form validation should use Zod library
+  - Form validation should use [Zod](./zod-documentation.md) library
   - Schema is only defined once and its used in frontend and backend (api folder)
 - UI
   - The styling should follow same format as other parts of site
@@ -124,3 +124,7 @@ You can also refer to [Prisma customizing migrations](https://www.prisma.io/docs
    - For example model `user` had `image` column which is moved to model `user_information` as `profile_image` column. In this case you would have to modify the `migration.sql` to insert `image` column data to `profile_image` column for correct user id.
 3. Run `npx prisma migrate dev` to apply the changes and verify that the data migration worked
 4. Push the generated migration to git
+
+#### Course reminders
+
+Course reminders are scheduled with GitHub Actions workflow. For more details see [documentation](./course-reminders.md).
